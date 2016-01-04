@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#compute/get_value_and_bind*/
+/*can@2.3.8#compute/get_value_and_bind*/
 steal('can/util', function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -19,9 +19,14 @@ steal('can/util', function (can) {
         this.childDepths = {};
         this.ignore = 0;
         this.inBatch = false;
+        this.ready = false;
         compute.observedInfo = this;
+        this.setReady = can.proxy(this._setReady, this);
     }
     can.simpleExtend(ObservedInfo.prototype, {
+        _setReady: function () {
+            this.ready = true;
+        },
         getDepth: function () {
             if (this.depth !== null) {
                 return this.depth;
@@ -53,7 +58,7 @@ steal('can/util', function (can) {
             }
         },
         onDependencyChange: function (ev) {
-            if (this.bound) {
+            if (this.bound && this.ready) {
                 if (ev.batchNum !== undefined) {
                     if (ev.batchNum !== this.batchNum) {
                         ObservedInfo.registerUpdate(this);
@@ -74,10 +79,12 @@ steal('can/util', function (can) {
             this.oldObserved = this.newObserved || {};
             this.ignore = 0;
             this.newObserved = {};
+            this.ready = false;
             observedInfoStack.push(this);
             this.value = this.func.call(this.context);
             observedInfoStack.pop();
             this.updateBindings();
+            can.batch.afterPreviousEvents(this.setReady);
         },
         updateBindings: function () {
             var newObserved = this.newObserved, oldObserved = this.oldObserved, name, obEv;

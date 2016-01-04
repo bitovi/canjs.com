@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#view/live/live*/
+/*can@2.3.8#view/live/live*/
 var can = require('../../util/util.js');
 var elements = require('../elements.js');
 var view = require('../view.js');
@@ -107,8 +107,21 @@ var setup = function (el, bind, unbind) {
             elements.after([masterNodeList[0]], falseyFrag);
             masterNodeList.push(falseyNodeLists[0]);
         }
-    };
+    }, childMutationCallbacks = {};
 var live = {
+        registerChildMutationCallback: function (tag, callback) {
+            if (callback) {
+                childMutationCallbacks[tag] = callback;
+            } else {
+                return childMutationCallbacks[tag];
+            }
+        },
+        callChildMutationCallback: function (el) {
+            var callback = el && childMutationCallbacks[el.nodeName.toLowerCase()];
+            if (callback) {
+                callback(el);
+            }
+        },
         list: function (el, compute, render, context, parentNode, nodeList, falseyRender) {
             var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
                     if (!afterPreviousEvents) {
@@ -145,6 +158,9 @@ var live = {
                     for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
                         indexMap[i](i);
                     }
+                    if (ev.callChildMutationCallback !== false) {
+                        live.callChildMutationCallback(text.parentNode);
+                    }
                 }, set = function (ev, newVal, index) {
                     remove({}, { length: 1 }, index, true);
                     add({}, [newVal], index);
@@ -166,6 +182,9 @@ var live = {
                     if (!fullTeardown) {
                         addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                         can.remove(can.$(itemsToRemove));
+                        if (ev.callChildMutationCallback !== false) {
+                            live.callChildMutationCallback(text.parentNode);
+                        }
                     } else {
                         nodeLists.unregister(masterNodeList);
                     }
@@ -212,11 +231,14 @@ var live = {
                     for (i, len; i < len; i++) {
                         indexMap[i](i);
                     }
+                    if (ev.callChildMutationCallback !== false) {
+                        live.callChildMutationCallback(text.parentNode);
+                    }
                 }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                     if (list && list.unbind) {
                         list.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                     }
-                    remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
+                    remove({ callChildMutationCallback: !!fullTeardown }, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                 }, updateList = function (ev, newList, oldList) {
                     if (isTornDown) {
                         return;
@@ -231,10 +253,10 @@ var live = {
                         for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
                             var patch = patches[i];
                             if (patch.deleteCount) {
-                                remove({}, { length: patch.deleteCount }, patch.index, true);
+                                remove({ callChildMutationCallback: false }, { length: patch.deleteCount }, patch.index, true);
                             }
                             if (patch.insert.length) {
-                                add({}, patch.insert, patch.index);
+                                add({ callChildMutationCallback: false }, patch.insert, patch.index);
                             }
                         }
                     } else {
@@ -242,14 +264,17 @@ var live = {
                             teardownList();
                         }
                         list = newList || [];
-                        add({}, list, 0);
+                        add({ callChildMutationCallback: false }, list, 0);
                         addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                     }
+                    live.callChildMutationCallback(text.parentNode);
                     afterPreviousEvents = false;
                     if (list.bind) {
                         list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                     }
-                    afterPreviousEvents = true;
+                    can.batch.afterPreviousEvents(function () {
+                        afterPreviousEvents = true;
+                    });
                 };
             parentNode = elements.getParentNode(el, parentNode);
             var data = setup(parentNode, function () {
@@ -282,7 +307,9 @@ var live = {
                 if (attached) {
                     makeAndPut(newVal);
                 }
-                data.teardownCheck(nodeLists.first(nodes).parentNode);
+                var pn = nodeLists.first(nodes).parentNode;
+                data.teardownCheck(pn);
+                live.callChildMutationCallback(pn);
             });
             var nodes = nodeList || [el], makeAndPut = function (val) {
                     var isFunction = typeof val === 'function', aNode = isNode(val), frag = can.frag(isFunction ? '' : val), oldNodes = can.makeArray(nodes);

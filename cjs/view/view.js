@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#view/view*/
+/*can@2.3.8#view/view*/
 var can = require('../util/util.js');
 var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
 var makeRenderer = function (textRenderer) {

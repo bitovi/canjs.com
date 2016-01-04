@@ -1,16 +1,16 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#view/bindings/bindings*/
+/*can@2.3.8#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
-require('../../control/control.js');
+var live = require('../live/live.js');
 require('../scope/scope.js');
 require('../href/href.js');
 var behaviors = {
@@ -250,7 +250,7 @@ can.view.attr(/^\([\$?\w\.]+\)$/, behaviors.event);
 can.view.attr(/can-[\w\.]+/, behaviors.event);
 can.view.attr('can-value', behaviors.value);
 var getComputeFrom = {
-        scope: function (el, scope, scopeProp, bindingData, mustBeACompute) {
+        scope: function (el, scope, scopeProp, bindingData, mustBeACompute, stickyCompute) {
             if (!scopeProp) {
                 return can.compute();
             } else {
@@ -264,7 +264,7 @@ var getComputeFrom = {
                 }
             }
         },
-        viewModel: function (el, scope, vmName, bindingData, mustBeACompute) {
+        viewModel: function (el, scope, vmName, bindingData, mustBeACompute, stickyCompute) {
             var setName = cleanVMName(vmName);
             if (mustBeACompute) {
                 return can.compute(function (newVal) {
@@ -281,7 +281,7 @@ var getComputeFrom = {
                 };
             }
         },
-        attribute: function (el, scope, prop, bindingData, mustBeACompute, event) {
+        attribute: function (el, scope, prop, bindingData, mustBeACompute, stickyCompute, event) {
             if (!event) {
                 if (prop === 'innerHTML') {
                     event = [
@@ -322,10 +322,11 @@ var getComputeFrom = {
                             }
                         });
                     } else {
-                        if (!bindingData.legacyBindings && hasChildren && 'selectedIndex' in el) {
-                            el.selectedIndex = -1;
+                        if (!bindingData.legacyBindings && hasChildren && 'selectedIndex' in el && prop === 'value') {
+                            can.attr.setSelectValue(el, newVal);
+                        } else {
+                            can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                         }
-                        can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                     }
                     return newVal;
                 }, get = function () {
@@ -337,6 +338,8 @@ var getComputeFrom = {
                             }
                         });
                         return isStringValue ? values.join(';') : values;
+                    } else if (hasChildren && 'selectedIndex' in el && el.selectedIndex === -1) {
+                        return undefined;
                     }
                     return can.attr.get(el, prop);
                 };
@@ -345,16 +348,44 @@ var getComputeFrom = {
                     scheduledAsyncSet = true;
                 }, 1);
             }
+            var observer;
             return can.compute(get(), {
                 on: function (updater) {
                     can.each(event, function (eventName) {
                         can.bind.call(el, eventName, updater);
                     });
+                    if (hasChildren) {
+                        var onMutation = function (mutations) {
+                            if (stickyCompute) {
+                                set(stickyCompute());
+                            } else {
+                                if (scheduledAsyncSet) {
+                                    updater();
+                                }
+                            }
+                        };
+                        if (can.attr.MutationObserver) {
+                            observer = new can.attr.MutationObserver(onMutation);
+                            observer.observe(el, {
+                                childList: true,
+                                subtree: true
+                            });
+                        } else {
+                            can.data(can.$(el), 'canBindingCallback', { onMutation: onMutation });
+                        }
+                    }
                 },
                 off: function (updater) {
                     can.each(event, function (eventName) {
                         can.unbind.call(el, eventName, updater);
                     });
+                    if (hasChildren) {
+                        if (can.attr.MutationObserver) {
+                            observer.disconnect();
+                        } else {
+                            can.data(can.$(el), 'canBindingCallback', null);
+                        }
+                    }
                 },
                 get: get,
                 set: set
@@ -401,7 +432,7 @@ var bind = {
             return updateChild;
         }
     };
-var getBindingInfo = function (node, attributeViewModelBindings, templateType) {
+var getBindingInfo = function (node, attributeViewModelBindings, templateType, tagName) {
     var attributeName = node.name, attributeValue = node.value || '';
     var matches = attributeName.match(bindingsRegExp);
     if (!matches) {
@@ -439,16 +470,20 @@ var getBindingInfo = function (node, attributeViewModelBindings, templateType) {
     var childName = matches[3];
     var isDOM = childName.charAt(0) === '$';
     if (isDOM) {
-        return {
-            parent: 'scope',
-            child: 'attribute',
-            childToParent: childToParent,
-            parentToChild: parentToChild,
-            bindingAttributeName: attributeName,
-            childName: childName.substr(1),
-            parentName: attributeValue,
-            initializeValues: true
-        };
+        var bindingInfo = {
+                parent: 'scope',
+                child: 'attribute',
+                childToParent: childToParent,
+                parentToChild: parentToChild,
+                bindingAttributeName: attributeName,
+                childName: childName.substr(1),
+                parentName: attributeValue,
+                initializeValues: true
+            };
+        if (tagName === 'select' && !childToParent) {
+            bindingInfo.stickyParentToChild = true;
+        }
+        return bindingInfo;
     } else {
         return {
             parent: 'scope',
@@ -464,7 +499,7 @@ var getBindingInfo = function (node, attributeViewModelBindings, templateType) {
 };
 var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/, ignoreAttributesRegExp = /^(data-view-id|class|id|\[[\w\.-]+\]|#[\w\.-])$/i;
 var makeDataBinding = function (node, el, bindingData) {
-    var bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType);
+    var bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType, el.nodeName.toLowerCase());
     if (!bindingInfo) {
         return;
     }
@@ -472,13 +507,15 @@ var makeDataBinding = function (node, el, bindingData) {
     if (bindingData.initializeValues) {
         bindingInfo.initializeValues = true;
     }
-    var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent), updateParent, updateChild;
+    var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent, bindingInfo.stickyParentToChild && parentCompute), updateParent, updateChild, childLifecycle;
     if (bindingInfo.parentToChild) {
         updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
     }
     var completeBinding = function () {
         if (bindingInfo.childToParent) {
             updateParent = bind.childToParent(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName, bindingData.syncChildWithParent);
+        } else if (bindingInfo.stickyParentToChild) {
+            childCompute.bind('change', childLifecycle = can.k);
         }
         if (bindingInfo.initializeValues) {
             initializeValues(bindingInfo, childCompute, parentCompute, updateChild, updateParent);
@@ -487,6 +524,7 @@ var makeDataBinding = function (node, el, bindingData) {
     var onTeardown = function () {
         unbindUpdate(parentCompute, updateChild);
         unbindUpdate(childCompute, updateParent);
+        unbindUpdate(childCompute, childLifecycle);
     };
     if (bindingInfo.child === 'viewModel') {
         return {
@@ -520,6 +558,18 @@ var initializeValues = function (bindingInfo, childCompute, parentCompute, updat
         }
     }
 };
+if (!can.attr.MutationObserver) {
+    var updateSelectValue = function (el) {
+        var bindingCallback = can.data(can.$(el), 'canBindingCallback');
+        if (bindingCallback) {
+            bindingCallback.onMutation(el);
+        }
+    };
+    live.registerChildMutationCallback('select', updateSelectValue);
+    live.registerChildMutationCallback('optgroup', function (el) {
+        updateSelectValue(el.parentNode);
+    });
+}
 var isContentEditable = function () {
         var values = {
                 '': true,

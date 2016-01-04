@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#map/map*/
+/*can@2.3.8#map/map*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var bubble = require('./bubble.js');
@@ -113,7 +113,7 @@ var Map = can.Map = can.Construct.extend({
         ___get: function (attr) {
             if (attr) {
                 var computedAttr = this._computedAttrs[attr];
-                if (computedAttr) {
+                if (computedAttr && computedAttr.compute) {
                     return computedAttr.compute();
                 } else {
                     return this._data[attr];

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.7#util/can*/
+/*can@2.3.8#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -102,7 +102,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.7';
+    can.VERSION = '2.3.8';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -245,7 +245,7 @@ define('can/util/can', [], function () {
     can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
     return can;
 });
-/*can@2.3.7#util/attr/attr*/
+/*can@2.3.8#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -313,6 +313,18 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                 } else {
                     this.set(el, attrName, val);
                 }
+            },
+            setSelectValue: function (el, val) {
+                if (val != null) {
+                    var options = el.getElementsByTagName('option');
+                    for (var i = 0; i < options.length; i++) {
+                        if (val == options[i].value) {
+                            options[i].selected = true;
+                            return;
+                        }
+                    }
+                }
+                el.selectedIndex = -1;
             },
             set: function (el, attrName, val) {
                 var usingMutationObserver = can.isDOM(el) && attr.MutationObserver;
@@ -434,7 +446,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.7#event/event*/
+/*can@2.3.8#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -588,7 +600,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.7#util/object/isplain/isplain*/
+/*can@2.3.8#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -611,7 +623,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.7#util/fragment*/
+/*can@2.3.8#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name) {
             if (name === undefined) {
@@ -671,7 +683,7 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.3.7#util/deferred*/
+/*can@2.3.8#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -823,7 +835,7 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.3.7#util/array/each*/
+/*can@2.3.8#util/array/each*/
 define('can/util/array/each', ['can/util/can'], function (can) {
     var isArrayLike = function (obj) {
         var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
@@ -871,7 +883,7 @@ define('can/util/array/each', ['can/util/can'], function (can) {
     };
     return can;
 });
-/*can@2.3.7#util/inserted/inserted*/
+/*can@2.3.8#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {
@@ -921,7 +933,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children, document);
     };
 });
-/*can@2.3.7#util/util*/
+/*can@2.3.8#util/util*/
 define('can/util/util', [
     'can/util/can',
     'can/util/attr/attr',
@@ -1241,7 +1253,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.3.7#view/view*/
+/*can@2.3.8#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1525,7 +1537,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.7#view/callbacks/callbacks*/
+/*can@2.3.8#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1598,7 +1610,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.7#view/elements*/
+/*can@2.3.8#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1681,7 +1693,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.7#util/bind/bind*/
+/*can@2.3.8#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1716,9 +1728,9 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.7#util/batch/batch*/
+/*can@2.3.8#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [];
+    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
@@ -1744,7 +1756,8 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
             if (transactions === 0) {
                 collectingBatch = null;
                 var batch;
-                if (batches.length === 1) {
+                if (dispatchingBatches === false) {
+                    dispatchingBatches = true;
                     while (batch = batches.shift()) {
                         var events = batch.events;
                         var callbacks = batch.callbacks;
@@ -1764,6 +1777,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
                         dispatchingBatch = null;
                         can.batch.batchNum = undefined;
                     }
+                    dispatchingBatches = false;
                 }
             }
         },
@@ -1790,7 +1804,12 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
             }
         },
         afterPreviousEvents: function (handler) {
-            handler({});
+            var batch = can.last(batches);
+            if (batch) {
+                batch.callbacks.push(handler);
+            } else {
+                handler({});
+            }
         },
         after: function (handler) {
             var batch = collectingBatch || dispatchingBatch;
@@ -1802,7 +1821,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.3.7#compute/read*/
+/*can@2.3.8#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -2030,7 +2049,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.7#compute/get_value_and_bind*/
+/*can@2.3.8#compute/get_value_and_bind*/
 define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -2043,9 +2062,14 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
         this.childDepths = {};
         this.ignore = 0;
         this.inBatch = false;
+        this.ready = false;
         compute.observedInfo = this;
+        this.setReady = can.proxy(this._setReady, this);
     }
     can.simpleExtend(ObservedInfo.prototype, {
+        _setReady: function () {
+            this.ready = true;
+        },
         getDepth: function () {
             if (this.depth !== null) {
                 return this.depth;
@@ -2077,7 +2101,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
             }
         },
         onDependencyChange: function (ev) {
-            if (this.bound) {
+            if (this.bound && this.ready) {
                 if (ev.batchNum !== undefined) {
                     if (ev.batchNum !== this.batchNum) {
                         ObservedInfo.registerUpdate(this);
@@ -2098,10 +2122,12 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
             this.oldObserved = this.newObserved || {};
             this.ignore = 0;
             this.newObserved = {};
+            this.ready = false;
             observedInfoStack.push(this);
             this.value = this.func.call(this.context);
             observedInfoStack.pop();
             this.updateBindings();
+            can.batch.afterPreviousEvents(this.setReady);
         },
         updateBindings: function () {
             var newObserved = this.newObserved, oldObserved = this.oldObserved, name, obEv;
@@ -2219,7 +2245,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
     return ObservedInfo;
 });
-/*can@2.3.7#compute/proto_compute*/
+/*can@2.3.8#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2482,7 +2508,7 @@ define('can/compute/proto_compute', [
     can.Compute.set = read.write;
     return can.Compute;
 });
-/*can@2.3.7#compute/compute*/
+/*can@2.3.8#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2548,7 +2574,7 @@ define('can/compute/compute', [
     can.compute.temporarilyBind = can.Compute.temporarilyBind;
     return can.compute;
 });
-/*can@2.3.7#view/scope/compute_data*/
+/*can@2.3.8#view/scope/compute_data*/
 define('can/view/scope/compute_data', [
     'can/util/util',
     'can/compute/compute',
@@ -2635,7 +2661,7 @@ define('can/view/scope/compute_data', [
         return computeData;
     };
 });
-/*can@2.3.7#util/string/string*/
+/*can@2.3.8#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -2720,7 +2746,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.7#construct/construct*/
+/*can@2.3.8#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -2858,7 +2884,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.7#map/bubble*/
+/*can@2.3.8#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
             bind: function (parent, eventName) {
@@ -2976,7 +3002,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
         };
     return bubble;
 });
-/*can@2.3.7#map/map_helpers*/
+/*can@2.3.8#map/map_helpers*/
 define('can/map/map_helpers', [
     'can/util/util',
     'can/util/object/isplain/isplain'
@@ -3073,7 +3099,7 @@ define('can/map/map_helpers', [
     };
     return mapHelpers;
 });
-/*can@2.3.7#map/map*/
+/*can@2.3.8#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -3182,7 +3208,7 @@ define('can/map/map', [
             ___get: function (attr) {
                 if (attr) {
                     var computedAttr = this._computedAttrs[attr];
-                    if (computedAttr) {
+                    if (computedAttr && computedAttr.compute) {
                         return computedAttr.compute();
                     } else {
                         return this._data[attr];
@@ -3412,7 +3438,7 @@ define('can/map/map', [
     Map.off = Map.unbind;
     return Map;
 });
-/*can@2.3.7#list/list*/
+/*can@2.3.8#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -3683,7 +3709,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.7#view/scope/scope*/
+/*can@2.3.8#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/view/scope/compute_data',
@@ -3892,7 +3918,7 @@ define('can/view/scope/scope', [
     can.view.Options = Options;
     return Scope;
 });
-/*can@2.3.7#view/stache/utils*/
+/*can@2.3.8#view/stache/utils*/
 define('can/view/stache/utils', [
     'can/util/util',
     'can/view/scope/scope'
@@ -3955,7 +3981,7 @@ define('can/view/stache/utils', [
         Options: Options
     };
 });
-/*can@2.3.7#view/node_lists/node_lists*/
+/*can@2.3.8#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -4153,7 +4179,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.7#view/parser/parser*/
+/*can@2.3.8#view/parser/parser*/
 define('can/view/parser/parser', [], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -4446,7 +4472,7 @@ define('can/view/parser/parser', [], function () {
     };
     return HTMLParser;
 });
-/*can@2.3.7#util/array/diff*/
+/*can@2.3.8#util/array/diff*/
 define('can/util/array/diff', [], function () {
     var slice = [].slice;
     return function (oldList, newList) {
@@ -4496,7 +4522,7 @@ define('can/util/array/diff', [], function () {
         return patches;
     };
 });
-/*can@2.3.7#view/live/live*/
+/*can@2.3.8#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -4599,8 +4625,21 @@ define('can/view/live/live', [
                 elements.after([masterNodeList[0]], falseyFrag);
                 masterNodeList.push(falseyNodeLists[0]);
             }
-        };
+        }, childMutationCallbacks = {};
     var live = {
+            registerChildMutationCallback: function (tag, callback) {
+                if (callback) {
+                    childMutationCallbacks[tag] = callback;
+                } else {
+                    return childMutationCallbacks[tag];
+                }
+            },
+            callChildMutationCallback: function (el) {
+                var callback = el && childMutationCallbacks[el.nodeName.toLowerCase()];
+                if (callback) {
+                    callback(el);
+                }
+            },
             list: function (el, compute, render, context, parentNode, nodeList, falseyRender) {
                 var masterNodeList = nodeList || [el], indexMap = [], afterPreviousEvents = false, isTornDown = false, add = function (ev, items, index) {
                         if (!afterPreviousEvents) {
@@ -4637,6 +4676,9 @@ define('can/view/live/live', [
                         for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
                             indexMap[i](i);
                         }
+                        if (ev.callChildMutationCallback !== false) {
+                            live.callChildMutationCallback(text.parentNode);
+                        }
                     }, set = function (ev, newVal, index) {
                         remove({}, { length: 1 }, index, true);
                         add({}, [newVal], index);
@@ -4658,6 +4700,9 @@ define('can/view/live/live', [
                         if (!fullTeardown) {
                             addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                             can.remove(can.$(itemsToRemove));
+                            if (ev.callChildMutationCallback !== false) {
+                                live.callChildMutationCallback(text.parentNode);
+                            }
                         } else {
                             nodeLists.unregister(masterNodeList);
                         }
@@ -4704,11 +4749,14 @@ define('can/view/live/live', [
                         for (i, len; i < len; i++) {
                             indexMap[i](i);
                         }
+                        if (ev.callChildMutationCallback !== false) {
+                            live.callChildMutationCallback(text.parentNode);
+                        }
                     }, text = el.ownerDocument.createTextNode(''), list, teardownList = function (fullTeardown) {
                         if (list && list.unbind) {
                             list.unbind('add', add).unbind('set', set).unbind('remove', remove).unbind('move', move);
                         }
-                        remove({}, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
+                        remove({ callChildMutationCallback: !!fullTeardown }, { length: masterNodeList.length - 1 }, 0, true, fullTeardown);
                     }, updateList = function (ev, newList, oldList) {
                         if (isTornDown) {
                             return;
@@ -4723,10 +4771,10 @@ define('can/view/live/live', [
                             for (var i = 0, patchLen = patches.length; i < patchLen; i++) {
                                 var patch = patches[i];
                                 if (patch.deleteCount) {
-                                    remove({}, { length: patch.deleteCount }, patch.index, true);
+                                    remove({ callChildMutationCallback: false }, { length: patch.deleteCount }, patch.index, true);
                                 }
                                 if (patch.insert.length) {
-                                    add({}, patch.insert, patch.index);
+                                    add({ callChildMutationCallback: false }, patch.insert, patch.index);
                                 }
                             }
                         } else {
@@ -4734,14 +4782,17 @@ define('can/view/live/live', [
                                 teardownList();
                             }
                             list = newList || [];
-                            add({}, list, 0);
+                            add({ callChildMutationCallback: false }, list, 0);
                             addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
                         }
+                        live.callChildMutationCallback(text.parentNode);
                         afterPreviousEvents = false;
                         if (list.bind) {
                             list.bind('add', add).bind('set', set).bind('remove', remove).bind('move', move);
                         }
-                        afterPreviousEvents = true;
+                        can.batch.afterPreviousEvents(function () {
+                            afterPreviousEvents = true;
+                        });
                     };
                 parentNode = elements.getParentNode(el, parentNode);
                 var data = setup(parentNode, function () {
@@ -4774,7 +4825,9 @@ define('can/view/live/live', [
                     if (attached) {
                         makeAndPut(newVal);
                     }
-                    data.teardownCheck(nodeLists.first(nodes).parentNode);
+                    var pn = nodeLists.first(nodes).parentNode;
+                    data.teardownCheck(pn);
+                    live.callChildMutationCallback(pn);
                 });
                 var nodes = nodeList || [el], makeAndPut = function (val) {
                         var isFunction = typeof val === 'function', aNode = isNode(val), frag = can.frag(isFunction ? '' : val), oldNodes = can.makeArray(nodes);
@@ -4911,7 +4964,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.7#view/stache/mustache_helpers*/
+/*can@2.3.8#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5146,7 +5199,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.7#view/stache/expression*/
+/*can@2.3.8#view/stache/expression*/
 define('can/view/stache/expression', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5690,209 +5743,7 @@ define('can/view/stache/expression', [
     can.expression = expression;
     return expression;
 });
-/*can@2.3.7#control/control*/
-define('can/control/control', [
-    'can/util/util',
-    'can/construct/construct'
-], function (can) {
-    var bind = function (el, ev, callback) {
-            can.bind.call(el, ev, callback);
-            return function () {
-                can.unbind.call(el, ev, callback);
-            };
-        }, isFunction = can.isFunction, extend = can.extend, each = can.each, slice = [].slice, paramReplacer = /\{([^\}]+)\}/g, special = can.getObject('$.event.special', [can]) || {}, delegate = function (el, selector, ev, callback) {
-            can.delegate.call(el, selector, ev, callback);
-            return function () {
-                can.undelegate.call(el, selector, ev, callback);
-            };
-        }, binder = function (el, ev, callback, selector) {
-            return selector ? delegate(el, can.trim(selector), ev, callback) : bind(el, ev, callback);
-        }, basicProcessor;
-    var Control = can.Control = can.Construct({
-            setup: function () {
-                can.Construct.setup.apply(this, arguments);
-                if (can.Control) {
-                    var control = this, funcName;
-                    control.actions = {};
-                    for (funcName in control.prototype) {
-                        if (control._isAction(funcName)) {
-                            control.actions[funcName] = control._action(funcName);
-                        }
-                    }
-                }
-            },
-            _shifter: function (context, name) {
-                var method = typeof name === 'string' ? context[name] : name;
-                if (!isFunction(method)) {
-                    method = context[method];
-                }
-                return function () {
-                    context.called = name;
-                    return method.apply(context, [this.nodeName ? can.$(this) : this].concat(slice.call(arguments, 0)));
-                };
-            },
-            _isAction: function (methodName) {
-                var val = this.prototype[methodName], type = typeof val;
-                return methodName !== 'constructor' && (type === 'function' || type === 'string' && isFunction(this.prototype[val])) && !!(special[methodName] || processors[methodName] || /[^\w]/.test(methodName));
-            },
-            _action: function (methodName, options) {
-                paramReplacer.lastIndex = 0;
-                if (options || !paramReplacer.test(methodName)) {
-                    var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
-                    if (!convertedName) {
-                        return null;
-                    }
-                    var arr = can.isArray(convertedName), name = arr ? convertedName[1] : convertedName, parts = name.split(/\s+/g), event = parts.pop();
-                    return {
-                        processor: processors[event] || basicProcessor,
-                        parts: [
-                            name,
-                            parts.join(' '),
-                            event
-                        ],
-                        delegate: arr ? convertedName[0] : undefined
-                    };
-                }
-            },
-            _lookup: function (options) {
-                return [
-                    options,
-                    window
-                ];
-            },
-            processors: {},
-            defaults: {}
-        }, {
-            setup: function (element, options) {
-                var cls = this.constructor, pluginname = cls.pluginName || cls._fullName, arr;
-                this.element = can.$(element);
-                if (pluginname && pluginname !== 'can_control') {
-                    this.element.addClass(pluginname);
-                }
-                arr = can.data(this.element, 'controls');
-                if (!arr) {
-                    arr = [];
-                    can.data(this.element, 'controls', arr);
-                }
-                arr.push(this);
-                this.options = extend({}, cls.defaults, options);
-                this.on();
-                return [
-                    this.element,
-                    this.options
-                ];
-            },
-            on: function (el, selector, eventName, func) {
-                if (!el) {
-                    this.off();
-                    var cls = this.constructor, bindings = this._bindings, actions = cls.actions, element = this.element, destroyCB = can.Control._shifter(this, 'destroy'), funcName, ready;
-                    for (funcName in actions) {
-                        if (actions.hasOwnProperty(funcName)) {
-                            ready = actions[funcName] || cls._action(funcName, this.options, this);
-                            if (ready) {
-                                bindings.control[funcName] = ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this);
-                            }
-                        }
-                    }
-                    can.bind.call(element, 'removed', destroyCB);
-                    bindings.user.push(function (el) {
-                        can.unbind.call(el, 'removed', destroyCB);
-                    });
-                    return bindings.user.length;
-                }
-                if (typeof el === 'string') {
-                    func = eventName;
-                    eventName = selector;
-                    selector = el;
-                    el = this.element;
-                }
-                if (func === undefined) {
-                    func = eventName;
-                    eventName = selector;
-                    selector = null;
-                }
-                if (typeof func === 'string') {
-                    func = can.Control._shifter(this, func);
-                }
-                this._bindings.user.push(binder(el, eventName, func, selector));
-                return this._bindings.user.length;
-            },
-            off: function () {
-                var el = this.element[0], bindings = this._bindings;
-                if (bindings) {
-                    each(bindings.user || [], function (value) {
-                        value(el);
-                    });
-                    each(bindings.control || {}, function (value) {
-                        value(el);
-                    });
-                }
-                this._bindings = {
-                    user: [],
-                    control: {}
-                };
-            },
-            destroy: function () {
-                if (this.element === null) {
-                    return;
-                }
-                var Class = this.constructor, pluginName = Class.pluginName || Class._fullName, controls;
-                this.off();
-                if (pluginName && pluginName !== 'can_control') {
-                    this.element.removeClass(pluginName);
-                }
-                controls = can.data(this.element, 'controls');
-                controls.splice(can.inArray(this, controls), 1);
-                can.trigger(this, 'destroyed');
-                this.element = null;
-            }
-        });
-    var processors = can.Control.processors;
-    basicProcessor = function (el, event, selector, methodName, control) {
-        return binder(el, event, can.Control._shifter(control, methodName), selector);
-    };
-    each([
-        'change',
-        'click',
-        'contextmenu',
-        'dblclick',
-        'keydown',
-        'keyup',
-        'keypress',
-        'mousedown',
-        'mousemove',
-        'mouseout',
-        'mouseover',
-        'mouseup',
-        'reset',
-        'resize',
-        'scroll',
-        'select',
-        'submit',
-        'focusin',
-        'focusout',
-        'mouseenter',
-        'mouseleave',
-        'touchstart',
-        'touchmove',
-        'touchcancel',
-        'touchend',
-        'touchleave',
-        'inserted',
-        'removed',
-        'dragstart',
-        'dragenter',
-        'dragover',
-        'dragleave',
-        'drag',
-        'drop',
-        'dragend'
-    ], function (v) {
-        processors[v] = basicProcessor;
-    });
-    return Control;
-});
-/*can@2.3.7#view/href/href*/
+/*can@2.3.8#view/href/href*/
 define('can/view/href/href', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5921,15 +5772,15 @@ define('can/view/href/href', [
         });
     });
 });
-/*can@2.3.7#view/bindings/bindings*/
+/*can@2.3.8#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/expression',
     'can/view/callbacks/callbacks',
-    'can/control/control',
+    'can/view/live/live',
     'can/view/scope/scope',
     'can/view/href/href'
-], function (can, expression, viewCallbacks) {
+], function (can, expression, viewCallbacks, live) {
     var behaviors = {
             viewModel: function (el, tagData, makeViewModel, initialViewModelData) {
                 initialViewModelData = initialViewModelData || {};
@@ -6167,7 +6018,7 @@ define('can/view/bindings/bindings', [
     can.view.attr(/can-[\w\.]+/, behaviors.event);
     can.view.attr('can-value', behaviors.value);
     var getComputeFrom = {
-            scope: function (el, scope, scopeProp, bindingData, mustBeACompute) {
+            scope: function (el, scope, scopeProp, bindingData, mustBeACompute, stickyCompute) {
                 if (!scopeProp) {
                     return can.compute();
                 } else {
@@ -6181,7 +6032,7 @@ define('can/view/bindings/bindings', [
                     }
                 }
             },
-            viewModel: function (el, scope, vmName, bindingData, mustBeACompute) {
+            viewModel: function (el, scope, vmName, bindingData, mustBeACompute, stickyCompute) {
                 var setName = cleanVMName(vmName);
                 if (mustBeACompute) {
                     return can.compute(function (newVal) {
@@ -6198,7 +6049,7 @@ define('can/view/bindings/bindings', [
                     };
                 }
             },
-            attribute: function (el, scope, prop, bindingData, mustBeACompute, event) {
+            attribute: function (el, scope, prop, bindingData, mustBeACompute, stickyCompute, event) {
                 if (!event) {
                     if (prop === 'innerHTML') {
                         event = [
@@ -6239,10 +6090,11 @@ define('can/view/bindings/bindings', [
                                 }
                             });
                         } else {
-                            if (!bindingData.legacyBindings && hasChildren && 'selectedIndex' in el) {
-                                el.selectedIndex = -1;
+                            if (!bindingData.legacyBindings && hasChildren && 'selectedIndex' in el && prop === 'value') {
+                                can.attr.setSelectValue(el, newVal);
+                            } else {
+                                can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                             }
-                            can.attr.setAttrOrProp(el, prop, newVal == null ? '' : newVal);
                         }
                         return newVal;
                     }, get = function () {
@@ -6254,6 +6106,8 @@ define('can/view/bindings/bindings', [
                                 }
                             });
                             return isStringValue ? values.join(';') : values;
+                        } else if (hasChildren && 'selectedIndex' in el && el.selectedIndex === -1) {
+                            return undefined;
                         }
                         return can.attr.get(el, prop);
                     };
@@ -6262,16 +6116,44 @@ define('can/view/bindings/bindings', [
                         scheduledAsyncSet = true;
                     }, 1);
                 }
+                var observer;
                 return can.compute(get(), {
                     on: function (updater) {
                         can.each(event, function (eventName) {
                             can.bind.call(el, eventName, updater);
                         });
+                        if (hasChildren) {
+                            var onMutation = function (mutations) {
+                                if (stickyCompute) {
+                                    set(stickyCompute());
+                                } else {
+                                    if (scheduledAsyncSet) {
+                                        updater();
+                                    }
+                                }
+                            };
+                            if (can.attr.MutationObserver) {
+                                observer = new can.attr.MutationObserver(onMutation);
+                                observer.observe(el, {
+                                    childList: true,
+                                    subtree: true
+                                });
+                            } else {
+                                can.data(can.$(el), 'canBindingCallback', { onMutation: onMutation });
+                            }
+                        }
                     },
                     off: function (updater) {
                         can.each(event, function (eventName) {
                             can.unbind.call(el, eventName, updater);
                         });
+                        if (hasChildren) {
+                            if (can.attr.MutationObserver) {
+                                observer.disconnect();
+                            } else {
+                                can.data(can.$(el), 'canBindingCallback', null);
+                            }
+                        }
                     },
                     get: get,
                     set: set
@@ -6318,7 +6200,7 @@ define('can/view/bindings/bindings', [
                 return updateChild;
             }
         };
-    var getBindingInfo = function (node, attributeViewModelBindings, templateType) {
+    var getBindingInfo = function (node, attributeViewModelBindings, templateType, tagName) {
         var attributeName = node.name, attributeValue = node.value || '';
         var matches = attributeName.match(bindingsRegExp);
         if (!matches) {
@@ -6356,16 +6238,20 @@ define('can/view/bindings/bindings', [
         var childName = matches[3];
         var isDOM = childName.charAt(0) === '$';
         if (isDOM) {
-            return {
-                parent: 'scope',
-                child: 'attribute',
-                childToParent: childToParent,
-                parentToChild: parentToChild,
-                bindingAttributeName: attributeName,
-                childName: childName.substr(1),
-                parentName: attributeValue,
-                initializeValues: true
-            };
+            var bindingInfo = {
+                    parent: 'scope',
+                    child: 'attribute',
+                    childToParent: childToParent,
+                    parentToChild: parentToChild,
+                    bindingAttributeName: attributeName,
+                    childName: childName.substr(1),
+                    parentName: attributeValue,
+                    initializeValues: true
+                };
+            if (tagName === 'select' && !childToParent) {
+                bindingInfo.stickyParentToChild = true;
+            }
+            return bindingInfo;
         } else {
             return {
                 parent: 'scope',
@@ -6381,7 +6267,7 @@ define('can/view/bindings/bindings', [
     };
     var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/, ignoreAttributesRegExp = /^(data-view-id|class|id|\[[\w\.-]+\]|#[\w\.-])$/i;
     var makeDataBinding = function (node, el, bindingData) {
-        var bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType);
+        var bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType, el.nodeName.toLowerCase());
         if (!bindingInfo) {
             return;
         }
@@ -6389,13 +6275,15 @@ define('can/view/bindings/bindings', [
         if (bindingData.initializeValues) {
             bindingInfo.initializeValues = true;
         }
-        var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent), updateParent, updateChild;
+        var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent, bindingInfo.stickyParentToChild && parentCompute), updateParent, updateChild, childLifecycle;
         if (bindingInfo.parentToChild) {
             updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
         }
         var completeBinding = function () {
             if (bindingInfo.childToParent) {
                 updateParent = bind.childToParent(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName, bindingData.syncChildWithParent);
+            } else if (bindingInfo.stickyParentToChild) {
+                childCompute.bind('change', childLifecycle = can.k);
             }
             if (bindingInfo.initializeValues) {
                 initializeValues(bindingInfo, childCompute, parentCompute, updateChild, updateParent);
@@ -6404,6 +6292,7 @@ define('can/view/bindings/bindings', [
         var onTeardown = function () {
             unbindUpdate(parentCompute, updateChild);
             unbindUpdate(childCompute, updateParent);
+            unbindUpdate(childCompute, childLifecycle);
         };
         if (bindingInfo.child === 'viewModel') {
             return {
@@ -6437,6 +6326,18 @@ define('can/view/bindings/bindings', [
             }
         }
     };
+    if (!can.attr.MutationObserver) {
+        var updateSelectValue = function (el) {
+            var bindingCallback = can.data(can.$(el), 'canBindingCallback');
+            if (bindingCallback) {
+                bindingCallback.onMutation(el);
+            }
+        };
+        live.registerChildMutationCallback('select', updateSelectValue);
+        live.registerChildMutationCallback('optgroup', function (el) {
+            updateSelectValue(el.parentNode);
+        });
+    }
     var isContentEditable = function () {
             var values = {
                     '': true,
@@ -6493,7 +6394,209 @@ define('can/view/bindings/bindings', [
     };
     return can.bindings;
 });
-/*can@2.3.7#observe/observe*/
+/*can@2.3.8#control/control*/
+define('can/control/control', [
+    'can/util/util',
+    'can/construct/construct'
+], function (can) {
+    var bind = function (el, ev, callback) {
+            can.bind.call(el, ev, callback);
+            return function () {
+                can.unbind.call(el, ev, callback);
+            };
+        }, isFunction = can.isFunction, extend = can.extend, each = can.each, slice = [].slice, paramReplacer = /\{([^\}]+)\}/g, special = can.getObject('$.event.special', [can]) || {}, delegate = function (el, selector, ev, callback) {
+            can.delegate.call(el, selector, ev, callback);
+            return function () {
+                can.undelegate.call(el, selector, ev, callback);
+            };
+        }, binder = function (el, ev, callback, selector) {
+            return selector ? delegate(el, can.trim(selector), ev, callback) : bind(el, ev, callback);
+        }, basicProcessor;
+    var Control = can.Control = can.Construct({
+            setup: function () {
+                can.Construct.setup.apply(this, arguments);
+                if (can.Control) {
+                    var control = this, funcName;
+                    control.actions = {};
+                    for (funcName in control.prototype) {
+                        if (control._isAction(funcName)) {
+                            control.actions[funcName] = control._action(funcName);
+                        }
+                    }
+                }
+            },
+            _shifter: function (context, name) {
+                var method = typeof name === 'string' ? context[name] : name;
+                if (!isFunction(method)) {
+                    method = context[method];
+                }
+                return function () {
+                    context.called = name;
+                    return method.apply(context, [this.nodeName ? can.$(this) : this].concat(slice.call(arguments, 0)));
+                };
+            },
+            _isAction: function (methodName) {
+                var val = this.prototype[methodName], type = typeof val;
+                return methodName !== 'constructor' && (type === 'function' || type === 'string' && isFunction(this.prototype[val])) && !!(special[methodName] || processors[methodName] || /[^\w]/.test(methodName));
+            },
+            _action: function (methodName, options) {
+                paramReplacer.lastIndex = 0;
+                if (options || !paramReplacer.test(methodName)) {
+                    var convertedName = options ? can.sub(methodName, this._lookup(options)) : methodName;
+                    if (!convertedName) {
+                        return null;
+                    }
+                    var arr = can.isArray(convertedName), name = arr ? convertedName[1] : convertedName, parts = name.split(/\s+/g), event = parts.pop();
+                    return {
+                        processor: processors[event] || basicProcessor,
+                        parts: [
+                            name,
+                            parts.join(' '),
+                            event
+                        ],
+                        delegate: arr ? convertedName[0] : undefined
+                    };
+                }
+            },
+            _lookup: function (options) {
+                return [
+                    options,
+                    window
+                ];
+            },
+            processors: {},
+            defaults: {}
+        }, {
+            setup: function (element, options) {
+                var cls = this.constructor, pluginname = cls.pluginName || cls._fullName, arr;
+                this.element = can.$(element);
+                if (pluginname && pluginname !== 'can_control') {
+                    this.element.addClass(pluginname);
+                }
+                arr = can.data(this.element, 'controls');
+                if (!arr) {
+                    arr = [];
+                    can.data(this.element, 'controls', arr);
+                }
+                arr.push(this);
+                this.options = extend({}, cls.defaults, options);
+                this.on();
+                return [
+                    this.element,
+                    this.options
+                ];
+            },
+            on: function (el, selector, eventName, func) {
+                if (!el) {
+                    this.off();
+                    var cls = this.constructor, bindings = this._bindings, actions = cls.actions, element = this.element, destroyCB = can.Control._shifter(this, 'destroy'), funcName, ready;
+                    for (funcName in actions) {
+                        if (actions.hasOwnProperty(funcName)) {
+                            ready = actions[funcName] || cls._action(funcName, this.options, this);
+                            if (ready) {
+                                bindings.control[funcName] = ready.processor(ready.delegate || element, ready.parts[2], ready.parts[1], funcName, this);
+                            }
+                        }
+                    }
+                    can.bind.call(element, 'removed', destroyCB);
+                    bindings.user.push(function (el) {
+                        can.unbind.call(el, 'removed', destroyCB);
+                    });
+                    return bindings.user.length;
+                }
+                if (typeof el === 'string') {
+                    func = eventName;
+                    eventName = selector;
+                    selector = el;
+                    el = this.element;
+                }
+                if (func === undefined) {
+                    func = eventName;
+                    eventName = selector;
+                    selector = null;
+                }
+                if (typeof func === 'string') {
+                    func = can.Control._shifter(this, func);
+                }
+                this._bindings.user.push(binder(el, eventName, func, selector));
+                return this._bindings.user.length;
+            },
+            off: function () {
+                var el = this.element[0], bindings = this._bindings;
+                if (bindings) {
+                    each(bindings.user || [], function (value) {
+                        value(el);
+                    });
+                    each(bindings.control || {}, function (value) {
+                        value(el);
+                    });
+                }
+                this._bindings = {
+                    user: [],
+                    control: {}
+                };
+            },
+            destroy: function () {
+                if (this.element === null) {
+                    return;
+                }
+                var Class = this.constructor, pluginName = Class.pluginName || Class._fullName, controls;
+                this.off();
+                if (pluginName && pluginName !== 'can_control') {
+                    this.element.removeClass(pluginName);
+                }
+                controls = can.data(this.element, 'controls');
+                controls.splice(can.inArray(this, controls), 1);
+                can.trigger(this, 'destroyed');
+                this.element = null;
+            }
+        });
+    var processors = can.Control.processors;
+    basicProcessor = function (el, event, selector, methodName, control) {
+        return binder(el, event, can.Control._shifter(control, methodName), selector);
+    };
+    each([
+        'change',
+        'click',
+        'contextmenu',
+        'dblclick',
+        'keydown',
+        'keyup',
+        'keypress',
+        'mousedown',
+        'mousemove',
+        'mouseout',
+        'mouseover',
+        'mouseup',
+        'reset',
+        'resize',
+        'scroll',
+        'select',
+        'submit',
+        'focusin',
+        'focusout',
+        'mouseenter',
+        'mouseleave',
+        'touchstart',
+        'touchmove',
+        'touchcancel',
+        'touchend',
+        'touchleave',
+        'inserted',
+        'removed',
+        'dragstart',
+        'dragenter',
+        'dragover',
+        'dragleave',
+        'drag',
+        'drop',
+        'dragend'
+    ], function (v) {
+        processors[v] = basicProcessor;
+    });
+    return Control;
+});
+/*can@2.3.8#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -6506,7 +6609,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.7#view/scanner*/
+/*can@2.3.8#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -6882,7 +6985,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.7#view/render*/
+/*can@2.3.8#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -7008,7 +7111,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.7#view/mustache/mustache*/
+/*can@2.3.8#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -7503,7 +7606,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.7#util/view_model/view_model*/
+/*can@2.3.8#util/view_model/view_model*/
 define('can/util/view_model/view_model', ['can/util/util'], function (can) {
     var $ = can.$;
     if ($.fn) {
@@ -7512,7 +7615,7 @@ define('can/util/view_model/view_model', ['can/util/util'], function (can) {
         };
     }
 });
-/*can@2.3.7#component/component*/
+/*can@2.3.8#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -7757,7 +7860,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.7#model/model*/
+/*can@2.3.8#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -8141,7 +8244,7 @@ define('can/model/model', [
         });
     return can.Model;
 });
-/*can@2.3.7#util/string/deparam/deparam*/
+/*can@2.3.8#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -8178,7 +8281,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.7#route/route*/
+/*can@2.3.8#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -8480,7 +8583,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.7#control/route/route*/
+/*can@2.3.8#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',

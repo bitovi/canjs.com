@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.3.7
+ * CanJS - 2.3.8
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Wed, 16 Dec 2015 03:10:33 GMT
+ * Copyright (c) 2016 Bitovi
+ * Mon, 04 Jan 2016 19:08:12 GMT
  * Licensed MIT
  */
 
-/*can@2.3.7#util/batch/batch*/
+/*can@2.3.8#util/batch/batch*/
 define(['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [];
+    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
@@ -34,7 +34,8 @@ define(['can/util/can'], function (can) {
             if (transactions === 0) {
                 collectingBatch = null;
                 var batch;
-                if (batches.length === 1) {
+                if (dispatchingBatches === false) {
+                    dispatchingBatches = true;
                     while (batch = batches.shift()) {
                         var events = batch.events;
                         var callbacks = batch.callbacks;
@@ -54,6 +55,7 @@ define(['can/util/can'], function (can) {
                         dispatchingBatch = null;
                         can.batch.batchNum = undefined;
                     }
+                    dispatchingBatches = false;
                 }
             }
         },
@@ -80,7 +82,12 @@ define(['can/util/can'], function (can) {
             }
         },
         afterPreviousEvents: function (handler) {
-            handler({});
+            var batch = can.last(batches);
+            if (batch) {
+                batch.callbacks.push(handler);
+            } else {
+                handler({});
+            }
         },
         after: function (handler) {
             var batch = collectingBatch || dispatchingBatch;
