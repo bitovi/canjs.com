@@ -49,7 +49,7 @@
 			"source": "git://github.com/bitovi/canjs#master",
 			"npmInstall": [
 				"steal@^0.11.0",
-				"jquery@^1.11.0",
+				"jquery@~1.11.0",
 				"steal-qunit@0.0.2",
 				"jquerypp@2.0.0",
 				"jquery-ui@^1.10.5",
