@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/stache/expression*/
+/*can@2.3.9#view/stache/expression*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -147,12 +147,12 @@ define([
     };
     HelperLookup.prototype.value = function (scope, helperOptions) {
         var result = lookupValueOrHelper(this.key, scope, helperOptions, {
-                isArgument: true,
-                args: [
-                    scope.attr('.'),
-                    scope
-                ]
-            });
+            isArgument: true,
+            args: [
+                scope.attr('.'),
+                scope
+            ]
+        });
         return result.helper || result.value;
     };
     var HelperScopeLookup = function () {
@@ -386,175 +386,175 @@ define([
         }
     };
     var expression = {
-            convertKeyToLookup: convertKeyToLookup,
-            Literal: Literal,
-            Lookup: Lookup,
-            ScopeLookup: ScopeLookup,
-            Arg: Arg,
-            Hash: Hash,
-            Call: Call,
-            Helper: Helper,
-            HelperLookup: HelperLookup,
-            HelperScopeLookup: HelperScopeLookup,
-            tokenize: function (expression) {
-                var tokens = [];
-                (can.trim(expression) + ' ').replace(tokensRegExp, function (whole, arg) {
-                    tokens.push(arg);
-                });
-                return tokens;
+        convertKeyToLookup: convertKeyToLookup,
+        Literal: Literal,
+        Lookup: Lookup,
+        ScopeLookup: ScopeLookup,
+        Arg: Arg,
+        Hash: Hash,
+        Call: Call,
+        Helper: Helper,
+        HelperLookup: HelperLookup,
+        HelperScopeLookup: HelperScopeLookup,
+        tokenize: function (expression) {
+            var tokens = [];
+            (can.trim(expression) + ' ').replace(tokensRegExp, function (whole, arg) {
+                tokens.push(arg);
+            });
+            return tokens;
+        },
+        lookupRules: {
+            'default': function (ast, methodType, isArg) {
+                var name = (methodType === 'Helper' && !ast.root ? 'Helper' : '') + (isArg ? 'Scope' : '') + 'Lookup';
+                return expression[name];
             },
-            lookupRules: {
-                'default': function (ast, methodType, isArg) {
-                    var name = (methodType === 'Helper' && !ast.root ? 'Helper' : '') + (isArg ? 'Scope' : '') + 'Lookup';
-                    return expression[name];
-                },
-                'method': function (ast, methodType, isArg) {
-                    return ScopeLookup;
-                }
+            'method': function (ast, methodType, isArg) {
+                return ScopeLookup;
+            }
+        },
+        methodRules: {
+            'default': function (ast) {
+                return ast.type === 'Call' ? Call : Helper;
             },
-            methodRules: {
-                'default': function (ast) {
-                    return ast.type === 'Call' ? Call : Helper;
-                },
-                'call': function (ast) {
-                    return Call;
-                }
-            },
-            parse: function (expressionString, options) {
-                options = options || {};
-                var ast = this.ast(expressionString);
-                if (!options.lookupRule) {
-                    options.lookupRule = 'default';
-                }
-                if (typeof options.lookupRule === 'string') {
-                    options.lookupRule = expression.lookupRules[options.lookupRule];
-                }
-                if (!options.methodRule) {
-                    options.methodRule = 'default';
-                }
-                if (typeof options.methodRule === 'string') {
-                    options.methodRule = expression.methodRules[options.methodRule];
-                }
-                var expr = this.hydrateAst(ast, options, options.baseMethodType || 'Helper');
-                return expr;
-            },
-            hydrateAst: function (ast, options, methodType, isArg) {
-                if (ast.type === 'Lookup') {
-                    return new (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root && this.hydrateAst(ast.root, options, methodType));
-                } else if (ast.type === 'Literal') {
-                    return new Literal(ast.value);
-                } else if (ast.type === 'Arg') {
-                    return new Arg(this.hydrateAst(ast.children[0], options, methodType, isArg), { compute: true });
-                } else if (ast.type === 'Hash') {
-                    throw new Error('');
-                } else if (ast.type === 'Call' || ast.type === 'Helper') {
-                    var hashes = {}, args = [], children = ast.children;
-                    if (children) {
-                        for (var i = 0; i < children.length; i++) {
-                            var child = children[i];
-                            if (child.type === 'Hash') {
-                                hashes[child.prop] = this.hydrateAst(child.children[0], options, ast.type, true);
-                            } else {
-                                args.push(this.hydrateAst(child, options, ast.type, true));
-                            }
+            'call': function (ast) {
+                return Call;
+            }
+        },
+        parse: function (expressionString, options) {
+            options = options || {};
+            var ast = this.ast(expressionString);
+            if (!options.lookupRule) {
+                options.lookupRule = 'default';
+            }
+            if (typeof options.lookupRule === 'string') {
+                options.lookupRule = expression.lookupRules[options.lookupRule];
+            }
+            if (!options.methodRule) {
+                options.methodRule = 'default';
+            }
+            if (typeof options.methodRule === 'string') {
+                options.methodRule = expression.methodRules[options.methodRule];
+            }
+            var expr = this.hydrateAst(ast, options, options.baseMethodType || 'Helper');
+            return expr;
+        },
+        hydrateAst: function (ast, options, methodType, isArg) {
+            if (ast.type === 'Lookup') {
+                return new (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root && this.hydrateAst(ast.root, options, methodType));
+            } else if (ast.type === 'Literal') {
+                return new Literal(ast.value);
+            } else if (ast.type === 'Arg') {
+                return new Arg(this.hydrateAst(ast.children[0], options, methodType, isArg), { compute: true });
+            } else if (ast.type === 'Hash') {
+                throw new Error('');
+            } else if (ast.type === 'Call' || ast.type === 'Helper') {
+                var hashes = {}, args = [], children = ast.children;
+                if (children) {
+                    for (var i = 0; i < children.length; i++) {
+                        var child = children[i];
+                        if (child.type === 'Hash') {
+                            hashes[child.prop] = this.hydrateAst(child.children[0], options, ast.type, true);
+                        } else {
+                            args.push(this.hydrateAst(child, options, ast.type, true));
                         }
                     }
-                    return new (options.methodRule(ast))(this.hydrateAst(ast.method, options, ast.type), args, hashes);
                 }
-            },
-            ast: function (expression) {
-                var tokens = this.tokenize(expression);
-                return this.parseAst(tokens, { index: 0 });
-            },
-            parseAst: function (tokens, cursor) {
-                var stack = new Stack(), top;
-                while (cursor.index < tokens.length) {
-                    var token = tokens[cursor.index], nextToken = tokens[cursor.index + 1];
+                return new (options.methodRule(ast))(this.hydrateAst(ast.method, options, ast.type), args, hashes);
+            }
+        },
+        ast: function (expression) {
+            var tokens = this.tokenize(expression);
+            return this.parseAst(tokens, { index: 0 });
+        },
+        parseAst: function (tokens, cursor) {
+            var stack = new Stack(), top;
+            while (cursor.index < tokens.length) {
+                var token = tokens[cursor.index], nextToken = tokens[cursor.index + 1];
+                cursor.index++;
+                if (literalRegExp.test(token)) {
+                    convertToHelperIfTopIsLookup(stack);
+                    stack.addTo([
+                        'Helper',
+                        'Call',
+                        'Hash'
+                    ], {
+                        type: 'Literal',
+                        value: utils.jsonParse(token)
+                    });
+                } else if (nextToken === '=') {
+                    top = stack.top();
+                    if (top && top.type === 'Lookup') {
+                        var firstParent = stack.firstParent([
+                            'Call',
+                            'Helper',
+                            'Hash'
+                        ]);
+                        if (firstParent.type === 'Call' || firstParent.type === 'Root') {
+                            stack.popUntil(['Call']);
+                            top = stack.top();
+                            stack.replaceTopAndPush({
+                                type: 'Helper',
+                                method: top.type === 'Root' ? can.last(top.children) : top
+                            });
+                        }
+                    }
+                    stack.addToAndPush([
+                        'Helper',
+                        'Call'
+                    ], {
+                        type: 'Hash',
+                        prop: token
+                    });
                     cursor.index++;
-                    if (literalRegExp.test(token)) {
-                        convertToHelperIfTopIsLookup(stack);
-                        stack.addTo([
-                            'Helper',
-                            'Call',
-                            'Hash'
-                        ], {
-                            type: 'Literal',
-                            value: utils.jsonParse(token)
-                        });
-                    } else if (nextToken === '=') {
-                        top = stack.top();
-                        if (top && top.type === 'Lookup') {
-                            var firstParent = stack.firstParent([
-                                    'Call',
-                                    'Helper',
-                                    'Hash'
-                                ]);
-                            if (firstParent.type === 'Call' || firstParent.type === 'Root') {
-                                stack.popUntil(['Call']);
-                                top = stack.top();
-                                stack.replaceTopAndPush({
-                                    type: 'Helper',
-                                    method: top.type === 'Root' ? can.last(top.children) : top
-                                });
-                            }
-                        }
-                        stack.addToAndPush([
-                            'Helper',
-                            'Call'
-                        ], {
-                            type: 'Hash',
-                            prop: token
-                        });
-                        cursor.index++;
-                    } else if (keyRegExp.test(token)) {
-                        var last = stack.topLastChild();
-                        if (last && last.type === 'Call' && isAddingToExpression(token)) {
-                            stack.replaceTopLastChildAndPush({
-                                type: 'Lookup',
-                                root: last,
-                                key: token
-                            });
-                        } else {
-                            convertToHelperIfTopIsLookup(stack);
-                            stack.addToAndPush([
-                                'Helper',
-                                'Call',
-                                'Hash',
-                                'Arg'
-                            ], {
-                                type: 'Lookup',
-                                key: token
-                            });
-                        }
-                    } else if (token === '~') {
-                        convertToHelperIfTopIsLookup(stack);
-                        stack.addToAndPush([
-                            'Helper',
-                            'Call',
-                            'Hash'
-                        ], {
-                            type: 'Arg',
+                } else if (keyRegExp.test(token)) {
+                    var last = stack.topLastChild();
+                    if (last && last.type === 'Call' && isAddingToExpression(token)) {
+                        stack.replaceTopLastChildAndPush({
+                            type: 'Lookup',
+                            root: last,
                             key: token
                         });
-                    } else if (token === '(') {
-                        top = stack.top();
-                        if (top.type === 'Lookup') {
-                            stack.replaceTopAndPush({
-                                type: 'Call',
-                                method: convertToAtLookup(top)
-                            });
-                        } else {
-                            throw new Error('Unable to understand expression ' + tokens.join(''));
-                        }
-                    } else if (token === ')') {
-                        stack.popTo(['Call']);
-                    } else if (token === ',') {
-                        stack.popUntil(['Call']);
+                    } else {
+                        convertToHelperIfTopIsLookup(stack);
+                        stack.addToAndPush([
+                            'Helper',
+                            'Call',
+                            'Hash',
+                            'Arg'
+                        ], {
+                            type: 'Lookup',
+                            key: token
+                        });
                     }
+                } else if (token === '~') {
+                    convertToHelperIfTopIsLookup(stack);
+                    stack.addToAndPush([
+                        'Helper',
+                        'Call',
+                        'Hash'
+                    ], {
+                        type: 'Arg',
+                        key: token
+                    });
+                } else if (token === '(') {
+                    top = stack.top();
+                    if (top.type === 'Lookup') {
+                        stack.replaceTopAndPush({
+                            type: 'Call',
+                            method: convertToAtLookup(top)
+                        });
+                    } else {
+                        throw new Error('Unable to understand expression ' + tokens.join(''));
+                    }
+                } else if (token === ')') {
+                    stack.popTo(['Call']);
+                } else if (token === ',') {
+                    stack.popUntil(['Call']);
                 }
-                return stack.root.children[0];
             }
-        };
+            return stack.root.children[0];
+        }
+    };
     can.expression = expression;
     return expression;
 });

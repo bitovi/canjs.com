@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/jquery/jquery*/
+/*can@2.3.9#util/jquery/jquery*/
 define([
     'jquery',
     'can/util/can',
@@ -192,11 +192,11 @@ define([
             if (can.isDOM(this) && can.attr.MutationObserver) {
                 var self = this;
                 var observer = new can.attr.MutationObserver(function (mutations) {
-                        mutations.forEach(function (mutation) {
-                            var copy = can.simpleExtend({}, mutation);
-                            can.trigger(self, copy, []);
-                        });
+                    mutations.forEach(function (mutation) {
+                        var copy = can.simpleExtend({}, mutation);
+                        can.trigger(self, copy, []);
                     });
+                });
                 observer.observe(this, {
                     attributes: true,
                     attributeOldValue: true

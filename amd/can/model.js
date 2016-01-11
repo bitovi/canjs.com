@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#model/model*/
+/*can@2.3.9#model/model*/
 define([
     'can/util/library',
     'can/map',
@@ -331,12 +331,12 @@ define([
             return this.parseModel(data);
         };
     var responseHandlers = {
-            makeFindAll: makeGetterHandler('models'),
-            makeFindOne: makeGetterHandler('model'),
-            makeCreate: createUpdateDestroyHandler,
-            makeUpdate: createUpdateDestroyHandler,
-            makeDestroy: createUpdateDestroyHandler
-        };
+        makeFindAll: makeGetterHandler('models'),
+        makeFindOne: makeGetterHandler('model'),
+        makeCreate: createUpdateDestroyHandler,
+        makeUpdate: createUpdateDestroyHandler,
+        makeDestroy: createUpdateDestroyHandler
+    };
     can.each(responseHandlers, function (method, name) {
         can.Model[name] = function (oldMethod) {
             return function () {
@@ -364,29 +364,29 @@ define([
         };
     });
     var ML = can.Model.List = can.List.extend({
-            _bubbleRule: function (eventName, list) {
-                var bubbleRules = can.List._bubbleRule(eventName, list);
-                bubbleRules.push('destroyed');
-                return bubbleRules;
+        _bubbleRule: function (eventName, list) {
+            var bubbleRules = can.List._bubbleRule(eventName, list);
+            bubbleRules.push('destroyed');
+            return bubbleRules;
+        }
+    }, {
+        setup: function (params) {
+            if (can.isPlainObject(params) && !can.isArray(params)) {
+                can.List.prototype.setup.apply(this);
+                this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
+            } else {
+                can.List.prototype.setup.apply(this, arguments);
             }
-        }, {
-            setup: function (params) {
-                if (can.isPlainObject(params) && !can.isArray(params)) {
-                    can.List.prototype.setup.apply(this);
-                    this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
-                } else {
-                    can.List.prototype.setup.apply(this, arguments);
-                }
-                this.bind('destroyed', can.proxy(this._destroyed, this));
-            },
-            _destroyed: function (ev, attr) {
-                if (/\w+/.test(attr)) {
-                    var index;
-                    while ((index = this.indexOf(ev.target)) > -1) {
-                        this.splice(index, 1);
-                    }
+            this.bind('destroyed', can.proxy(this._destroyed, this));
+        },
+        _destroyed: function (ev, attr) {
+            if (/\w+/.test(attr)) {
+                var index;
+                while ((index = this.indexOf(ev.target)) > -1) {
+                    this.splice(index, 1);
                 }
             }
-        });
+        }
+    });
     return can.Model;
 });

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/util*/
+/*can@2.3.9#util/util*/
 'format steal';
 steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, djo) {
     var dojo = djo || window.dojo;
@@ -41,13 +41,13 @@ steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragmen
                     n.fireEvent(ev, evObj);
                 } catch (er) {
                     var evdata = mix({
-                            type: e,
-                            target: n,
-                            faux: true,
-                            _stopper: function () {
-                                stop = this.cancelBubble;
-                            }
-                        }, a);
+                        type: e,
+                        target: n,
+                        faux: true,
+                        _stopper: function () {
+                            stop = this.cancelBubble;
+                        }
+                    }, a);
                     if (isfn(n[ev])) {
                         n[ev](evdata);
                     }
@@ -219,15 +219,15 @@ steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragmen
                     return;
                 }
                 var connect = item.on(event, function (ev) {
-                        if (ev.stopPropagation) {
-                            ev.stopPropagation();
-                        }
-                        ev.cancelBubble = true;
-                        if (ev._stopper) {
-                            ev._stopper();
-                        }
-                        dojo.disconnect(connect);
-                    });
+                    if (ev.stopPropagation) {
+                        ev.stopPropagation();
+                    }
+                    ev.cancelBubble = true;
+                    if (ev._stopper) {
+                        ev._stopper();
+                    }
+                    dojo.disconnect(connect);
+                });
                 item.trigger(event, args);
             } else {
                 item.trigger(event, args);
@@ -279,12 +279,12 @@ steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragmen
         var type = can.capitalize((options.type || 'get').toLowerCase()), method = dojo['xhr' + type];
         var success = options.success, error = options.error, d = new can.Deferred();
         var def = method({
-                url: options.url,
-                handleAs: options.dataType,
-                sync: !options.async,
-                headers: options.headers,
-                content: options.data
-            });
+            url: options.url,
+            handleAs: options.dataType,
+            sync: !options.async,
+            headers: options.headers,
+            content: options.data
+        });
         def.then(function (data, ioargs) {
             updateDeferred(xhr, d);
             d.resolve(data, 'success', xhr);

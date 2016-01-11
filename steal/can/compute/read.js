@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#compute/read*/
+/*can@2.3.9#compute/read*/
 steal('can/util', function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -179,12 +179,12 @@ steal('can/util', function (can) {
         }
     ];
     var specialRead = {
-            index: true,
-            key: true,
-            event: true,
-            element: true,
-            viewModel: true
-        };
+        index: true,
+        key: true,
+        event: true,
+        element: true,
+        viewModel: true
+    };
     read.write = function (parent, key, value, options) {
         options = options || {};
         if (can.isMapLike(parent)) {

@@ -1,60 +1,60 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/callbacks/callbacks*/
+/*can@2.3.9#view/callbacks/callbacks*/
 define([
     'can/util/library',
     'can/view'
 ], function (can) {
     var attr = can.view.attr = function (attributeName, attrHandler) {
-            if (attrHandler) {
-                if (typeof attributeName === 'string') {
-                    attributes[attributeName] = attrHandler;
-                } else {
-                    regExpAttributes.push({
-                        match: attributeName,
-                        handler: attrHandler
-                    });
-                }
+        if (attrHandler) {
+            if (typeof attributeName === 'string') {
+                attributes[attributeName] = attrHandler;
             } else {
-                var cb = attributes[attributeName];
-                if (!cb) {
-                    for (var i = 0, len = regExpAttributes.length; i < len; i++) {
-                        var attrMatcher = regExpAttributes[i];
-                        if (attrMatcher.match.test(attributeName)) {
-                            cb = attrMatcher.handler;
-                            break;
-                        }
+                regExpAttributes.push({
+                    match: attributeName,
+                    handler: attrHandler
+                });
+            }
+        } else {
+            var cb = attributes[attributeName];
+            if (!cb) {
+                for (var i = 0, len = regExpAttributes.length; i < len; i++) {
+                    var attrMatcher = regExpAttributes[i];
+                    if (attrMatcher.match.test(attributeName)) {
+                        cb = attrMatcher.handler;
+                        break;
                     }
                 }
-                return cb;
             }
-        };
+            return cb;
+        }
+    };
     var attributes = {}, regExpAttributes = [], automaticCustomElementCharacters = /[-\:]/;
     var tag = can.view.tag = function (tagName, tagHandler) {
-            if (tagHandler) {
-                if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
-                    can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
-                }
-                if (can.global.html5) {
-                    can.global.html5.elements += ' ' + tagName;
-                    can.global.html5.shivDocument();
-                }
-                tags[tagName.toLowerCase()] = tagHandler;
-            } else {
-                var cb = tags[tagName.toLowerCase()];
-                if (!cb && automaticCustomElementCharacters.test(tagName)) {
-                    cb = function () {
-                    };
-                }
-                return cb;
+        if (tagHandler) {
+            if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
+                can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
             }
-        };
+            if (can.global.html5) {
+                can.global.html5.elements += ' ' + tagName;
+                can.global.html5.shivDocument();
+            }
+            tags[tagName.toLowerCase()] = tagHandler;
+        } else {
+            var cb = tags[tagName.toLowerCase()];
+            if (!cb && automaticCustomElementCharacters.test(tagName)) {
+                cb = function () {
+                };
+            }
+            return cb;
+        }
+    };
     var tags = {};
     can.view.callbacks = {
         _tags: tags,

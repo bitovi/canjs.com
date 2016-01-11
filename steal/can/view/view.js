@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/view*/
+/*can@2.3.9#view/view*/
 steal('can/util', function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -92,12 +92,12 @@ steal('can/util', function (can) {
         return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
     };
     var $view = can.view = can.template = function (view, data, helpers, callback) {
-            if (isFunction(helpers)) {
-                callback = helpers;
-                helpers = undefined;
-            }
-            return $view.renderAs('fragment', view, data, helpers, callback);
-        };
+        if (isFunction(helpers)) {
+            callback = helpers;
+            helpers = undefined;
+        }
+        return $view.renderAs('fragment', view, data, helpers, callback);
+    };
     can.extend($view, {
         frag: function (result, parentNode) {
             return $view.hookup($view.fragment(result), parentNode);
@@ -199,8 +199,8 @@ steal('can/util', function (can) {
         },
         preload: function (id, renderer) {
             var def = $view.cached[id] = new can.Deferred().resolve(function (data, helpers) {
-                    return renderer.call(data, data, helpers);
-                });
+                return renderer.call(data, data, helpers);
+            });
             def.__view_id = id;
             $view.cachedRenderers[id] = renderer;
             return renderer;

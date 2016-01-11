@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#map/define/define*/
+/*can@2.3.9#map/define/define*/
 steal('can/util', 'can/map/map_helpers.js', 'can/map', 'can/compute', function (can, mapHelpers) {
     if (can.define) {
         return;

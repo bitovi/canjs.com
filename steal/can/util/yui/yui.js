@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/util*/
+/*can@2.3.9#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, YUI) {
     YUI = YUI || window.YUI;
     YUI.add('can-modifications', function (Y, NAME) {
@@ -151,10 +151,10 @@ steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment
     };
     Y.NodeList.addMethod('remove', Y.Node.prototype.remove);
     var optionsMap = {
-            type: 'method',
-            success: undefined,
-            error: undefined
-        };
+        type: 'method',
+        success: undefined,
+        error: undefined
+    };
     var updateDeferred = function (request, d) {
         if (request && request.io) {
             var xhr = request.io;
@@ -364,18 +364,18 @@ steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment
         }, fakeTrigger = function (n, e, a) {
             var stop = false;
             var evdata = can.extend({
-                    type: e,
-                    target: n,
-                    faux: true,
-                    _stopper: function () {
-                        stop = this.cancelBubble;
-                    },
-                    stopPropagation: function () {
-                        stop = this.cancelBubble;
-                    },
-                    preventDefault: function () {
-                    }
-                }, a);
+                type: e,
+                target: n,
+                faux: true,
+                _stopper: function () {
+                    stop = this.cancelBubble;
+                },
+                stopPropagation: function () {
+                    stop = this.cancelBubble;
+                },
+                preventDefault: function () {
+                }
+            }, a);
             realTriggerHandler(n, e, evdata);
             if (e === 'inserted' || e === 'removed') {
                 return;

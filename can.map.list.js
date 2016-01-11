@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.8#map/list/list*/
+/*can@2.3.9#map/list/list*/
 define('can/map/list/list', [
     'can/util/util',
     'can/map/map',
@@ -100,8 +100,8 @@ define('can/map/list/list', [
                     }
                 };
                 var compute = can.compute(function () {
-                        return callback(element, self.indexOf(element), self);
-                    });
+                    return callback(element, self.indexOf(element), self);
+                });
                 compute.bind('change', binder);
                 binder(null, compute());
             };
@@ -126,8 +126,8 @@ define('can/map/list/list', [
             var self = this;
             var generator = function (element, index) {
                 var compute = can.compute(function () {
-                        return callback(element, index, self);
-                    });
+                    return callback(element, index, self);
+                });
                 compute.bind('change', function (ev, val) {
                     mapped.splice(index, 1, val);
                 });

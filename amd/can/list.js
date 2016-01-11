@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#list/list*/
+/*can@2.3.9#list/list*/
 define([
     'can/util/library',
     'can/map',
@@ -15,9 +15,9 @@ define([
 ], function (can, Map, bubble, mapHelpers) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {
-                    0: 'a',
-                    length: 1
-                };
+                0: 'a',
+                length: 1
+            };
             splice.call(obj, 0, 1);
             return !obj[0];
         }();

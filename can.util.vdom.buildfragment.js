@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
@@ -159,46 +159,46 @@ define('simple-dom/document/node', [
         fragment.lastChild = null;
     }
     var nodeInsertBefore = Node.prototype.insertBefore = function (node, refNode) {
-            if (refNode == null) {
-                return this.appendChild(node);
-            }
-            if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-                insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
-                return node;
-            }
-            if (node.parentNode) {
-                node.parentNode.removeChild(node);
-            }
-            node.parentNode = this;
-            var previousSibling = refNode.previousSibling;
-            if (previousSibling) {
-                previousSibling.nextSibling = node;
-                node.previousSibling = previousSibling;
-            }
-            refNode.previousSibling = node;
-            node.nextSibling = refNode;
-            if (this.firstChild === refNode) {
-                this.firstChild = node;
-            }
+        if (refNode == null) {
+            return this.appendChild(node);
+        }
+        if (node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            insertFragment(node, this, refNode ? refNode.previousSibling : null, refNode);
             return node;
-        };
+        }
+        if (node.parentNode) {
+            node.parentNode.removeChild(node);
+        }
+        node.parentNode = this;
+        var previousSibling = refNode.previousSibling;
+        if (previousSibling) {
+            previousSibling.nextSibling = node;
+            node.previousSibling = previousSibling;
+        }
+        refNode.previousSibling = node;
+        node.nextSibling = refNode;
+        if (this.firstChild === refNode) {
+            this.firstChild = node;
+        }
+        return node;
+    };
     var nodeRemoveChild = Node.prototype.removeChild = function (refNode) {
-            if (this.firstChild === refNode) {
-                this.firstChild = refNode.nextSibling;
-            }
-            if (this.lastChild === refNode) {
-                this.lastChild = refNode.previousSibling;
-            }
-            if (refNode.previousSibling) {
-                refNode.previousSibling.nextSibling = refNode.nextSibling;
-            }
-            if (refNode.nextSibling) {
-                refNode.nextSibling.previousSibling = refNode.previousSibling;
-            }
-            refNode.parentNode = null;
-            refNode.nextSibling = null;
-            refNode.previousSibling = null;
-        };
+        if (this.firstChild === refNode) {
+            this.firstChild = refNode.nextSibling;
+        }
+        if (this.lastChild === refNode) {
+            this.lastChild = refNode.previousSibling;
+        }
+        if (refNode.previousSibling) {
+            refNode.previousSibling.nextSibling = refNode.nextSibling;
+        }
+        if (refNode.nextSibling) {
+            refNode.nextSibling.previousSibling = refNode.previousSibling;
+        }
+        refNode.parentNode = null;
+        refNode.nextSibling = null;
+        refNode.previousSibling = null;
+    };
     Node.prototype.replaceChild = function (newChild, oldChild) {
         nodeInsertBefore.call(this, newChild, oldChild);
         nodeRemoveChild.call(this, oldChild);
@@ -244,10 +244,10 @@ define('simple-dom/document/element', [
     }
     var _Node = _interopRequireDefault(_node);
     var attrSpecial = {
-            'class': function _class(element, value) {
-                element._className = value;
-            }
-        };
+        'class': function _class(element, value) {
+            element._className = value;
+        }
+    };
     function Element(tagName, ownerDocument) {
         tagName = tagName.toUpperCase();
         this.nodeConstructor(1, tagName, null, ownerDocument);
@@ -941,7 +941,7 @@ define('simple-dom', [
     }
     _defaults(exports, _interopRequireWildcard(_simpleDomDom));
 });
-/*can@2.3.8#util/vdom/build_fragment/make_parser*/
+/*can@2.3.9#util/vdom/build_fragment/make_parser*/
 define('can/util/vdom/build_fragment/make_parser', [
     'can/view/parser/parser',
     'simple-dom'
@@ -1001,7 +1001,7 @@ define('can/util/vdom/build_fragment/make_parser', [
         }, document, simpleDOM.voidMap);
     };
 });
-/*can@2.3.8#util/vdom/build_fragment/build_fragment*/
+/*can@2.3.9#util/vdom/build_fragment/build_fragment*/
 define('can/util/vdom/build_fragment/build_fragment', [
     'can/util/vdom/build_fragment/make_parser',
     'can/util/util'

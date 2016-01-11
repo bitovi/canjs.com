@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/mootools/mootools*/
+/*can@2.3.9#util/mootools/mootools*/
 define([
     'can/util/can',
     'can/util/attr',
@@ -178,10 +178,10 @@ define([
         return this;
     };
     var optionsMap = {
-            type: 'method',
-            success: undefined,
-            error: undefined
-        };
+        type: 'method',
+        success: undefined,
+        error: undefined
+    };
     var updateDeferred = function (xhr, d) {
         for (var prop in xhr) {
             if (typeof d[prop] === 'function') {
@@ -263,12 +263,12 @@ define([
     };
     can.remove = function (wrapped) {
         var filtered = wrapped.filter(function (node) {
-                if (node.nodeType !== 1) {
-                    node.parentNode.removeChild(node);
-                } else {
-                    return true;
-                }
-            });
+            if (node.nodeType !== 1) {
+                node.parentNode.removeChild(node);
+            } else {
+                return true;
+            }
+        });
         filtered.destroy();
         return filtered;
     };

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/batch/batch*/
+/*can@2.3.9#util/batch/batch*/
 var can = require('../can.js');
 var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
 can.batch = {
@@ -14,10 +14,10 @@ can.batch = {
         transactions++;
         if (transactions === 1) {
             var batch = {
-                    events: [],
-                    callbacks: [],
-                    number: batchNum++
-                };
+                events: [],
+                callbacks: [],
+                number: batchNum++
+            };
             batches.push(batch);
             if (batchStopHandler) {
                 batch.callbacks.push(batchStopHandler);

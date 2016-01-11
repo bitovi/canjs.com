@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/stache/html_section*/
+/*can@2.3.9#view/stache/html_section*/
 define([
     'can/util/library',
     'can/view/target',
@@ -14,15 +14,15 @@ define([
     'can/view/mustache_core'
 ], function (can, target, utils, mustacheCore) {
     var decodeHTML = typeof document !== 'undefined' && function () {
-            var el = document.createElement('div');
-            return function (html) {
-                if (html.indexOf('&') === -1) {
-                    return html.replace(/\r\n/g, '\n');
-                }
-                el.innerHTML = html;
-                return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
-            };
-        }();
+        var el = document.createElement('div');
+        return function (html) {
+            if (html.indexOf('&') === -1) {
+                return html.replace(/\r\n/g, '\n');
+            }
+            el.innerHTML = html;
+            return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
+        };
+    }();
     var HTMLSectionBuilder = function () {
         this.stack = [new HTMLSection()];
     };

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
@@ -16,10 +16,10 @@ steal('can-simple-dom@0.2.23#simple-dom/document/node', function (__can_simple_d
     var _node = __can_simple_dom_0_2_23_simple_dom_document_node;
     var _node2 = _interopRequireDefault(_node);
     var attrSpecial = {
-            'class': function _class(element, value) {
-                element._className = value;
-            }
-        };
+        'class': function _class(element, value) {
+            element._className = value;
+        }
+    };
     function Element(tagName, ownerDocument) {
         tagName = tagName.toUpperCase();
         this.nodeConstructor(1, tagName, null, ownerDocument);

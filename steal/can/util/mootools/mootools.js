@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#util/util*/
+/*can@2.3.9#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'mootools', 'can/event', 'can/util/fragment.js', 'can/util/deferred.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/inserted', function (can, attr) {
     can.trim = function (s) {
         return s ? s.trim() : s;
@@ -168,10 +168,10 @@ steal('can/util/can.js', 'can/util/attr', 'mootools', 'can/event', 'can/util/fra
         return this;
     };
     var optionsMap = {
-            type: 'method',
-            success: undefined,
-            error: undefined
-        };
+        type: 'method',
+        success: undefined,
+        error: undefined
+    };
     var updateDeferred = function (xhr, d) {
         for (var prop in xhr) {
             if (typeof d[prop] === 'function') {
@@ -253,12 +253,12 @@ steal('can/util/can.js', 'can/util/attr', 'mootools', 'can/event', 'can/util/fra
     };
     can.remove = function (wrapped) {
         var filtered = wrapped.filter(function (node) {
-                if (node.nodeType !== 1) {
-                    node.parentNode.removeChild(node);
-                } else {
-                    return true;
-                }
-            });
+            if (node.nodeType !== 1) {
+                node.parentNode.removeChild(node);
+            } else {
+                return true;
+            }
+        });
         filtered.destroy();
         return filtered;
     };

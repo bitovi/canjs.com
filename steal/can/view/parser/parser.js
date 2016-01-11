@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/parser/parser*/
+/*can@2.3.9#view/parser/parser*/
 steal(function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -206,17 +206,17 @@ steal(function () {
         var i = 0;
         var curIndex;
         var state = {
-                inDoubleCurly: false,
-                inName: false,
-                nameStart: undefined,
-                inValue: false,
-                valueStart: undefined,
-                inQuote: false,
-                attrStart: undefined,
-                lookingForName: true,
-                lookingForValue: false,
-                lookingForEq: false
-            };
+            inDoubleCurly: false,
+            inName: false,
+            nameStart: undefined,
+            inValue: false,
+            valueStart: undefined,
+            inQuote: false,
+            attrStart: undefined,
+            lookingForName: true,
+            lookingForValue: false,
+            lookingForEq: false
+        };
         while (i < rest.length) {
             curIndex = i;
             var cur = rest.charAt(i);

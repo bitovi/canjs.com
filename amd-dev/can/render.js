@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/render*/
+/*can@2.3.9#view/render*/
 define([
     'can/view',
     'can/elements',
@@ -27,8 +27,8 @@ define([
                 return '';
             }
             var hook = input.hookup && function (el, id) {
-                    input.hookup.call(input, el, id);
-                } || typeof input === 'function' && input;
+                input.hookup.call(input, el, id);
+            } || typeof input === 'function' && input;
             if (hook) {
                 if (tag) {
                     return '<' + tag + ' ' + can.view.hook(hook) + '></' + tag + '>';

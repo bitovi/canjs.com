@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/stache/stache*/
+/*can@2.3.9#view/stache/stache*/
 steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './text_section.js', './mustache_core.js', './mustache_helpers.js', './intermediate_and_imports.js', 'can/view/callbacks', 'can/view/bindings', function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     can.view.parser = parser;
@@ -32,7 +32,7 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
                 textContentOnly: null
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
-                    section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
+                    section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, copyState()));
                 } else if (mode === '/') {
                     section.endSection();
                     if (section instanceof HTMLSectionBuilder) {
@@ -56,11 +56,11 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
             }, copyState = function (overwrites) {
                 var lastElement = state.sectionElementStack[state.sectionElementStack.length - 1];
                 var cur = {
-                        tag: state.node && state.node.tag,
-                        attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
-                        textContentOnly: !!state.textContentOnly
-                    };
+                    tag: state.node && state.node.tag,
+                    attr: state.attr && state.attr.name,
+                    directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
+                    textContentOnly: !!state.textContentOnly
+                };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
                 if (!node.attributes) {
@@ -228,11 +228,11 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
         return section.compile();
     }
     var escMap = {
-            '\n': '\\n',
-            '\r': '\\r',
-            '\u2028': '\\u2028',
-            '\u2029': '\\u2029'
-        };
+        '\n': '\\n',
+        '\r': '\\r',
+        '\u2028': '\\u2028',
+        '\u2029': '\\u2029'
+    };
     var esc = function (string) {
         return ('' + string).replace(/["'\\\n\r\u2028\u2029]/g, function (character) {
             if ('\'"\\'.indexOf(character) >= 0) {
@@ -265,8 +265,8 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
     can.stache.async = function (source) {
         var iAi = getIntermediateAndImports(source);
         var importPromises = can.map(iAi.imports, function (moduleName) {
-                return can['import'](moduleName);
-            });
+            return can['import'](moduleName);
+        });
         return can.when.apply(can, importPromises).then(function () {
             return stache(iAi.intermediate);
         });

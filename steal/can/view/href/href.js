@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/href/href*/
+/*can@2.3.9#view/href/href*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/view/scope', function (can, expression) {
     var removeCurly = function (value) {
         if (value[0] === '{' && value[value.length - 1] === '}') {
@@ -18,8 +18,8 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/vi
         var attrInfo = expression.parse('tmp(' + removeCurly(el.getAttribute('can-href')) + ')', { baseMethodType: 'Call' });
         var getHash = attrInfo.hash(attrData.scope, null);
         var routeHref = can.compute(function () {
-                return can.route.url(getHash());
-            });
+            return can.route.url(getHash());
+        });
         el.setAttribute('href', routeHref());
         var handler = function (ev, newVal) {
             el.setAttribute('href', newVal);

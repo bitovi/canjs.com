@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
-/*can@2.3.8#view/stache/text_section*/
+/*can@2.3.9#view/stache/text_section*/
 var can = require('../../util/util.js');
 var live = require('../live/live.js');
 var utils = require('./utils.js');
@@ -38,8 +38,8 @@ can.extend(TextSectionBuilder.prototype, {
         var renderer = this.stack[0].compile();
         return function (scope, options) {
             var compute = can.compute(function () {
-                    return renderer(scope, options);
-                }, null, false);
+                return renderer(scope, options);
+            }, null, false);
             compute.computeInstance.bind('change', can.k);
             var value = compute();
             if (compute.computeInstance.hasDependencies) {

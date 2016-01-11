@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.8
+ * CanJS - 2.3.9
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 04 Jan 2016 19:08:12 GMT
+ * Mon, 11 Jan 2016 23:51:29 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.8#view/target/target*/
+/*can@2.3.9#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -105,33 +105,33 @@ define('can/view/target/target', [
             return clone.innerHTML === '<xyz></xyz>';
         }(), namespacesWork = typeof document !== 'undefined' && !!document.createElementNS, setAttribute = can.attr.setAttribute;
     var cloneNode = clonesWork ? function (el) {
-            return el.cloneNode(true);
-        } : function (node) {
-            var copy;
-            if (node.nodeType === 1) {
-                copy = document.createElement(node.nodeName);
-            } else if (node.nodeType === 3) {
-                copy = document.createTextNode(node.nodeValue);
-            } else if (node.nodeType === 8) {
-                copy = document.createComment(node.nodeValue);
-            } else if (node.nodeType === 11) {
-                copy = document.createDocumentFragment();
-            }
-            if (node.attributes) {
-                var attributes = can.makeArray(node.attributes);
-                can.each(attributes, function (node) {
-                    if (node && node.specified) {
-                        setAttribute(copy, node.nodeName, node.nodeValue);
-                    }
-                });
-            }
-            if (node.childNodes) {
-                can.each(node.childNodes, function (child) {
-                    copy.appendChild(cloneNode(child));
-                });
-            }
-            return copy;
-        };
+        return el.cloneNode(true);
+    } : function (node) {
+        var copy;
+        if (node.nodeType === 1) {
+            copy = document.createElement(node.nodeName);
+        } else if (node.nodeType === 3) {
+            copy = document.createTextNode(node.nodeValue);
+        } else if (node.nodeType === 8) {
+            copy = document.createComment(node.nodeValue);
+        } else if (node.nodeType === 11) {
+            copy = document.createDocumentFragment();
+        }
+        if (node.attributes) {
+            var attributes = can.makeArray(node.attributes);
+            can.each(attributes, function (node) {
+                if (node && node.specified) {
+                    setAttribute(copy, node.nodeName, node.nodeValue);
+                }
+            });
+        }
+        if (node.childNodes) {
+            can.each(node.childNodes, function (child) {
+                copy.appendChild(cloneNode(child));
+            });
+        }
+        return copy;
+    };
     function processNode(node, paths, location, document) {
         var callback, loc = location, nodeType = typeof node, el, p, i, len;
         var getCallback = function () {
@@ -248,7 +248,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.3.8#view/stache/mustache_core*/
+/*can@2.3.9#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -281,211 +281,216 @@ define('can/view/stache/mustache_core', [
             return txt;
         };
     var core = {
-            expression: expression,
-            makeEvaluator: function (scope, helperOptions, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
-                if (mode === '^') {
-                    var temp = truthyRenderer;
-                    truthyRenderer = falseyRenderer;
-                    falseyRenderer = temp;
+        expression: expression,
+        makeEvaluator: function (scope, helperOptions, nodeList, mode, exprData, truthyRenderer, falseyRenderer, stringOnly) {
+            if (mode === '^') {
+                var temp = truthyRenderer;
+                truthyRenderer = falseyRenderer;
+                falseyRenderer = temp;
+            }
+            var value, helperOptionArg;
+            if (exprData instanceof expression.Call) {
+                helperOptionArg = {
+                    fn: function () {
+                    },
+                    inverse: function () {
+                    },
+                    context: scope.attr('.'),
+                    scope: scope,
+                    nodeList: nodeList,
+                    exprData: exprData,
+                    helpersScope: helperOptions
+                };
+                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                value = exprData.value(scope, helperOptions, helperOptionArg);
+                if (exprData.isHelper) {
+                    return value;
                 }
-                var value, helperOptionArg;
-                if (exprData instanceof expression.Call) {
-                    helperOptionArg = {
-                        fn: function () {
-                        },
-                        inverse: function () {
-                        },
-                        context: scope.attr('.'),
-                        scope: scope,
-                        nodeList: nodeList,
-                        exprData: exprData,
-                        helpersScope: helperOptions
-                    };
-                    utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
-                    value = exprData.value(scope, helperOptions, helperOptionArg);
-                    if (exprData.isHelper) {
-                        return value;
-                    }
+            } else {
+                var readOptions = {
+                    isArgument: true,
+                    args: [
+                        scope.attr('.'),
+                        scope
+                    ],
+                    asCompute: true
+                };
+                var helperAndValue = exprData.helperAndValue(scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+                var helper = helperAndValue.helper;
+                value = helperAndValue.value;
+                if (helper) {
+                    return exprData.evaluator(helper, scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+                }
+            }
+            if (!mode) {
+                if (value && value.isComputed) {
+                    return value;
                 } else {
-                    var readOptions = {
-                            isArgument: true,
-                            args: [
-                                scope.attr('.'),
-                                scope
-                            ],
-                            asCompute: true
-                        };
-                    var helperAndValue = exprData.helperAndValue(scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
-                    var helper = helperAndValue.helper;
-                    value = helperAndValue.value;
-                    if (helper) {
-                        return exprData.evaluator(helper, scope, helperOptions, readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
-                    }
-                }
-                if (!mode) {
-                    if (value && value.isComputed) {
-                        return value;
-                    } else {
-                        return function () {
-                            return '' + (value != null ? value : '');
-                        };
-                    }
-                } else if (mode === '#' || mode === '^') {
-                    helperOptionArg = {
-                        fn: function () {
-                        },
-                        inverse: function () {
-                        }
-                    };
-                    utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
                     return function () {
-                        var finalValue;
-                        if (can.isFunction(value) && value.isComputed) {
-                            finalValue = value();
-                        } else {
-                            finalValue = value;
-                        }
-                        if (typeof finalValue === 'function') {
-                            return finalValue;
-                        } else if (utils.isArrayLike(finalValue)) {
-                            var isObserveList = utils.isObserveLike(finalValue);
-                            if (isObserveList ? finalValue.attr('length') : finalValue.length) {
-                                return (stringOnly ? getItemsStringContent : getItemsFragContent)(finalValue, isObserveList, helperOptionArg, helperOptions);
-                            } else {
-                                return helperOptionArg.inverse(scope, helperOptions);
-                            }
-                        } else {
-                            return finalValue ? helperOptionArg.fn(finalValue || scope, helperOptions) : helperOptionArg.inverse(scope, helperOptions);
-                        }
+                        return '' + (value != null ? value : '');
                     };
-                } else {
                 }
-            },
-            makeLiveBindingPartialRenderer: function (partialName, state) {
-                partialName = can.trim(partialName);
-                return function (scope, options, parentSectionNodeList) {
-                    var nodeList = [this];
-                    nodeList.expression = '>' + partialName;
-                    nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
-                    var partialFrag = can.compute(function () {
-                            var localPartialName = partialName;
-                            var partial = options.attr('partials.' + localPartialName), res;
-                            if (partial) {
-                                res = partial.render ? partial.render(scope, options) : partial(scope, options);
-                            } else {
-                                var scopePartialName = scope.read(localPartialName, { isArgument: true }).value;
-                                if (scopePartialName === null || !scopePartialName && localPartialName[0] === '*') {
-                                    return can.frag('');
-                                }
-                                if (scopePartialName) {
-                                    localPartialName = scopePartialName;
-                                }
-                                res = can.isFunction(localPartialName) ? localPartialName(scope, options) : can.view.render(localPartialName, scope, options);
-                            }
-                            return can.frag(res);
-                        });
-                    live.html(this, partialFrag, this.parentNode, nodeList);
-                };
-            },
-            makeStringBranchRenderer: function (mode, expressionString) {
-                var exprData = core.expression.parse(expressionString), fullExpression = mode + expressionString;
-                if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
-                    exprData = new expression.Helper(exprData, [], {});
-                }
-                return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
-                    var evaluator = scope.__cache[fullExpression];
-                    if (mode || !evaluator) {
-                        evaluator = makeEvaluator(scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
-                        if (!mode) {
-                            scope.__cache[fullExpression] = evaluator;
-                        }
+            } else if (mode === '#' || mode === '^') {
+                helperOptionArg = {
+                    fn: function () {
+                    },
+                    inverse: function () {
                     }
-                    var res = evaluator();
-                    return res == null ? '' : '' + res;
                 };
-            },
-            makeLiveBindingBranchRenderer: function (mode, expressionString, state) {
-                var exprData = core.expression.parse(expressionString);
-                if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
-                    exprData = new expression.Helper(exprData, [], {});
-                }
-                return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
-                    var nodeList = [this];
-                    nodeList.expression = expressionString;
-                    nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
-                    var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
-                    var gotCompute = evaluator.isComputed, compute;
-                    if (gotCompute) {
-                        compute = evaluator;
+                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                return function () {
+                    var finalValue;
+                    if (can.isFunction(value) && value.isComputed) {
+                        finalValue = value();
                     } else {
-                        compute = can.compute(evaluator, null, false);
+                        finalValue = value;
                     }
-                    compute.computeInstance.bind('change', can.k);
-                    var value = compute();
-                    if (typeof value === 'function') {
-                        can.__notObserve(value)(this);
-                    } else if (gotCompute || compute.computeInstance.hasDependencies) {
-                        if (state.attr) {
-                            live.simpleAttribute(this, state.attr, compute);
-                        } else if (state.tag) {
-                            live.attributes(this, compute);
-                        } else if (state.text && typeof value !== 'object') {
-                            live.text(this, compute, this.parentNode, nodeList);
+                    if (typeof finalValue === 'function') {
+                        return finalValue;
+                    } else if (utils.isArrayLike(finalValue)) {
+                        var isObserveList = utils.isObserveLike(finalValue);
+                        if (isObserveList ? finalValue.attr('length') : finalValue.length) {
+                            return (stringOnly ? getItemsStringContent : getItemsFragContent)(finalValue, isObserveList, helperOptionArg, helperOptions);
                         } else {
-                            live.html(this, compute, this.parentNode, nodeList);
+                            return helperOptionArg.inverse(scope, helperOptions);
                         }
                     } else {
-                        if (state.attr) {
-                            can.attr.set(this, state.attr, value);
-                        } else if (state.tag) {
-                            live.setAttributes(this, value);
-                        } else if (state.text && typeof value === 'string') {
-                            this.nodeValue = value;
-                        } else if (value != null) {
-                            elements.replace([this], can.frag(value, this.ownerDocument));
-                        }
+                        return finalValue ? helperOptionArg.fn(finalValue || scope, helperOptions) : helperOptionArg.inverse(scope, helperOptions);
                     }
-                    compute.computeInstance.unbind('change', can.k);
                 };
-            },
-            splitModeFromExpression: function (expression, state) {
-                expression = can.trim(expression);
-                var mode = expression.charAt(0);
-                if ('#/{&^>!'.indexOf(mode) >= 0) {
-                    expression = can.trim(expression.substr(1));
-                } else {
-                    mode = null;
-                }
-                if (mode === '{' && state.node) {
-                    mode = null;
-                }
-                return {
-                    mode: mode,
-                    expression: expression
-                };
-            },
-            cleanLineEndings: function (template) {
-                return template.replace(mustacheLineBreakRegExp, function (whole, returnBefore, spaceBefore, special, expression, spaceAfter, returnAfter, spaceLessSpecial, spaceLessExpression, matchIndex) {
-                    spaceAfter = spaceAfter || '';
-                    returnBefore = returnBefore || '';
-                    spaceBefore = spaceBefore || '';
-                    var modeAndExpression = splitModeFromExpression(expression || spaceLessExpression, {});
-                    if (spaceLessSpecial || '>{'.indexOf(modeAndExpression.mode) >= 0) {
-                        return whole;
-                    } else if ('^#!/'.indexOf(modeAndExpression.mode) >= 0) {
-                        return special + (matchIndex !== 0 && returnAfter.length ? returnBefore + '\n' : '');
+            } else {
+            }
+        },
+        makeLiveBindingPartialRenderer: function (partialName, state) {
+            partialName = can.trim(partialName);
+            return function (scope, options, parentSectionNodeList) {
+                var nodeList = [this];
+                nodeList.expression = '>' + partialName;
+                nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
+                var partialFrag = can.compute(function () {
+                    var localPartialName = partialName;
+                    var partial = options.attr('partials.' + localPartialName), renderer;
+                    if (partial) {
+                        renderer = function () {
+                            return partial.render ? partial.render(scope, options, nodeList) : partial(scope, options);
+                        };
                     } else {
-                        return spaceBefore + special + spaceAfter + (spaceBefore.length || matchIndex !== 0 ? returnBefore + '\n' : '');
+                        var scopePartialName = scope.read(localPartialName, { isArgument: true }).value;
+                        if (scopePartialName === null || !scopePartialName && localPartialName[0] === '*') {
+                            return can.frag('');
+                        }
+                        if (scopePartialName) {
+                            localPartialName = scopePartialName;
+                        }
+                        renderer = function () {
+                            return can.isFunction(localPartialName) ? localPartialName(scope, options, nodeList) : can.view.render(localPartialName, scope, options, nodeList);
+                        };
                     }
+                    var res = can.__notObserve(renderer)();
+                    return can.frag(res);
                 });
-            },
-            Options: utils.Options
-        };
+                live.html(this, partialFrag, this.parentNode, nodeList);
+            };
+        },
+        makeStringBranchRenderer: function (mode, expressionString) {
+            var exprData = core.expression.parse(expressionString), fullExpression = mode + expressionString;
+            if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
+                exprData = new expression.Helper(exprData, [], {});
+            }
+            return function branchRenderer(scope, options, truthyRenderer, falseyRenderer) {
+                var evaluator = scope.__cache[fullExpression];
+                if (mode || !evaluator) {
+                    evaluator = makeEvaluator(scope, options, null, mode, exprData, truthyRenderer, falseyRenderer, true);
+                    if (!mode) {
+                        scope.__cache[fullExpression] = evaluator;
+                    }
+                }
+                var res = evaluator();
+                return res == null ? '' : '' + res;
+            };
+        },
+        makeLiveBindingBranchRenderer: function (mode, expressionString, state) {
+            var exprData = core.expression.parse(expressionString);
+            if (!(exprData instanceof expression.Helper) && !(exprData instanceof expression.Call)) {
+                exprData = new expression.Helper(exprData, [], {});
+            }
+            return function branchRenderer(scope, options, parentSectionNodeList, truthyRenderer, falseyRenderer) {
+                var nodeList = [this];
+                nodeList.expression = expressionString;
+                nodeLists.register(nodeList, null, parentSectionNodeList || true, state.directlyNested);
+                var evaluator = makeEvaluator(scope, options, nodeList, mode, exprData, truthyRenderer, falseyRenderer, state.tag);
+                var gotCompute = evaluator.isComputed, compute;
+                if (gotCompute) {
+                    compute = evaluator;
+                } else {
+                    compute = can.compute(evaluator, null, false);
+                }
+                compute.computeInstance.bind('change', can.k);
+                var value = compute();
+                if (typeof value === 'function') {
+                    can.__notObserve(value)(this);
+                } else if (gotCompute || compute.computeInstance.hasDependencies) {
+                    if (state.attr) {
+                        live.simpleAttribute(this, state.attr, compute);
+                    } else if (state.tag) {
+                        live.attributes(this, compute);
+                    } else if (state.text && typeof value !== 'object') {
+                        live.text(this, compute, this.parentNode, nodeList);
+                    } else {
+                        live.html(this, compute, this.parentNode, nodeList);
+                    }
+                } else {
+                    if (state.attr) {
+                        can.attr.set(this, state.attr, value);
+                    } else if (state.tag) {
+                        live.setAttributes(this, value);
+                    } else if (state.text && typeof value === 'string') {
+                        this.nodeValue = value;
+                    } else if (value != null) {
+                        elements.replace([this], can.frag(value, this.ownerDocument));
+                    }
+                }
+                compute.computeInstance.unbind('change', can.k);
+            };
+        },
+        splitModeFromExpression: function (expression, state) {
+            expression = can.trim(expression);
+            var mode = expression.charAt(0);
+            if ('#/{&^>!'.indexOf(mode) >= 0) {
+                expression = can.trim(expression.substr(1));
+            } else {
+                mode = null;
+            }
+            if (mode === '{' && state.node) {
+                mode = null;
+            }
+            return {
+                mode: mode,
+                expression: expression
+            };
+        },
+        cleanLineEndings: function (template) {
+            return template.replace(mustacheLineBreakRegExp, function (whole, returnBefore, spaceBefore, special, expression, spaceAfter, returnAfter, spaceLessSpecial, spaceLessExpression, matchIndex) {
+                spaceAfter = spaceAfter || '';
+                returnBefore = returnBefore || '';
+                spaceBefore = spaceBefore || '';
+                var modeAndExpression = splitModeFromExpression(expression || spaceLessExpression, {});
+                if (spaceLessSpecial || '>{'.indexOf(modeAndExpression.mode) >= 0) {
+                    return whole;
+                } else if ('^#!/'.indexOf(modeAndExpression.mode) >= 0) {
+                    return special + (matchIndex !== 0 && returnAfter.length ? returnBefore + '\n' : '');
+                } else {
+                    return spaceBefore + special + spaceAfter + (spaceBefore.length || matchIndex !== 0 ? returnBefore + '\n' : '');
+                }
+            });
+        },
+        Options: utils.Options
+    };
     var makeEvaluator = core.makeEvaluator, splitModeFromExpression = core.splitModeFromExpression;
     can.view.mustacheCore = core;
     return core;
 });
-/*can@2.3.8#view/stache/html_section*/
+/*can@2.3.9#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -493,15 +498,15 @@ define('can/view/stache/html_section', [
     'can/view/stache/mustache_core'
 ], function (can, target, utils, mustacheCore) {
     var decodeHTML = typeof document !== 'undefined' && function () {
-            var el = document.createElement('div');
-            return function (html) {
-                if (html.indexOf('&') === -1) {
-                    return html.replace(/\r\n/g, '\n');
-                }
-                el.innerHTML = html;
-                return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
-            };
-        }();
+        var el = document.createElement('div');
+        return function (html) {
+            if (html.indexOf('&') === -1) {
+                return html.replace(/\r\n/g, '\n');
+            }
+            el.innerHTML = html;
+            return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
+        };
+    }();
     var HTMLSectionBuilder = function () {
         this.stack = [new HTMLSection()];
     };
@@ -606,7 +611,7 @@ define('can/view/stache/html_section', [
     HTMLSectionBuilder.HTMLSection = HTMLSection;
     return HTMLSectionBuilder;
 });
-/*can@2.3.8#view/stache/live_attr*/
+/*can@2.3.9#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -652,7 +657,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.3.8#view/stache/text_section*/
+/*can@2.3.9#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -686,8 +691,8 @@ define('can/view/stache/text_section', [
             var renderer = this.stack[0].compile();
             return function (scope, options) {
                 var compute = can.compute(function () {
-                        return renderer(scope, options);
-                    }, null, false);
+                    return renderer(scope, options);
+                }, null, false);
                 compute.computeInstance.bind('change', can.k);
                 var value = compute();
                 if (compute.computeInstance.hasDependencies) {
@@ -746,7 +751,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.3.8#view/import/import*/
+/*can@2.3.9#view/import/import*/
 define('can/view/import/import', [
     'can/util/util',
     'can/view/callbacks/callbacks'
@@ -788,7 +793,7 @@ define('can/view/import/import', [
         }
     });
 });
-/*can@2.3.8#view/stache/intermediate_and_imports*/
+/*can@2.3.9#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser',
@@ -798,53 +803,53 @@ define('can/view/stache/intermediate_and_imports', [
         var template = mustacheCore.cleanLineEndings(source);
         var imports = [], dynamicImports = [], ases = {}, inImport = false, inFrom = false, inAs = false, isUnary = false, currentAs = '', currentFrom = '';
         var intermediate = parser(template, {
-                start: function (tagName, unary) {
-                    isUnary = unary;
-                    if (tagName === 'can-import') {
-                        inImport = true;
-                    } else if (inImport) {
-                        inImport = false;
+            start: function (tagName, unary) {
+                isUnary = unary;
+                if (tagName === 'can-import') {
+                    inImport = true;
+                } else if (inImport) {
+                    inImport = false;
+                }
+            },
+            attrStart: function (attrName) {
+                if (attrName === 'from') {
+                    inFrom = true;
+                } else if (attrName === 'as' || attrName === 'export-as') {
+                    inAs = true;
+                }
+            },
+            attrEnd: function (attrName) {
+                if (attrName === 'from') {
+                    inFrom = false;
+                } else if (attrName === 'as' || attrName === 'export-as') {
+                    inAs = false;
+                }
+            },
+            attrValue: function (value) {
+                if (inFrom && inImport) {
+                    imports.push(value);
+                    if (!isUnary) {
+                        dynamicImports.push(value);
                     }
-                },
-                attrStart: function (attrName) {
-                    if (attrName === 'from') {
-                        inFrom = true;
-                    } else if (attrName === 'as' || attrName === 'export-as') {
-                        inAs = true;
-                    }
-                },
-                attrEnd: function (attrName) {
-                    if (attrName === 'from') {
-                        inFrom = false;
-                    } else if (attrName === 'as' || attrName === 'export-as') {
-                        inAs = false;
-                    }
-                },
-                attrValue: function (value) {
-                    if (inFrom && inImport) {
-                        imports.push(value);
-                        if (!isUnary) {
-                            dynamicImports.push(value);
-                        }
-                        currentFrom = value;
-                    } else if (inAs && inImport) {
-                        currentAs = value;
-                    }
-                },
-                end: function (tagName) {
-                    if (tagName === 'can-import') {
-                        if (currentAs) {
-                            ases[currentAs] = currentFrom;
-                            currentAs = '';
-                        }
-                    }
-                },
-                close: function (tagName) {
-                    if (tagName === 'can-import') {
-                        imports.pop();
+                    currentFrom = value;
+                } else if (inAs && inImport) {
+                    currentAs = value;
+                }
+            },
+            end: function (tagName) {
+                if (tagName === 'can-import') {
+                    if (currentAs) {
+                        ases[currentAs] = currentFrom;
+                        currentAs = '';
                     }
                 }
-            }, true);
+            },
+            close: function (tagName) {
+                if (tagName === 'can-import') {
+                    imports.pop();
+                }
+            }
+        }, true);
         return {
             intermediate: intermediate,
             imports: imports,
@@ -854,7 +859,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.3.8#view/stache/stache*/
+/*can@2.3.9#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -891,7 +896,7 @@ define('can/view/stache/stache', [
                 textContentOnly: null
             }, makeRendererAndUpdateSection = function (section, mode, stache) {
                 if (mode === '>') {
-                    section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
+                    section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, copyState()));
                 } else if (mode === '/') {
                     section.endSection();
                     if (section instanceof HTMLSectionBuilder) {
@@ -915,11 +920,11 @@ define('can/view/stache/stache', [
             }, copyState = function (overwrites) {
                 var lastElement = state.sectionElementStack[state.sectionElementStack.length - 1];
                 var cur = {
-                        tag: state.node && state.node.tag,
-                        attr: state.attr && state.attr.name,
-                        directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
-                        textContentOnly: !!state.textContentOnly
-                    };
+                    tag: state.node && state.node.tag,
+                    attr: state.attr && state.attr.name,
+                    directlyNested: state.sectionElementStack.length ? lastElement === 'section' || lastElement === 'custom' : true,
+                    textContentOnly: !!state.textContentOnly
+                };
                 return overwrites ? can.simpleExtend(cur, overwrites) : cur;
             }, addAttributesCallback = function (node, callback) {
                 if (!node.attributes) {
@@ -1087,11 +1092,11 @@ define('can/view/stache/stache', [
         return section.compile();
     }
     var escMap = {
-            '\n': '\\n',
-            '\r': '\\r',
-            '\u2028': '\\u2028',
-            '\u2029': '\\u2029'
-        };
+        '\n': '\\n',
+        '\r': '\\r',
+        '\u2028': '\\u2028',
+        '\u2029': '\\u2029'
+    };
     var esc = function (string) {
         return ('' + string).replace(/["'\\\n\r\u2028\u2029]/g, function (character) {
             if ('\'"\\'.indexOf(character) >= 0) {
@@ -1124,15 +1129,15 @@ define('can/view/stache/stache', [
     can.stache.async = function (source) {
         var iAi = getIntermediateAndImports(source);
         var importPromises = can.map(iAi.imports, function (moduleName) {
-                return can['import'](moduleName);
-            });
+            return can['import'](moduleName);
+        });
         return can.when.apply(can, importPromises).then(function () {
             return stache(iAi.intermediate);
         });
     };
     return stache;
 });
-/*can@2.3.8#view/stache/add_bundles*/
+/*can@2.3.9#view/stache/add_bundles*/
 define('can/view/stache/add_bundles', [
     '@loader',
     'can/util/can'
@@ -1149,16 +1154,16 @@ define('can/view/stache/add_bundles', [
         var bundleNormalizes = [];
         can.each(dynamicImports, function (moduleName) {
             var bundleNormalize = loader.normalize(moduleName, parentName).then(function (moduleName) {
-                    if (!~bundle.indexOf(moduleName)) {
-                        bundle.push(moduleName);
-                    }
-                });
+                if (!~bundle.indexOf(moduleName)) {
+                    bundle.push(moduleName);
+                }
+            });
             bundleNormalizes.push(bundleNormalize);
         });
         return Promise.all(bundleNormalizes);
     };
 });
-/*can@2.3.8#view/stache/system*/
+/*can@2.3.9#view/stache/system*/
 'format steal';
 define('can/view/stache/system', [
     'can/view/stache/stache',
@@ -1177,7 +1182,7 @@ define('can/view/stache/system', [
     function template(imports, intermediate) {
         imports = JSON.stringify(imports);
         intermediate = JSON.stringify(intermediate);
-        return 'define(' + imports + ',function(module, stache, mustacheCore){\n' + '\tvar renderer = stache(' + intermediate + ');\n' + '\treturn function(scope, options){\n' + '\t\tvar moduleOptions = { module: module };\n' + '\t\tif(!(options instanceof mustacheCore.Options)) {\n' + '\t\t\toptions = new mustacheCore.Options(options || {});\n' + '\t\t}\n' + '\t\treturn renderer(scope, options.add(moduleOptions));\n' + '\t};\n' + '});';
+        return 'define(' + imports + ',function(module, stache, mustacheCore){\n' + '\tvar renderer = stache(' + intermediate + ');\n' + '\treturn function(scope, options, nodeList){\n' + '\t\tvar moduleOptions = { module: module };\n' + '\t\tif(!(options instanceof mustacheCore.Options)) {\n' + '\t\t\toptions = new mustacheCore.Options(options || {});\n' + '\t\t}\n' + '\t\treturn renderer(scope, options.add(moduleOptions), nodeList);\n' + '\t};\n' + '});';
     }
     return { translate: translate };
 });
