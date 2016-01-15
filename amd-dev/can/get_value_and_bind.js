@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.9#compute/get_value_and_bind*/
+/*can@2.3.10#compute/get_value_and_bind*/
 define(['can/util/library'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -70,9 +70,11 @@ define(['can/util/library'], function (can) {
             }
         },
         updateCompute: function (batchNum) {
-            var oldValue = this.value;
-            this.getValueAndBind();
-            this.compute.updater(this.value, oldValue, batchNum);
+            if (this.bound) {
+                var oldValue = this.value;
+                this.getValueAndBind();
+                this.compute.updater(this.value, oldValue, batchNum);
+            }
         },
         getValueAndBind: function () {
             this.bound = true;

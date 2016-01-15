@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.9#view/render*/
+/*can@2.3.10#view/render*/
 steal('can/view', './elements', 'can/view/live', 'can/util/string', function (can, elements, live) {
     var pendingHookups = [], tagChildren = function (tagName) {
             var newTag = elements.tagMap[tagName] || 'span';

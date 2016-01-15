@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.9#map/lazy/lazy*/
+/*can@2.3.10#map/lazy/lazy*/
 steal('can/util', './bubble.js', '../map_helpers.js', 'can/map', 'can/list', './nested_reference.js', function (can, bubble, mapHelpers) {
     can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         setup: function (obj) {

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.9#map/setter/setter*/
+/*can@2.3.10#map/setter/setter*/
 define('can/map/setter/setter', [
     'can/util/util',
     'can/map/map'

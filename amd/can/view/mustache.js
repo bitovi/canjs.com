@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.9#view/mustache/mustache*/
+/*can@2.3.10#view/mustache/mustache*/
 define([
     'can/util/library',
     'can/view/scope',
@@ -144,7 +144,7 @@ define([
                                 end: false
                             };
                         content = can.trim(content);
-                        if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
+                        if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
                             mode = mode[0];
                             switch (mode) {
                             case '#':

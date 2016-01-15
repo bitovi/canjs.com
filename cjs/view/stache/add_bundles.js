@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.9
+ * CanJS - 2.3.10
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 11 Jan 2016 23:51:29 GMT
+ * Fri, 15 Jan 2016 00:42:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.9#view/stache/add_bundles*/
+/*can@2.3.10#view/stache/add_bundles*/
 var loader = require('@loader/');
 var can = require('../../util/can.js');
 module.exports = function (dynamicImports, parentName) {
