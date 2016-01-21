@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.10#util/function/function*/
+/*can@2.3.11#util/function/function*/
 define('can/util/function/function', ['can/util/util'], function (can) {
     can.debounce = function (fn, time, context) {
         var timeout;

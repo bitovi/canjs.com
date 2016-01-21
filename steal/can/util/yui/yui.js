@@ -1,19 +1,19 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#util/util*/
+/*can@2.3.11#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, YUI) {
     YUI = YUI || window.YUI;
     YUI.add('can-modifications', function (Y, NAME) {
         var addHTML = Y.DOM.addHTML;
         Y.DOM.addHTML = function (node, content, where) {
             if (typeof content === 'string' || typeof content === 'number') {
-                content = can.buildFragment(content);
+                content = can.buildFragment(content, node.ownerDocument || node.getDOMNode().ownerDocument);
             }
             var elems;
             if (content.nodeType === 11) {
@@ -109,7 +109,7 @@ steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment
     can.append = function (wrapped, html) {
         wrapped.each(function (node) {
             if (typeof html === 'string') {
-                html = can.buildFragment(html, node);
+                html = can.buildFragment(html, node.getDOMNode().ownerDocument);
             }
             node.append(html);
         });

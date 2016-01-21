@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#util/batch/batch*/
+/*can@2.3.11#util/batch/batch*/
 define(['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
@@ -73,10 +73,20 @@ define(['can/util/can'], function (can) {
                             args
                         ]
                     ]);
+                } else if (event.batchNum) {
+                    can.dispatch.call(item, event, args);
+                } else if (batches.length) {
+                    can.batch.start();
+                    event.batchNum = collectingBatch.number;
+                    collectingBatch.events.push([
+                        item,
+                        [
+                            event,
+                            args
+                        ]
+                    ]);
+                    can.batch.stop();
                 } else {
-                    if (dispatchingBatch) {
-                        event.batchNum = dispatchingBatch.number;
-                    }
                     can.dispatch.call(item, event, args);
                 }
             }
@@ -84,7 +94,15 @@ define(['can/util/can'], function (can) {
         afterPreviousEvents: function (handler) {
             var batch = can.last(batches);
             if (batch) {
-                batch.callbacks.push(handler);
+                var obj = {};
+                can.bind.call(obj, 'ready', handler);
+                batch.events.push([
+                    obj,
+                    [
+                        { type: 'ready' },
+                        []
+                    ]
+                ]);
             } else {
                 handler({});
             }

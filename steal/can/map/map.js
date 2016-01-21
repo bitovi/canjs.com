@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#map/map*/
+/*can@2.3.11#map/map*/
 steal('can/util', 'can/util/bind', './bubble.js', './map_helpers.js', 'can/construct', 'can/util/batch', function (can, bind, bubble, mapHelpers) {
     var Map = can.Map = can.Construct.extend({
         setup: function () {

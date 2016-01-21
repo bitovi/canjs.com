@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#view/import/import*/
+/*can@2.3.11#view/import/import*/
 steal('can/util', 'can/view/callbacks', function (can) {
     can.view.tag('can-import', function (el, tagData) {
         var $el = can.$(el);

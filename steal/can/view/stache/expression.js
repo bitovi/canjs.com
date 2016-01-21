@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#view/stache/expression*/
+/*can@2.3.11#view/stache/expression*/
 steal('can/util', './utils', './mustache_helpers', 'can/view/scope', function (can, utils, mustacheHelpers, Scope) {
     var getKeyComputeData = function (key, scope, readOptions) {
             var data = scope.computeData(key, readOptions);

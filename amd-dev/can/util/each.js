@@ -1,21 +1,20 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#util/array/each*/
-define(['can/util/can'], function (can) {
-    var isArrayLike = function (obj) {
-        var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
-        return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
-    };
+/*can@2.3.11#util/array/each*/
+define([
+    'can/util/can',
+    'can/util/isArrayLike'
+], function (can) {
     can.each = function (elements, callback, context) {
         var i = 0, key, len, item;
         if (elements) {
-            if (isArrayLike(elements)) {
+            if (can.isArrayLike(elements)) {
                 if (can.List && elements instanceof can.List) {
                     for (len = elements.attr('length'); i < len; i++) {
                         item = elements.attr(i);

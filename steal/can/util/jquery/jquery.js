@@ -1,13 +1,13 @@
 /*!
- * CanJS - 2.3.10
+ * CanJS - 2.3.11
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 15 Jan 2016 00:42:09 GMT
+ * Thu, 21 Jan 2016 23:41:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.10#util/jquery/jquery*/
-steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/array/each.js', 'can/util/inserted', function ($, can, attr, event) {
+/*can@2.3.11#util/jquery/jquery*/
+steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/inserted', function ($, can, attr, event) {
     var isBindableElement = function (node) {
         return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window || node.addEventListener;
     };
@@ -39,15 +39,7 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/array
         event: can.event,
         addEvent: can.addEvent,
         removeEvent: can.removeEvent,
-        buildFragment: function (elems, context) {
-            var ret;
-            elems = [elems];
-            context = context || document;
-            context = !context.nodeType && context[0] || context;
-            context = context.ownerDocument || context;
-            ret = $.buildFragment(elems, context);
-            return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
-        },
+        buildFragment: can.buildFragment,
         $: $,
         each: can.each,
         bind: function (ev, cb) {
@@ -128,27 +120,72 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/array
         return oldDomManip.apply(this, arguments);
     };
     $(document.createElement('div')).append(document.createElement('div'));
-    $.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
-        return oldDomManip.call(this, args, table, function (elem) {
-            var elems;
-            if (elem.nodeType === 11) {
-                elems = can.makeArray(can.childNodes(elem));
+    var getChildNodes = function (node) {
+        var childNodes = node.childNodes;
+        if ('length' in childNodes) {
+            return can.makeArray(childNodes);
+        } else {
+            var cur = node.firstChild;
+            var nodes = [];
+            while (cur) {
+                nodes.push(cur);
+                cur = cur.nextSibling;
             }
-            var ret = callback.apply(this, arguments);
-            can.inserted(elems ? elems : [elem]);
-            return ret;
-        });
-    } : function (args, callback) {
-        return oldDomManip.call(this, args, function (elem) {
-            var elems;
-            if (elem.nodeType === 11) {
-                elems = can.makeArray(can.childNodes(elem));
-            }
-            var ret = callback.apply(this, arguments);
-            can.inserted(elems ? elems : [elem]);
-            return ret;
-        });
+            return nodes;
+        }
     };
+    if (cbIndex === undefined) {
+        $.fn.domManip = oldDomManip;
+        can.each([
+            'after',
+            'prepend',
+            'before',
+            'append',
+            'replaceWith'
+        ], function (name) {
+            var original = $.fn[name];
+            $.fn[name] = function () {
+                var elems, args = can.makeArray(arguments);
+                if (args[0] != null) {
+                    if (typeof args[0] === 'string') {
+                        args[0] = can.buildFragment(args[0]);
+                    }
+                    if (args[0].nodeType === 11) {
+                        elems = getChildNodes(args[0]);
+                    } else if (can.isArrayLike(args[0])) {
+                        elems = can.makeArray(args[0]);
+                    } else {
+                        elems = [args[0]];
+                    }
+                }
+                var ret = original.apply(this, args);
+                can.inserted(elems);
+                return ret;
+            };
+        });
+    } else {
+        $.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
+            return oldDomManip.call(this, args, table, function (elem) {
+                var elems;
+                if (elem.nodeType === 11) {
+                    elems = can.makeArray(can.childNodes(elem));
+                }
+                var ret = callback.apply(this, arguments);
+                can.inserted(elems ? elems : [elem]);
+                return ret;
+            });
+        } : function (args, callback) {
+            return oldDomManip.call(this, args, function (elem) {
+                var elems;
+                if (elem.nodeType === 11) {
+                    elems = can.makeArray(can.childNodes(elem));
+                }
+                var ret = callback.apply(this, arguments);
+                can.inserted(elems ? elems : [elem]);
+                return ret;
+            });
+        };
+    }
     var oldAttr = $.attr;
     $.attr = function (el, attrName) {
         if (can.isDOM(el) && can.attr.MutationObserver) {
@@ -208,19 +245,6 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', 'can/event', 'can/util/array
             }
         }
     };
-    (function () {
-        var text = '<-\n>', frag = can.buildFragment(text, document);
-        if (frag.firstChild && text !== frag.firstChild.nodeValue) {
-            var oldBuildFragment = can.buildFragment;
-            can.buildFragment = function (content, context) {
-                var res = oldBuildFragment(content, context);
-                if (res.childNodes.length === 1 && res.childNodes.item(0).nodeType === 3) {
-                    res.childNodes.item(0).nodeValue = content;
-                }
-                return res;
-            };
-        }
-    }());
     $.event.special.inserted = {};
     $.event.special.removed = {};
     return can;
