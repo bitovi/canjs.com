@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.11#util/tests/tests*/
+/*can@2.3.13#util/tests/tests*/
 define('can/util/tests/tests', [
     'can/util/string/string',
     'can/util/inserted/inserted',

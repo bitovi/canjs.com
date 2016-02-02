@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.23#simple-dom/html-serializer*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/html-serializer*/
 steal('', function () {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
@@ -88,16 +88,15 @@ steal('', function () {
         }
         next = node.firstChild;
         if (next) {
-            buffer += this.serialize(next);
-        } else if (node.textContent) {
+            while (next) {
+                buffer += this.serialize(next);
+                next = next.nextSibling;
+            }
+        } else if (node.nodeType === 1 && node.textContent) {
             buffer += node.textContent;
         }
         if (node.nodeType === 1 && !this.isVoid(node)) {
             buffer += this.closeTag(node);
-        }
-        next = node.nextSibling;
-        if (next) {
-            buffer += this.serialize(next);
         }
         return buffer;
     };

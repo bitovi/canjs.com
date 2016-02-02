@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#util/object/object*/
+/*can@2.3.13#util/object/object*/
 var can = require('../util.js');
 var isArray = can.isArray;
 can.Object = {};

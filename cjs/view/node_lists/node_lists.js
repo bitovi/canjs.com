@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/node_lists/node_lists*/
+/*can@2.3.13#view/node_lists/node_lists*/
 var can = require('../../util/util.js');
 require('../elements.js');
 var canExpando = true;
@@ -146,6 +146,7 @@ var nodeLists = {
         can.cid(nodeList);
         nodeList.unregistered = unregistered;
         nodeList.parentList = parent;
+        nodeList.nesting = parent && typeof parent.nesting !== 'undefined' ? parent.nesting + 1 : 0;
         if (parent) {
             nodeList.deepChildren = [];
             nodeList.newDeepChildren = [];

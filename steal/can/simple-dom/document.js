@@ -1,29 +1,29 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.23#simple-dom/document*/
-steal('can-simple-dom@0.2.23#simple-dom/document/node', 'can-simple-dom@0.2.23#simple-dom/document/element', 'can-simple-dom@0.2.23#simple-dom/document/text', 'can-simple-dom@0.2.23#simple-dom/document/comment', 'can-simple-dom@0.2.23#simple-dom/document/document-fragment', 'can-simple-dom@0.2.23#simple-dom/document/anchor-element', function (__can_simple_dom_0_2_23_simple_dom_document_node, __can_simple_dom_0_2_23_simple_dom_document_element, __can_simple_dom_0_2_23_simple_dom_document_text, __can_simple_dom_0_2_23_simple_dom_document_comment, __can_simple_dom_0_2_23_simple_dom_document_document_fragment, __can_simple_dom_0_2_23_simple_dom_document_anchor_element) {
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document*/
+steal('can-simple-dom@0.3.0-pre.2#simple-dom/document/node', 'can-simple-dom@0.3.0-pre.2#simple-dom/document/element', 'can-simple-dom@0.3.0-pre.2#simple-dom/document/text', 'can-simple-dom@0.3.0-pre.2#simple-dom/document/comment', 'can-simple-dom@0.3.0-pre.2#simple-dom/document/document-fragment', 'can-simple-dom@0.3.0-pre.2#simple-dom/document/anchor-element', function (__can_simple_dom_0_3_0_pre_2_simple_dom_document_node, __can_simple_dom_0_3_0_pre_2_simple_dom_document_element, __can_simple_dom_0_3_0_pre_2_simple_dom_document_text, __can_simple_dom_0_3_0_pre_2_simple_dom_document_comment, __can_simple_dom_0_3_0_pre_2_simple_dom_document_document_fragment, __can_simple_dom_0_3_0_pre_2_simple_dom_document_anchor_element) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
-    var _documentNode = __can_simple_dom_0_2_23_simple_dom_document_node;
+    var _documentNode = __can_simple_dom_0_3_0_pre_2_simple_dom_document_node;
     var _documentNode2 = _interopRequireDefault(_documentNode);
-    var _documentElement = __can_simple_dom_0_2_23_simple_dom_document_element;
+    var _documentElement = __can_simple_dom_0_3_0_pre_2_simple_dom_document_element;
     var _documentElement2 = _interopRequireDefault(_documentElement);
-    var _documentText = __can_simple_dom_0_2_23_simple_dom_document_text;
+    var _documentText = __can_simple_dom_0_3_0_pre_2_simple_dom_document_text;
     var _documentText2 = _interopRequireDefault(_documentText);
-    var _documentComment = __can_simple_dom_0_2_23_simple_dom_document_comment;
+    var _documentComment = __can_simple_dom_0_3_0_pre_2_simple_dom_document_comment;
     var _documentComment2 = _interopRequireDefault(_documentComment);
-    var _documentDocumentFragment = __can_simple_dom_0_2_23_simple_dom_document_document_fragment;
+    var _documentDocumentFragment = __can_simple_dom_0_3_0_pre_2_simple_dom_document_document_fragment;
     var _documentDocumentFragment2 = _interopRequireDefault(_documentDocumentFragment);
-    var _documentAnchorElement = __can_simple_dom_0_2_23_simple_dom_document_anchor_element;
+    var _documentAnchorElement = __can_simple_dom_0_3_0_pre_2_simple_dom_document_anchor_element;
     var _documentAnchorElement2 = _interopRequireDefault(_documentAnchorElement);
     function Document() {
         this.nodeConstructor(9, '#document', null, this);
@@ -31,6 +31,28 @@ steal('can-simple-dom@0.2.23#simple-dom/document/node', 'can-simple-dom@0.2.23#s
         this.body = new _documentElement2['default']('body', this);
         this.documentElement.appendChild(this.body);
         this.appendChild(this.documentElement);
+        var self = this;
+        this.implementation = {
+            createHTMLDocument: function createHTMLDocument(content) {
+                var document = new Document();
+                var frag = self.__parser.parse(content);
+                var body = _documentElement2['default'].prototype.getElementsByTagName.call(frag, 'body')[0];
+                var head = _documentElement2['default'].prototype.getElementsByTagName.call(frag, 'head')[0];
+                if (!body && !head) {
+                    document.body.appendChild(frag);
+                } else {
+                    if (body) {
+                        document.documentElement.replaceChild(body, document.body);
+                    }
+                    if (head) {
+                        document.documentElement.replaceChild(head, document.head);
+                    }
+                    document.documentElement.appendChild(frag);
+                }
+                document.__addSerializerAndParser(self.__serializer, self.__parser);
+                return document;
+            }
+        };
     }
     Document.prototype = Object.create(_documentNode2['default'].prototype);
     Document.prototype.constructor = Document;
@@ -69,6 +91,10 @@ steal('can-simple-dom@0.2.23#simple-dom/document/node', 'can-simple-dom@0.2.23#s
     };
     Document.prototype.getElementById = function (id) {
         return _documentElement2['default'].prototype.getElementById.apply(this.documentElement, arguments);
+    };
+    Document.prototype.__addSerializerAndParser = function (serializer, parser) {
+        this.__parser = parser;
+        this.__serializer = serializer;
     };
     if (Object.defineProperty) {
         Object.defineProperty(Document.prototype, 'currentScript', {

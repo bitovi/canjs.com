@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#compute/proto_compute*/
+/*can@2.3.13#compute/proto_compute*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -39,16 +39,19 @@ define([
             this._setupSimpleValue(args[0]);
         }
         this._args = args;
+        this._primaryDepth = 0;
         this.isComputed = true;
     };
     can.simpleExtend(can.Compute.prototype, {
+        setPrimaryDepth: function (depth) {
+            this._primaryDepth = depth;
+        },
         _setupGetterSetterFn: function (getterSetter, context, eventName) {
             this._set = context ? can.proxy(getterSetter, context) : getterSetter;
             this._get = context ? can.proxy(getterSetter, context) : getterSetter;
             this._canObserve = eventName === false ? false : true;
             var handlers = setupComputeHandlers(this, getterSetter, context || this);
-            this._on = handlers.on;
-            this._off = handlers.off;
+            can.simpleExtend(this, handlers);
         },
         _setupProperty: function (target, propertyName, eventName) {
             var isObserve = can.isMapLike(target), self = this, handler;
@@ -134,8 +137,7 @@ define([
                     return res !== undefined ? res : this.value;
                 }, this);
             }
-            this._on = bindings.on;
-            this._off = bindings.off;
+            can.simpleExtend(this, bindings);
         },
         _setupSimpleValue: function (initialValue) {
             this.value = initialValue;
@@ -225,13 +227,16 @@ define([
     var setupComputeHandlers = function (compute, func, context) {
         var readInfo = new ObservedInfo(func, context, compute);
         return {
-            on: function () {
+            _on: function () {
                 readInfo.getValueAndBind();
                 compute.value = readInfo.value;
                 compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
             },
-            off: function () {
+            _off: function () {
                 readInfo.teardown();
+            },
+            getDepth: function () {
+                return readInfo.getDepth();
             }
         };
     };

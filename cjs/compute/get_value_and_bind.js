@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#compute/get_value_and_bind*/
+/*can@2.3.13#compute/get_value_and_bind*/
 var can = require('../util/util.js');
 function ObservedInfo(func, context, compute) {
     this.newObserved = {};
@@ -24,6 +24,9 @@ function ObservedInfo(func, context, compute) {
     this.setReady = can.proxy(this._setReady, this);
 }
 can.simpleExtend(ObservedInfo.prototype, {
+    getPrimaryDepth: function () {
+        return this.compute._primaryDepth;
+    },
     _setReady: function () {
         this.ready = true;
     },
@@ -114,30 +117,44 @@ can.simpleExtend(ObservedInfo.prototype, {
         this.newObserved = {};
     }
 });
-var updateOrder = [], curDepth = Infinity, maxDepth = 0;
+var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0;
 ObservedInfo.registerUpdate = function (observeInfo, batchNum) {
     var depth = observeInfo.getDepth() - 1;
-    curDepth = Math.min(depth, curDepth);
-    maxDepth = Math.max(maxDepth, depth);
-    var objs = updateOrder[depth];
-    if (!objs) {
-        objs = updateOrder[depth] = [];
-    }
+    var primaryDepth = observeInfo.getPrimaryDepth();
+    curPrimaryDepth = Math.min(primaryDepth, curPrimaryDepth);
+    maxPrimaryDepth = Math.max(primaryDepth, maxPrimaryDepth);
+    var primary = updateOrder[primaryDepth] || (updateOrder[primaryDepth] = {
+        observeInfos: [],
+        current: Infinity,
+        max: 0
+    });
+    var objs = primary.observeInfos[depth] || (primary.observeInfos[depth] = []);
     objs.push(observeInfo);
+    primary.current = Math.min(depth, primary.current);
+    primary.max = Math.max(depth, primary.max);
 };
 ObservedInfo.batchEnd = function (batchNum) {
     var cur;
-    while (curDepth <= maxDepth) {
-        var last = updateOrder[curDepth];
-        if (last && (cur = last.pop())) {
-            cur.updateCompute(batchNum);
+    while (true) {
+        if (curPrimaryDepth <= maxPrimaryDepth) {
+            var primary = updateOrder[curPrimaryDepth];
+            if (primary && primary.current <= primary.max) {
+                var last = primary.observeInfos[primary.current];
+                if (last && (cur = last.pop())) {
+                    cur.updateCompute(batchNum);
+                } else {
+                    primary.current++;
+                }
+            } else {
+                curPrimaryDepth++;
+            }
         } else {
-            curDepth++;
+            updateOrder = [];
+            curPrimaryDepth = Infinity;
+            maxPrimaryDepth = 0;
+            return;
         }
     }
-    updateOrder = [];
-    curDepth = Infinity;
-    maxDepth = 0;
 };
 var observedInfoStack = [];
 can.__observe = function (obj, event) {

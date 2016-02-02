@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.11#util/can*/
+/*can@2.3.13#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -102,7 +102,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.11';
+    can.VERSION = '2.3.13';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -248,7 +248,7 @@ define('can/util/can', [], function () {
     can.isWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
     return can;
 });
-/*can@2.3.11#util/attr/attr*/
+/*can@2.3.13#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -449,7 +449,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.11#event/event*/
+/*can@2.3.13#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -603,7 +603,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.11#util/fragment*/
+/*can@2.3.13#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name, doc) {
             if (name === undefined) {
@@ -668,14 +668,14 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.3.11#util/array/isArrayLike*/
+/*can@2.3.13#util/array/isArrayLike*/
 define('can/util/array/isArrayLike', ['can/util/can'], function (can) {
     can.isArrayLike = function (obj) {
         var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
         return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
     };
 });
-/*can@2.3.11#util/array/each*/
+/*can@2.3.13#util/array/each*/
 define('can/util/array/each', [
     'can/util/can',
     'can/util/array/isArrayLike'
@@ -722,7 +722,7 @@ define('can/util/array/each', [
     };
     return can;
 });
-/*can@2.3.11#util/object/isplain/isplain*/
+/*can@2.3.13#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -745,7 +745,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.11#util/deferred*/
+/*can@2.3.13#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -897,7 +897,7 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.3.11#util/hashchange*/
+/*can@2.3.13#util/hashchange*/
 define('can/util/hashchange', ['can/util/can'], function (can) {
     (function () {
         var addEvent = function (el, ev, fn) {
@@ -914,7 +914,7 @@ define('can/util/hashchange', ['can/util/can'], function (can) {
         addEvent(window, 'hashchange', onHashchange);
     }());
 });
-/*can@2.3.11#util/inserted/inserted*/
+/*can@2.3.13#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {
@@ -964,7 +964,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children, document);
     };
 });
-/*can@2.3.11#util/util*/
+/*can@2.3.13#util/util*/
 'format steal';
 define('can/util/util', [
     'can/util/can',
@@ -1438,7 +1438,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.3.11#view/view*/
+/*can@2.3.13#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1715,7 +1715,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.11#view/callbacks/callbacks*/
+/*can@2.3.13#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1788,7 +1788,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.11#view/elements*/
+/*can@2.3.13#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1871,7 +1871,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.11#util/bind/bind*/
+/*can@2.3.13#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1906,7 +1906,7 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.11#util/batch/batch*/
+/*can@2.3.13#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
@@ -2017,7 +2017,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.3.11#compute/read*/
+/*can@2.3.13#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -2115,11 +2115,11 @@ define('can/compute/read', ['can/util/util'], function (can) {
                     options.foundObservable(value, index);
                     state.foundObservable = true;
                 }
-                var val = value[prop.key];
-                if (typeof val === 'function' && value.constructor.prototype[prop.key] === val && !val.isComputed) {
-                    return val;
+                var res = value.attr(prop.key);
+                if (res !== undefined) {
+                    return res;
                 } else {
-                    return value.attr(prop.key);
+                    return value[prop.key];
                 }
             }
         },
@@ -2245,7 +2245,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.11#compute/get_value_and_bind*/
+/*can@2.3.13#compute/get_value_and_bind*/
 define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -2263,6 +2263,9 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
         this.setReady = can.proxy(this._setReady, this);
     }
     can.simpleExtend(ObservedInfo.prototype, {
+        getPrimaryDepth: function () {
+            return this.compute._primaryDepth;
+        },
         _setReady: function () {
             this.ready = true;
         },
@@ -2353,30 +2356,44 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
             this.newObserved = {};
         }
     });
-    var updateOrder = [], curDepth = Infinity, maxDepth = 0;
+    var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0;
     ObservedInfo.registerUpdate = function (observeInfo, batchNum) {
         var depth = observeInfo.getDepth() - 1;
-        curDepth = Math.min(depth, curDepth);
-        maxDepth = Math.max(maxDepth, depth);
-        var objs = updateOrder[depth];
-        if (!objs) {
-            objs = updateOrder[depth] = [];
-        }
+        var primaryDepth = observeInfo.getPrimaryDepth();
+        curPrimaryDepth = Math.min(primaryDepth, curPrimaryDepth);
+        maxPrimaryDepth = Math.max(primaryDepth, maxPrimaryDepth);
+        var primary = updateOrder[primaryDepth] || (updateOrder[primaryDepth] = {
+            observeInfos: [],
+            current: Infinity,
+            max: 0
+        });
+        var objs = primary.observeInfos[depth] || (primary.observeInfos[depth] = []);
         objs.push(observeInfo);
+        primary.current = Math.min(depth, primary.current);
+        primary.max = Math.max(depth, primary.max);
     };
     ObservedInfo.batchEnd = function (batchNum) {
         var cur;
-        while (curDepth <= maxDepth) {
-            var last = updateOrder[curDepth];
-            if (last && (cur = last.pop())) {
-                cur.updateCompute(batchNum);
+        while (true) {
+            if (curPrimaryDepth <= maxPrimaryDepth) {
+                var primary = updateOrder[curPrimaryDepth];
+                if (primary && primary.current <= primary.max) {
+                    var last = primary.observeInfos[primary.current];
+                    if (last && (cur = last.pop())) {
+                        cur.updateCompute(batchNum);
+                    } else {
+                        primary.current++;
+                    }
+                } else {
+                    curPrimaryDepth++;
+                }
             } else {
-                curDepth++;
+                updateOrder = [];
+                curPrimaryDepth = Infinity;
+                maxPrimaryDepth = 0;
+                return;
             }
         }
-        updateOrder = [];
-        curDepth = Infinity;
-        maxDepth = 0;
     };
     var observedInfoStack = [];
     can.__observe = function (obj, event) {
@@ -2443,7 +2460,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
     return ObservedInfo;
 });
-/*can@2.3.11#compute/proto_compute*/
+/*can@2.3.13#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2476,16 +2493,19 @@ define('can/compute/proto_compute', [
             this._setupSimpleValue(args[0]);
         }
         this._args = args;
+        this._primaryDepth = 0;
         this.isComputed = true;
     };
     can.simpleExtend(can.Compute.prototype, {
+        setPrimaryDepth: function (depth) {
+            this._primaryDepth = depth;
+        },
         _setupGetterSetterFn: function (getterSetter, context, eventName) {
             this._set = context ? can.proxy(getterSetter, context) : getterSetter;
             this._get = context ? can.proxy(getterSetter, context) : getterSetter;
             this._canObserve = eventName === false ? false : true;
             var handlers = setupComputeHandlers(this, getterSetter, context || this);
-            this._on = handlers.on;
-            this._off = handlers.off;
+            can.simpleExtend(this, handlers);
         },
         _setupProperty: function (target, propertyName, eventName) {
             var isObserve = can.isMapLike(target), self = this, handler;
@@ -2571,8 +2591,7 @@ define('can/compute/proto_compute', [
                     return res !== undefined ? res : this.value;
                 }, this);
             }
-            this._on = bindings.on;
-            this._off = bindings.off;
+            can.simpleExtend(this, bindings);
         },
         _setupSimpleValue: function (initialValue) {
             this.value = initialValue;
@@ -2662,13 +2681,16 @@ define('can/compute/proto_compute', [
     var setupComputeHandlers = function (compute, func, context) {
         var readInfo = new ObservedInfo(func, context, compute);
         return {
-            on: function () {
+            _on: function () {
                 readInfo.getValueAndBind();
                 compute.value = readInfo.value;
                 compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
             },
-            off: function () {
+            _off: function () {
                 readInfo.teardown();
+            },
+            getDepth: function () {
+                return readInfo.getDepth();
             }
         };
     };
@@ -2706,7 +2728,7 @@ define('can/compute/proto_compute', [
     can.Compute.set = read.write;
     return can.Compute;
 });
-/*can@2.3.11#compute/compute*/
+/*can@2.3.13#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2772,7 +2794,7 @@ define('can/compute/compute', [
     can.compute.temporarilyBind = can.Compute.temporarilyBind;
     return can.compute;
 });
-/*can@2.3.11#view/scope/compute_data*/
+/*can@2.3.13#view/scope/compute_data*/
 define('can/view/scope/compute_data', [
     'can/util/util',
     'can/compute/compute',
@@ -2859,7 +2881,7 @@ define('can/view/scope/compute_data', [
         return computeData;
     };
 });
-/*can@2.3.11#util/string/string*/
+/*can@2.3.13#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -2944,7 +2966,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.11#construct/construct*/
+/*can@2.3.13#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -3082,7 +3104,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.11#map/bubble*/
+/*can@2.3.13#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
         bind: function (parent, eventName) {
@@ -3200,7 +3222,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
     };
     return bubble;
 });
-/*can@2.3.11#map/map_helpers*/
+/*can@2.3.13#map/map_helpers*/
 define('can/map/map_helpers', [
     'can/util/util',
     'can/util/object/isplain/isplain'
@@ -3297,15 +3319,20 @@ define('can/map/map_helpers', [
     };
     return mapHelpers;
 });
-/*can@2.3.11#map/map*/
+/*can@2.3.13#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
     'can/map/bubble',
     'can/map/map_helpers',
     'can/construct/construct',
-    'can/util/batch/batch'
+    'can/util/batch/batch',
+    'can/compute/get_value_and_bind'
 ], function (can, bind, bubble, mapHelpers) {
+    var readButDontObserveCompute = can.__notObserve(function (compute) {
+        return compute();
+    });
+    var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
         setup: function () {
             can.Construct.setup.apply(this, arguments);
@@ -3400,16 +3427,18 @@ define('can/map/map', [
             }
         },
         __get: function (attr) {
-            can.__observe(this, attr);
+            if (!unobservable[attr]) {
+                can.__observe(this, attr);
+            }
             return this.___get(attr);
         },
         ___get: function (attr) {
             if (attr) {
                 var computedAttr = this._computedAttrs[attr];
                 if (computedAttr && computedAttr.compute) {
-                    return computedAttr.compute();
+                    return readButDontObserveCompute(computedAttr.compute);
                 } else {
-                    return this._data[attr];
+                    return this._data.hasOwnProperty(attr) ? this._data[attr] : undefined;
                 }
             } else {
                 return this._data;
@@ -3579,7 +3608,7 @@ define('can/map/map', [
         one: can.one,
         bind: function (eventName, handler) {
             var computedBinding = this._computedAttrs && this._computedAttrs[eventName];
-            if (computedBinding) {
+            if (computedBinding && computedBinding.compute) {
                 if (!computedBinding.count) {
                     computedBinding.count = 1;
                     computedBinding.compute.bind('change', computedBinding.handler);
@@ -3636,7 +3665,7 @@ define('can/map/map', [
     Map.off = Map.unbind;
     return Map;
 });
-/*can@2.3.11#list/list*/
+/*can@2.3.13#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -3907,7 +3936,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.11#view/scope/scope*/
+/*can@2.3.13#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/view/scope/compute_data',
@@ -4116,7 +4145,7 @@ define('can/view/scope/scope', [
     can.view.Options = Options;
     return Scope;
 });
-/*can@2.3.11#view/stache/utils*/
+/*can@2.3.13#view/stache/utils*/
 define('can/view/stache/utils', [
     'can/util/util',
     'can/view/scope/scope'
@@ -4179,7 +4208,7 @@ define('can/view/stache/utils', [
         Options: Options
     };
 });
-/*can@2.3.11#view/node_lists/node_lists*/
+/*can@2.3.13#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -4321,6 +4350,7 @@ define('can/view/node_lists/node_lists', [
             can.cid(nodeList);
             nodeList.unregistered = unregistered;
             nodeList.parentList = parent;
+            nodeList.nesting = parent && typeof parent.nesting !== 'undefined' ? parent.nesting + 1 : 0;
             if (parent) {
                 nodeList.deepChildren = [];
                 nodeList.newDeepChildren = [];
@@ -4377,7 +4407,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.11#view/parser/parser*/
+/*can@2.3.13#view/parser/parser*/
 define('can/view/parser/parser', [], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -4401,7 +4431,7 @@ define('can/view/parser/parser', [], function () {
     var alphaNumeric = 'A-Za-z0-9', alphaNumericHU = '-:_' + alphaNumeric, attributeNames = '[^=>\\s\\/]+', spaceEQspace = '\\s*=\\s*', singleCurly = '\\{[^\\}\\{]\\}', doubleCurly = '\\{\\{[^\\}]\\}\\}\\}?', attributeEqAndValue = '(?:' + spaceEQspace + '(?:' + '(?:' + doubleCurly + ')|(?:' + singleCurly + ')|(?:"[^"]*")|(?:\'[^\']*\')|[^>\\s]+))?', matchStash = '\\{\\{[^\\}]*\\}\\}\\}?', stash = '\\{\\{([^\\}]*)\\}\\}\\}?', startTag = new RegExp('^<([' + alphaNumeric + '][' + alphaNumericHU + ']*)' + '(' + '(?:\\s*' + '(?:(?:' + '(?:' + attributeNames + ')?' + attributeEqAndValue + ')|' + '(?:' + matchStash + ')+)' + ')*' + ')\\s*(\\/?)>'), endTag = new RegExp('^<\\/([' + alphaNumericHU + ']+)[^>]*>'), mustache = new RegExp(stash, 'g'), txtBreak = /<|\{\{/, space = /\s/;
     var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
     var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
-    var inline = makeMap('abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
+    var inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
     var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
     var special = makeMap('script');
     var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
@@ -4428,9 +4458,11 @@ define('can/view/parser/parser', [], function () {
         }
         function parseStartTag(tag, tagName, rest, unary) {
             tagName = tagName.toLowerCase();
-            if (block[tagName]) {
-                while (stack.last() && inline[stack.last()]) {
-                    parseEndTag('', stack.last());
+            if (block[tagName] && !inline[tagName]) {
+                var last = stack.last();
+                while (last && inline[last] && !block[last]) {
+                    parseEndTag('', last);
+                    last = stack.last();
                 }
             }
             if (closeSelf[tagName] && stack.last() === tagName) {
@@ -4670,7 +4702,7 @@ define('can/view/parser/parser', [], function () {
     };
     return HTMLParser;
 });
-/*can@2.3.11#util/array/diff*/
+/*can@2.3.13#util/array/diff*/
 define('can/util/array/diff', [], function () {
     var slice = [].slice;
     return function (oldList, newList) {
@@ -4720,7 +4752,7 @@ define('can/util/array/diff', [], function () {
         return patches;
     };
 });
-/*can@2.3.11#view/live/live*/
+/*can@2.3.13#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -5162,7 +5194,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.11#view/stache/mustache_helpers*/
+/*can@2.3.13#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5397,7 +5429,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.11#view/stache/expression*/
+/*can@2.3.13#view/stache/expression*/
 define('can/view/stache/expression', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5941,7 +5973,7 @@ define('can/view/stache/expression', [
     can.expression = expression;
     return expression;
 });
-/*can@2.3.11#view/href/href*/
+/*can@2.3.13#view/href/href*/
 define('can/view/href/href', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5970,7 +6002,7 @@ define('can/view/href/href', [
         });
     });
 });
-/*can@2.3.11#view/bindings/bindings*/
+/*can@2.3.13#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/expression',
@@ -6324,11 +6356,8 @@ define('can/view/bindings/bindings', [
                         var onMutation = function (mutations) {
                             if (stickyCompute) {
                                 set(stickyCompute());
-                            } else {
-                                if (scheduledAsyncSet) {
-                                    updater();
-                                }
                             }
+                            updater();
                         };
                         if (can.attr.MutationObserver) {
                             observer = new can.attr.MutationObserver(onMutation);
@@ -6446,7 +6475,7 @@ define('can/view/bindings/bindings', [
                 parentName: attributeValue,
                 initializeValues: true
             };
-            if (tagName === 'select' && !childToParent) {
+            if (tagName === 'select') {
                 bindingInfo.stickyParentToChild = true;
             }
             return bindingInfo;
@@ -6592,7 +6621,7 @@ define('can/view/bindings/bindings', [
     };
     return can.bindings;
 });
-/*can@2.3.11#control/control*/
+/*can@2.3.13#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -6794,7 +6823,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.3.11#observe/observe*/
+/*can@2.3.13#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -6807,7 +6836,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.11#view/scanner*/
+/*can@2.3.13#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -7183,7 +7212,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.11#view/render*/
+/*can@2.3.13#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -7309,7 +7338,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.11#view/mustache/mustache*/
+/*can@2.3.13#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -7804,7 +7833,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.11#util/view_model/view_model*/
+/*can@2.3.13#util/view_model/view_model*/
 define('can/util/view_model/view_model', ['can/util/util'], function (can) {
     var $ = can.$;
     if ($.fn) {
@@ -7813,7 +7842,7 @@ define('can/util/view_model/view_model', ['can/util/util'], function (can) {
         };
     }
 });
-/*can@2.3.11#component/component*/
+/*can@2.3.13#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -8058,7 +8087,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.11#model/model*/
+/*can@2.3.13#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -8442,7 +8471,7 @@ define('can/model/model', [
     });
     return can.Model;
 });
-/*can@2.3.11#util/string/deparam/deparam*/
+/*can@2.3.13#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -8479,7 +8508,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.11#route/route*/
+/*can@2.3.13#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -8781,7 +8810,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.11#control/route/route*/
+/*can@2.3.13#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',

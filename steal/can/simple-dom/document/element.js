@@ -1,19 +1,19 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.23#simple-dom/document/element*/
-steal('can-simple-dom@0.2.23#simple-dom/document/node', function (__can_simple_dom_0_2_23_simple_dom_document_node) {
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/element*/
+steal('can-simple-dom@0.3.0-pre.2#simple-dom/document/node', function (__can_simple_dom_0_3_0_pre_2_simple_dom_document_node) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
-    var _node = __can_simple_dom_0_2_23_simple_dom_document_node;
+    var _node = __can_simple_dom_0_3_0_pre_2_simple_dom_document_node;
     var _node2 = _interopRequireDefault(_node);
     var attrSpecial = {
         'class': function _class(element, value) {
@@ -154,6 +154,30 @@ steal('can-simple-dom@0.2.23#simple-dom/document/node', function (__can_simple_d
             },
             set: function set(val) {
                 this.__node._setAttribute('style', val);
+            }
+        });
+        Object.defineProperty(Element.prototype, 'innerHTML', {
+            get: function get() {
+                var html = '';
+                var cur = this.firstChild;
+                while (cur) {
+                    html += this.ownerDocument.__serializer.serialize(cur);
+                    cur = cur.nextSibling;
+                }
+                return html;
+            },
+            set: function set(html) {
+                this.lastChild = this.firstChild = null;
+                var fragment = this.ownerDocument.__parser.parse(html);
+                this.appendChild(fragment);
+            }
+        });
+        Object.defineProperty(Element.prototype, 'outerHTML', {
+            get: function get() {
+                return this.ownerDocument.__serializer.serialize(this);
+            },
+            set: function set(html) {
+                this.parentNode.replaceChild(this.ownerDocument.__parser.parse(html), this);
             }
         });
     }

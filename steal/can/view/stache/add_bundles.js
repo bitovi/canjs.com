@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/stache/add_bundles*/
+/*can@2.3.13#view/stache/add_bundles*/
 steal('@loader', 'can/util/can.js', function (loader, can) {
     return function (dynamicImports, parentName) {
         if (!dynamicImports.length) {

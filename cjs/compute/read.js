@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#compute/read*/
+/*can@2.3.13#compute/read*/
 var can = require('../util/util.js');
 var read = function (parent, reads, options) {
     options = options || {};
@@ -104,11 +104,11 @@ read.propertyReaders = [
                 options.foundObservable(value, index);
                 state.foundObservable = true;
             }
-            var val = value[prop.key];
-            if (typeof val === 'function' && value.constructor.prototype[prop.key] === val && !val.isComputed) {
-                return val;
+            var res = value.attr(prop.key);
+            if (res !== undefined) {
+                return res;
             } else {
-                return value.attr(prop.key);
+                return value[prop.key];
             }
         }
     },

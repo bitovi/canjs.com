@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.2.23#simple-dom/html-parser*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/html-parser*/
 steal('', function () {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
@@ -25,7 +25,7 @@ steal('', function () {
             var attr = token.attributes[i];
             el.setAttribute(attr[0], attr[1]);
         }
-        if (this.isVoid(el)) {
+        if (this.isVoid(el) || token.selfClosing) {
             return this.appendChild(el);
         }
         this.parentStack.push(el);

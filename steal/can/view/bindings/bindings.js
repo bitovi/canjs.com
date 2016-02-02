@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/bindings/bindings*/
+/*can@2.3.13#view/bindings/bindings*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/view/live', 'can/view/scope', 'can/view/href', function (can, expression, viewCallbacks, live) {
     var behaviors = {
         viewModel: function (el, tagData, makeViewModel, initialViewModelData) {
@@ -363,11 +363,8 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/vi
                         var onMutation = function (mutations) {
                             if (stickyCompute) {
                                 set(stickyCompute());
-                            } else {
-                                if (scheduledAsyncSet) {
-                                    updater();
-                                }
                             }
+                            updater();
                         };
                         if (can.attr.MutationObserver) {
                             observer = new can.attr.MutationObserver(onMutation);
@@ -488,7 +485,7 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/vi
                 parentName: attributeValue,
                 initializeValues: true
             };
-            if (tagName === 'select' && !childToParent) {
+            if (tagName === 'select') {
                 bindingInfo.stickyParentToChild = true;
             }
             return bindingInfo;

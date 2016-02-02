@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/stache/stache*/
+/*can@2.3.13#view/stache/stache*/
 steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './text_section.js', './mustache_core.js', './mustache_helpers.js', './intermediate_and_imports.js', 'can/view/callbacks', 'can/view/bindings', function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     can.view.parser = parser;

@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can-simple-dom@0.2.23#simple-dom/document/node*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/node*/
 define('simple-dom/document/node', [
     'exports',
     'module'
@@ -232,7 +232,7 @@ define('simple-dom/document/node', [
     };
     module.exports = Node;
 });
-/*can-simple-dom@0.2.23#simple-dom/document/element*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/element*/
 define('simple-dom/document/element', [
     'exports',
     'module',
@@ -384,10 +384,34 @@ define('simple-dom/document/element', [
                 this.__node._setAttribute('style', val);
             }
         });
+        Object.defineProperty(Element.prototype, 'innerHTML', {
+            get: function get() {
+                var html = '';
+                var cur = this.firstChild;
+                while (cur) {
+                    html += this.ownerDocument.__serializer.serialize(cur);
+                    cur = cur.nextSibling;
+                }
+                return html;
+            },
+            set: function set(html) {
+                this.lastChild = this.firstChild = null;
+                var fragment = this.ownerDocument.__parser.parse(html);
+                this.appendChild(fragment);
+            }
+        });
+        Object.defineProperty(Element.prototype, 'outerHTML', {
+            get: function get() {
+                return this.ownerDocument.__serializer.serialize(this);
+            },
+            set: function set(html) {
+                this.parentNode.replaceChild(this.ownerDocument.__parser.parse(html), this);
+            }
+        });
     }
     module.exports = Element;
 });
-/*can-simple-dom@0.2.23#simple-dom/document/text*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/text*/
 define('simple-dom/document/text', [
     'exports',
     'module',
@@ -409,7 +433,7 @@ define('simple-dom/document/text', [
     Text.prototype.nodeConstructor = _Node['default'];
     module.exports = Text;
 });
-/*can-simple-dom@0.2.23#simple-dom/document/comment*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/comment*/
 define('simple-dom/document/comment', [
     'exports',
     'module',
@@ -431,7 +455,7 @@ define('simple-dom/document/comment', [
     Comment.prototype.nodeConstructor = _Node['default'];
     module.exports = Comment;
 });
-/*can-simple-dom@0.2.23#simple-dom/document/document-fragment*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/document-fragment*/
 define('simple-dom/document/document-fragment', [
     'exports',
     'module',
@@ -556,7 +580,7 @@ Location.parse = function (string) {
 }(this, function () {
     return Location;
 }));
-/*can-simple-dom@0.2.23#simple-dom/extend*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/extend*/
 define('simple-dom/extend', [
     'exports',
     'module'
@@ -570,7 +594,7 @@ define('simple-dom/extend', [
     };
     ;
 });
-/*can-simple-dom@0.2.23#simple-dom/document/anchor-element*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document/anchor-element*/
 define('simple-dom/document/anchor-element', [
     'exports',
     'module',
@@ -601,7 +625,7 @@ define('simple-dom/document/anchor-element', [
     };
     module.exports = AnchorElement;
 });
-/*can-simple-dom@0.2.23#simple-dom/document*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/document*/
 define('simple-dom/document', [
     'exports',
     'module',
@@ -628,6 +652,28 @@ define('simple-dom/document', [
         this.body = new _Element['default']('body', this);
         this.documentElement.appendChild(this.body);
         this.appendChild(this.documentElement);
+        var self = this;
+        this.implementation = {
+            createHTMLDocument: function createHTMLDocument(content) {
+                var document = new Document();
+                var frag = self.__parser.parse(content);
+                var body = _Element['default'].prototype.getElementsByTagName.call(frag, 'body')[0];
+                var head = _Element['default'].prototype.getElementsByTagName.call(frag, 'head')[0];
+                if (!body && !head) {
+                    document.body.appendChild(frag);
+                } else {
+                    if (body) {
+                        document.documentElement.replaceChild(body, document.body);
+                    }
+                    if (head) {
+                        document.documentElement.replaceChild(head, document.head);
+                    }
+                    document.documentElement.appendChild(frag);
+                }
+                document.__addSerializerAndParser(self.__serializer, self.__parser);
+                return document;
+            }
+        };
     }
     Document.prototype = Object.create(_Node['default'].prototype);
     Document.prototype.constructor = Document;
@@ -667,6 +713,10 @@ define('simple-dom/document', [
     Document.prototype.getElementById = function (id) {
         return _Element['default'].prototype.getElementById.apply(this.documentElement, arguments);
     };
+    Document.prototype.__addSerializerAndParser = function (serializer, parser) {
+        this.__parser = parser;
+        this.__serializer = serializer;
+    };
     if (Object.defineProperty) {
         Object.defineProperty(Document.prototype, 'currentScript', {
             get: function get() {
@@ -681,7 +731,7 @@ define('simple-dom/document', [
     }
     module.exports = Document;
 });
-/*can-simple-dom@0.2.23#simple-dom/html-parser*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/html-parser*/
 define('simple-dom/html-parser', [
     'exports',
     'module'
@@ -702,7 +752,7 @@ define('simple-dom/html-parser', [
             var attr = token.attributes[i];
             el.setAttribute(attr[0], attr[1]);
         }
-        if (this.isVoid(el)) {
+        if (this.isVoid(el) || token.selfClosing) {
             return this.appendChild(el);
         }
         this.parentStack.push(el);
@@ -751,7 +801,7 @@ define('simple-dom/html-parser', [
     };
     module.exports = HTMLParser;
 });
-/*can-simple-dom@0.2.23#simple-dom/html-serializer*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/html-serializer*/
 define('simple-dom/html-serializer', [
     'exports',
     'module'
@@ -835,22 +885,21 @@ define('simple-dom/html-serializer', [
         }
         next = node.firstChild;
         if (next) {
-            buffer += this.serialize(next);
-        } else if (node.textContent) {
+            while (next) {
+                buffer += this.serialize(next);
+                next = next.nextSibling;
+            }
+        } else if (node.nodeType === 1 && node.textContent) {
             buffer += node.textContent;
         }
         if (node.nodeType === 1 && !this.isVoid(node)) {
             buffer += this.closeTag(node);
         }
-        next = node.nextSibling;
-        if (next) {
-            buffer += this.serialize(next);
-        }
         return buffer;
     };
     module.exports = HTMLSerializer;
 });
-/*can-simple-dom@0.2.23#simple-dom/void-map*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/void-map*/
 define('simple-dom/void-map', [
     'exports',
     'module'
@@ -875,7 +924,7 @@ define('simple-dom/void-map', [
         WBR: true
     };
 });
-/*can-simple-dom@0.2.23#simple-dom/dom*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom/dom*/
 define('simple-dom/dom', [
     'exports',
     'simple-dom/document/node',
@@ -896,14 +945,21 @@ define('simple-dom/dom', [
     var _HTMLParser = _interopRequireDefault(_htmlParser);
     var _HTMLSerializer = _interopRequireDefault(_htmlSerializer);
     var _voidMap2 = _interopRequireDefault(_voidMap);
+    function createDocument(serializer, parser) {
+        var doc = new _Document['default']();
+        doc.__serializer = serializer;
+        doc.__parser = parser;
+        return doc;
+    }
     exports.Node = _Node['default'];
     exports.Element = _Element['default'];
     exports.Document = _Document['default'];
     exports.HTMLParser = _HTMLParser['default'];
     exports.HTMLSerializer = _HTMLSerializer['default'];
     exports.voidMap = _voidMap2['default'];
+    exports.createDocument = createDocument;
 });
-/*can-simple-dom@0.2.23#simple-dom*/
+/*can-simple-dom@0.3.0-pre.2#simple-dom*/
 define('simple-dom', [
     'exports',
     'simple-dom/dom'
@@ -941,7 +997,7 @@ define('simple-dom', [
     }
     _defaults(exports, _interopRequireWildcard(_simpleDomDom));
 });
-/*can@2.3.11#util/vdom/build_fragment/make_parser*/
+/*can@2.3.13#util/vdom/build_fragment/make_parser*/
 define('can/util/vdom/build_fragment/make_parser', [
     'can/view/parser/parser',
     'simple-dom'
@@ -1001,7 +1057,7 @@ define('can/util/vdom/build_fragment/make_parser', [
         }, document, simpleDOM.voidMap);
     };
 });
-/*can@2.3.11#util/vdom/document/document*/
+/*can@2.3.13#util/vdom/document/document*/
 define('can/util/vdom/document/document', [
     'can/util/can',
     'simple-dom',

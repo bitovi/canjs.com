@@ -1,20 +1,25 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#map/map*/
+/*can@2.3.13#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
     'can/bubble',
     'can/map_helpers',
     'can/construct',
-    'can/util/batch'
+    'can/util/batch',
+    'can/get_value_and_bind'
 ], function (can, bind, bubble, mapHelpers) {
+    var readButDontObserveCompute = can.__notObserve(function (compute) {
+        return compute();
+    });
+    var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
         setup: function () {
             can.Construct.setup.apply(this, arguments);
@@ -109,16 +114,18 @@ define([
             }
         },
         __get: function (attr) {
-            can.__observe(this, attr);
+            if (!unobservable[attr]) {
+                can.__observe(this, attr);
+            }
             return this.___get(attr);
         },
         ___get: function (attr) {
             if (attr) {
                 var computedAttr = this._computedAttrs[attr];
                 if (computedAttr && computedAttr.compute) {
-                    return computedAttr.compute();
+                    return readButDontObserveCompute(computedAttr.compute);
                 } else {
-                    return this._data[attr];
+                    return this._data.hasOwnProperty(attr) ? this._data[attr] : undefined;
                 }
             } else {
                 return this._data;
@@ -288,7 +295,7 @@ define([
         one: can.one,
         bind: function (eventName, handler) {
             var computedBinding = this._computedAttrs && this._computedAttrs[eventName];
-            if (computedBinding) {
+            if (computedBinding && computedBinding.compute) {
                 if (!computedBinding.count) {
                     computedBinding.count = 1;
                     computedBinding.compute.bind('change', computedBinding.handler);

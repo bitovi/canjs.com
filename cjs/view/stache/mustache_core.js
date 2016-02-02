@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/stache/mustache_core*/
+/*can@2.3.13#view/stache/mustache_core*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var mustacheHelpers = require('./mustache_helpers.js');
@@ -145,6 +145,7 @@ var core = {
                 var res = can.__notObserve(renderer)();
                 return can.frag(res);
             });
+            partialFrag.computeInstance.setPrimaryDepth(nodeList.nesting);
             live.html(this, partialFrag, this.parentNode, nodeList);
         };
     },
@@ -181,6 +182,7 @@ var core = {
             } else {
                 compute = can.compute(evaluator, null, false);
             }
+            compute.computeInstance.setPrimaryDepth(nodeList.nesting);
             compute.computeInstance.bind('change', can.k);
             var value = compute();
             if (typeof value === 'function') {

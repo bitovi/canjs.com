@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.11
+ * CanJS - 2.3.13
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 21 Jan 2016 23:41:15 GMT
+ * Mon, 01 Feb 2016 23:57:40 GMT
  * Licensed MIT
  */
 
-/*can@2.3.11#view/href/href*/
+/*can@2.3.13#view/href/href*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/view/scope', function (can, expression) {
     var removeCurly = function (value) {
         if (value[0] === '{' && value[value.length - 1] === '}') {
