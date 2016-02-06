@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#route/route*/
+/*can@2.3.14#route/route*/
 steal('can/util', 'can/map', 'can/list', 'can/util/string/deparam', function (can) {
     var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = function (props) {
             var tags = [];

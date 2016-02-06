@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#component/component*/
+/*can@2.3.14#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindings', 'can/control', 'can/observe', 'can/view/mustache', 'can/util/view_model', function (can, viewCallbacks, elements, bindings) {
     var paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
@@ -181,7 +181,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindin
                             return '';
                         }
                         key = key.replace(/^(scope|^viewModel)\./, '');
-                        value = can.compute.read(options.viewModel, can.compute.read.reads(key), { isArgument: true }).value;
+                        value = can.compute.read(options.viewModel, can.compute.read.reads(key), { readCompute: false }).value;
                         if (value === undefined) {
                             value = can.getObject(key);
                         }

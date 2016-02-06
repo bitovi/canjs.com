@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#compute/get_value_and_bind*/
+/*can@2.3.14#compute/get_value_and_bind*/
 var can = require('../util/util.js');
 function ObservedInfo(func, context, compute) {
     this.newObserved = {};
@@ -159,7 +159,7 @@ ObservedInfo.batchEnd = function (batchNum) {
 var observedInfoStack = [];
 can.__observe = function (obj, event) {
     var top = observedInfoStack[observedInfoStack.length - 1];
-    if (top) {
+    if (top && !top.ignore) {
         var evStr = event + '', name = obj._cid + '|' + evStr;
         if (top.traps) {
             top.traps.push({
@@ -167,7 +167,7 @@ can.__observe = function (obj, event) {
                 event: evStr,
                 name: name
             });
-        } else if (!top.ignore && !top.newObserved[name]) {
+        } else if (!top.newObserved[name]) {
             top.newObserved[name] = {
                 obj: obj,
                 event: evStr

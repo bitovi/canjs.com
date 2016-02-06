@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#route/pushstate/pushstate*/
+/*can@2.3.14#route/pushstate/pushstate*/
 steal('can/util', 'can/route', function (can) {
     'use strict';
     var hasPushstate = window.history && window.history.pushState;

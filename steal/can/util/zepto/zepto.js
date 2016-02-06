@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#util/util*/
+/*can@2.3.14#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'can/event', 'zepto', 'can/util/object/isplain', 'can/util/fragment.js', 'can/util/deferred.js', 'can/util/array/each.js', 'can/util/inserted', function (can, attr, event) {
     var $ = Zepto;
     var data = {}, dataAttr = $.fn.data, uuid = $.uuid = +new Date(), exp = $.expando = 'Zepto' + uuid;

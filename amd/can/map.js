@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#map/map*/
+/*can@2.3.14#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -16,9 +16,6 @@ define([
     'can/util/batch',
     'can/get_value_and_bind'
 ], function (can, bind, bubble, mapHelpers) {
-    var readButDontObserveCompute = can.__notObserve(function (compute) {
-        return compute();
-    });
     var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
         setup: function () {
@@ -114,16 +111,16 @@ define([
             }
         },
         __get: function (attr) {
-            if (!unobservable[attr]) {
+            if (!unobservable[attr] && !this._computedAttrs[attr]) {
                 can.__observe(this, attr);
             }
             return this.___get(attr);
         },
         ___get: function (attr) {
-            if (attr) {
+            if (attr !== undefined) {
                 var computedAttr = this._computedAttrs[attr];
                 if (computedAttr && computedAttr.compute) {
-                    return readButDontObserveCompute(computedAttr.compute);
+                    return computedAttr.compute();
                 } else {
                     return this._data.hasOwnProperty(attr) ? this._data[attr] : undefined;
                 }

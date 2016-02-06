@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#view/stache/intermediate_and_imports*/
+/*can@2.3.14#view/stache/intermediate_and_imports*/
 var mustacheCore = require('./mustache_core.js');
 var parser = require('../parser/parser.js');
 require('../import/import.js');

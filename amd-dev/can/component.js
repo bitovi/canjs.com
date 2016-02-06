@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#component/component*/
+/*can@2.3.14#component/component*/
 define([
     'can/util/library',
     'can/view/callbacks',
@@ -190,7 +190,7 @@ define([
                             return '';
                         }
                         key = key.replace(/^(scope|^viewModel)\./, '');
-                        value = can.compute.read(options.viewModel, can.compute.read.reads(key), { isArgument: true }).value;
+                        value = can.compute.read(options.viewModel, can.compute.read.reads(key), { readCompute: false }).value;
                         if (value === undefined) {
                             value = can.getObject(key);
                         }

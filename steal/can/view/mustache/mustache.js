@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.13
+ * CanJS - 2.3.14
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Mon, 01 Feb 2016 23:57:40 GMT
+ * Sat, 06 Feb 2016 00:01:32 GMT
  * Licensed MIT
  */
 
-/*can@2.3.13#view/mustache/mustache*/
+/*can@2.3.14#view/mustache/mustache*/
 steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/compute', 'can/view/render.js', 'can/view/bindings', function (can) {
     can.view.ext = '.mustache';
     var SCOPE = 'scope', HASH = '___h4sh', CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}', SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}', ARG_NAMES = SCOPE + ',options', argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/, makeLookupLiteral = function (type) {
@@ -471,7 +471,7 @@ steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/comp
                 options = offset;
                 offset = 0;
             }
-            var index = options.scope.attr('@index');
+            var index = options.scope.read('@index', { isArgument: true }).value;
             return '' + ((can.isFunction(index) ? index() : index) + offset);
         }
     }, function (fn, name) {
