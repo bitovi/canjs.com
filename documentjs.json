@@ -66,8 +66,8 @@
 		"static": "theme/static",
 		"pageConfig": {
 			"urls": {
-				"builderData": "http://bitbuilder.herokuapp.com/canjs",
-				"builder": "http://bitbuilder.herokuapp.com/can.custom.js",
+				"builderData": "https://bitbuilder.herokuapp.com/canjs",
+				"builder": "https://bitbuilder.herokuapp.com/can.custom.js",
 				"bithub": "http://bitovi.bithub.com/api/v1/events/",
 				"cdn": "//canjs.com/release/",
 				"github":"https://github.com/bitovi/canjs.com"

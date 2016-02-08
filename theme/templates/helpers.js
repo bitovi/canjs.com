@@ -23,7 +23,7 @@ module.exports = function(docMap, options, getCurrent){
 		},
 		urlDownload: function (docObject) {
 			if(docObject.download){
-				return "http://bitbuilder.herokuapp.com/can.custom.js?plugins="+docObject.download;
+				return "https://bitbuilder.herokuapp.com/can.custom.js?plugins="+docObject.download;
 			} else {
 				return "";
 			}
