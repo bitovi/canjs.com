@@ -1,6 +1,6 @@
 {
   "name": "CanJS",
-  "version": "2.3.13",
+  "version": "2.3.16",
   "repo": "bitovi/canjs",
   "description": "Can do JavaScript MVC",
   "main": "can.jquery.js",
