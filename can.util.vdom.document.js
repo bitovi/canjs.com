@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/node*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/node*/
 define('simple-dom/document/node', [
     'exports',
     'module'
@@ -232,7 +232,7 @@ define('simple-dom/document/node', [
     };
     module.exports = Node;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/element*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/element*/
 define('simple-dom/document/element', [
     'exports',
     'module',
@@ -396,7 +396,12 @@ define('simple-dom/document/element', [
             },
             set: function set(html) {
                 this.lastChild = this.firstChild = null;
-                var fragment = this.ownerDocument.__parser.parse(html);
+                var fragment;
+                if (this.nodeName === 'SCRIPT' || this.nodeName === 'STYLE') {
+                    fragment = this.ownerDocument.createTextNode(html);
+                } else {
+                    fragment = this.ownerDocument.__parser.parse(html);
+                }
                 this.appendChild(fragment);
             }
         });
@@ -411,7 +416,7 @@ define('simple-dom/document/element', [
     }
     module.exports = Element;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/text*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/text*/
 define('simple-dom/document/text', [
     'exports',
     'module',
@@ -433,7 +438,7 @@ define('simple-dom/document/text', [
     Text.prototype.nodeConstructor = _Node['default'];
     module.exports = Text;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/comment*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/comment*/
 define('simple-dom/document/comment', [
     'exports',
     'module',
@@ -455,7 +460,7 @@ define('simple-dom/document/comment', [
     Comment.prototype.nodeConstructor = _Node['default'];
     module.exports = Comment;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/document-fragment*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/document-fragment*/
 define('simple-dom/document/document-fragment', [
     'exports',
     'module',
@@ -580,7 +585,7 @@ Location.parse = function (string) {
 }(this, function () {
     return Location;
 }));
-/*can-simple-dom@0.3.0-pre.2#simple-dom/extend*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/extend*/
 define('simple-dom/extend', [
     'exports',
     'module'
@@ -594,7 +599,7 @@ define('simple-dom/extend', [
     };
     ;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/anchor-element*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/anchor-element*/
 define('simple-dom/document/anchor-element', [
     'exports',
     'module',
@@ -625,7 +630,7 @@ define('simple-dom/document/anchor-element', [
     };
     module.exports = AnchorElement;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document*/
 define('simple-dom/document', [
     'exports',
     'module',
@@ -731,7 +736,7 @@ define('simple-dom/document', [
     }
     module.exports = Document;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/html-parser*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/html-parser*/
 define('simple-dom/html-parser', [
     'exports',
     'module'
@@ -801,7 +806,7 @@ define('simple-dom/html-parser', [
     };
     module.exports = HTMLParser;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/html-serializer*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/html-serializer*/
 define('simple-dom/html-serializer', [
     'exports',
     'module'
@@ -899,7 +904,7 @@ define('simple-dom/html-serializer', [
     };
     module.exports = HTMLSerializer;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/void-map*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/void-map*/
 define('simple-dom/void-map', [
     'exports',
     'module'
@@ -924,7 +929,7 @@ define('simple-dom/void-map', [
         WBR: true
     };
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom/dom*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom/dom*/
 define('simple-dom/dom', [
     'exports',
     'simple-dom/document/node',
@@ -959,7 +964,7 @@ define('simple-dom/dom', [
     exports.voidMap = _voidMap2['default'];
     exports.createDocument = createDocument;
 });
-/*can-simple-dom@0.3.0-pre.2#simple-dom*/
+/*can-simple-dom@0.3.0-pre.3#simple-dom*/
 define('simple-dom', [
     'exports',
     'simple-dom/dom'
@@ -997,7 +1002,7 @@ define('simple-dom', [
     }
     _defaults(exports, _interopRequireWildcard(_simpleDomDom));
 });
-/*can@2.3.14#util/vdom/build_fragment/make_parser*/
+/*can@2.3.16#util/vdom/build_fragment/make_parser*/
 define('can/util/vdom/build_fragment/make_parser', [
     'can/view/parser/parser',
     'simple-dom'
@@ -1057,7 +1062,7 @@ define('can/util/vdom/build_fragment/make_parser', [
         }, document, simpleDOM.voidMap);
     };
 });
-/*can@2.3.14#util/vdom/document/document*/
+/*can@2.3.16#util/vdom/document/document*/
 define('can/util/vdom/document/document', [
     'can/util/can',
     'simple-dom',

@@ -1,19 +1,19 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.3.0-pre.2#simple-dom/document/element*/
-steal('can-simple-dom@0.3.0-pre.2#simple-dom/document/node', function (__can_simple_dom_0_3_0_pre_2_simple_dom_document_node) {
+/*can-simple-dom@0.3.0-pre.3#simple-dom/document/element*/
+steal('can-simple-dom@0.3.0-pre.3#simple-dom/document/node', function (__can_simple_dom_0_3_0_pre_3_simple_dom_document_node) {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });
     function _interopRequireDefault(obj) {
         return obj && obj.__esModule ? obj : { 'default': obj };
     }
-    var _node = __can_simple_dom_0_3_0_pre_2_simple_dom_document_node;
+    var _node = __can_simple_dom_0_3_0_pre_3_simple_dom_document_node;
     var _node2 = _interopRequireDefault(_node);
     var attrSpecial = {
         'class': function _class(element, value) {
@@ -168,7 +168,12 @@ steal('can-simple-dom@0.3.0-pre.2#simple-dom/document/node', function (__can_sim
             },
             set: function set(html) {
                 this.lastChild = this.firstChild = null;
-                var fragment = this.ownerDocument.__parser.parse(html);
+                var fragment;
+                if (this.nodeName === 'SCRIPT' || this.nodeName === 'STYLE') {
+                    fragment = this.ownerDocument.createTextNode(html);
+                } else {
+                    fragment = this.ownerDocument.__parser.parse(html);
+                }
                 this.appendChild(fragment);
             }
         });

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#map/attributes/attributes*/
+/*can@2.3.16#map/attributes/attributes*/
 steal('can/util', 'can/map/map_helpers.js', 'can/map', 'can/list', function (can, mapHelpers, Map) {
     can.dev.warn('can/map/attributes is a deprecated plugin and will be removed in a future release. ' + 'can/map/define provides the same functionality in a more complete API.');
     can.each([

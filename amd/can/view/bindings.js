@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#view/bindings/bindings*/
+/*can@2.3.16#view/bindings/bindings*/
 define([
     'can/util/library',
     'can/view/expression',
@@ -28,7 +28,8 @@ define([
                         return viewModel;
                     },
                     attributeViewModelBindings: attributeViewModelBindings,
-                    alreadyUpdatedChild: true
+                    alreadyUpdatedChild: true,
+                    nodeList: tagData.parentNodeList
                 });
                 if (dataBinding) {
                     if (dataBinding.onCompleteBinding) {
@@ -62,7 +63,8 @@ define([
                             return viewModel;
                         },
                         attributeViewModelBindings: attributeViewModelBindings,
-                        initializeValues: true
+                        initializeValues: true,
+                        nodeList: tagData.parentNodeList
                     });
                     if (dataBinding) {
                         if (dataBinding.onCompleteBinding) {
@@ -86,7 +88,8 @@ define([
             var viewModel = can.viewModel(el), semaphore = {}, teardown;
             var dataBinding = makeDataBinding({
                 name: attrData.attributeName,
-                value: el.getAttribute(attrData.attributeName)
+                value: el.getAttribute(attrData.attributeName),
+                nodeList: attrData.nodeList
             }, el, {
                 templateType: attrData.templateType,
                 scope: attrData.scope,
@@ -119,7 +122,8 @@ define([
                             getViewModel: function () {
                                 return viewModel;
                             },
-                            initializeValues: true
+                            initializeValues: true,
+                            nodeList: attrData.nodeList
                         });
                         if (dataBinding) {
                             if (dataBinding.onCompleteBinding) {
@@ -507,6 +511,14 @@ define([
             bindingInfo.initializeValues = true;
         }
         var parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild), childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent, bindingInfo.stickyParentToChild && parentCompute), updateParent, updateChild, childLifecycle;
+        if (bindingData.nodeList) {
+            if (parentCompute && parentCompute.isComputed) {
+                parentCompute.computeInstance.setPrimaryDepth(bindingData.nodeList.nesting + 1);
+            }
+            if (childCompute && childCompute.isComputed) {
+                childCompute.computeInstance.setPrimaryDepth(bindingData.nodeList.nesting + 1);
+            }
+        }
         if (bindingInfo.parentToChild) {
             updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
         }

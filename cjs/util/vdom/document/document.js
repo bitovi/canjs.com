@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#util/vdom/document/document*/
+/*can@2.3.16#util/vdom/document/document*/
 var can = require('../../can.js');
 var simpleDOM = require('can-simple-dom/can-simple-dom');
 var makeParser = require('../build_fragment/make_parser.js');

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#view/view*/
+/*can@2.3.16#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -193,13 +193,17 @@ define(['can/util/library'], function (can) {
         preloadStringRenderer: function (id, stringRenderer) {
             return this.preload(id, makeRenderer(stringRenderer));
         },
-        render: function (view, data, helpers, callback) {
-            return can.view.renderAs('string', view, data, helpers, callback);
+        render: function (view, data, helpers, callback, nodelist) {
+            return can.view.renderAs('string', view, data, helpers, callback, nodelist);
         },
-        renderTo: function (format, renderer, data, helpers) {
-            return (format === 'string' && renderer.render ? renderer.render : renderer)(data, helpers);
+        renderTo: function (format, renderer, data, helpers, nodelist) {
+            return (format === 'string' && renderer.render ? renderer.render : renderer)(data, helpers, nodelist);
         },
-        renderAs: function (format, view, data, helpers, callback) {
+        renderAs: function (format, view, data, helpers, callback, nodelist) {
+            if (callback !== undefined && typeof callback.expression === 'string') {
+                nodelist = callback;
+                callback = undefined;
+            }
             if (isFunction(helpers)) {
                 callback = helpers;
                 helpers = undefined;
@@ -221,7 +225,7 @@ define(['can/util/library'], function (can) {
                             }
                         }
                     }
-                    result = can.view.renderTo(format, renderer, dataCopy, helpers);
+                    result = can.view.renderTo(format, renderer, dataCopy, helpers, nodelist);
                     deferred.resolve(result, dataCopy);
                     if (callback) {
                         callback(result, dataCopy);
@@ -236,15 +240,15 @@ define(['can/util/library'], function (can) {
                 if (async) {
                     response = deferred;
                     deferred.then(function (renderer) {
-                        callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
+                        callback(data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer);
                     });
                 } else {
                     if (deferred.state() === 'resolved' && deferred.__view_id) {
                         var currentRenderer = $view.cachedRenderers[deferred.__view_id];
-                        return data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+                        return data ? can.view.renderTo(format, currentRenderer, data, helpers, nodelist) : currentRenderer;
                     } else {
                         deferred.then(function (renderer) {
-                            response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+                            response = data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer;
                         });
                     }
                 }

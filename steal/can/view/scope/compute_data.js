@@ -1,23 +1,15 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#view/scope/compute_data*/
+/*can@2.3.16#view/scope/compute_data*/
 steal('can/util', 'can/compute', 'can/compute/get_value_and_bind.js', function (can, compute, ObservedInfo) {
     var isFastPath = function (computeData) {
         return computeData.reads && computeData.reads.length === 1 && computeData.root instanceof can.Map && !can.isFunction(computeData.root[computeData.reads[0].key]);
-    };
-    var getValueAndBindSinglePropertyRead = function (readInfo, computeData, singlePropertyReadChanged) {
-        var target = computeData.root, prop = computeData.reads[0].key;
-        target.bind(prop, singlePropertyReadChanged);
-        readInfo.value = computeData.initialValue;
-    };
-    var unbindSinglePropertyRead = function (computeData, singlePropertyReadChanged) {
-        computeData.root.unbind(computeData.reads[0].key, singlePropertyReadChanged);
     };
     var scopeReader = function (scope, key, options, computeData, newVal) {
         if (arguments.length > 4) {
@@ -53,33 +45,28 @@ steal('can/util', 'can/compute', 'can/compute/get_value_and_bind.js', function (
                 } else {
                     return scopeReader(scope, key, options, computeData);
                 }
-            }, singlePropertyReadChanged = function (ev, newVal, oldVal) {
-                if (typeof newVal !== 'function') {
-                    compute.computeInstance.updater(newVal, oldVal, ev.batchNum);
-                } else {
-                    unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    readInfo.getValueAndBind();
-                    isFastPathBound = false;
-                    compute.computeInstance.updater(readInfo.value, oldVal, ev.batchNum);
-                }
-            }, isFastPathBound = false, compute = can.compute(undefined, {
+            }, compute = can.compute(undefined, {
                 on: function () {
                     readInfo.getValueAndBind();
                     if (isFastPath(computeData)) {
-                        getValueAndBindSinglePropertyRead(readInfo, computeData, singlePropertyReadChanged);
-                        readInfo.teardown();
-                        readInfo.newObserved = {};
-                        isFastPathBound = true;
+                        readInfo.dependencyChange = function (ev, newVal) {
+                            if (typeof newVal !== 'function') {
+                                this.newVal = newVal;
+                            } else {
+                                readInfo.dependencyChange = ObservedInfo.prototype.dependencyChange;
+                                readInfo.getValueAndBind = ObservedInfo.prototype.getValueAndBind;
+                            }
+                            return ObservedInfo.prototype.dependencyChange.call(this, ev);
+                        };
+                        readInfo.getValueAndBind = function () {
+                            this.value = this.newVal;
+                        };
                     }
                     compute.computeInstance.value = readInfo.value;
-                    compute.computeInstance.hasDependencies = isFastPathBound || !can.isEmptyObject(readInfo.newObserved);
+                    compute.computeInstance.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
                 },
                 off: function () {
-                    if (isFastPathBound) {
-                        unbindSinglePropertyRead(computeData, singlePropertyReadChanged);
-                    } else {
-                        readInfo.teardown();
-                    }
+                    readInfo.teardown();
                 },
                 set: scopeRead,
                 get: scopeRead,

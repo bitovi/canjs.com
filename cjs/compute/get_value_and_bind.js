@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#compute/get_value_and_bind*/
+/*can@2.3.16#compute/get_value_and_bind*/
 var can = require('../util/util.js');
 function ObservedInfo(func, context, compute) {
     this.newObserved = {};
@@ -60,7 +60,7 @@ can.simpleExtend(ObservedInfo.prototype, {
             this.depth = null;
         }
     },
-    onDependencyChange: function (ev) {
+    dependencyChange: function (ev) {
         if (this.bound && this.ready) {
             if (ev.batchNum !== undefined) {
                 if (ev.batchNum !== this.batchNum) {
@@ -71,6 +71,9 @@ can.simpleExtend(ObservedInfo.prototype, {
                 this.updateCompute(ev.batchNum);
             }
         }
+    },
+    onDependencyChange: function (ev, newVal, oldVal) {
+        this.dependencyChange(ev, newVal, oldVal);
     },
     updateCompute: function (batchNum) {
         if (this.bound) {

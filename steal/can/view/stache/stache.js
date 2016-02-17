@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#view/stache/stache*/
+/*can@2.3.16#view/stache/stache*/
 steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './text_section.js', './mustache_core.js', './mustache_helpers.js', './intermediate_and_imports.js', 'can/view/callbacks', 'can/view/bindings', function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     can.view.parser = parser;
@@ -156,11 +156,12 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
                         if (!state.node.attributes) {
                             state.node.attributes = [];
                         }
-                        state.node.attributes.push(function (scope, options) {
+                        state.node.attributes.push(function (scope, options, nodeList) {
                             attrCallback(this, {
                                 attributeName: attrName,
                                 scope: scope,
-                                options: options
+                                options: options,
+                                nodeList: nodeList
                             });
                         });
                     }

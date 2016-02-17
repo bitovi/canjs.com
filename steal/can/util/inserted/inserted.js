@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#util/inserted/inserted*/
+/*can@2.3.16#util/inserted/inserted*/
 steal('can/util/can.js', function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {

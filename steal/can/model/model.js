@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#model/model*/
+/*can@2.3.16#model/model*/
 steal('can/util', 'can/map', 'can/list', function (can) {
     var pipe = function (def, thisArg, func) {
             var d = new can.Deferred();

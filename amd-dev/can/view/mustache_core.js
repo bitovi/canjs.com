@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#view/stache/mustache_core*/
+/*can@2.3.16#view/stache/mustache_core*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -37,6 +37,7 @@ define([
                 txt += helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options);
             }
             return txt;
+        }, k = function () {
         };
     var core = {
         expression: expression,
@@ -185,7 +186,7 @@ define([
                     compute = can.compute(evaluator, null, false);
                 }
                 compute.computeInstance.setPrimaryDepth(nodeList.nesting);
-                compute.computeInstance.bind('change', can.k);
+                compute.computeInstance.bind('change', k);
                 var value = compute();
                 if (typeof value === 'function') {
                     can.__notObserve(value)(this);
@@ -210,7 +211,7 @@ define([
                         elements.replace([this], can.frag(value, this.ownerDocument));
                     }
                 }
-                compute.computeInstance.unbind('change', can.k);
+                compute.computeInstance.unbind('change', k);
             };
         },
         splitModeFromExpression: function (expression, state) {

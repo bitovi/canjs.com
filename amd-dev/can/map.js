@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#map/map*/
+/*can@2.3.16#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -229,7 +229,7 @@ define([
             props = can.simpleExtend({}, props);
             var prop, self = this, newVal;
             can.batch.start();
-            this.each(function (curVal, prop) {
+            this._each(function (curVal, prop) {
                 if (prop === '_cid') {
                     return;
                 }

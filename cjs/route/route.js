@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.14
+ * CanJS - 2.3.16
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 06 Feb 2016 00:01:32 GMT
+ * Wed, 17 Feb 2016 00:30:11 GMT
  * Licensed MIT
  */
 
-/*can@2.3.14#route/route*/
+/*can@2.3.16#route/route*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -39,7 +39,7 @@ var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = 
     }, each = can.each, extend = can.extend, stringify = function (obj) {
         if (obj && typeof obj === 'object') {
             if (obj instanceof can.Map) {
-                obj = obj.attr();
+                obj = obj;
             } else {
                 obj = can.isFunction(obj.slice) ? obj.slice() : can.extend({}, obj);
             }
@@ -67,7 +67,13 @@ var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = 
             lastHash = path;
             changedAttrs = [];
         }, 10);
-    }, eventsObject = can.extend({}, can.event);
+    }, eventsObject = can.extend({}, can.event), stringCoercingMapDecorator = function (map) {
+        var typeSuper = map.__type;
+        map.__type = function () {
+            return stringify(typeSuper.apply(map, arguments));
+        };
+        return map;
+    };
 can.route = function (url, defaults) {
     var root = can.route._call('root');
     if (root.lastIndexOf('/') === root.length - 1 && url.indexOf('/') === 0) {
@@ -157,7 +163,7 @@ extend(can.route, {
         }
         return paramsMatcher.test(url) ? can.deparam(url.slice(1)) : {};
     },
-    data: new can.Map({}),
+    data: stringCoercingMapDecorator(new can.Map({})),
     map: function (data) {
         var appState;
         if (data.prototype instanceof can.Map) {
@@ -165,7 +171,7 @@ extend(can.route, {
         } else {
             appState = data;
         }
-        can.route.data = appState;
+        can.route.data = stringCoercingMapDecorator(appState);
     },
     routes: {},
     ready: function (val) {
@@ -264,18 +270,13 @@ each([
 });
 can.route.attr = function (attr, val) {
     var type = typeof attr, newArguments;
-    if (val === undefined) {
-        newArguments = arguments;
-    } else if (type !== 'string' && type !== 'number') {
+    if (type !== 'string' && type !== 'number' && val !== undefined) {
         newArguments = [
             stringify(attr),
             val
         ];
     } else {
-        newArguments = [
-            attr,
-            stringify(val)
-        ];
+        newArguments = arguments;
     }
     return can.route.data.attr.apply(can.route.data, newArguments);
 };
