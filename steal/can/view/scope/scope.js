@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/scope/scope*/
+/*can@2.3.17#view/scope/scope*/
 steal('can/util', 'can/view/scope/compute_data.js', 'can/construct', 'can/map', 'can/list', 'can/view', 'can/compute', function (can, makeComputeData) {
     function Scope(context, parent, meta) {
         this._context = context;

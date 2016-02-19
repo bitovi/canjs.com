@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#route/route*/
+/*can@2.3.17#route/route*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -68,9 +68,15 @@ var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = 
             changedAttrs = [];
         }, 10);
     }, eventsObject = can.extend({}, can.event), stringCoercingMapDecorator = function (map) {
-        var typeSuper = map.__type;
-        map.__type = function () {
-            return stringify(typeSuper.apply(map, arguments));
+        var attrSuper = map.attr;
+        map.attr = function (prop, val) {
+            var serializable = this.define === undefined || this.define[prop] === undefined || !!this.define[prop].serialize, args;
+            if (serializable) {
+                args = stringify(Array.apply(null, arguments));
+            } else {
+                args = arguments;
+            }
+            return attrSuper.apply(this, args);
         };
         return map;
     };
@@ -268,17 +274,8 @@ each([
         return can.route.data[name].apply(can.route.data, arguments);
     };
 });
-can.route.attr = function (attr, val) {
-    var type = typeof attr, newArguments;
-    if (type !== 'string' && type !== 'number' && val !== undefined) {
-        newArguments = [
-            stringify(attr),
-            val
-        ];
-    } else {
-        newArguments = arguments;
-    }
-    return can.route.data.attr.apply(can.route.data, newArguments);
+can.route.attr = function () {
+    return can.route.data.attr.apply(can.route.data, arguments);
 };
 can.route.batch = can.batch;
 var setState = can.route.setState = function () {

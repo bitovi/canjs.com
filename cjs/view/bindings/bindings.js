@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/bindings/bindings*/
+/*can@2.3.17#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
@@ -235,7 +235,7 @@ var behaviors = {
         } else if (isContentEditable(el)) {
             propName = '$innerHTML';
         }
-        makeDataBinding({
+        var dataBinding = makeDataBinding({
             name: '{(' + propName + '})',
             value: attrValue
         }, el, {
@@ -245,6 +245,9 @@ var behaviors = {
             initializeValues: true,
             legacyBindings: true,
             syncChildWithParent: true
+        });
+        can.one.call(el, 'removed', function () {
+            dataBinding.onTeardown();
         });
     }
 };

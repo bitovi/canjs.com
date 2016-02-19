@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/elements*/
+/*can@2.3.17#view/elements*/
 steal('can/util', 'can/view', function (can) {
     var doc = typeof document !== 'undefined' ? document : null;
     var selectsCommentNodes = doc && function () {

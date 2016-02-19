@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/stache/mustache_core*/
+/*can@2.3.17#view/stache/mustache_core*/
 steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/live', 'can/view/elements.js', 'can/view/scope', 'can/view/node_lists', function (can, utils, mustacheHelpers, expression, live, elements, Scope, nodeLists) {
     live = live || can.view.live;
     elements = elements || can.view.elements;

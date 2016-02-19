@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/bindings/bindings*/
+/*can@2.3.17#view/bindings/bindings*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/view/live', 'can/view/scope', 'can/view/href', function (can, expression, viewCallbacks, live) {
     var behaviors = {
         viewModel: function (el, tagData, makeViewModel, initialViewModelData) {
@@ -234,7 +234,7 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/vi
             } else if (isContentEditable(el)) {
                 propName = '$innerHTML';
             }
-            makeDataBinding({
+            var dataBinding = makeDataBinding({
                 name: '{(' + propName + '})',
                 value: attrValue
             }, el, {
@@ -244,6 +244,9 @@ steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/vi
                 initializeValues: true,
                 legacyBindings: true,
                 syncChildWithParent: true
+            });
+            can.one.call(el, 'removed', function () {
+                dataBinding.onTeardown();
             });
         }
     };

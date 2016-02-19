@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
-/*can@2.3.16#view/stache/stache*/
+/*can@2.3.17#view/stache/stache*/
 steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './text_section.js', './mustache_core.js', './mustache_helpers.js', './intermediate_and_imports.js', 'can/view/callbacks', 'can/view/bindings', function (can, parser, target, HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks) {
     parser = parser || can.view.parser;
     can.view.parser = parser;
@@ -182,7 +182,15 @@ steal('can/util', 'can/view/parser', 'can/view/target', './html_section.js', './
             special: function (text) {
                 var firstAndText = mustacheCore.splitModeFromExpression(text, state), mode = firstAndText.mode, expression = firstAndText.expression;
                 if (expression === 'else') {
-                    (state.attr && state.attr.section ? state.attr.section : state.textContentOnly || section).inverse();
+                    var inverseSection;
+                    if (state.attr && state.attr.section) {
+                        inverseSection = state.attr.section;
+                    } else if (state.node && state.node.section) {
+                        inverseSection = state.node.section;
+                    } else {
+                        inverseSection = state.textContentOnly || section;
+                    }
+                    inverseSection.inverse();
                     return;
                 }
                 if (mode === '!') {

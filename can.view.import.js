@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.16
+ * CanJS - 2.3.17
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 17 Feb 2016 00:30:11 GMT
+ * Fri, 19 Feb 2016 22:54:51 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.16#view/import/import*/
+/*can@2.3.17#view/import/import*/
 define('can/view/import/import', [
     'can/util/util',
     'can/view/callbacks/callbacks'
