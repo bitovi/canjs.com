@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#map/define/define*/
+/*can@2.3.18#map/define/define*/
 define([
     'can/util/library',
     'can/map_helpers',
@@ -32,7 +32,7 @@ define([
     mapHelpers.define = function (Map) {
         var definitions = Map.prototype.define;
         if (Map.define) {
-            can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properies.');
+            can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properties.');
         }
         Map.defaultGenerators = {};
         for (var prop in definitions) {

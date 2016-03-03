@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can-simple-dom@0.3.0-pre.3#simple-dom/html-parser*/
+/*can-simple-dom@0.3.0#simple-dom/html-parser*/
 steal('', function () {
     'use strict';
     Object.defineProperty(exports, '__esModule', { value: true });

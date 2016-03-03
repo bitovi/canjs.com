@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#view/modifiers/modifiers*/
+/*can@2.3.18#view/modifiers/modifiers*/
 steal('jquery', 'can/util', 'can/view', function ($, can) {
     $ = $ || window.$;
     var convert, modify, isTemplate, isHTML, isDOM, getCallback, noHookup = {

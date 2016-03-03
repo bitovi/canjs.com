@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#map/map*/
+/*can@2.3.18#map/map*/
 steal('can/util', 'can/util/bind', './bubble.js', './map_helpers.js', 'can/construct', 'can/util/batch', 'can/compute/get_value_and_bind.js', function (can, bind, bubble, mapHelpers) {
     var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
@@ -18,7 +18,7 @@ steal('can/util', 'can/util/bind', './bubble.js', './map_helpers.js', 'can/const
                     can.dev.warn('can/map/define is not included, yet there is a define property ' + 'used. You may want to add this plugin.');
                 }
                 if (this.define && !mapHelpers.define) {
-                    can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properies. Also, can/map/define is not included.');
+                    can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properties. Also, can/map/define is not included.');
                 }
                 if (!this.defaults) {
                     this.defaults = {};

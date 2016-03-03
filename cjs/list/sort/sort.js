@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#list/sort/sort*/
+/*can@2.3.18#list/sort/sort*/
 var can = require('../../util/util.js');
 require('../list.js');
 var oldBubbleRule = can.List._bubbleRule;
@@ -121,8 +121,8 @@ can.extend(proto, {
         }
         return naiveInsertIndex;
     },
-    _getComparatorValue: function (item, overwrittenComparator) {
-        var comparator = typeof overwrittenComparator === 'string' ? overwrittenComparator : this.comparator;
+    _getComparatorValue: function (item) {
+        var comparator = this.comparator;
         if (item && comparator && typeof comparator === 'string') {
             item = typeof item[comparator] === 'function' ? item[comparator]() : item.attr(comparator);
         }
@@ -136,21 +136,28 @@ can.extend(proto, {
         });
         return a;
     },
-    sort: function (comparator, silent) {
+    sort: function (comparator) {
+        if (arguments.length) {
+            this.attr('comparator', comparator);
+        } else {
+            this._sort();
+        }
+        return this;
+    },
+    _sort: function () {
         var a, b, c, isSorted;
-        var comparatorFn = can.isFunction(comparator) ? comparator : this._comparator;
         for (var i, iMin, j = 0, n = this.length; j < n - 1; j++) {
             iMin = j;
             isSorted = true;
             c = undefined;
             for (i = j + 1; i < n; i++) {
-                a = this._getComparatorValue(this.attr(i), comparator);
-                b = this._getComparatorValue(this.attr(iMin), comparator);
-                if (comparatorFn.call(this, a, b) < 0) {
+                a = this._getComparatorValue(this.attr(i));
+                b = this._getComparatorValue(this.attr(iMin));
+                if (this._comparator.call(this, a, b) < 0) {
                     isSorted = false;
                     iMin = i;
                 }
-                if (c && comparatorFn.call(this, a, c) < 0) {
+                if (c && this._comparator.call(this, a, c) < 0) {
                     isSorted = false;
                 }
                 c = a;
@@ -159,25 +166,21 @@ can.extend(proto, {
                 break;
             }
             if (iMin !== j) {
-                this._swapItems(iMin, j, silent);
+                this._swapItems(iMin, j);
             }
         }
-        if (!silent) {
-            can.batch.trigger(this, 'length', [this.length]);
-        }
+        can.batch.trigger(this, 'length', [this.length]);
         return this;
     },
-    _swapItems: function (oldIndex, newIndex, silent) {
+    _swapItems: function (oldIndex, newIndex) {
         var temporaryItemReference = this[oldIndex];
         [].splice.call(this, oldIndex, 1);
         [].splice.call(this, newIndex, 0, temporaryItemReference);
-        if (!silent) {
-            can.batch.trigger(this, 'move', [
-                temporaryItemReference,
-                newIndex,
-                oldIndex
-            ]);
-        }
+        can.batch.trigger(this, 'move', [
+            temporaryItemReference,
+            newIndex,
+            oldIndex
+        ]);
     }
 });
 can.each({

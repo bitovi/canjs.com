@@ -1,11 +1,11 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#util/util*/
+/*can@2.3.18#util/util*/
 var can = require('./jquery/jquery.js');
 module.exports = can;

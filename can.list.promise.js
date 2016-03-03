@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.17#list/promise/promise*/
+/*can@2.3.18#list/promise/promise*/
 define('can/list/promise/promise', [
     'can/util/can',
     'can/list/list'

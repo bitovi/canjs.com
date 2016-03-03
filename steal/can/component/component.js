@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#component/component*/
+/*can@2.3.18#component/component*/
 steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindings', 'can/control', 'can/observe', 'can/view/mustache', 'can/util/view_model', function (can, viewCallbacks, elements, bindings) {
     var paramReplacer = /\{([^\}]+)\}/g;
     var Component = can.Component = can.Construct.extend({
@@ -43,7 +43,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindin
         }
     }, {
         setup: function (el, componentTagData) {
-            var initialViewModelData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
+            var initialViewModelData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                     for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                         teardownFunctions[i]();
                     }
@@ -53,6 +53,7 @@ steal('can/util', 'can/view/callbacks', 'can/view/elements.js', 'can/view/bindin
             });
             if (setupBindings) {
                 teardownFunctions.push(bindings.behaviors.viewModel(el, componentTagData, function (initialViewModelData) {
+                    initialViewModelData['%root'] = componentTagData.scope.attr('%root');
                     var protoViewModel = component.scope || component.viewModel;
                     if (component.constructor.Map) {
                         viewModel = new component.constructor.Map(initialViewModelData);

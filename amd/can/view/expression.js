@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#view/stache/expression*/
+/*can@2.3.18#view/stache/expression*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -125,7 +125,7 @@ define([
         var method = this.methodExpr.value(scope, helperScope);
         this.isHelper = this.methodExpr.isHelper;
         var hasHash = !can.isEmptyObject(this.hashExprs), getArgs = this.args(scope, helperScope), getHash = this.hash(scope, helperScope);
-        return can.compute(function () {
+        return can.compute(function (newVal) {
             var func = method;
             if (func && func.isComputed) {
                 func = func();
@@ -137,6 +137,9 @@ define([
                 }
                 if (helperOptions) {
                     args.push(helperOptions);
+                }
+                if (arguments.length) {
+                    args.unshift(new expression.SetIdentifier(newVal));
                 }
                 return func.apply(null, args);
             }
@@ -388,6 +391,9 @@ define([
         Helper: Helper,
         HelperLookup: HelperLookup,
         HelperScopeLookup: HelperScopeLookup,
+        SetIdentifier: function (value) {
+            this.value = value;
+        },
         tokenize: function (expression) {
             var tokens = [];
             (can.trim(expression) + ' ').replace(tokensRegExp, function (whole, arg) {

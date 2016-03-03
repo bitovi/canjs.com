@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.17
+ * CanJS - 2.3.18
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 19 Feb 2016 22:54:51 GMT
+ * Thu, 03 Mar 2016 17:58:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.17#component/component*/
+/*can@2.3.18#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 var elements = require('../view/elements.js');
@@ -50,7 +50,7 @@ var Component = can.Component = can.Construct.extend({
     }
 }, {
     setup: function (el, componentTagData) {
-        var initialViewModelData = { '%root': componentTagData.scope.attr('%root') }, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
+        var initialViewModelData = {}, component = this, lexicalContent = (typeof this.leakScope === 'undefined' ? false : !this.leakScope) && !!this.template, viewModel, frag, teardownFunctions = [], callTeardownFunctions = function () {
                 for (var i = 0, len = teardownFunctions.length; i < len; i++) {
                     teardownFunctions[i]();
                 }
@@ -60,6 +60,7 @@ var Component = can.Component = can.Construct.extend({
         });
         if (setupBindings) {
             teardownFunctions.push(bindings.behaviors.viewModel(el, componentTagData, function (initialViewModelData) {
+                initialViewModelData['%root'] = componentTagData.scope.attr('%root');
                 var protoViewModel = component.scope || component.viewModel;
                 if (component.constructor.Map) {
                     viewModel = new component.constructor.Map(initialViewModelData);
