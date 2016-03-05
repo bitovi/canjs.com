@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#view/stache/expression*/
+/*can@2.3.19#view/stache/expression*/
 define([
     'can/util/library',
     'can/view/utils',
@@ -41,7 +41,7 @@ define([
             }
             return res;
         }, convertToArgExpression = function (expr) {
-            if (!(expr instanceof Arg) && !(expr instanceof Literal)) {
+            if (!(expr instanceof Arg) && !(expr instanceof Literal) && !(expr instanceof Hashes)) {
                 return new Arg(expr);
             } else {
                 return expr;
@@ -76,15 +76,32 @@ define([
     Arg.prototype.value = function () {
         return this.expr.value.apply(this.expr, arguments);
     };
-    var Hash = function () {
+    var Hashes = function (hashExpressions) {
+        this.hashExprs = hashExpressions;
     };
-    var Call = function (methodExpression, argExpressions, hashExpressions) {
+    Hashes.prototype.value = function () {
+        var hash = {};
+        for (var prop in this.hashExprs) {
+            var val = this.hashExprs[prop], value = val.value.apply(val, arguments);
+            hash[prop] = {
+                call: value && value.isComputed && (!val.modifiers || !val.modifiers.compute),
+                value: value
+            };
+        }
+        return can.compute(function () {
+            var finalHash = {};
+            for (var prop in hash) {
+                finalHash[prop] = hash[prop].call ? hash[prop].value() : hash[prop].value;
+            }
+            return finalHash;
+        });
+    };
+    var Call = function (methodExpression, argExpressions, hashes) {
+        if (hashes && !can.isEmptyObject(hashes)) {
+            argExpressions.push(new Hashes(hashes));
+        }
         this.methodExpr = methodExpression;
         this.argExprs = can.map(argExpressions, convertToArgExpression);
-        var hashExprs = this.hashExprs = {};
-        can.each(hashExpressions, function (expr, name) {
-            hashExprs[name] = convertToArgExpression(expr);
-        });
     };
     Call.prototype.args = function (scope, helperOptions) {
         var args = [];
@@ -92,7 +109,7 @@ define([
             var arg = this.argExprs[i];
             var value = arg.value.apply(arg, arguments);
             args.push({
-                call: value && value.isComputed && !arg.modifiers.compute,
+                call: value && value.isComputed && (!arg.modifiers || !arg.modifiers.compute),
                 value: value
             });
         }
@@ -104,27 +121,10 @@ define([
             return finalArgs;
         };
     };
-    Call.prototype.hash = function (scope, helperOptions) {
-        var hash = {};
-        for (var prop in this.hashExprs) {
-            var val = this.hashExprs[prop], value = val.value.apply(val, arguments);
-            hash[prop] = {
-                call: value && value.isComputed && !val.modifiers.compute,
-                value: value
-            };
-        }
-        return function () {
-            var finalHash = {};
-            for (var prop in hash) {
-                finalHash[prop] = hash[prop].call ? hash[prop].value() : hash[prop].value;
-            }
-            return finalHash;
-        };
-    };
     Call.prototype.value = function (scope, helperScope, helperOptions) {
         var method = this.methodExpr.value(scope, helperScope);
         this.isHelper = this.methodExpr.isHelper;
-        var hasHash = !can.isEmptyObject(this.hashExprs), getArgs = this.args(scope, helperScope), getHash = this.hash(scope, helperScope);
+        var getArgs = this.args(scope, helperScope);
         return can.compute(function (newVal) {
             var func = method;
             if (func && func.isComputed) {
@@ -132,9 +132,6 @@ define([
             }
             if (typeof func === 'function') {
                 var args = getArgs();
-                if (hasHash) {
-                    args.push(getHash());
-                }
                 if (helperOptions) {
                     args.push(helperOptions);
                 }
@@ -394,7 +391,7 @@ define([
         Lookup: Lookup,
         ScopeLookup: ScopeLookup,
         Arg: Arg,
-        Hash: Hash,
+        Hashes: Hashes,
         Call: Call,
         Helper: Helper,
         HelperLookup: HelperLookup,
@@ -445,26 +442,31 @@ define([
             return expr;
         },
         hydrateAst: function (ast, options, methodType, isArg) {
+            var hashes, self = this;
             if (ast.type === 'Lookup') {
                 return new (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root && this.hydrateAst(ast.root, options, methodType));
             } else if (ast.type === 'Literal') {
                 return new Literal(ast.value);
             } else if (ast.type === 'Arg') {
                 return new Arg(this.hydrateAst(ast.children[0], options, methodType, isArg), { compute: true });
+            } else if (ast.type === 'Hashes') {
+                hashes = {};
+                can.each(ast.children, function (child) {
+                    hashes[child.prop] = self.hydrateAst(child.children[0], options, ast.type, true);
+                });
+                return new Hashes(hashes);
             } else if (ast.type === 'Hash') {
                 throw new Error('');
             } else if (ast.type === 'Call' || ast.type === 'Helper') {
-                var hashes = {}, args = [], children = ast.children;
-                if (children) {
-                    for (var i = 0; i < children.length; i++) {
-                        var child = children[i];
-                        if (child.type === 'Hash') {
-                            hashes[child.prop] = this.hydrateAst(child.children[0], options, ast.type, true);
-                        } else {
-                            args.push(this.hydrateAst(child, options, ast.type, true));
-                        }
+                var args = [];
+                hashes = {};
+                can.each(ast.children, function (child) {
+                    if (child.type === 'Hash') {
+                        hashes[child.prop] = self.hydrateAst(child.children[0], options, ast.type, true);
+                    } else {
+                        args.push(self.hydrateAst(child, options, ast.type, true));
                     }
-                }
+                });
                 return new (options.methodRule(ast))(this.hydrateAst(ast.method, options, ast.type), args, hashes);
             }
         },
@@ -504,9 +506,17 @@ define([
                             });
                         }
                     }
+                    top = stack.popUntil([
+                        'Helper',
+                        'Call',
+                        'Hashes'
+                    ]);
+                    if (top.type === 'Call') {
+                        stack.addToAndPush(['Call'], { type: 'Hashes' });
+                    }
                     stack.addToAndPush([
                         'Helper',
-                        'Call'
+                        'Hashes'
                     ], {
                         type: 'Hash',
                         prop: token

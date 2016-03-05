@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#compute/proto_compute*/
+/*can@2.3.19#compute/proto_compute*/
 steal('can/util', 'can/util/bind', 'can/compute/read.js', 'can/compute/get_value_and_bind.js', 'can/util/batch', function (can, bind, read, ObservedInfo) {
     can.Compute = function (getterSetter, context, eventName, bindOnce) {
         can.cid(this, 'compute');

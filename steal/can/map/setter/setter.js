@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#map/setter/setter*/
+/*can@2.3.19#map/setter/setter*/
 steal('can/util', 'can/map', function (can) {
     can.dev.warn('can/map/setter is a deprecated plugin and will be removed in a future release. ' + 'can/map/define provides the same functionality in a more complete API.');
     can.classize = function (s, join) {

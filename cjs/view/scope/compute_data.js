@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#view/scope/compute_data*/
+/*can@2.3.19#view/scope/compute_data*/
 var can = require('../../util/util.js');
 var compute = require('../../compute/compute.js');
 var ObservedInfo = require('../../compute/get_value_and_bind.js');
@@ -68,6 +68,8 @@ module.exports = function (scope, key, options) {
                 compute.computeInstance.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
             },
             off: function () {
+                readInfo.dependencyChange = ObservedInfo.prototype.dependencyChange;
+                readInfo.getValueAndBind = ObservedInfo.prototype.getValueAndBind;
                 readInfo.teardown();
             },
             set: scopeRead,

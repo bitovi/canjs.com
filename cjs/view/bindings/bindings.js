@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#view/bindings/bindings*/
+/*can@2.3.19#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
@@ -185,10 +185,7 @@ var behaviors = {
                 '%scope': data.scope,
                 '%context': data.scope._context
             }, { notContext: true });
-            var args = expr.args(localScope, null)(), hash = expr.hash(localScope, null)();
-            if (!can.isEmptyObject(hash)) {
-                args.push(hash);
-            }
+            var args = expr.args(localScope, null)();
             return scopeData.value.apply(scopeData.parent, args);
         };
         if (special[event]) {

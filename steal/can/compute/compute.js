@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.18
+ * CanJS - 2.3.19
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 03 Mar 2016 17:58:31 GMT
+ * Sat, 05 Mar 2016 00:00:37 GMT
  * Licensed MIT
  */
 
-/*can@2.3.18#compute/compute*/
+/*can@2.3.19#compute/compute*/
 steal('can/util', 'can/util/bind', 'can/util/batch', 'can/compute/proto_compute.js', function (can, bind) {
     can.compute = function (getterSetter, context, eventName, bindOnce) {
         var internalCompute = new can.Compute(getterSetter, context, eventName, bindOnce);
