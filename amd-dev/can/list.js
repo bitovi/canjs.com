@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.19
+ * CanJS - 2.3.20
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 05 Mar 2016 00:00:37 GMT
+ * Tue, 08 Mar 2016 22:45:38 GMT
  * Licensed MIT
  */
 
-/*can@2.3.19#list/list*/
+/*can@2.3.20#list/list*/
 define([
     'can/util/library',
     'can/map',
@@ -65,8 +65,9 @@ define([
             },
             ___get: function (attr) {
                 if (attr) {
-                    if (this[attr] && this[attr].isComputed && can.isFunction(this.constructor.prototype[attr])) {
-                        return this[attr]();
+                    var computedAttr = this._computedAttrs[attr];
+                    if (computedAttr && computedAttr.compute) {
+                        return computedAttr.compute();
                     } else {
                         return this[attr];
                     }
@@ -177,6 +178,7 @@ define([
     }, function (where, name) {
         var orig = [][name];
         list.prototype[name] = function () {
+            can.batch.start();
             var args = [], len = where ? this.length : 0, i = arguments.length, res, val;
             while (i--) {
                 val = arguments[i];
@@ -186,6 +188,7 @@ define([
             if (!this.comparator || args.length) {
                 this._triggerChange('' + len, 'add', args, undefined);
             }
+            can.batch.stop();
             return res;
         };
     });
@@ -199,10 +202,12 @@ define([
             }
             var args = getArgs(arguments), len = where && this.length ? this.length - 1 : 0;
             var res = [][name].apply(this, args);
+            can.batch.start();
             this._triggerChange('' + len, 'remove', undefined, [res]);
             if (res && res.unbind) {
                 bubble.remove(this, res);
             }
+            can.batch.stop();
             return res;
         };
     });

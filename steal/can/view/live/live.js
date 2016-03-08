@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.19
+ * CanJS - 2.3.20
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 05 Mar 2016 00:00:37 GMT
+ * Tue, 08 Mar 2016 22:45:38 GMT
  * Licensed MIT
  */
 
-/*can@2.3.19#view/live/live*/
+/*can@2.3.20#view/live/live*/
 steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'can/view/parser', 'can/util/array/diff.js', function (can, elements, view, nodeLists, parser, diff) {
     elements = elements || can.view.elements;
     nodeLists = nodeLists || can.view.NodeLists;

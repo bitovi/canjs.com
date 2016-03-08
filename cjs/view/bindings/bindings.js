@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.19
+ * CanJS - 2.3.20
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 05 Mar 2016 00:00:37 GMT
+ * Tue, 08 Mar 2016 22:45:38 GMT
  * Licensed MIT
  */
 
-/*can@2.3.19#view/bindings/bindings*/
+/*can@2.3.20#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
@@ -286,6 +286,7 @@ var getComputeFrom = {
         }
     },
     attribute: function (el, scope, prop, bindingData, mustBeACompute, stickyCompute, event) {
+        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, timer, parentEvents, originalValue;
         if (!event) {
             if (prop === 'innerHTML') {
                 event = [
@@ -299,7 +300,7 @@ var getComputeFrom = {
         if (!can.isArray(event)) {
             event = [event];
         }
-        var hasChildren = el.nodeName.toLowerCase() === 'select', isMultiselectValue = prop === 'value' && hasChildren && el.multiple, isStringValue, lastSet, scheduledAsyncSet = false, timer, set = function (newVal) {
+        var set = function (newVal) {
                 if (hasChildren && !scheduledAsyncSet) {
                     clearTimeout(timer);
                     timer = setTimeout(function () {
@@ -352,11 +353,24 @@ var getComputeFrom = {
                 scheduledAsyncSet = true;
             }, 1);
         }
+        if (el.tagName && el.tagName.toLowerCase() === 'input' && el.form) {
+            parentEvents = [{
+                    el: el.form,
+                    eventName: 'reset',
+                    handler: function () {
+                        set(originalValue);
+                    }
+                }];
+        }
         var observer;
-        return can.compute(get(), {
+        originalValue = get();
+        return can.compute(originalValue, {
             on: function (updater) {
                 can.each(event, function (eventName) {
                     can.bind.call(el, eventName, updater);
+                });
+                can.each(parentEvents, function (parentEvent) {
+                    can.bind.call(parentEvent.el, parentEvent.eventName, parentEvent.handler);
                 });
                 if (hasChildren) {
                     var onMutation = function (mutations) {
@@ -379,6 +393,9 @@ var getComputeFrom = {
             off: function (updater) {
                 can.each(event, function (eventName) {
                     can.unbind.call(el, eventName, updater);
+                });
+                can.each(parentEvents, function (parentEvent) {
+                    can.unbind.call(parentEvent.el, parentEvent.eventName, parentEvent.handler);
                 });
                 if (hasChildren) {
                     if (can.attr.MutationObserver) {
@@ -403,10 +420,12 @@ var bind = {
                     if (syncChild) {
                         if (parentCompute() !== childCompute()) {
                             bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+                            can.batch.start();
                             childCompute(parentCompute());
                             can.batch.after(function () {
                                 --bindingsSemaphore[attrName];
                             });
+                            can.batch.stop();
                         }
                     }
                 } else if (parentCompute instanceof can.Map) {
@@ -422,10 +441,12 @@ var bind = {
     parentToChild: function (el, parentCompute, childUpdate, bindingsSemaphore, attrName) {
         var updateChild = function (ev, newValue) {
             bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || 0) + 1;
+            can.batch.start();
             childUpdate(newValue);
             can.batch.after(function () {
                 --bindingsSemaphore[attrName];
             });
+            can.batch.stop();
         };
         if (parentCompute && parentCompute.isComputed) {
             parentCompute.bind('change', updateChild);

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.19
+ * CanJS - 2.3.20
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 05 Mar 2016 00:00:37 GMT
+ * Tue, 08 Mar 2016 22:45:38 GMT
  * Licensed MIT
  */
 
-/*can@2.3.19#util/util*/
+/*can@2.3.20#util/util*/
 'format steal';
 steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, djo) {
     var dojo = djo || window.dojo;
@@ -152,9 +152,11 @@ steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragmen
     can.isFunction = function (f) {
         return dojo.isFunction(f);
     };
-    var dojoId = 0, dojoAddBinding = function (nodelist, ev, cb) {
+    var dojoId = 0, isFormNode = function (node) {
+            return node.nodeName === 'SELECT' || node.nodeName === 'FORM';
+        }, dojoAddBinding = function (nodelist, ev, cb) {
             nodelist.forEach(function (node) {
-                node = new dojo.NodeList(node.nodeName === 'SELECT' ? [node] : node);
+                node = new dojo.NodeList(isFormNode(node) ? [node] : node);
                 var events = can.data(node, 'events');
                 if (!events) {
                     can.data(node, 'events', events = {});
@@ -189,7 +191,7 @@ steal('can/util/can.js', 'can/util/attr', 'dojo', 'can/event', 'can/util/fragmen
         if (this.bind && this.bind !== can.bind) {
             this.bind(ev, cb);
         } else if (this.on || this.nodeType) {
-            dojoAddBinding(new dojo.NodeList(this.nodeName === 'SELECT' ? [this] : this), ev, cb);
+            dojoAddBinding(new dojo.NodeList(isFormNode(this) ? [this] : this), ev, cb);
         } else if (this.addEvent) {
             this.addEvent(ev, cb);
         } else {
