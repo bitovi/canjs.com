@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#view/live/live*/
+/*can@2.3.21#view/live/live*/
 steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'can/view/parser', 'can/util/array/diff.js', function (can, elements, view, nodeLists, parser, diff) {
     elements = elements || can.view.elements;
     nodeLists = nodeLists || can.view.NodeLists;
@@ -75,7 +75,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
         }, renderAndAddToNodeLists = function (newNodeLists, parentNodeList, render, context, args) {
             var itemNodeList = [];
             if (parentNodeList) {
-                nodeLists.register(itemNodeList, null, parentNodeList, true);
+                nodeLists.register(itemNodeList, null, true, true);
                 itemNodeList.parentList = parentNodeList;
                 itemNodeList.expression = '#each SUBEXPRESSION';
             }

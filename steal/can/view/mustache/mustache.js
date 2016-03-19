@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#view/mustache/mustache*/
+/*can@2.3.21#view/mustache/mustache*/
 steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/compute', 'can/view/render.js', 'can/view/bindings', function (can) {
     can.view.ext = '.mustache';
     var SCOPE = 'scope', HASH = '___h4sh', CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}', SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}', ARG_NAMES = SCOPE + ',options', argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/, makeLookupLiteral = function (type) {

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#util/object/isplain/isplain*/
+/*can@2.3.21#util/object/isplain/isplain*/
 var can = require('../../can.js');
 var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
         return obj !== null && obj == obj.window;

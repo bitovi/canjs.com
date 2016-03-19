@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#view/target/target*/
+/*can@2.3.21#view/target/target*/
 steal('can/util', 'can/view/elements.js', function (can, elements, vdom) {
     var processNodes = function (nodes, paths, location, document) {
             var frag = document.createDocumentFragment();
@@ -70,6 +70,14 @@ steal('can/util', 'can/view/elements.js', function (can, elements, vdom) {
             }
             return callback;
         };
+        var setAttr = function (el, attr) {
+            var value = node.attrs[attr];
+            if (typeof value === 'function') {
+                getCallback().callbacks.push({ callback: value });
+            } else {
+                setAttribute(el, attr, value);
+            }
+        };
         if (nodeType === 'object') {
             if (node.tag) {
                 if (namespacesWork && node.namespace) {
@@ -78,13 +86,12 @@ steal('can/util', 'can/view/elements.js', function (can, elements, vdom) {
                     el = document.createElement(node.tag);
                 }
                 if (node.attrs) {
+                    if (node.tag === 'input' && node.attrs.type) {
+                        setAttr(el, 'type');
+                        delete node.attrs.type;
+                    }
                     for (var attrName in node.attrs) {
-                        var value = node.attrs[attrName];
-                        if (typeof value === 'function') {
-                            getCallback().callbacks.push({ callback: value });
-                        } else {
-                            setAttribute(el, attrName, value);
-                        }
+                        setAttr(el, attrName);
                     }
                 }
                 if (node.attributes) {

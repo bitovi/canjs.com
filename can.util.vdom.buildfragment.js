@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
@@ -1002,7 +1002,7 @@ define('simple-dom', [
     }
     _defaults(exports, _interopRequireWildcard(_simpleDomDom));
 });
-/*can@2.3.20#util/vdom/build_fragment/make_parser*/
+/*can@2.3.21#util/vdom/build_fragment/make_parser*/
 define('can/util/vdom/build_fragment/make_parser', [
     'can/view/parser/parser',
     'simple-dom'
@@ -1062,7 +1062,7 @@ define('can/util/vdom/build_fragment/make_parser', [
         }, document, simpleDOM.voidMap);
     };
 });
-/*can@2.3.20#util/vdom/build_fragment/build_fragment*/
+/*can@2.3.21#util/vdom/build_fragment/build_fragment*/
 define('can/util/vdom/build_fragment/build_fragment', [
     'can/util/vdom/build_fragment/make_parser',
     'can/util/util'

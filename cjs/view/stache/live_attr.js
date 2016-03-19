@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#view/stache/live_attr*/
+/*can@2.3.21#view/stache/live_attr*/
 var can = require('../../util/util.js');
 var live = require('../live/live.js');
 var elements = require('../elements.js');

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#util/batch/batch*/
+/*can@2.3.21#util/batch/batch*/
 var can = require('../can.js');
 var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
 can.batch = {
@@ -36,12 +36,13 @@ can.batch = {
             var batch;
             if (dispatchingBatches === false) {
                 dispatchingBatches = true;
+                var callbacks = [], i;
                 while (batch = batches.shift()) {
                     var events = batch.events;
-                    var callbacks = batch.callbacks;
+                    callbacks.push.apply(callbacks, batch.callbacks);
                     dispatchingBatch = batch;
                     can.batch.batchNum = batch.number;
-                    var i, len;
+                    var len;
                     if (callStart) {
                         can.batch.start();
                     }
@@ -49,11 +50,11 @@ can.batch = {
                         can.dispatch.apply(events[i][0], events[i][1]);
                     }
                     can.batch._onDispatchedEvents(batch.number);
-                    for (i = 0; i < callbacks.length; i++) {
-                        callbacks[i]();
-                    }
                     dispatchingBatch = null;
                     can.batch.batchNum = undefined;
+                }
+                for (i = callbacks.length - 1; i >= 0; i--) {
+                    callbacks[i]();
                 }
                 dispatchingBatches = false;
             }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#map/backup/backup*/
+/*can@2.3.21#map/backup/backup*/
 steal('can/util', 'can/compute', 'can/map', 'can/util/object', function (can) {
     var flatProps = function (a, cur) {
         var obj = {};

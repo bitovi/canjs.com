@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
-/*can@2.3.20#compute/get_value_and_bind*/
+/*can@2.3.21#compute/get_value_and_bind*/
 define(['can/util/library'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};

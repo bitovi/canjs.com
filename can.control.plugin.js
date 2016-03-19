@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.20
+ * CanJS - 2.3.21
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Tue, 08 Mar 2016 22:45:38 GMT
+ * Sat, 19 Mar 2016 01:24:17 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.20#control/plugin/plugin*/
+/*can@2.3.21#control/plugin/plugin*/
 define('can/control/plugin/plugin', [
     'dist/jquery',
     'can/util/util',
