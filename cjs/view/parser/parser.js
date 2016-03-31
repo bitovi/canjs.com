@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.21
+ * CanJS - 2.3.22
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 19 Mar 2016 01:24:17 GMT
+ * Thu, 31 Mar 2016 17:02:19 GMT
  * Licensed MIT
  */
 
-/*can@2.3.21#view/parser/parser*/
+/*can@2.3.22#view/parser/parser*/
 function each(items, callback) {
     for (var i = 0; i < items.length; i++) {
         callback(items[i], i);

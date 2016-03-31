@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.21
+ * CanJS - 2.3.22
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 19 Mar 2016 01:24:17 GMT
+ * Thu, 31 Mar 2016 17:02:19 GMT
  * Licensed MIT
  */
 
-/*can@2.3.21#view/ejs/ejs*/
+/*can@2.3.22#view/ejs/ejs*/
 steal('can/util', 'can/view', 'can/util/string', 'can/compute', 'can/view/scanner.js', 'can/view/render.js', function (can) {
     var extend = can.extend, EJS = function (options) {
             if (this.constructor !== EJS) {

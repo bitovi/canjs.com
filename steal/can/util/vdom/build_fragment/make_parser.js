@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.21
+ * CanJS - 2.3.22
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 19 Mar 2016 01:24:17 GMT
+ * Thu, 31 Mar 2016 17:02:19 GMT
  * Licensed MIT
  */
 
-/*can@2.3.21#util/vdom/build_fragment/make_parser*/
+/*can@2.3.22#util/vdom/build_fragment/make_parser*/
 steal('can/view/parser', 'can-simple-dom', function (canParser, simpleDOM) {
     return function (document) {
         return new simpleDOM.HTMLParser(function (string) {

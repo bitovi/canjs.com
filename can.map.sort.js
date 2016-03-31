@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.21
+ * CanJS - 2.3.22
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 19 Mar 2016 01:24:17 GMT
+ * Thu, 31 Mar 2016 17:02:19 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.21#list/sort/sort*/
+/*can@2.3.22#list/sort/sort*/
 define('can/list/sort/sort', [
     'can/util/util',
     'can/list/list'
@@ -301,7 +301,7 @@ define('can/list/sort/sort', [
     }());
     return can.Map;
 });
-/*can@2.3.21#map/sort/sort*/
+/*can@2.3.22#map/sort/sort*/
 define('can/map/sort/sort', ['can/list/sort/sort'], function (sortPlugin) {
     return sortPlugin;
 });

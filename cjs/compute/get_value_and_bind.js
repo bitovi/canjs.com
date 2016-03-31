@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.21
+ * CanJS - 2.3.22
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Sat, 19 Mar 2016 01:24:17 GMT
+ * Thu, 31 Mar 2016 17:02:19 GMT
  * Licensed MIT
  */
 
-/*can@2.3.21#compute/get_value_and_bind*/
+/*can@2.3.22#compute/get_value_and_bind*/
 var can = require('../util/util.js');
 function ObservedInfo(func, context, compute) {
     this.newObserved = {};
