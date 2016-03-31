@@ -170,6 +170,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('docjs:default',
 				['docjs:'+defaultVersion]);
 	grunt.registerTask('docjs:all', all);
-	grunt.registerTask('default', [ 'docjs:default', 'docjs:2.3-pre' ]);
+	grunt.registerTask('default', [ 'docjs:default', 'docjs:3.0-pre' ]);
 
 };

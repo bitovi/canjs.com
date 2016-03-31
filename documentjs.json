@@ -46,7 +46,19 @@
 			]
 		},
 		"2.3": {
-			"source": "git://github.com/bitovi/canjs#master",
+			"source": "git://github.com/canjs/canjs#66940b9c9bbafb7b03921cc9109c995c994df839",
+			"npmInstall": [
+				"steal@^0.11.0",
+				"jquery@~1.11.0",
+				"steal-qunit@0.0.2",
+				"jquerypp@2.0.0",
+				"jquery-ui@^1.10.5",
+				"can-simple-dom@^0.2.8",
+				"steal-benchmark@~0.0.1"
+			]
+		},
+		"3.0-pre": {
+			"source": "git://github.com/canjs/canjs#major",
 			"npmInstall": [
 				"steal@^0.11.0",
 				"jquery@~1.11.0",
