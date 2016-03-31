@@ -85,6 +85,7 @@
 				"github":"https://github.com/bitovi/canjs.com"
 			},
 			"versions": [
+				{"number": "3.0-pre"},
 				{"branch": "master","number": "2.3"},
 				{"number": "2.2"},
 				{"number": "2.1"},
