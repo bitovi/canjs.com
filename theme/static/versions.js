@@ -110,7 +110,7 @@ steal("can/control", "can/util","jquery",function(Control, can, $){
 			// All of this needs to use defaultDest and dest
 	
 			// going old to new
-			if( isVersioned && isNewCurrentVersion )  {
+			if( isNewCurrentVersion )  {
 				var afterVersion = loc.replace(new RegExp(".*"+version),"");
 				
 				var toDocumentJSON = steal.joinURIs(window.location.pathname, 
