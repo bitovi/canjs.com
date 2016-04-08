@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#list/list*/
+/*can@2.3.23#list/list*/
 steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', function (can, Map, bubble, mapHelpers) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {
@@ -23,7 +23,7 @@ steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', func
                 this._setupComputedProperties();
                 instances = instances || [];
                 var teardownMapping;
-                if (can.isDeferred(instances)) {
+                if (can.isPromise(instances)) {
                     this.replace(instances);
                 } else {
                     teardownMapping = instances.length && mapHelpers.addToMap(instances, this);
@@ -235,7 +235,7 @@ steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', func
             return can.each(this, cb, thisarg || this);
         },
         replace: function (newList) {
-            if (can.isDeferred(newList)) {
+            if (can.isPromise(newList)) {
                 if (this._promise) {
                     this._promise.__isCurrentPromise = false;
                 }

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#view/view*/
+/*can@2.3.23#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -76,11 +76,11 @@ define(['can/util/library'], function (can) {
     };
     var getDeferreds = function (data) {
         var deferreds = [];
-        if (can.isDeferred(data)) {
+        if (can.isPromise(data)) {
             return [data];
         } else {
             for (var prop in data) {
-                if (can.isDeferred(data[prop])) {
+                if (can.isPromise(data[prop])) {
                     deferreds.push(data[prop]);
                 }
             }
@@ -216,11 +216,11 @@ define(['can/util/library'], function (can) {
                 deferreds.push(getRenderer(view, true));
                 can.when.apply(can, deferreds).then(function (resolved) {
                     var objs = makeArray(arguments), renderer = objs.pop(), result;
-                    if (can.isDeferred(data)) {
+                    if (can.isPromise(data)) {
                         dataCopy = usefulPart(resolved);
                     } else {
                         for (var prop in data) {
-                            if (can.isDeferred(data[prop])) {
+                            if (can.isPromise(data[prop])) {
                                 dataCopy[prop] = usefulPart(objs.shift());
                             }
                         }
@@ -273,8 +273,9 @@ define(['can/util/library'], function (can) {
         simpleHelper: function (fn) {
             return function () {
                 var realArgs = [];
-                can.each(arguments, function (val, i) {
-                    if (i <= arguments.length) {
+                var fnArgs = arguments;
+                can.each(fnArgs, function (val, i) {
+                    if (i <= fnArgs.length) {
                         while (val && val.isComputed) {
                             val = val();
                         }

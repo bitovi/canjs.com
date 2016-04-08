@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#map/map_helpers*/
+/*can@2.3.23#map/map_helpers*/
 var can = require('../util/util.js');
 require('../util/object/isplain/isplain.js');
 var mapHelpers = {
@@ -17,7 +17,7 @@ var mapHelpers = {
         return typeof attr === 'object' ? attr : ('' + attr).split('.');
     },
     canMakeObserve: function (obj) {
-        return obj && !can.isDeferred(obj) && (can.isArray(obj) || can.isPlainObject(obj));
+        return obj && !can.isPromise(obj) && (can.isArray(obj) || can.isPlainObject(obj));
     },
     serialize: function () {
         var serializeMap = null;

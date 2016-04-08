@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.22#view/modifiers/modifiers*/
+/*can@2.3.23#view/modifiers/modifiers*/
 define('can/view/modifiers/modifiers', [
     'dist/jquery',
     'can/util/util',
@@ -93,7 +93,7 @@ define('can/view/modifiers/modifiers', [
         var old = $.fn[func_name];
         $.fn[func_name] = function () {
             var args = can.makeArray(arguments), callbackNum, callback, self = this, result;
-            if (can.isDeferred(args[0])) {
+            if (can.isPromise(args[0])) {
                 args[0].done(function (res) {
                     modify.call(self, [res], old);
                 });
@@ -109,7 +109,7 @@ define('can/view/modifiers/modifiers', [
                     return this;
                 }
                 result = can.view.apply(can.view, args);
-                if (!can.isDeferred(result)) {
+                if (!can.isPromise(result)) {
                     args = [result];
                 } else {
                     result.done(function (res) {

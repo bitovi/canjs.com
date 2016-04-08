@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#view/callbacks/callbacks*/
+/*can@2.3.23#view/callbacks/callbacks*/
 steal('can/util', 'can/view', function (can) {
     var attr = can.view.attr = function (attributeName, attrHandler) {
         if (attrHandler) {

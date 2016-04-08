@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#model/model*/
+/*can@2.3.23#model/model*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -371,7 +371,7 @@ var ML = can.Model.List = can.List.extend({
     setup: function (params) {
         if (can.isPlainObject(params) && !can.isArray(params)) {
             can.List.prototype.setup.apply(this);
-            this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
+            this.replace(can.isPromise(params) ? params : this.constructor.Map.findAll(params));
         } else {
             can.List.prototype.setup.apply(this, arguments);
         }

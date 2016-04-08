@@ -1,18 +1,18 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#list/promise/promise*/
+/*can@2.3.23#list/promise/promise*/
 var can = require('../../util/can.js');
 require('../list.js');
 var oldReplace = can.List.prototype.replace;
 can.List.prototype.replace = function (data) {
     var result = oldReplace.apply(this, arguments);
-    if (can.isDeferred(data)) {
+    if (can.isPromise(data)) {
         if (this._deferred) {
             this._deferred.__cancelState = true;
         }

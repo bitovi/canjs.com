@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#view/bindings/bindings*/
+/*can@2.3.23#view/bindings/bindings*/
 var can = require('../../util/util.js');
 var expression = require('../stache/expression.js');
 var viewCallbacks = require('../callbacks/callbacks.js');
@@ -143,7 +143,7 @@ var behaviors = {
         refs._context.attr('*' + name, viewModel);
     },
     event: function (el, data) {
-        var attributeName = data.attributeName, legacyBinding = attributeName.indexOf('can-') === 0, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : removeBrackets(attributeName, '(', ')'), onBindElement = legacyBinding;
+        var attributeName = data.attributeName, legacyBinding = attributeName.indexOf('can-') === 0, event = attributeName.indexOf('can-') === 0 ? attributeName.substr('can-'.length) : can.camelize(removeBrackets(attributeName, '(', ')')), onBindElement = legacyBinding;
         if (event.charAt(0) === '$') {
             event = event.substr(1);
             onBindElement = true;
@@ -250,7 +250,7 @@ var behaviors = {
 };
 can.view.attr(/^\{[^\}]+\}$/, behaviors.data);
 can.view.attr(/\*[\w\.\-_]+/, behaviors.reference);
-can.view.attr(/^\([\$?\w\.]+\)$/, behaviors.event);
+can.view.attr(/^\([\$?\w\.\-]+\)$/, behaviors.event);
 can.view.attr(/can-[\w\.]+/, behaviors.event);
 can.view.attr('can-value', behaviors.value);
 var getComputeFrom = {

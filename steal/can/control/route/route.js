@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#control/route/route*/
+/*can@2.3.23#control/route/route*/
 steal('can/util', 'can/route', 'can/control', function (can) {
     can.Control.processors.route = function (el, event, selector, funcName, controller) {
         selector = selector || '';

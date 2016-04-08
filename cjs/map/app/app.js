@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#map/app/app*/
+/*can@2.3.23#map/app/app*/
 var can = require('../../util/util.js');
 require('../map.js');
 require('../../compute/compute.js');
@@ -55,7 +55,7 @@ can.AppMap = can.Map.extend({
             }
             keyData[sortedSetJson(set)] = typeof data.serialize === 'function' ? data.serialize() : data;
         }
-        if (can.isDeferred(inst)) {
+        if (can.isPromise(inst)) {
             this.waitFor(inst);
             inst.then(function (data) {
                 store(data);

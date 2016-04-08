@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.22
+ * CanJS - 2.3.23
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 31 Mar 2016 17:02:19 GMT
+ * Fri, 08 Apr 2016 17:58:15 GMT
  * Licensed MIT
  */
 
-/*can@2.3.22#util/can*/
+/*can@2.3.23#util/can*/
 steal(function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -16,8 +16,14 @@ steal(function () {
     can.global = glbl;
     can.k = function () {
     };
-    can.isDeferred = can.isPromise = function (obj) {
+    can.isDeferred = function (obj) {
+        if (!!can.dev) {
+            can.dev.warn('can.isDeferred: this function is deprecated and will be removed in a future release. can.isPromise replaces the functionality of can.isDeferred.');
+        }
         return obj && typeof obj.then === 'function' && typeof obj.pipe === 'function';
+    };
+    can.isPromise = function (obj) {
+        return !!obj && (window.Promise && obj instanceof Promise || can.isFunction(obj.then) && (can.List === undefined || !(obj instanceof can.List)));
     };
     can.isMapLike = function (obj) {
         return can.Map && (obj instanceof can.Map || obj && obj.___get);
@@ -30,7 +36,7 @@ steal(function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.22';
+    can.VERSION = '2.3.23';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
