@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#map/lazy/lazy*/
+/*can@2.3.24#map/lazy/lazy*/
 var can = require('../../util/util.js');
 var bubble = require('./bubble.js');
 var mapHelpers = require('../map_helpers.js');

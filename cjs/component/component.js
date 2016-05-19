@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#component/component*/
+/*can@2.3.24#component/component*/
 var can = require('../util/util.js');
 var viewCallbacks = require('../view/callbacks/callbacks.js');
 var elements = require('../view/elements.js');

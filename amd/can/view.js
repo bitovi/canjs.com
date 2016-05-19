@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#view/view*/
+/*can@2.3.24#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {

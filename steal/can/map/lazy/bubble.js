@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#map/lazy/bubble*/
+/*can@2.3.24#map/lazy/bubble*/
 steal('can/util', 'can/map/bubble.js', function (can) {
     var bubble = can.bubble;
     return can.extend({}, bubble, {

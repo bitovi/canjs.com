@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#list/sort/sort*/
+/*can@2.3.24#list/sort/sort*/
 define([
     'can/util/library',
     'can/list'
@@ -123,8 +123,8 @@ define([
             }
             return naiveInsertIndex;
         },
-        _getComparatorValue: function (item) {
-            var comparator = this.comparator;
+        _getComparatorValue: function (item, singleUseComparator) {
+            var comparator = singleUseComparator || this.comparator;
             if (item && comparator && typeof comparator === 'string') {
                 item = typeof item[comparator] === 'function' ? item[comparator]() : item.attr(comparator);
             }
@@ -138,28 +138,21 @@ define([
             });
             return a;
         },
-        sort: function (comparator) {
-            if (arguments.length) {
-                this.attr('comparator', comparator);
-            } else {
-                this._sort();
-            }
-            return this;
-        },
-        _sort: function () {
+        sort: function (singleUseComparator) {
             var a, b, c, isSorted;
+            var comparatorFn = can.isFunction(singleUseComparator) ? singleUseComparator : this._comparator;
             for (var i, iMin, j = 0, n = this.length; j < n - 1; j++) {
                 iMin = j;
                 isSorted = true;
                 c = undefined;
                 for (i = j + 1; i < n; i++) {
-                    a = this._getComparatorValue(this.attr(i));
-                    b = this._getComparatorValue(this.attr(iMin));
-                    if (this._comparator.call(this, a, b) < 0) {
+                    a = this._getComparatorValue(this.attr(i), singleUseComparator);
+                    b = this._getComparatorValue(this.attr(iMin), singleUseComparator);
+                    if (comparatorFn.call(this, a, b) < 0) {
                         isSorted = false;
                         iMin = i;
                     }
-                    if (c && this._comparator.call(this, a, c) < 0) {
+                    if (c && comparatorFn.call(this, a, c) < 0) {
                         isSorted = false;
                     }
                     c = a;

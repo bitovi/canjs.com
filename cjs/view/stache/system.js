@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#view/stache/system*/
+/*can@2.3.24#view/stache/system*/
 var stache = require('./stache.js');
 var getIntermediateAndImports = require('./intermediate_and_imports.js');
 var addBundles = require('./add_bundles.js');

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.23
+ * CanJS - 2.3.24
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Fri, 08 Apr 2016 17:58:15 GMT
+ * Thu, 19 May 2016 17:46:31 GMT
  * Licensed MIT
  */
 
-/*can@2.3.23#control/plugin/plugin*/
+/*can@2.3.24#control/plugin/plugin*/
 steal('jquery', 'can/util', 'can/control', function ($, can) {
     $ = $ || window.$;
     var i, isAControllerOf = function (instance, controllers) {
