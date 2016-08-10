@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.24#util/can*/
+/*can@2.3.25#util/can*/
 define('can/util/can', [], function () {
     var glbl = typeof window !== 'undefined' ? window : typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope ? self : global;
     var can = {};
@@ -108,7 +108,7 @@ define('can/util/can', [], function () {
         }
         return object._cid;
     };
-    can.VERSION = '2.3.24';
+    can.VERSION = '2.3.25';
     can.simpleExtend = function (d, s) {
         for (var prop in s) {
             d[prop] = s[prop];
@@ -289,7 +289,7 @@ define('can/util/can', [], function () {
     };
     return can;
 });
-/*can@2.3.24#util/attr/attr*/
+/*can@2.3.25#util/attr/attr*/
 define('can/util/attr/attr', ['can/util/can'], function (can) {
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
@@ -319,7 +319,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
                 'checked': true,
                 'disabled': true,
                 'readonly': function (el, val) {
-                    el.readOnly = true;
+                    el.readOnly = val || typeof val === 'string' ? true : false;
                     return val;
                 },
                 'required': true,
@@ -490,7 +490,7 @@ define('can/util/attr/attr', ['can/util/can'], function (can) {
         };
     return attr;
 });
-/*can@2.3.24#event/event*/
+/*can@2.3.25#event/event*/
 define('can/event/event', ['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -644,7 +644,7 @@ define('can/event/event', ['can/util/can'], function (can) {
     };
     return can.event;
 });
-/*can@2.3.24#util/fragment*/
+/*can@2.3.25#util/fragment*/
 define('can/util/fragment', ['can/util/can'], function (can) {
     var fragmentRE = /^\s*<(\w+)[^>]*>/, toString = {}.toString, fragment = function (html, name, doc) {
             if (name === undefined) {
@@ -709,7 +709,7 @@ define('can/util/fragment', ['can/util/can'], function (can) {
     }());
     return can;
 });
-/*can@2.3.24#util/deferred*/
+/*can@2.3.25#util/deferred*/
 define('can/util/deferred', ['can/util/can'], function (can) {
     var extend = function (target, src) {
             for (var key in src) {
@@ -861,14 +861,14 @@ define('can/util/deferred', ['can/util/can'], function (can) {
     Deferred.prototype.pipe = Deferred.prototype.then;
     return can;
 });
-/*can@2.3.24#util/array/isArrayLike*/
+/*can@2.3.25#util/array/isArrayLike*/
 define('can/util/array/isArrayLike', ['can/util/can'], function (can) {
     can.isArrayLike = function (obj) {
         var length = obj && typeof obj !== 'boolean' && typeof obj !== 'number' && 'length' in obj && obj.length;
         return typeof arr !== 'function' && (length === 0 || typeof length === 'number' && length > 0 && length - 1 in obj);
     };
 });
-/*can@2.3.24#util/array/each*/
+/*can@2.3.25#util/array/each*/
 define('can/util/array/each', [
     'can/util/can',
     'can/util/array/isArrayLike'
@@ -915,7 +915,7 @@ define('can/util/array/each', [
     };
     return can;
 });
-/*can@2.3.24#util/object/isplain/isplain*/
+/*can@2.3.25#util/object/isplain/isplain*/
 define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     var core_hasOwn = Object.prototype.hasOwnProperty, isWindow = function (obj) {
             return obj !== null && obj == obj.window;
@@ -938,7 +938,7 @@ define('can/util/object/isplain/isplain', ['can/util/can'], function (can) {
     can.isPlainObject = isPlainObject;
     return can;
 });
-/*can@2.3.24#util/inserted/inserted*/
+/*can@2.3.25#util/inserted/inserted*/
 define('can/util/inserted/inserted', ['can/util/can'], function (can) {
     can.inserted = function (elems, document) {
         if (!elems.length) {
@@ -988,7 +988,7 @@ define('can/util/inserted/inserted', ['can/util/can'], function (can) {
         can.inserted(children, document);
     };
 });
-/*can@2.3.24#util/util*/
+/*can@2.3.25#util/util*/
 define('can/util/util', [
     'can/util/can',
     'can/util/attr/attr',
@@ -1335,7 +1335,7 @@ define('can/util/util', [
     };
     return can;
 });
-/*can@2.3.24#view/view*/
+/*can@2.3.25#view/view*/
 define('can/view/view', ['can/util/util'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -1633,7 +1633,7 @@ define('can/view/view', ['can/util/util'], function (can) {
     }
     return can;
 });
-/*can@2.3.24#view/callbacks/callbacks*/
+/*can@2.3.25#view/callbacks/callbacks*/
 define('can/view/callbacks/callbacks', [
     'can/util/util',
     'can/view/view'
@@ -1667,6 +1667,9 @@ define('can/view/callbacks/callbacks', [
         if (tagHandler) {
             if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
                 can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
+            }
+            if (!automaticCustomElementCharacters.test(tagName) && tagName !== 'content') {
+                can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is missing a hyphen');
             }
             if (can.global.html5) {
                 can.global.html5.elements += ' ' + tagName;
@@ -1712,7 +1715,7 @@ define('can/view/callbacks/callbacks', [
     };
     return can.view.callbacks;
 });
-/*can@2.3.24#view/elements*/
+/*can@2.3.25#view/elements*/
 define('can/view/elements', [
     'can/util/util',
     'can/view/view'
@@ -1795,7 +1798,7 @@ define('can/view/elements', [
     can.view.elements = elements;
     return elements;
 });
-/*can@2.3.24#util/bind/bind*/
+/*can@2.3.25#util/bind/bind*/
 define('can/util/bind/bind', ['can/util/util'], function (can) {
     can.bindAndSetup = function () {
         can.addEvent.apply(this, arguments);
@@ -1830,7 +1833,7 @@ define('can/util/bind/bind', ['can/util/util'], function (can) {
     };
     return can;
 });
-/*can@2.3.24#util/batch/batch*/
+/*can@2.3.25#util/batch/batch*/
 define('can/util/batch/batch', ['can/util/can'], function (can) {
     var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
@@ -1942,7 +1945,7 @@ define('can/util/batch/batch', ['can/util/can'], function (can) {
         }
     };
 });
-/*can@2.3.24#compute/read*/
+/*can@2.3.25#compute/read*/
 define('can/compute/read', ['can/util/util'], function (can) {
     var read = function (parent, reads, options) {
         options = options || {};
@@ -2171,7 +2174,7 @@ define('can/compute/read', ['can/util/util'], function (can) {
     };
     return read;
 });
-/*can@2.3.24#compute/get_value_and_bind*/
+/*can@2.3.25#compute/get_value_and_bind*/
 define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -2285,7 +2288,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
             this.newObserved = {};
         }
     });
-    var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0;
+    var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0, currentBatchNum;
     ObservedInfo.registerUpdate = function (observeInfo, batchNum) {
         var depth = observeInfo.getDepth() - 1;
         var primaryDepth = observeInfo.getPrimaryDepth();
@@ -2301,8 +2304,32 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
         primary.current = Math.min(depth, primary.current);
         primary.max = Math.max(depth, primary.max);
     };
+    ObservedInfo.updateUntil = function (observedInfo) {
+        var cur;
+        while (true) {
+            if (curPrimaryDepth <= maxPrimaryDepth) {
+                var primary = updateOrder[curPrimaryDepth];
+                if (primary && primary.current <= primary.max) {
+                    var last = primary.observeInfos[primary.current];
+                    if (last && (cur = last.pop())) {
+                        cur.updateCompute(currentBatchNum);
+                        if (cur === observedInfo) {
+                            return;
+                        }
+                    } else {
+                        primary.current++;
+                    }
+                } else {
+                    curPrimaryDepth++;
+                }
+            } else {
+                return;
+            }
+        }
+    };
     ObservedInfo.batchEnd = function (batchNum) {
         var cur;
+        currentBatchNum = batchNum;
         while (true) {
             if (curPrimaryDepth <= maxPrimaryDepth) {
                 var primary = updateOrder[curPrimaryDepth];
@@ -2370,8 +2397,8 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
         }
     };
     can.__isRecordingObserves = function () {
-        var len = observedInfoStack.length;
-        return len && observedInfoStack[len - 1].ignore === 0;
+        var len = observedInfoStack.length, last = observedInfoStack[len - 1];
+        return len && last.ignore === 0 && last;
     };
     can.__notObserve = function (fn) {
         return function () {
@@ -2389,7 +2416,7 @@ define('can/compute/get_value_and_bind', ['can/util/util'], function (can) {
     can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
     return ObservedInfo;
 });
-/*can@2.3.24#compute/proto_compute*/
+/*can@2.3.25#compute/proto_compute*/
 define('can/compute/proto_compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2546,13 +2573,17 @@ define('can/compute/proto_compute', [
         _on: can.k,
         _off: can.k,
         get: function () {
-            if (can.__isRecordingObserves() && this._canObserve !== false) {
+            var recordingObservation = can.__isRecordingObserves();
+            if (recordingObservation && this._canObserve !== false) {
                 can.__observe(this, 'change');
                 if (!this.bound) {
                     can.Compute.temporarilyBind(this);
                 }
             }
             if (this.bound) {
+                if (recordingObservation && this.getDepth && this.getDepth() >= recordingObservation.getDepth()) {
+                    ObservedInfo.updateUntil(this.readInfo);
+                }
                 return this.value;
             } else {
                 return this._get();
@@ -2610,6 +2641,7 @@ define('can/compute/proto_compute', [
     var setupComputeHandlers = function (compute, func, context) {
         var readInfo = new ObservedInfo(func, context, compute);
         return {
+            readInfo: readInfo,
             _on: function () {
                 readInfo.getValueAndBind();
                 compute.value = readInfo.value;
@@ -2657,7 +2689,7 @@ define('can/compute/proto_compute', [
     can.Compute.set = read.write;
     return can.Compute;
 });
-/*can@2.3.24#compute/compute*/
+/*can@2.3.25#compute/compute*/
 define('can/compute/compute', [
     'can/util/util',
     'can/util/bind/bind',
@@ -2723,7 +2755,7 @@ define('can/compute/compute', [
     can.compute.temporarilyBind = can.Compute.temporarilyBind;
     return can.compute;
 });
-/*can@2.3.24#view/scope/compute_data*/
+/*can@2.3.25#view/scope/compute_data*/
 define('can/view/scope/compute_data', [
     'can/util/util',
     'can/compute/compute',
@@ -2799,7 +2831,7 @@ define('can/view/scope/compute_data', [
         return computeData;
     };
 });
-/*can@2.3.24#util/string/string*/
+/*can@2.3.25#util/string/string*/
 define('can/util/string/string', ['can/util/util'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
@@ -2884,7 +2916,7 @@ define('can/util/string/string', ['can/util/util'], function (can) {
     });
     return can;
 });
-/*can@2.3.24#construct/construct*/
+/*can@2.3.25#construct/construct*/
 define('can/construct/construct', ['can/util/string/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -3030,7 +3062,7 @@ define('can/construct/construct', ['can/util/string/string'], function (can) {
     };
     return can.Construct;
 });
-/*can@2.3.24#map/bubble*/
+/*can@2.3.25#map/bubble*/
 define('can/map/bubble', ['can/util/util'], function (can) {
     var bubble = can.bubble = {
         bind: function (parent, eventName) {
@@ -3148,7 +3180,7 @@ define('can/map/bubble', ['can/util/util'], function (can) {
     };
     return bubble;
 });
-/*can@2.3.24#map/map_helpers*/
+/*can@2.3.25#map/map_helpers*/
 define('can/map/map_helpers', [
     'can/util/util',
     'can/util/object/isplain/isplain'
@@ -3245,7 +3277,7 @@ define('can/map/map_helpers', [
     };
     return mapHelpers;
 });
-/*can@2.3.24#map/map*/
+/*can@2.3.25#map/map*/
 define('can/map/map', [
     'can/util/util',
     'can/util/bind/bind',
@@ -3422,7 +3454,7 @@ define('can/map/map', [
         },
         ___set: function (prop, val) {
             var computedAttr = this._computedAttrs[prop];
-            if (computedAttr) {
+            if (computedAttr && computedAttr.compute) {
                 computedAttr.compute(val);
             } else {
                 this._data[prop] = val;
@@ -3594,7 +3626,7 @@ define('can/map/map', [
     Map.off = Map.unbind;
     return Map;
 });
-/*can@2.3.24#list/list*/
+/*can@2.3.25#list/list*/
 define('can/list/list', [
     'can/util/util',
     'can/map/map',
@@ -3870,7 +3902,7 @@ define('can/list/list', [
     can.List = Map.List = list;
     return can.List;
 });
-/*can@2.3.24#view/scope/scope*/
+/*can@2.3.25#view/scope/scope*/
 define('can/view/scope/scope', [
     'can/util/util',
     'can/view/scope/compute_data',
@@ -4079,7 +4111,7 @@ define('can/view/scope/scope', [
     can.view.Options = Options;
     return Scope;
 });
-/*can@2.3.24#view/stache/utils*/
+/*can@2.3.25#view/stache/utils*/
 define('can/view/stache/utils', [
     'can/util/util',
     'can/view/scope/scope'
@@ -4142,7 +4174,7 @@ define('can/view/stache/utils', [
         Options: Options
     };
 });
-/*can@2.3.24#view/node_lists/node_lists*/
+/*can@2.3.25#view/node_lists/node_lists*/
 define('can/view/node_lists/node_lists', [
     'can/util/util',
     'can/view/elements'
@@ -4341,7 +4373,7 @@ define('can/view/node_lists/node_lists', [
     can.view.nodeLists = nodeLists;
     return nodeLists;
 });
-/*can@2.3.24#view/parser/parser*/
+/*can@2.3.25#view/parser/parser*/
 define('can/view/parser/parser', [], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {
@@ -4366,6 +4398,7 @@ define('can/view/parser/parser', [], function () {
     var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
     var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
     var inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
+    var caseMatters = makeMap('altGlyph,altGlyphDef,altGlyphItem,animateColor,animateMotion,animateTransform,clipPath,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,foreignObject,glyphRef,linearGradient,radialGradient,textPath');
     var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
     var special = makeMap('script');
     var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
@@ -4391,7 +4424,7 @@ define('can/view/parser/parser', [], function () {
             });
         }
         function parseStartTag(tag, tagName, rest, unary) {
-            tagName = tagName.toLowerCase();
+            tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
             if (block[tagName] && !inline[tagName]) {
                 var last = stack.last();
                 while (last && inline[last] && !block[last]) {
@@ -4415,7 +4448,7 @@ define('can/view/parser/parser', [], function () {
             if (!tagName) {
                 pos = 0;
             } else {
-                tagName = tagName.toLowerCase();
+                tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
                 for (pos = stack.length - 1; pos >= 0; pos--) {
                     if (stack[pos] === tagName) {
                         break;
@@ -4637,7 +4670,7 @@ define('can/view/parser/parser', [], function () {
     };
     return HTMLParser;
 });
-/*can@2.3.24#util/array/diff*/
+/*can@2.3.25#util/array/diff*/
 define('can/util/array/diff', [], function () {
     var slice = [].slice;
     return function (oldList, newList) {
@@ -4687,7 +4720,7 @@ define('can/util/array/diff', [], function () {
         return patches;
     };
 });
-/*can@2.3.24#view/live/live*/
+/*can@2.3.25#view/live/live*/
 define('can/view/live/live', [
     'can/util/util',
     'can/view/elements',
@@ -5129,7 +5162,7 @@ define('can/view/live/live', [
     can.view.live = live;
     return live;
 });
-/*can@2.3.24#view/stache/mustache_helpers*/
+/*can@2.3.25#view/stache/mustache_helpers*/
 define('can/view/stache/mustache_helpers', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5364,7 +5397,7 @@ define('can/view/stache/mustache_helpers', [
         }
     };
 });
-/*can@2.3.24#view/stache/expression*/
+/*can@2.3.25#view/stache/expression*/
 define('can/view/stache/expression', [
     'can/util/util',
     'can/view/stache/utils',
@@ -5932,7 +5965,7 @@ define('can/view/stache/expression', [
     can.expression = expression;
     return expression;
 });
-/*can@2.3.24#view/href/href*/
+/*can@2.3.25#view/href/href*/
 define('can/view/href/href', [
     'can/util/util',
     'can/view/stache/expression',
@@ -5961,7 +5994,7 @@ define('can/view/href/href', [
         });
     });
 });
-/*can@2.3.24#view/bindings/bindings*/
+/*can@2.3.25#view/bindings/bindings*/
 define('can/view/bindings/bindings', [
     'can/util/util',
     'can/view/stache/expression',
@@ -6626,7 +6659,7 @@ define('can/view/bindings/bindings', [
     };
     return can.bindings;
 });
-/*can@2.3.24#control/control*/
+/*can@2.3.25#control/control*/
 define('can/control/control', [
     'can/util/util',
     'can/construct/construct'
@@ -6830,7 +6863,7 @@ define('can/control/control', [
     });
     return Control;
 });
-/*can@2.3.24#observe/observe*/
+/*can@2.3.25#observe/observe*/
 define('can/observe/observe', [
     'can/util/util',
     'can/map/map',
@@ -6843,7 +6876,7 @@ define('can/observe/observe', [
     can.Observe.triggerBatch = can.batch.trigger;
     return can;
 });
-/*can@2.3.24#view/scanner*/
+/*can@2.3.25#view/scanner*/
 define('can/view/scanner', [
     'can/view/view',
     'can/view/elements',
@@ -7219,7 +7252,7 @@ define('can/view/scanner', [
     can.view.Scanner = Scanner;
     return Scanner;
 });
-/*can@2.3.24#view/render*/
+/*can@2.3.25#view/render*/
 define('can/view/render', [
     'can/view/view',
     'can/view/elements',
@@ -7345,7 +7378,7 @@ define('can/view/render', [
     });
     return can;
 });
-/*can@2.3.24#view/mustache/mustache*/
+/*can@2.3.25#view/mustache/mustache*/
 define('can/view/mustache/mustache', [
     'can/util/util',
     'can/view/scope/scope',
@@ -7844,7 +7877,7 @@ define('can/view/mustache/mustache', [
     can.mustache.safeString = can.Mustache.safeString;
     return can;
 });
-/*can@2.3.24#util/view_model/view_model*/
+/*can@2.3.25#util/view_model/view_model*/
 define('can/util/view_model/view_model', ['can/util/util'], function (can) {
     var $ = can.$;
     if ($.fn) {
@@ -7853,7 +7886,7 @@ define('can/util/view_model/view_model', ['can/util/util'], function (can) {
         };
     }
 });
-/*can@2.3.24#component/component*/
+/*can@2.3.25#component/component*/
 define('can/component/component', [
     'can/util/util',
     'can/view/callbacks/callbacks',
@@ -8102,7 +8135,7 @@ define('can/component/component', [
     }
     return Component;
 });
-/*can@2.3.24#model/model*/
+/*can@2.3.25#model/model*/
 define('can/model/model', [
     'can/util/util',
     'can/map/map',
@@ -8491,7 +8524,7 @@ define('can/model/model', [
     });
     return can.Model;
 });
-/*can@2.3.24#util/string/deparam/deparam*/
+/*can@2.3.25#util/string/deparam/deparam*/
 define('can/util/string/deparam/deparam', [
     'can/util/util',
     'can/util/string/string'
@@ -8528,7 +8561,7 @@ define('can/util/string/deparam/deparam', [
     });
     return can;
 });
-/*can@2.3.24#route/route*/
+/*can@2.3.25#route/route*/
 define('can/route/route', [
     'can/util/util',
     'can/map/map',
@@ -8828,7 +8861,7 @@ define('can/route/route', [
     };
     return can.route;
 });
-/*can@2.3.24#control/route/route*/
+/*can@2.3.25#control/route/route*/
 define('can/control/route/route', [
     'can/util/util',
     'can/route/route',

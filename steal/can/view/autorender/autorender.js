@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#view/autorender/autorender*/
+/*can@2.3.25#view/autorender/autorender*/
 'format steal';
-steal('can/util', 'can/map/app', 'can/util/view_model', function (can, AppState) {
+steal('can/util', 'can/map/app', 'can/util/view_model', function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
     var typeMatch = /\s*text\/(mustache|stache|ejs)\s*/;
     function isIn(element, type) {
@@ -44,8 +44,7 @@ steal('can/util', 'can/map/app', 'can/util/view_model', function (can, AppState)
         }
     }
     function setupScope(el) {
-        el = can.$(el);
-        var scope = can.data(el, 'scope') || can.data(el, 'viewModel') ? can.viewModel(el) : new AppState();
+        var scope = can.viewModel(el);
         can.each(el.attributes || [], function (attr) {
             setAttr(el, attr.name, scope);
         });

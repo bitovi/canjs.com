@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#util/vdom/build_fragment/build_fragment*/
+/*can@2.3.25#util/vdom/build_fragment/build_fragment*/
 steal('./make_parser', 'can/util', function (makeParser, can) {
     var oldBuildFrag = can.buildFragment;
     can.buildFragment = function (text, context) {

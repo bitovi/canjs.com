@@ -1,14 +1,14 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#view/autorender/autorender*/
+/*can@2.3.25#view/autorender/autorender*/
 var can = require('../../util/util.js');
-var AppState = require('../../map/app/app.js');
+require('../../map/app/app.js');
 require('../../util/view_model/view_model.js');
 var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
 var typeMatch = /\s*text\/(mustache|stache|ejs)\s*/;
@@ -45,8 +45,7 @@ function render(renderer, scope, el) {
     }
 }
 function setupScope(el) {
-    el = can.$(el);
-    var scope = can.data(el, 'scope') || can.data(el, 'viewModel') ? can.viewModel(el) : new AppState();
+    var scope = can.viewModel(el);
     can.each(el.attributes || [], function (attr) {
         setAttr(el, attr.name, scope);
     });

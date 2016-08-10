@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#compute/proto_compute*/
+/*can@2.3.25#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
@@ -161,13 +161,17 @@ can.simpleExtend(can.Compute.prototype, {
     _on: can.k,
     _off: can.k,
     get: function () {
-        if (can.__isRecordingObserves() && this._canObserve !== false) {
+        var recordingObservation = can.__isRecordingObserves();
+        if (recordingObservation && this._canObserve !== false) {
             can.__observe(this, 'change');
             if (!this.bound) {
                 can.Compute.temporarilyBind(this);
             }
         }
         if (this.bound) {
+            if (recordingObservation && this.getDepth && this.getDepth() >= recordingObservation.getDepth()) {
+                ObservedInfo.updateUntil(this.readInfo);
+            }
             return this.value;
         } else {
             return this._get();
@@ -225,6 +229,7 @@ var updateOnChange = function (compute, newValue, oldValue, batchNum) {
 var setupComputeHandlers = function (compute, func, context) {
     var readInfo = new ObservedInfo(func, context, compute);
     return {
+        readInfo: readInfo,
         _on: function () {
             readInfo.getValueAndBind();
             compute.value = readInfo.value;

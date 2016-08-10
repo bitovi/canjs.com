@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#compute/get_value_and_bind*/
+/*can@2.3.25#compute/get_value_and_bind*/
 define(['can/util/library'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -120,7 +120,7 @@ define(['can/util/library'], function (can) {
             this.newObserved = {};
         }
     });
-    var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0;
+    var updateOrder = [], curPrimaryDepth = Infinity, maxPrimaryDepth = 0, currentBatchNum;
     ObservedInfo.registerUpdate = function (observeInfo, batchNum) {
         var depth = observeInfo.getDepth() - 1;
         var primaryDepth = observeInfo.getPrimaryDepth();
@@ -136,8 +136,32 @@ define(['can/util/library'], function (can) {
         primary.current = Math.min(depth, primary.current);
         primary.max = Math.max(depth, primary.max);
     };
+    ObservedInfo.updateUntil = function (observedInfo) {
+        var cur;
+        while (true) {
+            if (curPrimaryDepth <= maxPrimaryDepth) {
+                var primary = updateOrder[curPrimaryDepth];
+                if (primary && primary.current <= primary.max) {
+                    var last = primary.observeInfos[primary.current];
+                    if (last && (cur = last.pop())) {
+                        cur.updateCompute(currentBatchNum);
+                        if (cur === observedInfo) {
+                            return;
+                        }
+                    } else {
+                        primary.current++;
+                    }
+                } else {
+                    curPrimaryDepth++;
+                }
+            } else {
+                return;
+            }
+        }
+    };
     ObservedInfo.batchEnd = function (batchNum) {
         var cur;
+        currentBatchNum = batchNum;
         while (true) {
             if (curPrimaryDepth <= maxPrimaryDepth) {
                 var primary = updateOrder[curPrimaryDepth];
@@ -205,8 +229,8 @@ define(['can/util/library'], function (can) {
         }
     };
     can.__isRecordingObserves = function () {
-        var len = observedInfoStack.length;
-        return len && observedInfoStack[len - 1].ignore === 0;
+        var len = observedInfoStack.length, last = observedInfoStack[len - 1];
+        return len && last.ignore === 0 && last;
     };
     can.__notObserve = function (fn) {
         return function () {

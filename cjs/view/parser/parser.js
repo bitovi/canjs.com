@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#view/parser/parser*/
+/*can@2.3.25#view/parser/parser*/
 function each(items, callback) {
     for (var i = 0; i < items.length; i++) {
         callback(items[i], i);
@@ -30,6 +30,7 @@ var alphaNumeric = 'A-Za-z0-9', alphaNumericHU = '-:_' + alphaNumeric, attribute
 var empty = makeMap('area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed');
 var block = makeMap('a,address,article,applet,aside,audio,blockquote,button,canvas,center,dd,del,dir,div,dl,dt,fieldset,figcaption,figure,footer,form,frameset,h1,h2,h3,h4,h5,h6,header,hgroup,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,output,p,pre,section,script,table,tbody,td,tfoot,th,thead,tr,ul,video');
 var inline = makeMap('a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var');
+var caseMatters = makeMap('altGlyph,altGlyphDef,altGlyphItem,animateColor,animateMotion,animateTransform,clipPath,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,foreignObject,glyphRef,linearGradient,radialGradient,textPath');
 var closeSelf = makeMap('colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr');
 var special = makeMap('script');
 var tokenTypes = 'start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done'.split(',');
@@ -55,7 +56,7 @@ var HTMLParser = function (html, handler, returnIntermediate) {
         });
     }
     function parseStartTag(tag, tagName, rest, unary) {
-        tagName = tagName.toLowerCase();
+        tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
         if (block[tagName] && !inline[tagName]) {
             var last = stack.last();
             while (last && inline[last] && !block[last]) {
@@ -79,7 +80,7 @@ var HTMLParser = function (html, handler, returnIntermediate) {
         if (!tagName) {
             pos = 0;
         } else {
-            tagName = tagName.toLowerCase();
+            tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
             for (pos = stack.length - 1; pos >= 0; pos--) {
                 if (stack[pos] === tagName) {
                     break;

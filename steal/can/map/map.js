@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#map/map*/
+/*can@2.3.25#map/map*/
 steal('can/util', 'can/util/bind', './bubble.js', './map_helpers.js', 'can/construct', 'can/util/batch', 'can/compute/get_value_and_bind.js', function (can, bind, bubble, mapHelpers) {
     var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
@@ -175,7 +175,7 @@ steal('can/util', 'can/util/bind', './bubble.js', './map_helpers.js', 'can/const
         },
         ___set: function (prop, val) {
             var computedAttr = this._computedAttrs[prop];
-            if (computedAttr) {
+            if (computedAttr && computedAttr.compute) {
                 computedAttr.compute(val);
             } else {
                 this._data[prop] = val;

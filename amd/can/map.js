@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#map/map*/
+/*can@2.3.25#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -177,7 +177,7 @@ define([
         },
         ___set: function (prop, val) {
             var computedAttr = this._computedAttrs[prop];
-            if (computedAttr) {
+            if (computedAttr && computedAttr.compute) {
                 computedAttr.compute(val);
             } else {
                 this._data[prop] = val;

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#view/callbacks/callbacks*/
+/*can@2.3.25#view/callbacks/callbacks*/
 define([
     'can/util/library',
     'can/view'
@@ -40,6 +40,9 @@ define([
         if (tagHandler) {
             if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
                 can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is already defined');
+            }
+            if (!automaticCustomElementCharacters.test(tagName) && tagName !== 'content') {
+                can.dev.warn('Custom tag: ' + tagName.toLowerCase() + ' is missing a hyphen');
             }
             if (can.global.html5) {
                 can.global.html5.elements += ' ' + tagName;

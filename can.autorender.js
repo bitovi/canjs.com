@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.24#map/app/app*/
+/*can@2.3.25#map/app/app*/
 define('can/map/app/app', [
     'can/util/util',
     'can/map/map',
@@ -142,13 +142,13 @@ define('can/map/app/app', [
     });
     return can.AppMap;
 });
-/*can@2.3.24#view/autorender/autorender*/
+/*can@2.3.25#view/autorender/autorender*/
 'format steal';
 define('can/view/autorender/autorender', [
     'can/util/util',
     'can/map/app/app',
     'can/util/view_model/view_model'
-], function (can, AppState) {
+], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
     var typeMatch = /\s*text\/(mustache|stache|ejs)\s*/;
     function isIn(element, type) {
@@ -184,8 +184,7 @@ define('can/view/autorender/autorender', [
         }
     }
     function setupScope(el) {
-        el = can.$(el);
-        var scope = can.data(el, 'scope') || can.data(el, 'viewModel') ? can.viewModel(el) : new AppState();
+        var scope = can.viewModel(el);
         can.each(el.attributes || [], function (attr) {
             setAttr(el, attr.name, scope);
         });

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.24
+ * CanJS - 2.3.25
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 19 May 2016 17:46:31 GMT
+ * Wed, 10 Aug 2016 19:17:58 GMT
  * Licensed MIT
  */
 
-/*can@2.3.24#util/attr/attr*/
+/*can@2.3.25#util/attr/attr*/
 var can = require('../can.js');
 var setImmediate = can.global.setImmediate || function (cb) {
         return setTimeout(cb, 0);
@@ -36,7 +36,7 @@ var setImmediate = can.global.setImmediate || function (cb) {
             'checked': true,
             'disabled': true,
             'readonly': function (el, val) {
-                el.readOnly = true;
+                el.readOnly = val || typeof val === 'string' ? true : false;
                 return val;
             },
             'required': true,
