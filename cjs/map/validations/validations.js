@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#map/validations/validations*/
+/*can@2.3.26#map/validations/validations*/
 var can = require('../../util/util.js');
 require('../map.js');
 var validate = function (attrNames, options, proc) {

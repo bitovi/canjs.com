@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#view/stache/utils*/
+/*can@2.3.26#view/stache/utils*/
 define([
     'can/util/library',
     'can/view/scope'
@@ -43,19 +43,19 @@ define([
                 return this.stack.length - 1;
             }
         },
-        convertToScopes: function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer) {
+        convertToScopes: function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer, isStringOnly) {
             if (truthyRenderer) {
-                helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList);
+                helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList, isStringOnly);
             }
             if (falseyRenderer) {
-                helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList);
+                helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList, isStringOnly);
             }
         },
-        makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList) {
+        makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList, observeObservables) {
             var rendererWithScope = function (ctx, opts, parentNodeList) {
                 return renderer(ctx || parentScope, opts, parentNodeList);
             };
-            return can.__notObserve(function (newScope, newOptions, parentNodeList) {
+            var convertedRenderer = function (newScope, newOptions, parentNodeList) {
                 if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
                     newScope = parentScope.add(newScope);
                 }
@@ -64,7 +64,8 @@ define([
                 }
                 var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
                 return result;
-            });
+            };
+            return observeObservables ? convertedRenderer : can.__notObserve(convertedRenderer);
         },
         Options: Options
     };

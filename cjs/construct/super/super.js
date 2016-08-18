@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#construct/super/super*/
+/*can@2.3.26#construct/super/super*/
 var can = require('../../util/util.js');
 var Construct = require('../construct.js');
 var isFunction = can.isFunction, fnTest = /xyz/.test(function () {

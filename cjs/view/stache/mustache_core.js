@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#view/stache/mustache_core*/
+/*can@2.3.26#view/stache/mustache_core*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var mustacheHelpers = require('./mustache_helpers.js');
@@ -58,7 +58,7 @@ var core = {
                 exprData: exprData,
                 helpersScope: helperOptions
             };
-            utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+            utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
             value = exprData.value(scope, helperOptions, helperOptionArg);
             if (exprData.isHelper) {
                 return value;
@@ -94,7 +94,7 @@ var core = {
                 inverse: function () {
                 }
             };
-            utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+            utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
             return function () {
                 var finalValue;
                 if (can.isFunction(value) && value.isComputed) {

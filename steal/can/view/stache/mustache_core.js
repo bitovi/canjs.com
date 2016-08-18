@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#view/stache/mustache_core*/
+/*can@2.3.26#view/stache/mustache_core*/
 steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/live', 'can/view/elements.js', 'can/view/scope', 'can/view/node_lists', function (can, utils, mustacheHelpers, expression, live, elements, Scope, nodeLists) {
     live = live || can.view.live;
     elements = elements || can.view.elements;
@@ -51,7 +51,7 @@ steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/
                     exprData: exprData,
                     helpersScope: helperOptions
                 };
-                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
                 value = exprData.value(scope, helperOptions, helperOptionArg);
                 if (exprData.isHelper) {
                     return value;
@@ -87,7 +87,7 @@ steal('can/util', './utils', './mustache_helpers', './expression.js', 'can/view/
                     inverse: function () {
                     }
                 };
-                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer);
+                utils.convertToScopes(helperOptionArg, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
                 return function () {
                     var finalValue;
                     if (can.isFunction(value) && value.isComputed) {

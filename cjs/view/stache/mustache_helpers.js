@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#view/stache/mustache_helpers*/
+/*can@2.3.26#view/stache/mustache_helpers*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var live = require('../live/live.js');
@@ -38,7 +38,7 @@ var looksLikeOptions = function (options) {
 var helpers = {
     'each': function (items, options) {
         var resolved = resolve(items), result = [], keys, key, i;
-        if (resolved instanceof can.List) {
+        if (resolved instanceof can.List && !options.stringOnly) {
             return function (el) {
                 var nodeList = [el];
                 nodeList.expression = 'live.list';
@@ -57,11 +57,13 @@ var helpers = {
         }
         var expr = resolved;
         if (!!expr && utils.isArrayLike(expr)) {
-            for (i = 0; i < expr.length; i++) {
+            var isCanList = expr instanceof can.List;
+            for (i = 0; i < (isCanList ? expr.attr('length') : expr.length); i++) {
+                var item = isCanList ? expr.attr(i) : expr[i];
                 result.push(options.fn(options.scope.add({
                     '%index': i,
                     '@index': i
-                }, { notContext: true }).add(expr[i])));
+                }, { notContext: true }).add(item)));
             }
         } else if (utils.isObserveLike(expr)) {
             keys = can.Map.keys(expr);
@@ -80,7 +82,7 @@ var helpers = {
                 }, { notContext: true }).add(expr[key])));
             }
         }
-        return result;
+        return !options.stringOnly ? result : result.join('');
     },
     '@index': function (offset, options) {
         if (!options) {

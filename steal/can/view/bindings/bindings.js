@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#view/bindings/bindings*/
+/*can@2.3.26#view/bindings/bindings*/
 steal('can/util', 'can/view/stache/expression.js', 'can/view/callbacks', 'can/view/live', 'can/view/scope', 'can/view/href', function (can, expression, viewCallbacks, live) {
     var behaviors = {
         viewModel: function (el, tagData, makeViewModel, initialViewModelData) {

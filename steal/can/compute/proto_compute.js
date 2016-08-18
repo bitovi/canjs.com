@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#compute/proto_compute*/
+/*can@2.3.26#compute/proto_compute*/
 steal('can/util', 'can/util/bind', 'can/compute/read.js', 'can/compute/get_value_and_bind.js', 'can/util/batch', function (can, bind, read, ObservedInfo) {
     can.Compute = function (getterSetter, context, eventName, bindOnce) {
         can.cid(this, 'compute');
@@ -166,7 +166,7 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js', 'can/compute/get_value
             }
             if (this.bound) {
                 if (recordingObservation && this.getDepth && this.getDepth() >= recordingObservation.getDepth()) {
-                    ObservedInfo.updateUntil(this.readInfo);
+                    ObservedInfo.updateUntil(this.getPrimaryDepth(), this.getDepth());
                 }
                 return this.value;
             } else {
@@ -236,6 +236,9 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js', 'can/compute/get_value
             },
             getDepth: function () {
                 return readInfo.getDepth();
+            },
+            getPrimaryDepth: function () {
+                return readInfo.getPrimaryDepth();
             }
         };
     };

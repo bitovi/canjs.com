@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#compute/get_value_and_bind*/
+/*can@2.3.26#compute/get_value_and_bind*/
 define(['can/util/library'], function (can) {
     function ObservedInfo(func, context, compute) {
         this.newObserved = {};
@@ -136,18 +136,18 @@ define(['can/util/library'], function (can) {
         primary.current = Math.min(depth, primary.current);
         primary.max = Math.max(depth, primary.max);
     };
-    ObservedInfo.updateUntil = function (observedInfo) {
+    ObservedInfo.updateUntil = function (primaryDepth, depth) {
         var cur;
         while (true) {
-            if (curPrimaryDepth <= maxPrimaryDepth) {
+            if (curPrimaryDepth <= maxPrimaryDepth && curPrimaryDepth <= primaryDepth) {
                 var primary = updateOrder[curPrimaryDepth];
                 if (primary && primary.current <= primary.max) {
+                    if (primary.current > depth) {
+                        return;
+                    }
                     var last = primary.observeInfos[primary.current];
                     if (last && (cur = last.pop())) {
                         cur.updateCompute(currentBatchNum);
-                        if (cur === observedInfo) {
-                            return;
-                        }
                     } else {
                         primary.current++;
                     }

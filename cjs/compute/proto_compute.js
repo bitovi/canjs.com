@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.25
+ * CanJS - 2.3.26
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Wed, 10 Aug 2016 19:17:58 GMT
+ * Thu, 18 Aug 2016 00:56:47 GMT
  * Licensed MIT
  */
 
-/*can@2.3.25#compute/proto_compute*/
+/*can@2.3.26#compute/proto_compute*/
 var can = require('../util/util.js');
 var bind = require('../util/bind/bind.js');
 var read = require('./read.js');
@@ -170,7 +170,7 @@ can.simpleExtend(can.Compute.prototype, {
         }
         if (this.bound) {
             if (recordingObservation && this.getDepth && this.getDepth() >= recordingObservation.getDepth()) {
-                ObservedInfo.updateUntil(this.readInfo);
+                ObservedInfo.updateUntil(this.getPrimaryDepth(), this.getDepth());
             }
             return this.value;
         } else {
@@ -240,6 +240,9 @@ var setupComputeHandlers = function (compute, func, context) {
         },
         getDepth: function () {
             return readInfo.getDepth();
+        },
+        getPrimaryDepth: function () {
+            return readInfo.getPrimaryDepth();
         }
     };
 };
