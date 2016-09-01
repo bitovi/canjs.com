@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li {{#ifCurrentFromConfig "index.html"}}class="active"{{/ifCurrentFromConfig}}>
 	              <a href="{{urlFromConfig 'index.html'}}">Home</a>
@@ -52,7 +52,7 @@
 		       {{{navToGuides}}}
 		       {{{navToApi}}}
 		        <li class="{{#ifCurrentFromConfig "community.html"}}active{{/ifCurrentFromConfig}} community-menu">
-		          <a href="{{urlFromConfig 'community.html#!forums'}}">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
 		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
 		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
@@ -68,7 +68,7 @@
 	              <a href="{{urlFromConfig 'download.html'}}">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -84,12 +84,12 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
 	{{{content}}}
-	
+
 	{{#unless hideFooter}}
 	<footer>
 		<nav class="container">
@@ -111,7 +111,7 @@
 	</footer>
 	{{/unless}}
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -119,21 +119,21 @@
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
 		var docObject = {{{docObjectString}}};
 	</script>
-	
+
 	{{#if devBuild}}
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal/steal.js"></script>
@@ -145,13 +145,13 @@
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	{{/if}}
-	
+
 </body>
 
 </html>
