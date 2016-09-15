@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.26
+ * CanJS - 2.3.27
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 18 Aug 2016 00:56:47 GMT
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.3.26#route/route*/
+/*can@2.3.27#route/route*/
 steal('can/util', 'can/map', 'can/list', 'can/util/string/deparam', function (can) {
     var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = function (props) {
             var tags = [];
@@ -33,8 +33,10 @@ steal('can/util', 'can/map', 'can/list', 'can/util/string/deparam', function (ca
             return count;
         }, location = window.location, wrapQuote = function (str) {
             return (str + '').replace(/([.?*+\^$\[\]\\(){}|\-])/g, '\\$1');
-        }, each = can.each, extend = can.extend, stringify = function (obj) {
-            if (obj && typeof obj === 'object') {
+        }, each = can.each, extend = can.extend, definedToString = function (obj) {
+            return obj.toString.toString() !== Object.prototype.toString.toString();
+        }, stringify = function (obj) {
+            if (obj && typeof obj === 'object' && !definedToString(obj)) {
                 if (obj instanceof can.Map) {
                     obj = obj;
                 } else {

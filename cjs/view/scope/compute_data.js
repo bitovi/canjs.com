@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.26
+ * CanJS - 2.3.27
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 18 Aug 2016 00:56:47 GMT
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.3.26#view/scope/compute_data*/
+/*can@2.3.27#view/scope/compute_data*/
 var can = require('../../util/util.js');
 var compute = require('../../compute/compute.js');
 var ObservedInfo = require('../../compute/get_value_and_bind.js');

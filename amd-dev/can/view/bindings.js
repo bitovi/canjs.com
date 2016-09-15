@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.26
+ * CanJS - 2.3.27
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 18 Aug 2016 00:56:47 GMT
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.3.26#view/bindings/bindings*/
+/*can@2.3.27#view/bindings/bindings*/
 define([
     'can/util/library',
     'can/view/expression',
@@ -169,15 +169,6 @@ define([
                     });
                     expr = new expression.Call(expr, defaultArgs, {});
                 }
-                var scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
-                if (!scopeData.value) {
-                    scopeData = data.scope.read(expr.methodExpr.key, { isArgument: true });
-                    can.dev.warn('can/view/bindings: ' + attributeName + ' couldn\'t find method named ' + expr.methodExpr.key, {
-                        element: el,
-                        scope: data.scope
-                    });
-                    return null;
-                }
                 var localScope = data.scope.add({
                     '@element': $el,
                     '@event': ev,
@@ -191,6 +182,15 @@ define([
                     '%scope': data.scope,
                     '%context': data.scope._context
                 }, { notContext: true });
+                var scopeData = localScope.read(expr.methodExpr.key, { isArgument: true });
+                if (!scopeData.value) {
+                    scopeData = localScope.read(expr.methodExpr.key, { isArgument: true });
+                    can.dev.warn('can/view/bindings: ' + attributeName + ' couldn\'t find method named ' + expr.methodExpr.key, {
+                        element: el,
+                        scope: data.scope
+                    });
+                    return null;
+                }
                 var args = expr.args(localScope, null)();
                 return scopeData.value.apply(scopeData.parent, args);
             };
@@ -293,7 +293,18 @@ define([
                 });
             } else {
                 return function (newVal) {
-                    bindingData.getViewModel().attr(setName, newVal);
+                    var childCompute;
+                    var viewModel = bindingData.getViewModel();
+                    if (stickyCompute) {
+                        childCompute = viewModel._get(setName, { readCompute: false });
+                        if (!childCompute || !childCompute.isComputed) {
+                            childCompute = can.compute();
+                            viewModel._set(setName, childCompute, { readCompute: false });
+                        }
+                        childCompute(newVal);
+                    } else {
+                        viewModel.attr(setName, newVal);
+                    }
                 };
             }
         },
@@ -467,7 +478,7 @@ define([
         }
     };
     var getBindingInfo = function (node, attributeViewModelBindings, templateType, tagName) {
-        var attributeName = node.name, attributeValue = node.value || '';
+        var bindingInfo, attributeName = node.name, attributeValue = node.value || '';
         var matches = attributeName.match(bindingsRegExp);
         if (!matches) {
             var ignoreAttribute = ignoreAttributesRegExp.test(attributeName);
@@ -507,7 +518,7 @@ define([
         var childName = matches[3];
         var isDOM = childName.charAt(0) === '$';
         if (isDOM) {
-            var bindingInfo = {
+            bindingInfo = {
                 parent: 'scope',
                 child: 'attribute',
                 childToParent: childToParent,
@@ -522,7 +533,7 @@ define([
             }
             return bindingInfo;
         } else {
-            return {
+            bindingInfo = {
                 parent: 'scope',
                 child: 'viewModel',
                 childToParent: childToParent,
@@ -532,6 +543,10 @@ define([
                 parentName: attributeValue,
                 initializeValues: true
             };
+            if (attributeValue.trim().charAt(0) === '~') {
+                bindingInfo.stickyParentToChild = true;
+            }
+            return bindingInfo;
         }
     };
     var bindingsRegExp = /\{(\()?(\^)?([^\}\)]+)\)?\}/, ignoreAttributesRegExp = /^(data-view-id|class|id|\[[\w\.-]+\]|#[\w\.-])$/i;
@@ -589,6 +604,9 @@ define([
     var initializeValues = function (bindingInfo, childCompute, parentCompute, updateChild, updateParent) {
         var doUpdateParent = false;
         if (bindingInfo.parentToChild && !bindingInfo.childToParent) {
+            if (bindingInfo.stickyParentToChild) {
+                updateChild({}, getValue(parentCompute));
+            }
         } else if (!bindingInfo.parentToChild && bindingInfo.childToParent) {
             doUpdateParent = true;
         } else if (getValue(childCompute) === undefined) {
