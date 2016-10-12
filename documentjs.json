@@ -46,7 +46,7 @@
 			]
 		},
 		"2.3": {
-			"source": "git://github.com/canjs/canjs#master",
+			"source": "git://github.com/canjs/canjs#2.3-legacy",
 			"npmInstall": [
 				"steal@^0.11.0",
 				"jquery@~1.11.0",
