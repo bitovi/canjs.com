@@ -30,16 +30,25 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/observe'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-	<span class="hljs-keyword">var</span> define = can.define = {};
-	
-	<span class="hljs-keyword">var</span> getPropDefineBehavior = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(behavior, prop, define)</span> </span>{
-		<span class="hljs-keyword">var</span> propBehavior;
-		<span class="hljs-keyword">if</span>(define) {
-			propBehavior = define[prop] ? define[prop] : define[<span class="hljs-string">"*"</span>];
-			<span class="hljs-keyword">return</span> propBehavior &amp;&amp; propBehavior[behavior];
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,<span class="hljs-string">'can/map/map_helpers.js'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, mapHelpers</span>) </span>{
+	<span class="hljs-keyword">if</span>(!can.define) {
+		<span class="hljs-keyword">var</span> define = can.define = {};
+
+		<span class="hljs-keyword">var</span> getPropDefineBehavior = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">behavior, attr, define</span>) </span>{
+			<span class="hljs-keyword">var</span> prop, defaultProp;
+
+			<span class="hljs-keyword">if</span>(define) {
+				prop = define[attr];
+				defaultProp = define[<span class="hljs-string">'*'</span>];
+
+				<span class="hljs-keyword">if</span>(prop &amp;&amp; prop[behavior] !== <span class="hljs-literal">undefined</span>) {
+					<span class="hljs-keyword">return</span> prop[behavior];
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(defaultProp &amp;&amp; defaultProp[behavior] !== <span class="hljs-literal">undefined</span>) {
+					<span class="hljs-keyword">return</span> defaultProp[behavior];
+				}
+			}
+		};</pre></div></div>
             
         </li>
         
@@ -54,8 +63,14 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.Map.helpers.define = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Map)</span> </span>{
-		<span class="hljs-keyword">var</span> definitions = Map.prototype.define;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		mapHelpers.define = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">Map, baseDefine</span>) </span>{
+			<span class="hljs-keyword">var</span> definitions = <span class="hljs-built_in">Map</span>.prototype.define;
+			
+			<span class="hljs-keyword">if</span> (baseDefine) {
+				<span class="hljs-keyword">var</span> defines = can.simpleExtend({}, baseDefine);
+				mapHelpers.twoLevelDeepExtend(defines, definitions);
+				can.simpleExtend(definitions, defines);
+			}</pre></div></div>
             
         </li>
         
@@ -70,10 +85,10 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(Map.define){
-			can.dev.warn(<span class="hljs-string">"The define property should be on the map's prototype properties, "</span>+
-				<span class="hljs-string">"not the static properies."</span>);
-		}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(<span class="hljs-built_in">Map</span>.define){
+				can.dev.warn(<span class="hljs-string">"The define property should be on the map's prototype properties, "</span>+
+					<span class="hljs-string">"not the static properties."</span>);
+			}</pre></div></div>
             
         </li>
         
@@ -88,39 +103,39 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		Map.defaultGenerators = {};
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> definitions) {
-			<span class="hljs-keyword">var</span> type = definitions[prop].type;
-			<span class="hljs-keyword">if</span>( <span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span> ) {
-				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> define.types[type] === <span class="hljs-string">"object"</span>) {
-					<span class="hljs-keyword">delete</span> definitions[prop].type;
-					can.extend(definitions[prop], define.types[type]);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">Map</span>.defaultGenerators = {};
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> definitions) {
+				<span class="hljs-keyword">var</span> type = definitions[prop].type;
+				<span class="hljs-keyword">if</span>( <span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span> ) {
+					<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> define.types[type] === <span class="hljs-string">"object"</span>) {
+						<span class="hljs-keyword">delete</span> definitions[prop].type;
+						can.extend(definitions[prop], define.types[type]);
+					}
+				}
+				<span class="hljs-keyword">if</span> (<span class="hljs-string">"value"</span> <span class="hljs-keyword">in</span> definitions[prop]) {
+					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].value === <span class="hljs-string">"function"</span>) {
+						<span class="hljs-built_in">Map</span>.defaultGenerators[prop] = definitions[prop].value;
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-built_in">Map</span>.defaults[prop] = definitions[prop].value;
+					}
+				}
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].Value === <span class="hljs-string">"function"</span>) {
+					(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">Constructor</span>) </span>{
+						<span class="hljs-built_in">Map</span>.defaultGenerators[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+							<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Constructor();
+						};
+					})(definitions[prop].Value);
 				}
 			}
-			<span class="hljs-keyword">if</span> (<span class="hljs-string">"value"</span> <span class="hljs-keyword">in</span> definitions[prop]) {
-				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].value === <span class="hljs-string">"function"</span>) {
-					Map.defaultGenerators[prop] = definitions[prop].value;
-				} <span class="hljs-keyword">else</span> {
-					Map.defaults[prop] = definitions[prop].value;
-				}
-			}
-			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> definitions[prop].Value === <span class="hljs-string">"function"</span>) {
-				(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Constructor)</span> </span>{
-					Map.defaultGenerators[prop] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Constructor();
-					};
-				})(definitions[prop].Value);
-			}
-		}
-	};
+		};
 
 
-	<span class="hljs-keyword">var</span> oldSetupDefaults = can.Map.prototype._setupDefaults;
-	can.Map.prototype._setupDefaults = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
-		<span class="hljs-keyword">var</span> defaults = oldSetupDefaults.call(<span class="hljs-keyword">this</span>),
-			propsCommittedToAttr = {},
-			Map = <span class="hljs-keyword">this</span>.constructor,
-			originalGet = <span class="hljs-keyword">this</span>._get;</pre></div></div>
+		<span class="hljs-keyword">var</span> oldSetupDefaults = can.Map.prototype._setupDefaults;
+		can.Map.prototype._setupDefaults = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">var</span> defaults = oldSetupDefaults.call(<span class="hljs-keyword">this</span>),
+				propsCommittedToAttr = {},
+				<span class="hljs-built_in">Map</span> = <span class="hljs-keyword">this</span>.constructor,
+				originalGet = <span class="hljs-keyword">this</span>._get;</pre></div></div>
             
         </li>
         
@@ -132,12 +147,12 @@
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Overwrite this._get with a version that commits defaults to
-this.attr() as needed. Because calling this.attr() for each individual
-default would be expensive.</p>
+this.attr() as needed. Because calling this.attr() for each
+individual default would be expensive.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(originalProp)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">originalProp</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -154,9 +169,9 @@ original this._get().</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			prop = (originalProp.indexOf(<span class="hljs-string">'.'</span>) !== -<span class="hljs-number">1</span> ?
-				originalProp.substr(<span class="hljs-number">0</span>, originalProp.indexOf(<span class="hljs-string">'.'</span>)) :
-				prop);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> prop = (originalProp.indexOf(<span class="hljs-string">'.'</span>) !== <span class="hljs-number">-1</span> ?
+					originalProp.substr(<span class="hljs-number">0</span>, originalProp.indexOf(<span class="hljs-string">'.'</span>)) :
+					originalProp);</pre></div></div>
             
         </li>
         
@@ -172,7 +187,7 @@ this.attr()</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ((prop <span class="hljs-keyword">in</span> defaults) &amp;&amp; ! (prop <span class="hljs-keyword">in</span> propsCommittedToAttr)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> ((prop <span class="hljs-keyword">in</span> defaults) &amp;&amp; ! (prop <span class="hljs-keyword">in</span> propsCommittedToAttr)) {</pre></div></div>
             
         </li>
         
@@ -188,7 +203,7 @@ other defaultGenerators.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.attr(prop, defaults[prop]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.attr(prop, defaults[prop]);</pre></div></div>
             
         </li>
         
@@ -203,13 +218,13 @@ other defaultGenerators.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				propsCommittedToAttr[prop] = <span class="hljs-literal">true</span>;
-			}
+            <div class="content"><div class='highlight'><pre>					propsCommittedToAttr[prop] = <span class="hljs-literal">true</span>;
+				}
 
-			<span class="hljs-keyword">return</span> originalGet.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		};
+				<span class="hljs-keyword">return</span> originalGet.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			};
 
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> Map.defaultGenerators) {</pre></div></div>
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> <span class="hljs-built_in">Map</span>.defaultGenerators) {</pre></div></div>
             
         </li>
         
@@ -225,10 +240,10 @@ during instantiation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (! obj || ! (prop <span class="hljs-keyword">in</span> obj)) {
-				defaults[prop] = Map.defaultGenerators[prop].call(<span class="hljs-keyword">this</span>);
-			}
-		}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (! obj || ! (prop <span class="hljs-keyword">in</span> obj)) {
+					defaults[prop] = <span class="hljs-built_in">Map</span>.defaultGenerators[prop].call(<span class="hljs-keyword">this</span>);
+				}
+			}</pre></div></div>
             
         </li>
         
@@ -239,19 +254,19 @@ during instantiation.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Replace original this.attr</p>
+              <p>delete this._get which will default to the one on the prototype.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>._get = originalGet;
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._get;
 
-		<span class="hljs-keyword">return</span> defaults;
-	};
+			<span class="hljs-keyword">return</span> defaults;
+		};
 
 
-	<span class="hljs-keyword">var</span> proto = can.Map.prototype,
-		oldSet = proto.__set;
-	proto.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, success, error)</span> </span>{</pre></div></div>
+		<span class="hljs-keyword">var</span> proto = can.Map.prototype,
+			oldSet = proto.__set;
+		proto.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, value, current, success, error</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -266,7 +281,7 @@ during instantiation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> asyncTimer;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> asyncTimer;</pre></div></div>
             
         </li>
         
@@ -294,7 +309,7 @@ during instantiation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">errors</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -309,7 +324,7 @@ during instantiation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				clearTimeout(asyncTimer);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					clearTimeout(asyncTimer);</pre></div></div>
             
         </li>
         
@@ -325,7 +340,7 @@ during instantiation.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-				<span class="hljs-keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
+					<span class="hljs-keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
             
         </li>
         
@@ -342,17 +357,17 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (stub !== <span class="hljs-literal">false</span>) {
-					can.trigger(self, <span class="hljs-string">'error'</span>, [
-						prop,
-						errors
-					], <span class="hljs-literal">true</span>);
-				}
-				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-			},
-			self = <span class="hljs-keyword">this</span>,
-			setter = getPropDefineBehavior(<span class="hljs-string">"set"</span>, prop, <span class="hljs-keyword">this</span>.define),
-			getter = getPropDefineBehavior(<span class="hljs-string">"get"</span>, prop, <span class="hljs-keyword">this</span>.define);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (stub !== <span class="hljs-literal">false</span>) {
+						can.trigger(self, <span class="hljs-string">'error'</span>, [
+							prop,
+							errors
+						], <span class="hljs-literal">true</span>);
+					}
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+				},
+				self = <span class="hljs-keyword">this</span>,
+				setter = getPropDefineBehavior(<span class="hljs-string">"set"</span>, prop, <span class="hljs-keyword">this</span>.define),
+				getter = getPropDefineBehavior(<span class="hljs-string">"get"</span>, prop, <span class="hljs-keyword">this</span>.define);</pre></div></div>
             
         </li>
         
@@ -367,7 +382,7 @@ the event twice. :)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (setter) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (setter) {</pre></div></div>
             
         </li>
         
@@ -384,17 +399,17 @@ do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.batch.start();
-			<span class="hljs-keyword">var</span> setterCalled = <span class="hljs-literal">false</span>,
+            <div class="content"><div class='highlight'><pre>				can.batch.start();
+				<span class="hljs-keyword">var</span> setterCalled = <span class="hljs-literal">false</span>,
 
-				setValue = setter.call(<span class="hljs-keyword">this</span>, value, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
-					<span class="hljs-keyword">if</span>(getter) {
-						self[prop](value);
-					} <span class="hljs-keyword">else</span> {
-						oldSet.call(self, prop, value, current, success, errorCallback);
-					}
-					
-					setterCalled = <span class="hljs-literal">true</span>;</pre></div></div>
+					setValue = setter.call(<span class="hljs-keyword">this</span>, value, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
+						<span class="hljs-keyword">if</span>(getter) {
+							self[prop](value);
+						} <span class="hljs-keyword">else</span> {
+							oldSet.call(self, prop, value, current, success, errorCallback);
+						}
+
+						setterCalled = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -409,7 +424,7 @@ do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					clearTimeout(asyncTimer);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						clearTimeout(asyncTimer);</pre></div></div>
             
         </li>
         
@@ -424,8 +439,8 @@ do not call update property and return right away</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				}, errorCallback, getter ? <span class="hljs-keyword">this</span>[prop].computeInstance.lastSetValue.get() : current);
-			<span class="hljs-keyword">if</span> (getter) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					}, errorCallback, getter ? <span class="hljs-keyword">this</span>._computedAttrs[prop].compute.computeInstance.lastSetValue.get() : current);
+				<span class="hljs-keyword">if</span> (getter) {</pre></div></div>
             
         </li>
         
@@ -441,13 +456,13 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(setValue !== <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">2</span>) {
-					<span class="hljs-keyword">this</span>[prop](setValue);
-				}
-				
-				can.batch.stop();
-				<span class="hljs-keyword">return</span>;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(setValue !== <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">1</span>) {
+						<span class="hljs-keyword">this</span>._computedAttrs[prop].compute(setValue);
+					}
+
+					can.batch.stop();
+					<span class="hljs-keyword">return</span>;
+				}</pre></div></div>
             
         </li>
         
@@ -462,7 +477,7 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (setValue === <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">2</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (setValue === <span class="hljs-literal">undefined</span> &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= <span class="hljs-number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -477,9 +492,9 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				asyncTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-					can.dev.warn(<span class="hljs-string">'can/map/setter.js: Setter "'</span> + prop + <span class="hljs-string">'" did not return a value or call the setter callback.'</span>);
-				}, can.dev.warnTimeout);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					asyncTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+						can.dev.warn(<span class="hljs-string">'can/map/setter.js: Setter "'</span> + prop + <span class="hljs-string">'" did not return a value or call the setter callback.'</span>);
+					}, can.dev.warnTimeout);</pre></div></div>
             
         </li>
         
@@ -494,11 +509,11 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.batch.stop();
-				<span class="hljs-keyword">return</span>;
-			} <span class="hljs-keyword">else</span> {
-				<span class="hljs-keyword">if</span> (!setterCalled) {
-					oldSet.call(self, prop,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					can.batch.stop();
+					<span class="hljs-keyword">return</span>;
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">if</span> (!setterCalled) {
+						oldSet.call(self, prop,</pre></div></div>
             
         </li>
         
@@ -513,72 +528,78 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						setter.length === <span class="hljs-number">0</span> &amp;&amp; setValue === <span class="hljs-literal">undefined</span> ? value : setValue,
-						current,
-						success,
-						errorCallback);
+            <div class="content"><div class='highlight'><pre>							setter.length === <span class="hljs-number">0</span> &amp;&amp; setValue === <span class="hljs-literal">undefined</span> ? value : setValue,
+							current,
+							success,
+							errorCallback);
+					}
+					can.batch.stop();
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 				}
-				can.batch.stop();
-				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-			}
 
-		} <span class="hljs-keyword">else</span> {
-			oldSet.call(self, prop, value, current, success, errorCallback);
-		}
-
-		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-	};
-
-	define.types = {
-		<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
-			<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> str;
-			<span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
-				str = <span class="hljs-built_in">Date</span>.parse(str);
-				<span class="hljs-keyword">return</span> <span class="hljs-built_in">isNaN</span>(str) ? <span class="hljs-literal">null</span> : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'number'</span>) {
-				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
 			} <span class="hljs-keyword">else</span> {
-				<span class="hljs-keyword">return</span> str;
+				oldSet.call(self, prop, value, current, success, errorCallback);
 			}
-		},
-		<span class="hljs-string">'number'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
-			<span class="hljs-keyword">return</span> +(val);
-		},
-		<span class="hljs-string">'boolean'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
-			<span class="hljs-keyword">if</span> (val === <span class="hljs-string">'false'</span> || val === <span class="hljs-string">'0'</span> || !val) {
-				<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-			}
-			<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-		},
-		<span class="hljs-comment">/**
-		 * Implements HTML-style boolean logic for attribute strings, where
-		 * any string, including "", is truthy.
-		 */</span>
-		<span class="hljs-string">'htmlbool'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">"string"</span> || !!val;
-		},
-		<span class="hljs-string">'*'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
-			<span class="hljs-keyword">return</span> val;
-		},
-		<span class="hljs-string">'string'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + val;
-		},
-		<span class="hljs-string">'compute'</span>: {
-			set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newValue, setVal, setErr, oldValue)</span></span>{
-				<span class="hljs-keyword">if</span>(newValue.isComputed) {
-					<span class="hljs-keyword">return</span> newValue;
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		};
+
+		define.types = {
+			<span class="hljs-string">'date'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
+				<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> str;
+				<span class="hljs-keyword">if</span> (type === <span class="hljs-string">'string'</span>) {
+					str = <span class="hljs-built_in">Date</span>.parse(str);
+					<span class="hljs-keyword">return</span> <span class="hljs-built_in">isNaN</span>(str) ? <span class="hljs-literal">null</span> : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'number'</span>) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(str);
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> str;
 				}
-				<span class="hljs-keyword">if</span>(oldValue &amp;&amp; oldValue.isComputed) {
-					oldValue(newValue);
-					<span class="hljs-keyword">return</span> oldValue;
-				}
-				<span class="hljs-keyword">return</span> newValue;
 			},
-			get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
-				<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed ? value() : value;
+			<span class="hljs-string">'number'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
+				<span class="hljs-keyword">if</span>(val == <span class="hljs-literal">null</span>) {
+					<span class="hljs-keyword">return</span> val;
+				}
+				<span class="hljs-keyword">return</span> +(val);
+			},
+			<span class="hljs-string">'boolean'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
+				<span class="hljs-keyword">if</span> (val === <span class="hljs-string">'false'</span> || val === <span class="hljs-string">'0'</span> || !val) {
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+				}
+				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+			},
+			<span class="hljs-comment">/**
+			 * Implements HTML-style boolean logic for attribute strings, where
+			 * any string, including "", is truthy.
+			 */</span>
+			<span class="hljs-string">'htmlbool'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>) </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">"string"</span> || !!val;
+			},
+			<span class="hljs-string">'*'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
+				<span class="hljs-keyword">return</span> val;
+			},
+			<span class="hljs-string">'string'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
+				<span class="hljs-keyword">if</span>(val == <span class="hljs-literal">null</span>) {
+					<span class="hljs-keyword">return</span> val;
+				}
+				<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + val;
+			},
+			<span class="hljs-string">'compute'</span>: {
+				<span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newValue, setVal, setErr, oldValue</span>) </span>{
+					<span class="hljs-keyword">if</span>(newValue &amp;&amp; newValue.isComputed) {
+						<span class="hljs-keyword">return</span> newValue;
+					}
+					<span class="hljs-keyword">if</span>(oldValue &amp;&amp; oldValue.isComputed) {
+						oldValue(newValue);
+						<span class="hljs-keyword">return</span> oldValue;
+					}
+					<span class="hljs-keyword">return</span> newValue;
+				},
+				<span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
+					<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed ? value() : value;
+				}
 			}
-		}
-	};</pre></div></div>
+		};</pre></div></div>
             
         </li>
         
@@ -593,17 +614,17 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldType = proto.__type;
-	proto.__type = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value, prop)</span> </span>{
-		<span class="hljs-keyword">var</span> type = getPropDefineBehavior(<span class="hljs-string">"type"</span>, prop, <span class="hljs-keyword">this</span>.define),
-			Type = getPropDefineBehavior(<span class="hljs-string">"Type"</span>, prop, <span class="hljs-keyword">this</span>.define),
-			newValue = value;
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldType = proto.__type;
+		proto.__type = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value, prop</span>) </span>{
+			<span class="hljs-keyword">var</span> type = getPropDefineBehavior(<span class="hljs-string">"type"</span>, prop, <span class="hljs-keyword">this</span>.define),
+				Type = getPropDefineBehavior(<span class="hljs-string">"Type"</span>, prop, <span class="hljs-keyword">this</span>.define),
+				newValue = value;
 
-		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span>) {
-			type = define.types[type];
-		}
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> type === <span class="hljs-string">"string"</span>) {
+				type = define.types[type];
+			}
 
-		<span class="hljs-keyword">if</span> (type || Type) {</pre></div></div>
+			<span class="hljs-keyword">if</span> (type || Type) {</pre></div></div>
             
         </li>
         
@@ -618,9 +639,9 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (type) {
-				newValue = type.call(<span class="hljs-keyword">this</span>, newValue, prop);
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (type) {
+					newValue = type.call(<span class="hljs-keyword">this</span>, newValue, prop);
+				}</pre></div></div>
             
         </li>
         
@@ -635,9 +656,9 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (Type &amp;&amp; !(newValue <span class="hljs-keyword">instanceof</span> Type)) {
-				newValue = <span class="hljs-keyword">new</span> Type(newValue);
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (Type &amp;&amp; !(newValue <span class="hljs-keyword">instanceof</span> Type)) {
+					newValue = <span class="hljs-keyword">new</span> Type(newValue);
+				}</pre></div></div>
             
         </li>
         
@@ -652,9 +673,9 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> newValue;
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> newValue;
 
-		}</pre></div></div>
+			}</pre></div></div>
             
         </li>
         
@@ -669,48 +690,45 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(can.isPlainObject(newValue) &amp;&amp; newValue.define) {
-			newValue = can.Map.extend(newValue);
-			newValue = <span class="hljs-keyword">new</span> newValue();
-		}
-		<span class="hljs-keyword">return</span> oldType.call(<span class="hljs-keyword">this</span>, newValue, prop);
-	};
-
-	<span class="hljs-keyword">var</span> oldRemove = proto._remove;
-	proto._remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, current)</span> </span>{
-		<span class="hljs-keyword">var</span> remove = getPropDefineBehavior(<span class="hljs-string">"remove"</span>, prop, <span class="hljs-keyword">this</span>.define),
-			res;
-		<span class="hljs-keyword">if</span> (remove) {
-			can.batch.start();
-			res = remove.call(<span class="hljs-keyword">this</span>, current);
-
-			<span class="hljs-keyword">if</span> (res === <span class="hljs-literal">false</span>) {
-				can.batch.stop();
-				<span class="hljs-keyword">return</span>;
-			} <span class="hljs-keyword">else</span> {
-
-				res = oldRemove.call(<span class="hljs-keyword">this</span>, prop, current);
-				can.batch.stop();
-				<span class="hljs-keyword">return</span> res;
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(can.isPlainObject(newValue) &amp;&amp; newValue.define) {
+				newValue = can.Map.extend(newValue);
+				newValue = <span class="hljs-keyword">new</span> newValue();
 			}
-		}
-		<span class="hljs-keyword">return</span> oldRemove.call(<span class="hljs-keyword">this</span>, prop, current);
-	};
+			<span class="hljs-keyword">return</span> oldType.call(<span class="hljs-keyword">this</span>, newValue, prop);
+		};
 
-	<span class="hljs-keyword">var</span> oldSetupComputes = proto._setupComputes;
-	proto._setupComputes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(defaultsValues)</span> </span>{
-		oldSetupComputes.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> attr <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.define) {
-			<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">this</span>.define[attr],
-				get = def.get;
-			<span class="hljs-keyword">if</span> (get) {
-				<span class="hljs-keyword">this</span>[attr] = can.compute.async(defaultsValues[attr], get, <span class="hljs-keyword">this</span>);
-				<span class="hljs-keyword">this</span>._computedBindings[attr] = {
-					count: <span class="hljs-number">0</span>
-				};
+		<span class="hljs-keyword">var</span> oldRemove = proto.__remove;
+		proto.__remove = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, current</span>) </span>{
+			<span class="hljs-keyword">var</span> remove = getPropDefineBehavior(<span class="hljs-string">"remove"</span>, prop, <span class="hljs-keyword">this</span>.define),
+				res;
+			<span class="hljs-keyword">if</span> (remove) {
+				can.batch.start();
+				res = remove.call(<span class="hljs-keyword">this</span>, current);
+
+				<span class="hljs-keyword">if</span> (res === <span class="hljs-literal">false</span>) {
+					can.batch.stop();
+					<span class="hljs-keyword">return</span>;
+				} <span class="hljs-keyword">else</span> {
+
+					res = oldRemove.call(<span class="hljs-keyword">this</span>, prop, current);
+					can.batch.stop();
+					<span class="hljs-keyword">return</span> res;
+				}
 			}
-		}
-	};</pre></div></div>
+			<span class="hljs-keyword">return</span> oldRemove.call(<span class="hljs-keyword">this</span>, prop, current);
+		};
+
+		<span class="hljs-keyword">var</span> oldSetupComputes = proto._setupComputedProperties;
+		proto._setupComputedProperties = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			oldSetupComputes.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> attr <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.define) {
+				<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">this</span>.define[attr],
+					get = def.get;
+				<span class="hljs-keyword">if</span> (get) {
+					mapHelpers.addComputedAttr(<span class="hljs-keyword">this</span>, attr, can.compute.async(<span class="hljs-literal">undefined</span>, get, <span class="hljs-keyword">this</span>));
+				}
+			}
+		};</pre></div></div>
             
         </li>
         
@@ -725,10 +743,10 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldSingleSerialize = can.Map.helpers._serialize;
-	can.Map.helpers._serialize = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, name, val)</span></span>{
-		<span class="hljs-keyword">return</span> serializeProp(map, name, val);
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldSingleSerialize = proto.___serialize;
+		proto.___serialize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, val</span>)</span>{
+			<span class="hljs-keyword">return</span> serializeProp(<span class="hljs-keyword">this</span>, name, val);
+		};</pre></div></div>
             
         </li>
         
@@ -743,14 +761,14 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> serializeProp = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(map, attr, val)</span> </span>{
-		<span class="hljs-keyword">var</span> serializer = attr === <span class="hljs-string">"*"</span> ? <span class="hljs-literal">false</span> : getPropDefineBehavior(<span class="hljs-string">"serialize"</span>, attr, map.define);
-		<span class="hljs-keyword">if</span>(serializer === <span class="hljs-literal">undefined</span>) {
-			<span class="hljs-keyword">return</span> oldSingleSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(serializer !== <span class="hljs-literal">false</span>){
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> serializer === <span class="hljs-string">"function"</span> ? serializer.call(map, val, attr): oldSingleSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> serializeProp = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">map, attr, val</span>) </span>{
+			<span class="hljs-keyword">var</span> serializer = attr === <span class="hljs-string">"*"</span> ? <span class="hljs-literal">false</span> : getPropDefineBehavior(<span class="hljs-string">"serialize"</span>, attr, map.define);
+			<span class="hljs-keyword">if</span>(serializer === <span class="hljs-literal">undefined</span>) {
+				<span class="hljs-keyword">return</span> oldSingleSerialize.call(map, attr, val);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(serializer !== <span class="hljs-literal">false</span>){
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> serializer === <span class="hljs-string">"function"</span> ? serializer.call(map, val, attr): oldSingleSerialize.call(map, attr, val);
+			}
+		};</pre></div></div>
             
         </li>
         
@@ -765,12 +783,12 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldSerialize = proto.serialize;
-	proto.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> </span>{
-		<span class="hljs-keyword">var</span> serialized = oldSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		<span class="hljs-keyword">if</span>(property){
-			<span class="hljs-keyword">return</span> serialized;
-		}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> oldSerialize = proto.serialize;
+		proto.serialize = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">property</span>) </span>{
+			<span class="hljs-keyword">var</span> serialized = oldSerialize.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">if</span>(property){
+				<span class="hljs-keyword">return</span> serialized;
+			}</pre></div></div>
             
         </li>
         
@@ -785,9 +803,9 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		
-		<span class="hljs-keyword">var</span> serializer,
-			val;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+			<span class="hljs-keyword">var</span> serializer,
+				val;</pre></div></div>
             
         </li>
         
@@ -802,7 +820,7 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> attr <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.define){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> attr <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.define){</pre></div></div>
             
         </li>
         
@@ -817,7 +835,7 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!(attr <span class="hljs-keyword">in</span> serialized)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(!(attr <span class="hljs-keyword">in</span> serialized)) {</pre></div></div>
             
         </li>
         
@@ -832,19 +850,20 @@ instead we call the getter’s compute with the new value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				serializer = <span class="hljs-keyword">this</span>.define &amp;&amp; <span class="hljs-keyword">this</span>.define[attr] &amp;&amp; <span class="hljs-keyword">this</span>.define[attr].serialize;
-				<span class="hljs-keyword">if</span>(serializer) {
-					val = serializeProp(<span class="hljs-keyword">this</span>, attr, <span class="hljs-keyword">this</span>.attr(attr));
-					<span class="hljs-keyword">if</span>(val !== <span class="hljs-literal">undefined</span>) {
-						serialized[attr] = val;
+            <div class="content"><div class='highlight'><pre>					serializer = <span class="hljs-keyword">this</span>.define &amp;&amp; <span class="hljs-keyword">this</span>.define[attr] &amp;&amp; <span class="hljs-keyword">this</span>.define[attr].serialize;
+					<span class="hljs-keyword">if</span>(serializer) {
+						val = serializeProp(<span class="hljs-keyword">this</span>, attr, <span class="hljs-keyword">this</span>.attr(attr));
+						<span class="hljs-keyword">if</span>(val !== <span class="hljs-literal">undefined</span>) {
+							serialized[attr] = val;
+						}
 					}
 				}
 			}
-		}
-		<span class="hljs-keyword">return</span> serialized;
-	};
+			<span class="hljs-keyword">return</span> serialized;
+		};
 
-	<span class="hljs-keyword">return</span> can.define;
+		<span class="hljs-keyword">return</span> can.define;
+	}
 });</pre></div></div>
             
         </li>

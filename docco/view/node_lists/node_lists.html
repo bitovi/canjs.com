@@ -26,13 +26,13 @@
 sections update content correctly.</p>
 <p>Consider the following template:</p>
 <pre><code>&lt;div&gt;
-{{#<span class="hljs-keyword">if</span> items.length}}
+{{#if items.length}}
     Items:
         {{#items}}
-            &lt;label&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            &lt;label&gt;&lt;/label&gt;
         {{/items}}
 {{/if}}
-<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span>
+&lt;/div&gt;
 </code></pre><p>The <code>{{#if}}</code> and <code>{{#items}}</code> seconds are “directly nested” because
 they share the same <code>&lt;div&gt;</code> parent element.</p>
 <p>If <code>{{#items}}</code> changes the DOM by adding more <code>&lt;labels&gt;</code>,
@@ -42,7 +42,7 @@ all items were removed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@ that needs to be replaced when updated.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>A mapping of ids to text nodes, this map will be used in the 
+              <p>A mapping of ids to text nodes, this map will be used in the
 case of the browser not supporting expando properties.</p>
 
             </div>
@@ -110,7 +110,7 @@ case of the browser not supporting expando properties.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>The name of the expando property; the value returned 
+              <p>The name of the expando property; the value returned
 given a nodeMap key.</p>
 
             </div>
@@ -152,7 +152,7 @@ the lookup id.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		id = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node, localMap)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		id = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node, localMap</span>) </span>{
 			<span class="hljs-keyword">var</span> _textNodeMap = localMap || textNodeMap;
 			<span class="hljs-keyword">var</span> id = readId(node,_textNodeMap);
 			<span class="hljs-keyword">if</span>(id) {
@@ -218,7 +218,7 @@ table and store the id on the node as a custom property).</p>
 				}
 			}
 		},
-		readId = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node,textNodeMap)</span></span>{
+		readId = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node,textNodeMap</span>)</span>{
 			<span class="hljs-keyword">if</span> (canExpando || node.nodeType !== <span class="hljs-number">3</span>) {
 				<span class="hljs-keyword">return</span> node[expando];
 			} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -232,7 +232,7 @@ table and store the id on the node as a custom property).</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>The nodeList has a specific collection for HTMLTextNodes for 
+              <p>The nodeList has a specific collection for HTMLTextNodes for
 (older) browsers that do not support expando properties.</p>
 
             </div>
@@ -262,7 +262,7 @@ list and any child lists.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		itemsInChildListTree = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(list)</span></span>{
+            <div class="content"><div class='highlight'><pre>		itemsInChildListTree = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list</span>)</span>{
 			<span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>;
 			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = list.length ; i &lt; len; i++){
 				<span class="hljs-keyword">var</span> item = list[i];</pre></div></div>
@@ -304,13 +304,20 @@ list.</p>
 			}
 			<span class="hljs-keyword">return</span> count;
 		},
-		replacementMap = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replacements, idMap)</span></span>{
+		replacementMap = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">replacements, idMap</span>)</span>{
 			<span class="hljs-keyword">var</span> map = {};
 			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = replacements.length; i &lt; len; i++){
 				<span class="hljs-keyword">var</span> node = nodeLists.first(replacements[i]);
 				map[id(node, idMap)] = replacements[i];
 			}
 			<span class="hljs-keyword">return</span> map;
+		},
+		addUnfoundAsDeepChildren = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list, rMap, foundIds</span>)</span>{
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> repId <span class="hljs-keyword">in</span> rMap) {
+				<span class="hljs-keyword">if</span>(!foundIds[repId]) {
+					list.newDeepChildren.push(rMap[repId]);
+				}
+			}
 		};</pre></div></div>
             
         </li>
@@ -327,25 +334,25 @@ list.</p>
 all live-bound elments are registered and updated when they change.</p>
 <p>For example, the above template, when rendered with data like:</p>
 <pre><code>data = <span class="hljs-keyword">new</span> can.Map({
-    items: [<span class="hljs-string">"first"</span>,<span class="hljs-string">"second"</span>]
+    <span class="hljs-attr">items</span>: [<span class="hljs-string">"first"</span>,<span class="hljs-string">"second"</span>]
 })
 </code></pre><p>This will first render the following content:</p>
 <pre><code>&lt;div&gt;
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">data-view-id</span>=<span class="hljs-value">'5'</span>/&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></span>
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">data-view-id</span>=<span class="hljs-string">'5'</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
 </code></pre><p>When the <code>5</code> callback is called, this will register the <code>&lt;span&gt;</code> like:</p>
-<pre><code><span class="hljs-keyword">var</span> ifsNodes = [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">5</span>&gt;</span>]
+<pre><code><span class="hljs-keyword">var</span> ifsNodes = [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">5</span>&gt;</span>]
 nodeLists.register(ifsNodes);</span>
 </code></pre><p>And then render <code>{{if}}</code>‘s contents and update <code>ifsNodes</code> with it:</p>
-<pre><code>nodeLists.update( ifsNodes, [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">"\nItems:\n"</span>&gt;</span>, <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">data-view-id</span>=<span class="hljs-value">"6"</span>&gt;</span>] );</span>
+<pre><code>nodeLists.update( ifsNodes, [&lt;"\nItems:\n"&gt;, &lt;span data-view-id="6"&gt;] );
 </code></pre><p>Next, hookup <code>6</code> is called which will regsiter the <code>&lt;span&gt;</code> like:</p>
-<pre><code><span class="hljs-keyword">var</span> eachsNodes = [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">6</span>&gt;</span>];
+<pre><code><span class="hljs-keyword">var</span> eachsNodes = [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">6</span>&gt;</span>];
 nodeLists.register(eachsNodes);</span>
 </code></pre><p>And then it will render <code>{{#each}}</code>‘s content and update <code>eachsNodes</code> with it:</p>
-<pre><code>nodeLists.update(eachsNodes, [<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>]);</span>
+<pre><code>nodeLists.update(eachsNodes, [&lt;label&gt;,&lt;label&gt;]);
 </code></pre><p>As <code>nodeLists</code> knows that <code>eachsNodes</code> is inside <code>ifsNodes</code>, it also updates
 <code>ifsNodes</code>‘s nodes to look like:</p>
-<pre><code>[<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">"\nItems:\n"</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>]</span>
+<pre><code>[&lt;"\nItems:\n"&gt;,&lt;label&gt;,&lt;label&gt;]
 </code></pre><p>Now, if all items were removed, <code>{{#if}}</code> would be able to remove
 all the <code>&lt;label&gt;</code> elements.</p>
 <p>When you regsiter a nodeList, you can also provide a callback to know when
@@ -355,7 +362,7 @@ useful for tearing down live-binding.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> nodeLists = {
-		id: id,</pre></div></div>
+		<span class="hljs-attr">id</span>: id,</pre></div></div>
             
         </li>
         
@@ -371,7 +378,7 @@ useful for tearing down live-binding.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList, newNodes)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		update: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nodeList, newNodes</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -387,7 +394,7 @@ useful for tearing down live-binding.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> oldNodes = nodeLists.unregisterChildren(nodeList);
-			
+
 			newNodes = can.makeArray(newNodes);
 
 			<span class="hljs-keyword">var</span> oldListLength = nodeList.length;</pre></div></div>
@@ -408,18 +415,7 @@ useful for tearing down live-binding.</p>
             <div class="content"><div class='highlight'><pre>			splice.apply(nodeList, [
 				<span class="hljs-number">0</span>,
 				oldListLength
-			].concat(newNodes));
-
-			<span class="hljs-keyword">if</span>(nodeList.replacements){
-				nodeLists.nestReplacements(nodeList);
-			} <span class="hljs-keyword">else</span> {
-				nodeLists.nestList(nodeList);
-			}
-			
-			<span class="hljs-keyword">return</span> oldNodes;
-		},
-		nestReplacements: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(list)</span></span>{
-			<span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>,</pre></div></div>
+			].concat(newNodes));</pre></div></div>
             
         </li>
         
@@ -430,11 +426,21 @@ useful for tearing down live-binding.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>temporary id map that is limited to this call</p>
+              <p>Replacements are nodes that have replaced the original element this is on.
+We can’t simply insert elements because stache does children before parents.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				idMap = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(nodeList.replacements){
+				nodeLists.nestReplacements(nodeList);
+				nodeList.deepChildren = nodeList.newDeepChildren;
+				nodeList.newDeepChildren = [];
+			} <span class="hljs-keyword">else</span> {
+				nodeLists.nestList(nodeList);
+			}
+
+			<span class="hljs-keyword">return</span> oldNodes;
+		},</pre></div></div>
             
         </li>
         
@@ -445,24 +451,16 @@ useful for tearing down live-binding.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>replacements are in reverse order in the DOM</p>
+              <p>Goes through each node in the list. [el1, el2, el3, …]
+Finds the nodeList for that node in repacements.  el1’s nodeList might look like [el1, [el2]].
+Replaces that element and any other elements in the node list with the
+nodelist itself. resulting in [ [el1, [el2]], el3, …]
+If a replacement is not found, it was improperly added, so we add it as a deepChild.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				rMap = replacementMap(list.replacements, idMap),
-				rCount = list.replacements.length;
-			
-			<span class="hljs-keyword">while</span>(index &lt; list.length &amp;&amp; rCount) {
-				<span class="hljs-keyword">var</span> node = list[index],
-					replacement = rMap[readId(node, idMap)];
-				<span class="hljs-keyword">if</span>( replacement ) {
-					list.splice( index, itemsInChildListTree(replacement), replacement );
-					rCount--;
-				}
-				index++;
-			}
-			list.replacements = [];
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		nestReplacements: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list</span>)</span>{
+			<span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>,</pre></div></div>
             
         </li>
         
@@ -473,6 +471,70 @@ useful for tearing down live-binding.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
+              <p>temporary id map that is limited to this call</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				idMap = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>replacements are in reverse order in the DOM</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				rMap = replacementMap(list.replacements, idMap),
+				rCount = list.replacements.length,
+				foundIds = {};
+
+			<span class="hljs-keyword">while</span>(index &lt; list.length &amp;&amp; rCount) {
+				<span class="hljs-keyword">var</span> node = list[index],
+					nodeId = readId(node, idMap),
+					replacement = rMap[nodeId];
+				<span class="hljs-keyword">if</span>( replacement ) {
+					list.splice( index, itemsInChildListTree(replacement), replacement );
+					foundIds[nodeId] = <span class="hljs-literal">true</span>;
+					rCount--;
+				}
+				index++;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Only do this if</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(rCount) {
+				addUnfoundAsDeepChildren(list, rMap, foundIds );
+			}
+
+			list.replacements = [];
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
               <h2 id="nodelists-nestlist">nodeLists.nestList</h2>
 <p>If a given list does not exist in the nodeMap then create an lookup
 id for it in the nodeMap and assign the list to it.
@@ -482,7 +544,7 @@ elements in the list.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		nestList: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(list)</span></span>{
+            <div class="content"><div class='highlight'><pre>		nestList: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list</span>)</span>{
 			<span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>;
 			<span class="hljs-keyword">while</span>(index &lt; list.length) {
 				<span class="hljs-keyword">var</span> node = list[index],
@@ -496,11 +558,11 @@ elements in the list.
         </li>
         
         
-        <li id="section-22">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Indicate the new nodes belong to this list.</p>
 
@@ -515,11 +577,11 @@ elements in the list.
         </li>
         
         
-        <li id="section-23">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <h2 id="nodelists-last">nodeLists.last</h2>
 <p>Return the last HTMLElement in a nodeList, if the last
@@ -528,17 +590,17 @@ the child list, etc.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		last: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodeList)</span></span>{
+            <div class="content"><div class='highlight'><pre>		last: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeList</span>)</span>{
 			<span class="hljs-keyword">var</span> last = nodeList[nodeList.length - <span class="hljs-number">1</span>];</pre></div></div>
             
         </li>
         
         
-        <li id="section-24">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>If the last node in the list is not an HTMLElement
 it is a nodeList so call <code>last</code> again.</p>
@@ -555,11 +617,11 @@ it is a nodeList so call <code>last</code> again.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <h2 id="nodelists-first">nodeLists.first</h2>
 <p>Return the first HTMLElement in a nodeList, if the first
@@ -568,20 +630,20 @@ the child list, etc.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		first: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodeList)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		first: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeList</span>) </span>{
 			<span class="hljs-keyword">var</span> first = nodeList[<span class="hljs-number">0</span>];</pre></div></div>
             
         </li>
         
         
-        <li id="section-26">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>If the first node in the list is not an HTMLElement
-it is a nodeList so call <code>first</code> again. </p>
+it is a nodeList so call <code>first</code> again.</p>
 
             </div>
             
@@ -591,7 +653,7 @@ it is a nodeList so call <code>first</code> again. </p>
 				<span class="hljs-keyword">return</span> nodeLists.first(first);
 			}
 		},
-		flatten: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodeList)</span></span>{
+		<span class="hljs-attr">flatten</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeList</span>)</span>{
 			<span class="hljs-keyword">var</span> items = [];
 			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span> ; i &lt; nodeList.length; i++) {
 				<span class="hljs-keyword">var</span> item = nodeList[i];
@@ -607,76 +669,18 @@ it is a nodeList so call <code>first</code> again. </p>
         </li>
         
         
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <h2 id="nodelists-register">nodeLists.register</h2>
-<p>Registers a nodeList and returns the nodeList passed to register</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList, unregistered, parent)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p>If a unregistered callback has been provided assign it to the nodeList
-as a property to be called when the nodeList is unregistred.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			nodeList.unregistered = unregistered;
-			nodeList.parentList = parent;
-			
-			<span class="hljs-keyword">if</span>(parent === <span class="hljs-literal">true</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p>this is the “top” parent in stache</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				nodeList.replacements = [];
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(parent) {</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>TOOD: remove</p>
+              <h2 id="nodelists-register">nodeLists.register</h2>
+<p>Registers a nodeList and returns the nodeList passed to register</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				parent.replacements.push(nodeList);
-				nodeList.replacements = [];
-			} <span class="hljs-keyword">else</span> {
-				nodeLists.nestList(nodeList);
-			}
-			
-			
-			<span class="hljs-keyword">return</span> nodeList;
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		register: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nodeList, unregistered, parent, directlyNested</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -687,15 +691,36 @@ as a property to be called when the nodeList is unregistred.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <h2 id="nodelists-unregisterchildren">nodeLists.unregisterChildren</h2>
-<p>Unregister all childen within the provided list and return the 
-unregistred nodes.
-@param {Array.<HTMLElement>} nodeList The child list to unregister.</p>
+              <p>If a unregistered callback has been provided assign it to the nodeList
+as a property to be called when the nodeList is unregistred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		unregisterChildren: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodeList)</span></span>{
-			<span class="hljs-keyword">var</span> nodes = [];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.cid(nodeList);
+			nodeList.unregistered = unregistered;
+			nodeList.parentList = parent;
+			nodeList.nesting = parent &amp;&amp; <span class="hljs-keyword">typeof</span> parent.nesting !== <span class="hljs-string">'undefined'</span> ? parent.nesting + <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+
+			<span class="hljs-keyword">if</span>(parent) {
+				nodeList.deepChildren = [];
+				nodeList.newDeepChildren = [];
+				nodeList.replacements = [];
+				<span class="hljs-keyword">if</span>(parent !== <span class="hljs-literal">true</span>) {
+					<span class="hljs-keyword">if</span>(directlyNested) {
+						parent.replacements.push(nodeList);
+					}
+					<span class="hljs-keyword">else</span> {
+						parent.newDeepChildren.push(nodeList);
+					}
+				}
+			}
+			<span class="hljs-keyword">else</span> {
+				nodeLists.nestList(nodeList);
+			}
+
+
+			<span class="hljs-keyword">return</span> nodeList;
+		},</pre></div></div>
             
         </li>
         
@@ -706,12 +731,15 @@ unregistred nodes.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>For each node in the nodeList we want to compute it’s id
-and delete it from the nodeList’s internal map.</p>
+              <h2 id="nodelists-unregisterchildren">nodeLists.unregisterChildren</h2>
+<p>Unregister all childen within the provided list and return the
+unregistred nodes.
+@param {Array.<HTMLElement>} nodeList The child list to unregister.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(nodeList, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		unregisterChildren: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeList</span>)</span>{
+			<span class="hljs-keyword">var</span> nodes = [];</pre></div></div>
             
         </li>
         
@@ -721,6 +749,22 @@ and delete it from the nodeList’s internal map.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>For each node in the nodeList we want to compute it’s id
+and delete it from the nodeList’s internal map.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(nodeList, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>If the node does not have a nodeType it is an array of
 nodes.</p>
@@ -738,40 +782,27 @@ nodes.</p>
         </li>
         
         
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>Recursively unregister each of the child lists in 
-the nodeList.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					push.apply(nodes, nodeLists.unregister(node));
-				}
-			});
-			<span class="hljs-keyword">return</span> nodes;
-		},</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <h2 id="nodelists-unregister">nodeLists.unregister</h2>
-<p>Unregister’s a nodeList and returns the unregistered nodes.<br>Call if the nodeList is no longer being updated. This will 
-also unregister all child nodeLists.</p>
+              <p>Recursively unregister each of the child lists in
+the nodeList.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		unregister: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{
-			<span class="hljs-keyword">var</span> nodes = nodeLists.unregisterChildren(nodeList);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					push.apply(nodes, nodeLists.unregister(node, <span class="hljs-literal">true</span>));
+				}
+			});
+
+			can.each(nodeList.deepChildren, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodeList</span>)</span>{
+				nodeLists.unregister(nodeList, <span class="hljs-literal">true</span>);
+			});
+
+			<span class="hljs-keyword">return</span> nodes;
+		},</pre></div></div>
             
         </li>
         
@@ -782,6 +813,25 @@ also unregister all child nodeLists.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
+              <h2 id="nodelists-unregister">nodeLists.unregister</h2>
+<p>Unregister’s a nodeList and returns the unregistered nodes.
+Call if the nodeList is no longer being updated. This will
+also unregister all child nodeLists.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		unregister: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nodeList, isChild</span>) </span>{
+			<span class="hljs-keyword">var</span> nodes = nodeLists.unregisterChildren(nodeList, <span class="hljs-literal">true</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
               <p>If an ‘unregisted’ function was provided during registration, remove
 it from the list, and call the function provided.</p>
 
@@ -789,14 +839,22 @@ it from the list, and call the function provided.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (nodeList.unregistered) {
 				<span class="hljs-keyword">var</span> unregisteredCallback = nodeList.unregistered;
-				<span class="hljs-keyword">delete</span> nodeList.unregistered;
-				<span class="hljs-keyword">delete</span> nodeList.replacements;
+				nodeList.replacements = nodeList.unregistered = <span class="hljs-literal">null</span>;
+				<span class="hljs-keyword">if</span>(!isChild) {
+					<span class="hljs-keyword">var</span> deepChildren = nodeList.parentList &amp;&amp; nodeList.parentList.deepChildren;
+					<span class="hljs-keyword">if</span>(deepChildren) {
+						<span class="hljs-keyword">var</span> index = deepChildren.indexOf(nodeList);
+						<span class="hljs-keyword">if</span>(index !== <span class="hljs-number">-1</span>) {
+							deepChildren.splice(index,<span class="hljs-number">1</span>);
+						}
+					}
+				}
 				unregisteredCallback();
 			}
 			<span class="hljs-keyword">return</span> nodes;
 		},
 
-		nodeMap: nodeMap
+		<span class="hljs-attr">nodeMap</span>: nodeMap
 	};
 	can.view.nodeLists = nodeLists;
 	<span class="hljs-keyword">return</span> nodeLists;

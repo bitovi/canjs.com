@@ -24,8 +24,8 @@
               </a>
             
               
-              <a class="source" href="compute_benchmark.html">
-                compute_benchmark.js
+              <a class="source" href="get_value_and_bind.html">
+                get_value_and_bind.js
               </a>
             
               
@@ -73,23 +73,19 @@
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <h1 id="can-compute">can.compute</h1>
-<p><code>can.compute</code> allows creation of observable values
-from the result of a funciton. Any time an observable
-value that the function depends on changes, the
-function automatically updates. This enables creating
-observable data that relies on other sources, potentially
-multiple different ones. For instance, a <code>can.compute</code> is
-able to:</p>
+<p><code>can.compute</code> allows the creation of observable values in different forms.
+This module is now just a facade around <a href="proto_compute.html">proto_compute.js</a>.
+<code>proto_compute.js</code> provides <code>can.Compute</code> as a constructor function where this file,
+<code>compute.js</code> wraps an instance of a <code>can.Compute</code> with a function.</p>
+<p>Other files: </p>
 <ul>
-<li>Combine a first and last name into a full name and update when either changes</li>
-<li>Calculate the absolute value of an observable number, updating any time the observable number does</li>
-<li>Specify complicated behavior for getting and setting a value, as well as how to handle changes</li>
+<li><a href="get_value_and_bind.js">get_value_and_bind.js</a> provides the low-level utility for observing functions.</li>
+<li><a href="read.html">read.js</a> provides a helper that read properties and values in an observable way.</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/bind'</span>, <span class="hljs-string">'can/util/batch'</span>, <span class="hljs-string">'can/compute/proto_compute.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, bind)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/bind'</span>, <span class="hljs-string">'can/util/batch'</span>, <span class="hljs-string">'can/compute/proto_compute.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, bind</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -100,46 +96,76 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <h2 id="reading-helpers">Reading Helpers</h2>
-<p>The following methods are used to call a function that relies on
-observable data and to track the observable events which should 
-be listened to when changes occur.
-To do this, <a href="#can-__reading"><code>can.__reading(observable, event)</code></a> is called to
-“broadcast” the corresponding event on each read.</p>
-<h3 id="observed">Observed</h3>
-<p>An “Observed” is an object of observable objects and events that
-a function relies on. These objects and events must be listened to
-in order to determine when to check a function for updates.
-This looks like the following:</p>
-<pre><code>{ 
-  <span class="hljs-string">"map1|first"</span>: {obj: map, event: <span class="hljs-string">"first"</span>},
-  <span class="hljs-string">"map1|last"</span> : {obj: map, event: <span class="hljs-string">"last"</span>}
-}
-</code></pre><p>Each object-event pair is mapped so no duplicates will be listed.</p>
+              <p>The <code>can.compute</code> generator function.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-	can.compute = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(getterSetter, context, eventName, bindOnce)</span> </span>{
+	can.compute = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">getterSetter, context, eventName, bindOnce</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Create an internal <code>can.Compute</code>.</p>
 
-		<span class="hljs-keyword">var</span> internalCompute = <span class="hljs-keyword">new</span> can.Compute(getterSetter, context, eventName, bindOnce);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> internalCompute = <span class="hljs-keyword">new</span> can.Compute(getterSetter, context, eventName, bindOnce);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The “compute” function that calls compute instance’s get or set function. </p>
 
-		<span class="hljs-keyword">var</span> compute = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> bind = internalCompute.bind;
+		<span class="hljs-keyword">var</span> unbind = internalCompute.unbind;
+		<span class="hljs-keyword">var</span> compute = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>) </span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
 				<span class="hljs-keyword">return</span> internalCompute.set(val);
 			}
 
 			<span class="hljs-keyword">return</span> internalCompute.get();
 		};
+		<span class="hljs-keyword">var</span> cid = can.cid(compute, <span class="hljs-string">'compute'</span>);
+		<span class="hljs-keyword">var</span> handlerKey = <span class="hljs-string">'__handler'</span> + cid;
 
-		compute.bind = can.proxy(internalCompute.bind, internalCompute);
-		compute.unbind = can.proxy(internalCompute.unbind, internalCompute);
+		compute.bind = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, handler</span>) </span>{
+			<span class="hljs-keyword">var</span> computeHandler = handler &amp;&amp; handler[handlerKey];
+			<span class="hljs-keyword">if</span>(handler &amp;&amp; !computeHandler) {
+				computeHandler = handler[handlerKey] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					handler.apply(compute, <span class="hljs-built_in">arguments</span>);
+				};
+			}
+
+			<span class="hljs-keyword">return</span> bind.call(internalCompute, ev, computeHandler);
+		};
+		compute.unbind = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, handler</span>) </span>{
+			<span class="hljs-keyword">var</span> computeHandler = handler &amp;&amp; handler[handlerKey];
+			<span class="hljs-keyword">if</span>(computeHandler) {
+				<span class="hljs-keyword">delete</span> handler[handlerKey];
+				<span class="hljs-keyword">return</span> internalCompute.unbind(ev, computeHandler);
+			}
+			<span class="hljs-keyword">return</span> unbind.apply(internalCompute, <span class="hljs-built_in">arguments</span>);
+		};
 		compute.isComputed = internalCompute.isComputed;
-		compute.clone = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ctx)</span> </span>{
+		compute.clone = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ctx</span>) </span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> getterSetter === <span class="hljs-string">'function'</span>) {
 				context = ctx;
 			}
-
 			<span class="hljs-keyword">return</span> can.compute(getterSetter, context, ctx, bindOnce);
 		};
 
@@ -151,60 +177,15 @@ This looks like the following:</p>
         </li>
         
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Instead of calculating whether anything is listening every time,
-use a function to do nothing (which may be overwritten)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> k = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>A list of temporarily bound computes</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> computes, unbindComputes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = computes.length; i &lt; len; i++) {
-				computes[i].unbind(<span class="hljs-string">'change'</span>, k);
-			}
-			computes = <span class="hljs-literal">null</span>;
-		};</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Binds computes for a moment to retain their value and prevent caching</p>
+              <h2 id="helpers">Helpers</h2>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>	can.compute.temporarilyBind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(compute)</span> </span>{
-		compute.bind(<span class="hljs-string">'change'</span>, k);
-		<span class="hljs-keyword">if</span> (!computes) {
-			computes = [];
-			setTimeout(unbindComputes, <span class="hljs-number">10</span>);
-		}
-		computes.push(compute);
-	};</pre></div></div>
             
         </li>
         
@@ -215,31 +196,60 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Whether a compute is truthy</p>
+              <h3 id="truthy">truthy</h3>
+<p>Wraps a compute with another compute that only changes when 
+the wrapped compute’s <code>truthiness</code> changes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.compute.truthy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(compute)</span> </span>{
-		<span class="hljs-keyword">return</span> can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>	can.compute.truthy = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">compute</span>) </span>{
+		<span class="hljs-keyword">return</span> can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> res = compute();
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> res === <span class="hljs-string">'function'</span>) {
 				res = res();
 			}
 			<span class="hljs-keyword">return</span> !!res;
 		});
-	};
-	can.compute.async = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue, asyncComputer, context)</span></span>{
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="async">async</h3>
+<p>A simple helper that makes an async compute a bit easier.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.compute.async = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue, asyncComputer, context</span>)</span>{
 		<span class="hljs-keyword">return</span> can.compute(initialValue, {
-			fn: asyncComputer,
-			context: context
+			<span class="hljs-attr">fn</span>: asyncComputer,
+			<span class="hljs-attr">context</span>: context
 		});
-	};
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="compatability">compatability</h3>
+<p>Setting methods that should not be around in 3.0.</p>
 
-
-	can.compute.read = can.Compute.read;
-
-
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.compute.read = can.Compute.read;
 	can.compute.set = can.Compute.set;
+	can.compute.temporarilyBind = can.Compute.temporarilyBind;
 
 	<span class="hljs-keyword">return</span> can.compute;
 });</pre></div></div>

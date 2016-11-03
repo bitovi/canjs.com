@@ -24,6 +24,11 @@
               </a>
             
               
+              <a class="source" href="standalone-basics.html">
+                standalone-basics.js
+              </a>
+            
+              
               <a class="source" href="steal-basics.html">
                 steal-basics.js
               </a>
@@ -51,9 +56,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">"can/component"</span>, <span class="hljs-string">"can"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(Component, can)</span></span>{
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">"can/component"</span>, <span class="hljs-string">"can"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Component, can</span>)</span>{
 	<span class="hljs-keyword">return</span> Component.extend({
-		tag: <span class="hljs-string">"my-component"</span>,</pre></div></div>
+		<span class="hljs-attr">tag</span>: <span class="hljs-string">"my-component"</span>,</pre></div></div>
             
         </li>
         
@@ -69,11 +74,11 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		template: can.stache(<span class="hljs-string">"{{message}}"</span>),
-		scope: {
-			message: <span class="hljs-string">"Hello World"</span>
+		<span class="hljs-attr">scope</span>: {
+			<span class="hljs-attr">message</span>: <span class="hljs-string">"Hello World"</span>
 		},
-		events: {
-			<span class="hljs-string">"inserted"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">events</span>: {
+			<span class="hljs-string">"inserted"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 				<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].className = <span class="hljs-string">"inserted"</span>;
 			}
 		}

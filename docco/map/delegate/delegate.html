@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -57,7 +57,7 @@ gives the prop to use as ‘this’</li>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> delegateMatches = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parts, props)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> delegateMatches = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parts, props</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -166,7 +166,7 @@ delegates to call</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		delegateHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, prop, how, newVal, oldVal)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		delegateHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event, prop, how, newVal, oldVal</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -340,7 +340,7 @@ least have some value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> from = prop.replace(hasMatch + <span class="hljs-string">'.'</span>, <span class="hljs-string">''</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> <span class="hljs-keyword">from</span> = prop.replace(hasMatch + <span class="hljs-string">'.'</span>, <span class="hljs-string">''</span>);</pre></div></div>
             
         </li>
         
@@ -375,7 +375,7 @@ TODO: the attrs should probably be using from</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (delegate.event === <span class="hljs-string">'change'</span>) {
-						prop = from;
+						prop = <span class="hljs-keyword">from</span>;
 						event.curAttr = hasMatch;
 						delegate.callback.apply(<span class="hljs-keyword">this</span>.attr(hasMatch), can.makeArray(<span class="hljs-built_in">arguments</span>));
 					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (delegate.event === how) {</pre></div></div>
@@ -397,7 +397,7 @@ TODO: the attrs should probably be using from</p>
 							event,
 							newVal,
 							oldVal,
-							from
+							<span class="hljs-keyword">from</span>
 						]);
 					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (delegate.event === <span class="hljs-string">'set'</span> &amp;&amp; how === <span class="hljs-string">'add'</span>) {</pre></div></div>
             
@@ -418,14 +418,14 @@ TODO: the attrs should probably be using from</p>
 							event,
 							newVal,
 							oldVal,
-							from
+							<span class="hljs-keyword">from</span>
 						]);
 					}
 				}
 			}
 		};
 	can.extend(can.Map.prototype, {
-		delegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, event, handler)</span> </span>{
+		<span class="hljs-attr">delegate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">selector, event, handler</span>) </span>{
 			selector = can.trim(selector);
 			<span class="hljs-keyword">var</span> delegates = <span class="hljs-keyword">this</span>._observe_delegates || (<span class="hljs-keyword">this</span>._observe_delegates = []),
 				attrs = [],
@@ -464,7 +464,7 @@ TODO: the attrs should probably be using from</p>
 					<span class="hljs-string">'"'</span>,
 					<span class="hljs-string">'\''</span>
 				]) &gt;= <span class="hljs-number">0</span>) {
-					matches[<span class="hljs-number">2</span>] = matches[<span class="hljs-number">2</span>].substr(<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>);
+					matches[<span class="hljs-number">2</span>] = matches[<span class="hljs-number">2</span>].substr(<span class="hljs-number">1</span>, <span class="hljs-number">-1</span>);
 				}
 				attrs.push({</pre></div></div>
             
@@ -575,15 +575,15 @@ undefined means a value was not defined</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				attrs: attrs,
-				callback: handler,
-				event: event
+				<span class="hljs-attr">callback</span>: handler,
+				<span class="hljs-attr">event</span>: event
 			});
 			<span class="hljs-keyword">if</span> (delegates.length === <span class="hljs-number">1</span>) {
 				<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'change'</span>, delegateHandler);
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		undelegate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(selector, event, handler)</span> </span>{
+		<span class="hljs-attr">undelegate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">selector, event, handler</span>) </span>{
 			selector = selector &amp;&amp; can.trim(selector);
 			<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,
 				delegates = <span class="hljs-keyword">this</span>._observe_delegates || [],

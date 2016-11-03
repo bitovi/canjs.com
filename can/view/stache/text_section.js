@@ -1,13 +1,12 @@
-steal("can/util", "can/view/live","./utils.js",function(can, live, utils){
+steal("can/util", "can/view/live","./utils.js", "./live_attr.js", function(can, live, utils, liveStache) {
 	live = live || can.view.live;
-	
+
 	var TextSectionBuilder = function(){
 		this.stack = [new TextSection()];
-	},
-		emptyHandler = function(){};
-	
+	};
+
 	can.extend(TextSectionBuilder.prototype,utils.mixins);
-	
+
 	can.extend(TextSectionBuilder.prototype,{
 		// Adds a subsection.
 		startSection: function(process){
@@ -25,46 +24,53 @@ steal("can/util", "can/view/live","./utils.js",function(can, live, utils){
 			this.stack.push(falseySection);
 		},
 		compile: function(state){
-			
+
 			var renderer = this.stack[0].compile();
-			
+
 			return function(scope, options){
-				
+
 				var compute = can.compute(function(){
 					return renderer(scope, options);
-				}, this, false, true);
-				
-				compute.bind("change", emptyHandler);
+				}, null, false);
+
+				compute.computeInstance.bind("change", can.k);
 				var value = compute();
-				
 				if( compute.computeInstance.hasDependencies ) {
-					if(state.attr) {
-						live.simpleAttribute(this, state.attr, compute);
-					} else {
-						live.attributes( this, compute );
+					if(state.textContentOnly) {
+						live.text(this, compute);
 					}
-					compute.unbind("change", emptyHandler);
+					else if(state.attr) {
+						live.simpleAttribute(this, state.attr, compute);
+					}
+					else {
+						liveStache.attributes(this, compute, scope, options);
+					}
+					compute.computeInstance.unbind("change", can.k);
 				} else {
-					if(state.attr) {
+					if(state.textContentOnly) {
+						this.nodeValue = value;
+					}
+					else if(state.attr) {
 						can.attr.set(this, state.attr, value);
-					} else {
+					}
+					else {
 						live.setAttributes(this, value);
 					}
 				}
 			};
 		}
 	});
-	
+
 	var passTruthyFalsey = function(process, truthy, falsey){
 		return function(scope, options){
 			return process.call(this, scope, options, truthy, falsey);
 		};
 	};
-	
+
 	var TextSection = function(){
 		this.values = [];
 	};
-	
+
 	can.extend( TextSection.prototype, {
 		add: function(data){
 			this.values.push(data);
@@ -75,7 +81,7 @@ steal("can/util", "can/view/live","./utils.js",function(can, live, utils){
 		compile: function(){
 			var values = this.values,
 				len = values.length;
-				
+
 			for(var i = 0 ; i < len; i++) {
 				var value = this.values[i];
 				if(typeof value === "object") {
@@ -84,7 +90,7 @@ steal("can/util", "can/view/live","./utils.js",function(can, live, utils){
 					    value.falsey && value.falsey.compile());
 				}
 			}
-			
+
 			return function(scope, options){
 				var txt = "",
 					value;
@@ -96,6 +102,6 @@ steal("can/util", "can/view/live","./utils.js",function(can, live, utils){
 			};
 		}
 	});
-	
+
 	return TextSectionBuilder;
 });

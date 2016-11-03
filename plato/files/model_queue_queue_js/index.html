@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>model/queue/queue.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">70.06</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">141</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">45.28</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.10</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;, &#039;can/model&#039;, &#039;can/map/backup&#039;, function (can) {
+	var cleanAttrs = function (changedAttrs, attrs) {
+		var newAttrs = can.extend(true, {}, attrs),
+			current, path;
+		if (changedAttrs) {
+			// go through the attributes returned from the server
+			// and remove those that were changed during the current
+			// request batch
+			for (var i = 0; i &lt; changedAttrs.length; i++) {
+				current = newAttrs;
+				path = changedAttrs[i].split(&#039;.&#039;);
+				while (path.length &gt; 1) {
+					current = current &amp;&amp; current[path.shift()];
+				}
+				if (current) {
+					delete current[path.shift()];
+				}
+			}
+		}
+		return newAttrs;
+	}, queueRequests = function (success, error, method, callback) {
+			this._changedAttrs = this._changedAttrs || [];
+			var def = new can.Deferred(),
+				self = this,
+				attrs = this.serialize(),
+				queue = this._requestQueue,
+				changedAttrs = this._changedAttrs,
+				reqFn, index;
+			reqFn = function (self, type, success, error) {
+				// Function that performs actual request
+				return function () {
+					// pass already serialized attributes because we want to 
+					// save model in state it was when request was queued, not
+					// when request is ran
+					return self.constructor._makeRequest([
+						self,
+						attrs
+					], type || (self.isNew() ? &#039;create&#039; : &#039;update&#039;), success, error, callback);
+				};
+			}(this, method, function () {
+				// resolve deferred with results from the request
+				def.resolveWith(self, arguments);
+				// remove current deferred from the queue 
+				queue.splice(0, 1);
+				if (queue.length &gt; 0) {
+					// replace queued wrapper function with deferred
+					// returned from the makeRequest function so we 
+					// can access it&#039;s `abort` function
+					queue[0] = queue[0]();
+				} else {
+					// clean up changed attrs since there is no more requests in the queue
+					changedAttrs.splice(0);
+				}
+			}, function () {
+				// reject deferred with results from the request
+				def.rejectWith(self, arguments);
+				// since we failed remove all pending requests from the queue
+				queue.splice(0);
+				// clean up changed attrs since there is no more requests in the queue
+				changedAttrs.splice(0);
+			});
+			// Add our fn to the queue
+			index = queue.push(reqFn) - 1;
+			// If there is only one request in the queue, run
+			// it immediately.
+			if (queue.length === 1) {
+				// replace queued wrapper function with deferred
+				// returned from the makeRequest function so we 
+				// can access it&#039;s `abort` function
+				queue[0] = queue[0]();
+			}
+			def.abort = function () {
+				var abort;
+				// check if this request is running, if it&#039;s not
+				// just remove it from the queue
+				// 
+				// also all subsequent requests should be removed too
+				abort = queue[index].abort &amp;&amp; queue[index].abort();
+				// remove aborted request and any requests after it
+				queue.splice(index);
+				// if there is no more requests in the queue clean up
+				// the changed attributes array
+				if (queue.length === 0) {
+					changedAttrs.splice(0);
+				}
+				return abort;
+			};
+			// deferred will be resolved with original success and
+			// error functions
+			def.then(success, error);
+			return def;
+		}, _triggerChange = can.Model.prototype._triggerChange,
+		destroyFn = can.Model.prototype.destroy,
+		setupFn = can.Model.prototype.setup;
+	can.each([
+		&#039;created&#039;,
+		&#039;updated&#039;,
+		&#039;destroyed&#039;
+	], function (fn) {
+		var prototypeFn = can.Model.prototype[fn];
+		can.Model.prototype[fn] = function (attrs) {
+			if (attrs &amp;&amp; typeof attrs === &#039;object&#039;) {
+				attrs = attrs.attr ? attrs.attr() : attrs;
+				// Create backup of last good known state returned
+				// from the server. This allows users to restore it
+				// if API returns error
+				this._backupStore(attrs);
+				attrs = cleanAttrs(this._changedAttrs || [], attrs);
+			}
+			// call the original function with the cleaned up attributes
+			prototypeFn.call(this, attrs);
+		};
+	});
+	can.extend(can.Model.prototype, {
+		setup: function () {
+			setupFn.apply(this, arguments);
+			this._requestQueue = new can.List();
+		},
+		_triggerChange: function (attr, how, newVal, oldVal) {
+			// record changes if there is a request running
+			if (this._changedAttrs) {
+				this._changedAttrs.push(attr);
+			}
+			_triggerChange.apply(this, arguments);
+		},
+		hasQueuedRequests: function () {
+			return this._requestQueue.attr(&#039;length&#039;) &gt; 1;
+		},
+		save: function () {
+			return queueRequests.apply(this, arguments);
+		},
+		destroy: function (success, error) {
+			if (this.isNew()) {
+				// if it&#039;s a new instance, call default destroy method
+				return destroyFn.call(this, success, error);
+			}
+			return queueRequests.call(this, success, error, &#039;destroy&#039;, &#039;destroyed&#039;);
+		}
+	});
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

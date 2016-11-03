@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - View Models </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started Tutorial">
+				Getting Started Tutorial
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ApplicationDesign.html" 
+							data-search="Application Design">
+							Application Design
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructors.html" 
+							data-search="Constructors">
+							Constructors
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="TheDefinePlugin.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="StacheTemplates.html" 
+							data-search="Stache Templates">
+							Stache Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="AppStateAndRouting.html" 
+							data-search="App State and Routing">
+							App State and Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="ViewModels.html" 
+							data-search="View Models">
+							View Models
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="DataModelsAndFixtures.html" 
+							data-search="Data Models and Fixtures">
+							Data Models and Fixtures
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="LoadingStates.html" 
+							data-search="Loading States">
+							Loading States
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EventHandling.html" 
+							data-search="Event Handling">
+							Event Handling
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="WebServiceCommunication.html" 
+							data-search="Web Service Communication">
+							Web Service Communication
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>View Models</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">ViewModels</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/guides/getting-started-tutorial/view-models.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<div class="getting-started">
+<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Getting and Setting Scope Properties</li>
+<li>View Models</li>
+</ul>
+<p>Get the code for: <a href="/guides/examples/PlaceMyOrder/ch-5_canjs-getting-started.zip">chapter: view models</a></p>
+<hr />
+<p>In the last chapter, we created the <code>currentRestaurant</code> component, and included it in our
+template. Let’s add a little bit more advanced functionality: two select elements,
+where selecting an option in the first one changes the options in the second.</p>
+<p>Open your <code>components/restaurant_list/restaurant_list.stache</code> and edit it as follows:</p>
+<pre><code>&lt;div class=&quot;restaurants&quot;&gt;
+  &lt;h2 class=&quot;page-header&quot;&gt;Restaurants&lt;/h2&gt;
+  &lt;form class=&quot;form&quot;&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;State&lt;/label&gt;
+      &lt;select {($value)}=&quot;state&quot;&gt;
+        {{^if state}}
+        &lt;option value=&quot;&quot;&gt;Choose a state&lt;/option&gt;
+        {{/if}}
+        {{#each states}}
+        &lt;option value=&quot;{{name}}&quot;&gt;{{name}}&lt;/option&gt;
+        {{/each}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;!-- The city select will go here --&gt;
+  &lt;/form&gt;
+
+  &lt;!-- Restaurants code will go here --&gt;
+&lt;/div&gt;
+</code></pre>
+<p>In the above code, you can see one select element for selecting a state. You can
+see <code>{{#each}}</code> being used to create the list of options. You can also see that
+if no state is selected, the “Choose a state” message is included as an option
+until one has been selected.</p>
+<p>Let’s modify our <code>components/restaurant_list/restaurant_list.js</code> file to include
+what’s needed for our partial:</p>
+<pre><code>can.Component.extend({
+  tag: 'pmo-restaurant-list',
+  template: can.view('components/restaurant_list/restaurant_list.stache'),
+  viewModel: can.Map.extend({
+    define: {
+      state: {
+        value: null,
+        set: function(newState) {
+          if (newState) {
+            alert('Selected “' + newState + '” state.');
+          }
+          return newState;
+        }
+      },
+      states: {
+        value: [
+          {
+            cities: ['Green Bay', 'Milwaukee'],
+            name: 'Wisconsin'
+          },
+          {
+            cities: ['Detroit', 'Ann Arbor'],
+            name: 'Michigan'
+          },
+          {
+            cities: ['Chicago', 'Peoria'],
+            name: 'Illinois'
+          }
+        ]
+      },
+      // City code will go here
+    }
+  })
+});
+</code></pre>
+<p>Here we’re using <a href="TheDefinePlugin.html">the define plugin</a> to set up two new
+properties:</p>
+<ul>
+<li><code>state</code> to keep track of the selected state, and</li>
+<li><code>states</code> with the list of states that can be selected.</li>
+</ul>
+<p>In the <code>state</code> setter, we’re showing an alert when a new state is selected.
+If you refresh the Restaurants page, you should see a select element with the
+states as options; when you select a state, an alert will appear with the selected
+state’s name.</p>
+<p><img src="../can/guides/images/view-models/view_model_state.png" alt="set up state selector" /></p>
+<h2>Getting and Setting Scope Properties</h2>
+<p>It’s important to understand how to get and set the properties
+of the view model. Getting and setting are done through the <code>attr</code> function off of
+the <code>viewModel</code> object, in this case <code>this</code> is bound to the scope, because we’re
+within a method of the scope. Let’s look at an example.</p>
+<p>Open up <code>components/restaurant_list/restaurant_list.js</code> and replace this:</p>
+<pre><code>// City code will go here
+</code></pre>
+<p>with this:</p>
+<pre><code>      cities: {
+        get: function() {
+          var state = this.attr('state');
+          return state &amp;&amp; this.attr('citiesByState')[state];
+        }
+      },
+      citiesByState: {
+        get: function() {
+          var citiesByState = {};
+          this.attr('states').forEach(function(state) {
+            citiesByState[state.name] = state.cities;
+          });
+          return citiesByState;
+        }
+      },
+      city: {
+        value: null
+      }
+</code></pre>
+<p>This code creates three new properties:</p>
+<ul>
+<li><code>city</code> with the name of the city that’s selected,</li>
+<li><code>citiesByState</code> which is an object that has the list of cities by state name, and</li>
+<li><code>cities</code> which is the list of cities for the selected state.</li>
+</ul>
+<p>Let’s update the stache file to take advantage of these new properties.
+Open <code>components/restaurant_list/restaurant_list.stache</code> and find this line:</p>
+<pre><code>&lt;!-- The city select will go here --&gt;
+</code></pre>
+<p>and replace it with this:</p>
+<pre><code>    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;City&lt;/label&gt;
+      &lt;select {($value)}=&quot;city&quot;&gt;
+        {{^if city}}
+        &lt;option value=&quot;&quot;&gt;Choose a city&lt;/option&gt;
+        {{/if}}
+        {{#each cities}}
+        &lt;option&gt;{{.}}&lt;/option&gt;
+        {{/each}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+</code></pre>
+<p>This new part of the template will show a select element with the cities
+for the selected state as options. Note that when no city is selected,
+the element will have a “Choose a city” option.</p>
+<p>If you refresh the Restaurants page, you’ll see the new city select
+element that has options as soon as you select a state. However, there’s
+a bug: if you change the state, the first city for the new state is automatically
+selected, even though the user hasn’t made a city choice. Let’s fix this
+by nullifying the city when the state changes. Find the state setter:</p>
+<pre><code>        set: function(newState) {
+          if (newState) {
+            alert('Selected “' + newState + '” state.');
+          }
+          return newState;
+        }
+</code></pre>
+<p>and replace it with this:</p>
+<pre><code>        set: function() {
+          // Remove the city when the state changes
+          this.attr('city', null);
+        }
+</code></pre>
+<p>Notice that we are nullifying the city property when the state changes.
+If you refresh the Restaurants page in your browser, select a state,
+select a city, then select another state, you’ll see the “Choose a city”
+option in the city select element instead of the first city in that
+state.</p>
+<p><img src="../can/guides/images/view-models/view_model_city.png" alt="set up state selector" /></p>
+<h2>Separating the Component &amp; View Model</h2>
+<p>It’s considered a best practice to keep your <code>can.Components</code>
+thin. This helps maintain readability and maintainability. To accomplish this,
+you extract your scope from the <code>can.Component</code> into a <code>can.Map</code>.</p>
+<p>Open up <code>components/restaurant_list/restaurant_list.js</code> and replace the
+contents of the file with this:</p>
+<pre><code>var RestaurantListViewModel = can.Map.extend({
+  define: {
+    state: {
+      value: null,
+      set: function() {
+        // Remove the city when the state changes
+        this.attr('city', null);
+      }
+    },
+    states: {
+      value: [
+        {
+          cities: ['Green Bay', 'Milwaukee'],
+          name: 'Wisconsin'
+        },
+        {
+          cities: ['Detroit', 'Ann Arbor'],
+          name: 'Michigan'
+        },
+        {
+          cities: ['Chicago', 'Peoria'],
+          name: 'Illinois'
+        }
+      ]
+    },
+    cities: {
+      get: function() {
+        var state = this.attr('state');
+        return state &amp;&amp; this.attr('citiesByState')[state];
+      }
+    },
+    citiesByState: {
+      get: function() {
+        var citiesByState = {};
+        this.attr('states').forEach(function(state) {
+          citiesByState[state.name] = state.cities;
+        });
+        return citiesByState;
+      }
+    },
+    city: {
+      value: null
+    }
+  }
+});
+
+can.Component.extend({
+  tag: 'pmo-restaurant-list',
+  template: can.view('components/restaurant_list/restaurant_list.stache'),
+  viewModel: RestaurantListViewModel
+});
+</code></pre>
+<p>If you go back out to your application and refresh the page, it should all
+look and work the same. What we’ve done, by separating out the view model,
+is make the code easier to read and maintain.</p>
+<p>In the next chapter, we’ll learn about working with more realistic data by
+adding REST service interaction with <code>can.Model</code>.</p>
+<hr />
+<p><span class="pull-left"><a href="Components.html">&lsaquo; Components</a></span>
+<span class="pull-right"><a href="DataModelsAndFixtures.html">Data Models and Fixtures &rsaquo;</a></span></p>
+</div>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"ViewModels","src":"guides/getting-started-tutorial/view-models.md","description":"","title":"View Models","parent":"Tutorial","order":8,"disabletableofcontents":true,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,guides/**/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

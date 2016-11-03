@@ -1,5 +1,4 @@
 'use strict';
-var fs = require('fs');
 
 module.exports = function (grunt) {
 
@@ -15,18 +14,17 @@ module.exports = function (grunt) {
         build: grunt.file.readYAML('build/build.yml'),
         pkg: grunt.file.readJSON('package.json'),
         meta: {
-            license: '<%= _.pluck(pkg.licenses, "type").join(", ") %>',
             copyright: 'Copyright (c) 2009-<%= grunt.template.today("yyyy") %>',
             banner: '/*!\n' +
                 ' * Less - <%= pkg.description %> v<%= pkg.version %>\n' +
                 ' * http://lesscss.org\n' +
                 ' *\n' +
                 ' * <%= meta.copyright %>, <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-                ' * Licensed under the <%= meta.license %> License.\n' +
+                ' * Licensed under the <%= pkg.license %> License.\n' +
                 ' *\n' +
                 ' */\n\n' +
                 ' /**' +
-                ' * @license <%= meta.license %>\n' +
+                ' * @license <%= pkg.license %>\n' +
                 ' */\n\n'
         },
 
@@ -171,7 +169,7 @@ module.exports = function (grunt) {
                 }
             },
             errors: {
-                src: ['test/less/errors/*.less', '!test/less/errors/javascript-error.less'],
+                src: ['test/less/errors/*.less', '!test/less/errors/javascript-error.less', 'test/browser/less/errors/*.less'],
                 options: {
                     timeout: 20000,
                     helpers: 'test/browser/runner-errors-options.js',
@@ -361,18 +359,11 @@ module.exports = function (grunt) {
         'test'
     ]);
 
-    grunt.registerTask('updateBowerJson', function () {
-        var bowerJson = require('./bower.json');
-        bowerJson.version = grunt.config('pkg.version');
-        fs.writeFileSync('./bower.json', JSON.stringify(bowerJson, null, 2));
-    });
-
     // Release
     grunt.registerTask('dist', [
         'browserify:browser',
         'concat:dist',
-        'uglify:dist',
-        'updateBowerJson'
+        'uglify:dist'
     ]);
 
     // Release Rhino Version
@@ -448,6 +439,9 @@ module.exports = function (grunt) {
 
     // Run all tests
     grunt.registerTask('test', testTasks);
+
+    // Run all tests
+    grunt.registerTask('quicktest', testTasks.slice(0, testTasks.length -1));
 
     // generate a good test environment for testing sourcemaps
     grunt.registerTask('sourcemap-test', [

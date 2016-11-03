@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -86,10 +96,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"can/view/live"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, utils, live)</span></span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"can/view/live"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, utils, live</span>)</span>{
 	live = live || can.view.live;
-	
-	<span class="hljs-keyword">var</span> resolve = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+
+	<span class="hljs-keyword">var</span> resolve = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 		<span class="hljs-keyword">if</span> (utils.isObserveLike(value) &amp;&amp; utils.isArrayLike(value) &amp;&amp; value.attr(<span class="hljs-string">'length'</span>)) {
 			<span class="hljs-keyword">return</span> value;
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (can.isFunction(value)) {
@@ -98,39 +108,33 @@
 			<span class="hljs-keyword">return</span> value;
 		}
 	};
-	
+	<span class="hljs-keyword">var</span> resolveHash = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">hash</span>)</span>{
+		<span class="hljs-keyword">var</span> params = {};
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> hash) {
+			<span class="hljs-keyword">var</span> value = hash[prop];
+			<span class="hljs-keyword">if</span>(value &amp;&amp; value.isComputed) {
+				params[prop] = value();
+			} <span class="hljs-keyword">else</span> {
+				params[prop] = value;
+			}
+		}
+		<span class="hljs-keyword">return</span> params;
+	};
+	<span class="hljs-keyword">var</span> looksLikeOptions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+		<span class="hljs-keyword">return</span> options &amp;&amp; <span class="hljs-keyword">typeof</span> options.fn === <span class="hljs-string">"function"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> options.inverse === <span class="hljs-string">"function"</span>;
+	};
+
 	<span class="hljs-keyword">var</span> helpers = {
-		<span class="hljs-string">"each"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(items, options)</span></span>{
+		<span class="hljs-string">"each"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">items, options</span>)</span>{
+
 			<span class="hljs-keyword">var</span> resolved = resolve(items),
 				result = [],
 				keys,
 				key,
 				i;
-			
-			<span class="hljs-keyword">if</span>( resolved <span class="hljs-keyword">instanceof</span> can.List ) {
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
-					<span class="hljs-keyword">var</span> cb = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, index, parentNodeList)</span> </span>{
-								
-						<span class="hljs-keyword">return</span> options.fn(options.scope.add({
-								<span class="hljs-string">"@index"</span>: index
-							}).add(item), options.options, parentNodeList);
-							
-					};
-					live.list(el, items, cb, options.context, el.parentNode, options.nodeList);
-				};
-			}
-			
-			<span class="hljs-keyword">var</span> expr = resolved;
 
-			<span class="hljs-keyword">if</span> ( !! expr &amp;&amp; utils.isArrayLike(expr)) {
-				<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; expr.length; i++) {
-					result.push(options.fn(options.scope.add({
-							<span class="hljs-string">"@index"</span>: i
-						})
-						.add(expr[i])));
-				}
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (utils.isObserveLike(expr)) {
-				keys = can.Map.keys(expr);</pre></div></div>
+			<span class="hljs-keyword">if</span>( resolved <span class="hljs-keyword">instanceof</span> can.List  &amp;&amp; !options.stringOnly) {
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -141,40 +145,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>listen to keys changing so we can livebind lists of attributes.</p>
+              <p>make a child nodeList inside the can.view.live.html nodeList
+so that if the html is re</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-				<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; keys.length; i++) {
-					key = keys[i];
-					result.push(options.fn(options.scope.add({
-							<span class="hljs-string">"@key"</span>: key
-						})
-						.add(expr[key])));
-				}
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (expr <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span>) {
-				<span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> expr) {
-					result.push(options.fn(options.scope.add({
-							<span class="hljs-string">"@key"</span>: key
-						})
-						.add(expr[key])));
-				}
-				
-			}
-			<span class="hljs-keyword">return</span> result;
-			
-		},
-		<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(offset, options)</span> </span>{
-			<span class="hljs-keyword">if</span> (!options) {
-				options = offset;
-				offset = <span class="hljs-number">0</span>;
-			}
-			<span class="hljs-keyword">var</span> index = options.scope.attr(<span class="hljs-string">"@index"</span>);
-			<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+((can.isFunction(index) ? index() : index) + offset);
-		},
-		<span class="hljs-string">'if'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
-			<span class="hljs-keyword">var</span> value;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> nodeList = [el];
+					nodeList.expression = <span class="hljs-string">"live.list"</span>;
+					can.view.nodeLists.register(nodeList, <span class="hljs-literal">null</span>, options.nodeList, <span class="hljs-literal">true</span>);</pre></div></div>
             
         </li>
         
@@ -184,6 +162,89 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>runs nest replacements</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.view.nodeLists.update(options.nodeList, [el]);
+
+					<span class="hljs-keyword">var</span> cb = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, index, parentNodeList</span>) </span>{
+
+						<span class="hljs-keyword">return</span> options.fn(options.scope.add({
+								<span class="hljs-string">"%index"</span>: index,
+								<span class="hljs-string">"@index"</span>: index
+							},{<span class="hljs-attr">notContext</span>: <span class="hljs-literal">true</span>}).add(item), options.options, parentNodeList);
+
+					};
+					live.list(el, items, cb, options.context, el.parentNode, nodeList, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list, parentNodeList</span>)</span>{
+						<span class="hljs-keyword">return</span> options.inverse(options.scope.add(list), options.options, parentNodeList);
+					});
+				};
+			}
+
+			<span class="hljs-keyword">var</span> expr = resolved;
+
+			<span class="hljs-keyword">if</span> ( !! expr &amp;&amp; utils.isArrayLike(expr)) {
+				<span class="hljs-keyword">var</span> fragItems = utils.getItemsFragContent(expr, options, options.scope);
+				<span class="hljs-built_in">Array</span>.prototype.push.apply(result, fragItems);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (utils.isObserveLike(expr)) {
+				keys = can.Map.keys(expr);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>listen to keys changing so we can livebind lists of attributes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+				<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; keys.length; i++) {
+					key = keys[i];
+					result.push(options.fn(options.scope.add({
+							<span class="hljs-string">"%key"</span>: key,
+							<span class="hljs-string">"@key"</span>: key
+						},{<span class="hljs-attr">notContext</span>: <span class="hljs-literal">true</span>})
+						.add(expr[key])));
+				}
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (expr <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Object</span>) {
+				<span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> expr) {
+					result.push(options.fn(options.scope.add({
+							<span class="hljs-string">"%key"</span>: key,
+							<span class="hljs-string">"@key"</span>: key
+						},{<span class="hljs-attr">notContext</span>: <span class="hljs-literal">true</span>})
+						.add(expr[key])));
+				}
+
+			}
+			<span class="hljs-keyword">return</span> !options.stringOnly ? result : result.join(<span class="hljs-string">''</span>);
+
+		},
+		<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">offset, options</span>) </span>{
+			<span class="hljs-keyword">if</span> (!options) {
+				options = offset;
+				offset = <span class="hljs-number">0</span>;
+			}
+			<span class="hljs-keyword">var</span> index = options.scope.attr(<span class="hljs-string">"@index"</span>);
+			<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+((can.isFunction(index) ? index() : index) + offset);
+		},
+		<span class="hljs-string">'if'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
+			<span class="hljs-keyword">var</span> value;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>if it’s a function, wrap its value in a compute
 that will only change values from true to false</p>
@@ -202,42 +263,49 @@ that will only change values from true to false</p>
 				<span class="hljs-keyword">return</span> options.inverse(options.scope || <span class="hljs-keyword">this</span>);
 			}
 		},
-		<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> lastValue, curValue,
-				options = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
+			options = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
 
 			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">2</span> &lt;= <span class="hljs-number">0</span>) {
 				<span class="hljs-keyword">return</span> options.inverse();
 			}
 
-			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>; i++) {
-				curValue = resolve(<span class="hljs-built_in">arguments</span>[i]);
-				curValue = can.isFunction(curValue) ? curValue() : curValue;
+			<span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span>;
+			<span class="hljs-keyword">var</span> callFn = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; args.length - <span class="hljs-number">1</span>; i++) {
+					curValue = resolve(args[i]);
+					curValue = can.isFunction(curValue) ? curValue() : curValue;
 
-				<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">if</span> (curValue !== lastValue) {
-						<span class="hljs-keyword">return</span> options.inverse();
+					<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) {
+						<span class="hljs-keyword">if</span> (curValue !== lastValue) {
+							<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+						}
 					}
+					lastValue = curValue;
 				}
-				lastValue = curValue;
-			}
+				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+			});
 
-			<span class="hljs-keyword">return</span> options.fn();
+			<span class="hljs-keyword">return</span> callFn() ? options.fn() : options.inverse();
 		},
-		<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> helpers.is.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		<span class="hljs-string">'unless'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
-			<span class="hljs-keyword">return</span> helpers[<span class="hljs-string">'if'</span>].apply(<span class="hljs-keyword">this</span>, [can.isFunction(expr) ? can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> !expr(); }) : !expr, options]);
+		<span class="hljs-string">'unless'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
+			<span class="hljs-keyword">return</span> helpers[<span class="hljs-string">'if'</span>].apply(<span class="hljs-keyword">this</span>, [expr, can.extend({}, options, {
+				<span class="hljs-attr">fn</span>: options.inverse,
+				<span class="hljs-attr">inverse</span>: options.fn
+			})]);
 		},
-		<span class="hljs-string">'with'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
+		<span class="hljs-string">'with'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
 			<span class="hljs-keyword">var</span> ctx = expr;
 			expr = resolve(expr);
 			<span class="hljs-keyword">if</span> ( !! expr) {
 				<span class="hljs-keyword">return</span> options.fn(ctx);
 			}
 		},
-		<span class="hljs-string">'log'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
+		<span class="hljs-string">'log'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">console</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">console</span>.log) {
 				<span class="hljs-keyword">if</span> (!options) {
 					<span class="hljs-built_in">console</span>.log(expr.context);
@@ -246,16 +314,16 @@ that will only change values from true to false</p>
 				}
 			}
 		},
-		<span class="hljs-string">'data'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attr)</span></span>{</pre></div></div>
+		<span class="hljs-string">'data'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attr</span>)</span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-4">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>options will either be the second or third argument.
 Get the argument before that.</p>
@@ -263,28 +331,163 @@ Get the argument before that.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = <span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">2</span> ? <span class="hljs-keyword">this</span> : <span class="hljs-built_in">arguments</span>[<span class="hljs-number">1</span>];
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
-				
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{
+
 				can.data( can.$(el), attr, data || <span class="hljs-keyword">this</span>.context );
 			};
-		}
-	};
-	
-	<span class="hljs-keyword">return</span> {
-		registerHelper: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, callback)</span></span>{
-			helpers[name] = callback;
 		},
-		getHelper: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name, options)</span></span>{
-			<span class="hljs-keyword">var</span> helper = options.attr(<span class="hljs-string">"helpers."</span> + name);
+		<span class="hljs-string">'switch'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expression, options</span>)</span>{
+			resolve(expression);
+			<span class="hljs-keyword">var</span> found = <span class="hljs-literal">false</span>;
+			<span class="hljs-keyword">var</span> newOptions = options.helpers.add({
+				<span class="hljs-string">"case"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, options</span>)</span>{
+					<span class="hljs-keyword">if</span>(!found &amp;&amp; resolve(expression) === resolve(value)) {
+						found = <span class="hljs-literal">true</span>;
+						<span class="hljs-keyword">return</span> options.fn(options.scope || <span class="hljs-keyword">this</span>);
+					}
+				},
+				<span class="hljs-string">"default"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>{
+					<span class="hljs-keyword">if</span>(!found) {
+						<span class="hljs-keyword">return</span> options.fn(options.scope || <span class="hljs-keyword">this</span>);
+					}
+				}
+			});
+			<span class="hljs-keyword">return</span> options.fn(options.scope, newOptions);
+		},
+		<span class="hljs-string">'joinBase'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">firstExpr<span class="hljs-regexp">/* , expr... */</span></span>)</span>{
+			<span class="hljs-keyword">var</span> args = [].slice.call(<span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">var</span> options = args.pop();
+
+			<span class="hljs-keyword">var</span> moduleReference = can.map(args, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expr</span>)</span>{
+				<span class="hljs-keyword">var</span> value = resolve(expr);
+				<span class="hljs-keyword">return</span> can.isFunction(value) ? value() : value;
+			}).join(<span class="hljs-string">""</span>);
+
+			<span class="hljs-keyword">var</span> templateModule = options.helpers.attr(<span class="hljs-string">"helpers.module"</span>);
+			<span class="hljs-keyword">var</span> parentAddress = templateModule ? templateModule.uri: <span class="hljs-literal">undefined</span>;
+
+			<span class="hljs-keyword">var</span> isRelative = moduleReference[<span class="hljs-number">0</span>] === <span class="hljs-string">"."</span>;
+
+			<span class="hljs-keyword">if</span>(isRelative &amp;&amp; parentAddress) {
+				<span class="hljs-keyword">return</span> can.joinURIs(parentAddress, moduleReference);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">var</span> baseURL = can.baseURL || (<span class="hljs-keyword">typeof</span> System !== <span class="hljs-string">"undefined"</span> &amp;&amp;
+					(System.renderingLoader &amp;&amp; System.renderingLoader.baseURL ||
+					System.baseURL)) ||
+					location.pathname;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Make sure one of them has a needed /</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(moduleReference[<span class="hljs-number">0</span>] !== <span class="hljs-string">"/"</span> &amp;&amp; baseURL[baseURL.length - <span class="hljs-number">1</span>] !== <span class="hljs-string">"/"</span>) {
+					baseURL += <span class="hljs-string">"/"</span>;
+				}
+
+				<span class="hljs-keyword">return</span> can.joinURIs(baseURL, moduleReference);
+			}
+		},
+		<span class="hljs-attr">routeUrl</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">params, merge</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>check if called like a mustache helper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!params) {
+				params = {};
+			}
+			
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> params.fn === <span class="hljs-string">"function"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> params.inverse === <span class="hljs-string">"function"</span>) {
+				params = resolveHash(params.hash);
+			}
+			<span class="hljs-keyword">return</span> can.route.url(params, <span class="hljs-keyword">typeof</span> merge === <span class="hljs-string">"boolean"</span> ? merge : <span class="hljs-literal">undefined</span>);
+		},
+		<span class="hljs-attr">routeCurrent</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">params</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>check if this a normal helper call</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> last = can.last(<span class="hljs-built_in">arguments</span>),
+				isOptions = last &amp;&amp; looksLikeOptions(last);
+			<span class="hljs-keyword">if</span>( last &amp;&amp; isOptions &amp;&amp; !(last.exprData <span class="hljs-keyword">instanceof</span> can.expression.Call) ) {
+				<span class="hljs-keyword">if</span>(can.route.current( resolveHash(params.hash || {}))) {
+					<span class="hljs-keyword">return</span> params.fn();
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> params.inverse();
+				}
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> can.route.current(looksLikeOptions(params) ? {} : params || {});
+			}
+			
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>TODO … remove as this is hacky</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	helpers.routeCurrent.callAsMethod = <span class="hljs-literal">true</span>;
+
+	helpers.eachOf = helpers.each;
+
+	<span class="hljs-keyword">var</span> registerHelper = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, callback</span>)</span>{
+		helpers[name] = callback;
+	};
+
+	<span class="hljs-keyword">return</span> {
+		<span class="hljs-attr">registerHelper</span>: registerHelper,
+		<span class="hljs-attr">registerSimpleHelper</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, callback</span>) </span>{
+			registerHelper(name, can.view.simpleHelper(callback));
+		},
+		<span class="hljs-attr">getHelper</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, options</span>)</span>{
+
+			<span class="hljs-keyword">var</span> helper = options &amp;&amp; options.get(<span class="hljs-string">"helpers."</span> + name,{<span class="hljs-attr">proxyMethods</span>: <span class="hljs-literal">false</span>});
 			<span class="hljs-keyword">if</span>(!helper) {
 				helper = helpers[name];
 			}
 			<span class="hljs-keyword">if</span>(helper) {
-				<span class="hljs-keyword">return</span> {fn: helper};
+				<span class="hljs-keyword">return</span> {<span class="hljs-attr">fn</span>: helper};
 			}
 		}
 	};
-	
+
 });</pre></div></div>
             
         </li>

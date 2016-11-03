@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -41,8 +41,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2 id="string-js">string.js</h2>
-<p><em>Miscellaneous string utility functions.</em><br>Several of the methods in this plugin use code adapated from Prototype
+              <p>##string.js
+<em>Miscellaneous string utility functions.</em><br>Several of the methods in this plugin use code adapated from Prototype
 Prototype JavaScript framework, version 1.6.0.1.
 © 2005-2007 Sam Stephenson</p>
 
@@ -74,7 +74,7 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getNext = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, prop, add)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		getNext = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, prop, add</span>) </span>{
 			<span class="hljs-keyword">var</span> result = obj[prop];
 			<span class="hljs-keyword">if</span> (result === <span class="hljs-literal">undefined</span> &amp;&amp; add === <span class="hljs-literal">true</span>) {
 				result = obj[prop] = {};
@@ -95,9 +95,9 @@ empty object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isContainer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(current)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		isContainer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">current</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-regexp">/^f|^o/</span>.test(<span class="hljs-keyword">typeof</span> current);
-		}, convertBadValues = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{</pre></div></div>
+		}, convertBadValues = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -116,7 +116,7 @@ empty object.</p>
 			<span class="hljs-keyword">return</span> <span class="hljs-string">''</span> + (isInvalid ? <span class="hljs-string">''</span> : content);
 		};
 	can.extend(can, {
-		esc: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
+		<span class="hljs-attr">esc</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content</span>) </span>{
 			<span class="hljs-keyword">return</span> convertBadValues(content)
 				.replace(<span class="hljs-regexp">/&amp;/g</span>, <span class="hljs-string">'&amp;amp;'</span>)
 				.replace(<span class="hljs-regexp">/&lt;/g</span>, <span class="hljs-string">'&amp;lt;'</span>)
@@ -124,7 +124,7 @@ empty object.</p>
 				.replace(strQuote, <span class="hljs-string">'&amp;#34;'</span>)
 				.replace(strSingleQuote, <span class="hljs-string">'&amp;#39;'</span>);
 		},
-		getObject: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, roots, add)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">getObject</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, roots, add</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -256,7 +256,7 @@ is not a container.</p>
 			}
 			<span class="hljs-keyword">return</span> current;
 		},
-		capitalize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s, cache)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">capitalize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">s, cache</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -274,30 +274,30 @@ is not a container.</p>
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> s.charAt(<span class="hljs-number">0</span>)
 				.toUpperCase() + s.slice(<span class="hljs-number">1</span>);
 		},
-		camelize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		<span class="hljs-attr">camelize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> convertBadValues(str)
-				.replace(strHyphenMatch, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(match, chr)</span> </span>{
+				.replace(strHyphenMatch, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">match, chr</span>) </span>{
 					<span class="hljs-keyword">return</span> chr ? chr.toUpperCase() : <span class="hljs-string">''</span>;
 				});
 		},
-		hyphenate: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		<span class="hljs-attr">hyphenate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> convertBadValues(str)
-				.replace(strCamelMatch, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str, offset)</span> </span>{
+				.replace(strCamelMatch, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str, offset</span>) </span>{
 					<span class="hljs-keyword">return</span> str.charAt(<span class="hljs-number">0</span>) + <span class="hljs-string">'-'</span> + str.charAt(<span class="hljs-number">1</span>)
 						.toLowerCase();
 				});
 		},
-		underscore: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(s)</span> </span>{
+		<span class="hljs-attr">underscore</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">s</span>) </span>{
 			<span class="hljs-keyword">return</span> s.replace(strColons, <span class="hljs-string">'/'</span>)
 				.replace(strWords, <span class="hljs-string">'$1_$2'</span>)
 				.replace(strLowUp, <span class="hljs-string">'$1_$2'</span>)
 				.replace(strDash, <span class="hljs-string">'_'</span>)
 				.toLowerCase();
 		},
-		sub: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str, data, remove)</span> </span>{
+		<span class="hljs-attr">sub</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str, data, remove</span>) </span>{
 			<span class="hljs-keyword">var</span> obs = [];
 			str = str || <span class="hljs-string">''</span>;
-			obs.push(str.replace(strReplacer, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, inside)</span> </span>{</pre></div></div>
+			obs.push(str.replace(strReplacer, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">whole, inside</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -339,8 +339,8 @@ is not a container.</p>
 			}));
 			<span class="hljs-keyword">return</span> obs === <span class="hljs-literal">null</span> ? obs : obs.length &lt;= <span class="hljs-number">1</span> ? obs[<span class="hljs-number">0</span>] : obs;
 		},
-		replacer: strReplacer,
-		undHash: strUndHash
+		<span class="hljs-attr">replacer</span>: strReplacer,
+		<span class="hljs-attr">undHash</span>: strUndHash
 	});
 	<span class="hljs-keyword">return</span> can;
 });</pre></div></div>

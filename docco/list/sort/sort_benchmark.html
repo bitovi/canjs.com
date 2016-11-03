@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>sort_benchmark.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="sort.html">
+                sort.js
+              </a>
+            
+              
+              <a class="source" href="sort_benchmark.html">
+                sort_benchmark.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>sort_benchmark.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-string">'node_modules/lodash'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'can/list/sort'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">benchmarks, _</span>) </span>{
+
+	can.ajax({
+		<span class="hljs-attr">url</span>: <span class="hljs-string">'20k.txt'</span>
+	}).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">file</span>) </span>{
+
+		<span class="hljs-built_in">window</span>.numbers = file.split(<span class="hljs-string">'\n'</span>)<span class="hljs-comment">/*.slice(0, 100000)*/</span>;
+		<span class="hljs-built_in">window</span>.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Create a list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.list = <span class="hljs-keyword">new</span> can.List();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Activate the sort plugin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.list.attr(<span class="hljs-string">'comparator'</span>, can.List.prototype._comparator);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Start the clock</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.s = +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Reset</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.probe1 = <span class="hljs-number">0</span>;
+			<span class="hljs-built_in">window</span>.probe2 = <span class="hljs-number">0</span>;
+		};
+
+		<span class="hljs-built_in">window</span>.cleanup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Stop the clock
+var time = +new Date() - window.s;</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Compare against control
+var passed = _.isEqual(window.sortedNumbers, window.list.attr ?
+    window.list.attr() :
+    window.list);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Clear up memory</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.list.splice(<span class="hljs-number">0</span>, <span class="hljs-built_in">window</span>.list.length);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Print results
+console.log(time, window.probe1, window.probe2, passed);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Make comparisons faster by using numbers, not strings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.each(<span class="hljs-built_in">window</span>.numbers, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num, i</span>) </span>{
+			<span class="hljs-built_in">window</span>.numbers[i] = <span class="hljs-built_in">parseInt</span>(num, <span class="hljs-number">10</span>);
+		});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Control</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-built_in">window</span>.sortedNumbers = <span class="hljs-built_in">window</span>.numbers.slice(<span class="hljs-number">0</span>).sort(can.List.prototype._comparator);
+
+		benchmarks.add(<span class="hljs-string">'Sorting items via native .sort([comparator])'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Display an intermittent timer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.s = +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Create a list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> list = <span class="hljs-built_in">window</span>.list = <span class="hljs-built_in">window</span>.numbers.slice(<span class="hljs-number">0</span>);
+			list.sort(can.List.prototype._comparator);
+
+			<span class="hljs-built_in">window</span>.cleanup();
+		});
+
+		benchmarks.add(<span class="hljs-string">'Adding items via .push([list])'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+			<span class="hljs-built_in">window</span>.setup();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Add the items to the sorted list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.list.push.apply(<span class="hljs-built_in">window</span>.list, <span class="hljs-built_in">window</span>.numbers);
+
+			<span class="hljs-built_in">window</span>.cleanup();
+		});
+
+		benchmarks.add(<span class="hljs-string">'Adding items via .splice(0, 0, [list])'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+			<span class="hljs-built_in">window</span>.setup();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Add the items to the sorted list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-built_in">window</span>.list.splice.apply(<span class="hljs-built_in">window</span>.list, [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>].concat(<span class="hljs-built_in">window</span>.numbers));
+
+			<span class="hljs-built_in">window</span>.cleanup();
+		});
+
+		benchmarks.add(<span class="hljs-string">'Adding items via .each([list]) + .push([item])'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+			<span class="hljs-built_in">window</span>.setup();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Add the items to the sorted list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(<span class="hljs-built_in">window</span>.numbers, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num</span>) </span>{
+				<span class="hljs-built_in">window</span>.list.push(num);
+			});
+
+			<span class="hljs-built_in">window</span>.cleanup();
+		});
+
+
+		benchmarks.run();
+	});
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

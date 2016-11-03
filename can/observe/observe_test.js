@@ -828,7 +828,7 @@ steal('can/util', "can/observe", 'can/map', 'can/list', "can/test", "steal-qunit
 			ob = new can.Map({
 				test: dfd
 			});
-		ok(can.isDeferred(ob.attr('test')), 'Attribute is a deferred');
+		ok(can.isPromise(ob.attr('test')), 'Attribute is a deferred');
 		ok(!ob.attr('test')
 			._cid, 'Does not have a _cid');
 	});
@@ -1044,6 +1044,8 @@ steal('can/util', "can/observe", 'can/map', 'can/list', "can/test", "steal-qunit
 		}]);
 		equal(2, computedCount, 'only one compute');
 	});
+	
+	
 	test('Generate computes from Observes with can.Map.prototype.compute (#203)', 6, function () {
 		var obs = new can.Map({
 			test: 'testvalue'
@@ -1051,8 +1053,11 @@ steal('can/util', "can/observe", 'can/map', 'can/list', "can/test", "steal-qunit
 		var compute = obs.compute('test');
 		ok(compute.isComputed, '`test` is computed');
 		equal(compute(), 'testvalue', 'Value is as expected');
+		
 		obs.attr('test', 'observeValue');
+		
 		equal(compute(), 'observeValue', 'Value is as expected');
+		
 		compute.bind('change', function (ev, newVal) {
 			equal(newVal, 'computeValue', 'new value from compute');
 		});
@@ -1060,8 +1065,11 @@ steal('can/util', "can/observe", 'can/map', 'can/list', "can/test", "steal-qunit
 			equal(newVal, 'computeValue', 'Got new value from compute');
 		});
 		compute('computeValue');
+		
 		equal(compute(), 'computeValue', 'Got updated value');
 	});
+	
+	
 	test('compute of computes', function () {
 		expect(2);
 		var suggestedSearch = can.compute(null),
@@ -1358,4 +1366,72 @@ steal('can/util', "can/observe", 'can/map', 'can/list', "can/test", "steal-qunit
 		equal(count, 1, "attr only called once to get cached value");
 	});
 
+	test("computes in observes leak handlers (#1676)", function(){
+		var handler = function() {};
+
+		// 1. Create a Map
+		var person = new can.Map({
+		  pet: {type: 'dog', name: 'fluffy'}
+		});
+		
+		equal(person._bindings || 0, 0, "no bindings");
+		
+		// 2. Manually add a compute that references a nested property of the same Map
+		person.attr('petInfo', can.compute(function() {
+		  return person.attr('pet.type') + ': ' + person.attr('pet.name');
+		}));
+		
+		equal(person._bindings || 0, 0, "After adding compute no bindings");
+		
+		// 3. Bind to the Map's 'change' event
+		person.bind('change', handler);
+		equal(person._bindings, 2, "After adding compute no bindings");
+		
+		// 4. Unbind the 'change' event
+		person.unbind('change', handler);
+		equal(person._bindings, 0, "After unbinding no bindings");
+	});
+
+	test('compute bound to object property (#1719)', 4, function () {
+		var obj = {};
+		obj.foo = 'bar';
+
+		var value = can.compute(obj, 'foo', 'change');
+		equal(value(), 'bar', 'property retrieved correctly');
+
+		value('baz');
+		equal(obj.foo, 'baz', 'property changed correctly');
+
+		var handler = function(ev, newVal, oldVal) {
+			equal(newVal, 'qux', 'change handler newVal correct');
+			equal(oldVal, 'baz', 'change handler oldVal correct');
+		};
+		value.bind('change', handler);
+		value('qux');
+		value.unbind('change', handler);
+	});
+
+	test('compute bound to nested object property (#1719)', 4, function () {
+		var obj = {
+			prop: {
+				subprop: {
+					foo: 'bar'
+				}
+			}
+		};
+
+		var value = can.compute(obj, 'prop.subprop.foo', 'change');
+		equal(value(), 'bar', 'property retrieved correctly');
+
+		value('baz');
+		equal(obj.prop.subprop.foo, 'baz', 'property changed correctly');
+
+		var handler = function(ev, newVal, oldVal) {
+			equal(newVal, 'qux', 'change handler newVal correct');
+			equal(oldVal, 'baz', 'change handler oldVal correct');
+		};
+		value.bind('change', handler);
+		value('qux');
+		value.unbind('change', handler);
+	});
 });

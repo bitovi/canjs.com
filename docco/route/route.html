@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>,<span class="hljs-string">'can/util/string/deparam'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>,<span class="hljs-string">'can/util/string/deparam'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -96,9 +96,9 @@ inserted into an html element tag.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		makeProps = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(props)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		makeProps = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">props</span>) </span>{
 			<span class="hljs-keyword">var</span> tags = [];
-			can.each(props, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, name)</span> </span>{
+			can.each(props, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, name</span>) </span>{
 				tags.push((name === <span class="hljs-string">'className'</span> ? <span class="hljs-string">'class'</span> : name) + <span class="hljs-string">'="'</span> +
 					(name === <span class="hljs-string">"href"</span> ? val : can.esc(val)) + <span class="hljs-string">'"'</span>);
 			});
@@ -121,7 +121,7 @@ to allow discerning between general and more specific routes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		matchesData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(route, data)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		matchesData = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">route, data</span>) </span>{
 			<span class="hljs-keyword">var</span> count = <span class="hljs-number">0</span>,
 				i = <span class="hljs-number">0</span>,
 				defaults = {};</pre></div></div>
@@ -161,7 +161,7 @@ to allow discerning between general and more specific routes.</p>
 			}
 			<span class="hljs-keyword">for</span> (; i &lt; route.names.length; i++) {
 				<span class="hljs-keyword">if</span> (!data.hasOwnProperty(route.names[i])) {
-					<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+					<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
 				}
 				<span class="hljs-keyword">if</span> (!defaults[route.names[i]]) {
 					count++;
@@ -172,12 +172,15 @@ to allow discerning between general and more specific routes.</p>
 			<span class="hljs-keyword">return</span> count;
 		},
 		location = <span class="hljs-built_in">window</span>.location,
-		wrapQuote = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		wrapQuote = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> (str + <span class="hljs-string">''</span>)
 				.replace(<span class="hljs-regexp">/([.?*+\^$\[\]\\(){}|\-])/g</span>, <span class="hljs-string">"\\$1"</span>);
 		},
 		each = can.each,
-		extend = can.extend,</pre></div></div>
+		extend = can.extend,
+		definedToString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">return</span> obj.toString.toString() !== <span class="hljs-built_in">Object</span>.prototype.toString.toString();
+		},</pre></div></div>
             
         </li>
         
@@ -192,7 +195,7 @@ to allow discerning between general and more specific routes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		stringify = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		stringify = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -207,7 +210,10 @@ to allow discerning between general and more specific routes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">"object"</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">"object"</span> &amp;&amp; !definedToString(obj)) {
+				<span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> can.Map) {
+					obj = obj;
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -218,12 +224,12 @@ to allow discerning between general and more specific routes.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Get native object or array from Map or List</p>
+              <p>Get array from array-like or shallow-copy object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> can.Map) {
-					obj = obj.attr();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					obj = can.isFunction(obj.slice) ? obj.slice() : can.extend({}, obj);
+				}</pre></div></div>
             
         </li>
         
@@ -234,13 +240,13 @@ to allow discerning between general and more specific routes.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Clone object to prevent change original values</p>
+              <p>Convert each object property or array item into stringified new</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				} <span class="hljs-keyword">else</span> {
-					obj = can.isFunction(obj.slice) ? obj.slice() : can.extend({}, obj);
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.each(obj, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, prop</span>) </span>{
+					obj[prop] = stringify(val);
+				});</pre></div></div>
             
         </li>
         
@@ -250,23 +256,6 @@ to allow discerning between general and more specific routes.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>Convert each object property or array item into stringified new</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				can.each(obj, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, prop)</span> </span>{
-					obj[prop] = stringify(val);
-				});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Object supports toString function</p>
 
@@ -278,18 +267,18 @@ to allow discerning between general and more specific routes.</p>
 
 			<span class="hljs-keyword">return</span> obj;
 		},
-		removeBackslash = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		removeBackslash = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> str.replace(<span class="hljs-regexp">/\\/g</span>, <span class="hljs-string">""</span>);
 		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-15">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>A <del>throttled</del> debounced function called multiple times will only fire once the
 timer runs down. Each call resets the timer.</p>
@@ -301,11 +290,11 @@ timer runs down. Each call resets the timer.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Intermediate storage for <code>can.route.data</code>.</p>
 
@@ -316,11 +305,11 @@ timer runs down. Each call resets the timer.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>The last hash caused by a data change</p>
 
@@ -331,11 +320,11 @@ timer runs down. Each call resets the timer.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Are data changes pending that haven’t yet updated the hash</p>
 
@@ -346,11 +335,11 @@ timer runs down. Each call resets the timer.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>List of attributes that have changed since last update</p>
 
@@ -361,11 +350,11 @@ timer runs down. Each call resets the timer.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>If the <code>can.route.data</code> changes, update the hash.
 Using <code>.serialize()</code> retrieves the raw data contained in the <code>observable</code>.
@@ -374,16 +363,16 @@ This might be able to use batchNum and avoid this.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		onRouteDataChange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how, newval)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		onRouteDataChange = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, attr, how, newval</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>indicate that data is changing</p>
 
@@ -394,11 +383,11 @@ This might be able to use batchNum and avoid this.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>collect attributes that are changing</p>
 
@@ -406,16 +395,16 @@ This might be able to use batchNum and avoid this.</p>
             
             <div class="content"><div class='highlight'><pre>			changedAttrs.push(attr);
 			clearTimeout(timer);
-			timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+			timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>indicate that the hash is set to look like the data</p>
 
@@ -429,11 +418,11 @@ This might be able to use batchNum and avoid this.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>trigger a url change so its possible to live-bind on url-based changes</p>
 
@@ -448,19 +437,52 @@ This might be able to use batchNum and avoid this.</p>
         </li>
         
         
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>A dummy events object used to dispatch url change events on.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		eventsObject = can.extend({}, can.event),</pre></div></div>
+            
+        </li>
+        
+        
         <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>A dummy events object used to dispatch url change events on.</p>
+              <p>everything in the backing Map is a string
+add type coercion during Map setter to coerce all values to strings </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		eventsObject = can.extend({}, can.event);
+            <div class="content"><div class='highlight'><pre>		stringCoercingMapDecorator = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">map</span>) </span>{
+			<span class="hljs-keyword">var</span> attrSuper = map.attr;
+			
+			map.attr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">prop, val</span>) </span>{
+				<span class="hljs-keyword">var</span> serializable = <span class="hljs-keyword">this</span>.define === <span class="hljs-literal">undefined</span> || <span class="hljs-keyword">this</span>.define[prop] === <span class="hljs-literal">undefined</span> || !!<span class="hljs-keyword">this</span>.define[prop].serialize,
+					args;
 
-	can.route = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, defaults)</span> </span>{</pre></div></div>
+				<span class="hljs-keyword">if</span> (serializable) { <span class="hljs-comment">// if setting non-str non-num attr</span>
+					args = stringify(<span class="hljs-built_in">Array</span>.apply(<span class="hljs-literal">null</span>, <span class="hljs-built_in">arguments</span>));
+				} <span class="hljs-keyword">else</span> {
+					args = <span class="hljs-built_in">arguments</span>;
+				}
+				
+				<span class="hljs-keyword">return</span> attrSuper.apply(<span class="hljs-keyword">this</span>, args);
+			};
+	
+			<span class="hljs-keyword">return</span> map;
+		};
+
+	can.route = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">url, defaults</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -684,7 +706,7 @@ will match for any value of <code>:page</code> and <code>:type</code> (word char
 		 *     can.route.param( { type: "video", id: 5, isNew: false } )
 		 *          // -&gt; "video/5&amp;isNew=false"
 		 */</span>
-		param: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, _setRoute)</span> </span>{</pre></div></div>
+		param: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, _setRoute</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -722,7 +744,7 @@ Get the one with the most matches.</p>
 
 			<span class="hljs-keyword">delete</span> data.route;
 
-			each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				propCount++;
 			});</pre></div></div>
             
@@ -739,7 +761,7 @@ Get the one with the most matches.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(temp, name)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">temp, name</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -813,7 +835,7 @@ If the default value is found an empty string is inserted.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					res = route.route.replace(matcher, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>					res = route.route.replace(matcher, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">whole, name</span>) </span>{
 						<span class="hljs-keyword">delete</span> cpy[name];
 						<span class="hljs-keyword">return</span> data[name] === route.defaults[name] ? <span class="hljs-string">""</span> : <span class="hljs-built_in">encodeURIComponent</span>(data[name]);
 					})
@@ -833,7 +855,7 @@ If the default value is found an empty string is inserted.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				each(route.defaults, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				each(route.defaults, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, name</span>) </span>{
 					<span class="hljs-keyword">if</span> (cpy[name] === val) {
 						<span class="hljs-keyword">delete</span> cpy[name];
 					}
@@ -924,7 +946,7 @@ we also want to make sure the route value is updated</p>
 		 *     can.route.deparam("videos/5");
 		 *          // -&gt; { id: 5, route: ":type/:id", type: "videos" }
 		 */</span>
-		deparam: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url)</span> </span>{</pre></div></div>
+		deparam: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">url</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -960,12 +982,12 @@ By comparing the URL length the most specialized route that matches is used.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> route = {
-				length: -<span class="hljs-number">1</span>
+				<span class="hljs-attr">length</span>: <span class="hljs-number">-1</span>
 			},
 				querySeparator = can.route._call(<span class="hljs-string">"querySeparator"</span>),
 				paramsMatcher = can.route._call(<span class="hljs-string">"paramsMatcher"</span>);
 
-			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(temp, name)</span> </span>{
+			each(can.route.routes, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">temp, name</span>) </span>{
 				<span class="hljs-keyword">if</span> (temp.test.test(url) &amp;&amp; temp.length &gt; route.length) {
 					route = temp;
 				}
@@ -984,7 +1006,7 @@ By comparing the URL length the most specialized route that matches is used.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (route.length &gt; -<span class="hljs-number">1</span>) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (route.length &gt; <span class="hljs-number">-1</span>) {
 
 				<span class="hljs-keyword">var</span> <span class="hljs-comment">// Since `RegExp` backreferences are used in `route.test` (parens)</span></pre></div></div>
             
@@ -1077,7 +1099,7 @@ parts if that part is not empty.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				each(parts, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(part, i)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				each(parts, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">part, i</span>) </span>{
 					<span class="hljs-keyword">if</span> (part &amp;&amp; part !== querySeparator) {
 						obj[route.names[i]] = <span class="hljs-built_in">decodeURIComponent</span>(part);
 					}
@@ -1108,8 +1130,8 @@ parts if that part is not empty.</p>
 		 * @hide
 		 * A can.Map that represents the state of the history.
 		 */</span>
-		data: <span class="hljs-keyword">new</span> can.Map({}),
-		map: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+		data: stringCoercingMapDecorator(<span class="hljs-keyword">new</span> can.Map({})),
+		<span class="hljs-attr">map</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
 			<span class="hljs-keyword">var</span> appState;</pre></div></div>
             
         </li>
@@ -1145,7 +1167,8 @@ parts if that part is not empty.</p>
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> {
 				appState = data;
 			}
-			can.route.data = appState;
+			
+			can.route.data = stringCoercingMapDecorator(appState);
 		},
 		<span class="hljs-comment">/**
 		 * @property {Object} routes
@@ -1190,10 +1213,12 @@ parts if that part is not empty.</p>
 		 *     can.route(":type/:id")
 		 *     can.route.ready()
 		 */</span>
-		ready: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
+		ready: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
 			<span class="hljs-keyword">if</span> (val !== <span class="hljs-literal">true</span>) {
 				can.route._setup();
-				can.route.setState();
+				<span class="hljs-keyword">if</span>(can.isBrowserWindow || can.isWebWorker) {
+					can.route.setState();
+				}
 			}
 			<span class="hljs-keyword">return</span> can.route;
 		},
@@ -1225,9 +1250,10 @@ parts if that part is not empty.</p>
 		 *     can.route.url( { type: "video", id: 5, isNew: false } )
 		 *          // -&gt; "#!video/5&amp;isNew=false"
 		 */</span>
-		url: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, merge)</span> </span>{
+		url: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, merge</span>) </span>{
 
 			<span class="hljs-keyword">if</span> (merge) {
+				can.__observe(eventsObject,<span class="hljs-string">"__url"</span>);
 				options = can.extend({}, can.route.deparam(can.route._call(<span class="hljs-string">"matchingPartOfURL"</span>)), options);
 			}
 			<span class="hljs-keyword">return</span> can.route._call(<span class="hljs-string">"root"</span>) + can.route.param(options);
@@ -1248,7 +1274,7 @@ parts if that part is not empty.</p>
 		 *
 		 * @body
 		 * Creates and returns an anchor tag with an href of the route
-		 * attributes passed into it, as well as any properies desired
+		 * attributes passed into it, as well as any properties desired
 		 * for the tag.
 		 *
 		 *     can.route.link( "My videos", { type: "videos" }, {}, false )
@@ -1276,10 +1302,10 @@ parts if that part is not empty.</p>
 		 *
 		 *
 		 */</span>
-		link: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, options, props, merge)</span> </span>{
+		link: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, options, props, merge</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">"&lt;a "</span> + makeProps(
 				extend({
-					href: can.route.url(options, merge)
+					<span class="hljs-attr">href</span>: can.route.url(options, merge)
 				}, props)) + <span class="hljs-string">"&gt;"</span> + name + <span class="hljs-string">"&lt;/a&gt;"</span>;
 		},
 		<span class="hljs-comment">/**
@@ -1306,7 +1332,7 @@ parts if that part is not empty.</p>
 		 *            // location.hash -&gt; #!id=5&amp;type=videos
 		 *     can.route.current({ id: 5, type: 'videos' }) // -&gt; true
 		 */</span>
-		current: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{</pre></div></div>
+		current: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1321,13 +1347,13 @@ parts if that part is not empty.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.__reading(eventsObject,<span class="hljs-string">"__url"</span>);
+            <div class="content"><div class='highlight'><pre>			can.__observe(eventsObject,<span class="hljs-string">"__url"</span>);
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._call(<span class="hljs-string">"matchingPartOfURL"</span>) === can.route.param(options);
 		},
-		bindings: {
-			hashchange: {
-				paramsMatcher: paramsMatcher,
-				querySeparator: <span class="hljs-string">"&amp;"</span>,</pre></div></div>
+		<span class="hljs-attr">bindings</span>: {
+			<span class="hljs-attr">hashchange</span>: {
+				<span class="hljs-attr">paramsMatcher</span>: paramsMatcher,
+				<span class="hljs-attr">querySeparator</span>: <span class="hljs-string">"&amp;"</span>,</pre></div></div>
             
         </li>
         
@@ -1343,10 +1369,10 @@ parts if that part is not empty.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				matchSlashes: <span class="hljs-literal">false</span>,
-				bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-attr">bind</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					can.bind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'hashchange'</span>, setState);
 				},
-				unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-attr">unbind</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					can.unbind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'hashchange'</span>, setState);
 				},</pre></div></div>
             
@@ -1365,8 +1391,9 @@ pushState it’s configurable</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-					<span class="hljs-keyword">return</span> location.href.split(<span class="hljs-regexp">/#!?/</span>)[<span class="hljs-number">1</span>] || <span class="hljs-string">""</span>;
+            <div class="content"><div class='highlight'><pre>				matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">var</span> loc = can.route.location || location;
+					<span class="hljs-keyword">return</span> loc.href.split(<span class="hljs-regexp">/#!?/</span>)[<span class="hljs-number">1</span>] || <span class="hljs-string">""</span>;
 				},</pre></div></div>
             
         </li>
@@ -1383,17 +1410,17 @@ returns what the url has been updated to (for matching purposes)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">path</span>) </span>{
 					<span class="hljs-keyword">if</span>(location.hash !== <span class="hljs-string">"#"</span> + path) {
 						location.hash = <span class="hljs-string">"!"</span> + path;
 					}
 					<span class="hljs-keyword">return</span> path;
 				},
-				root: <span class="hljs-string">"#!"</span>
+				<span class="hljs-attr">root</span>: <span class="hljs-string">"#!"</span>
 			}
 		},
-		defaultBinding: <span class="hljs-string">"hashchange"</span>,
-		currentBinding: <span class="hljs-literal">null</span>,</pre></div></div>
+		<span class="hljs-attr">defaultBinding</span>: <span class="hljs-string">"hashchange"</span>,
+		<span class="hljs-attr">currentBinding</span>: <span class="hljs-literal">null</span>,</pre></div></div>
             
         </li>
         
@@ -1440,14 +1467,14 @@ easily kick off calling setState
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>		_setup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">if</span> (!can.route.currentBinding) {
 				can.route._call(<span class="hljs-string">"bind"</span>);
 				can.route.bind(<span class="hljs-string">"change"</span>, onRouteDataChange);
 				can.route.currentBinding = can.route.defaultBinding;
 			}
 		},
-		_teardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">_teardown</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">if</span> (can.route.currentBinding) {
 				can.route._call(<span class="hljs-string">"unbind"</span>);
 				can.route.unbind(<span class="hljs-string">"change"</span>, onRouteDataChange);
@@ -1470,7 +1497,7 @@ easily kick off calling setState
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_call: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>		_call: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 				prop = args.shift(),
 				binding = can.route.bindings[can.route.currentBinding || can.route.defaultBinding],
@@ -1497,8 +1524,8 @@ instead act on the <code>can.route.data</code> observe.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">'bind'</span>, <span class="hljs-string">'unbind'</span>, <span class="hljs-string">'on'</span>, <span class="hljs-string">'off'</span>, <span class="hljs-string">'delegate'</span>, <span class="hljs-string">'undelegate'</span>, <span class="hljs-string">'removeAttr'</span>, <span class="hljs-string">'compute'</span>, <span class="hljs-string">'_get'</span>, <span class="hljs-string">'__get'</span>,<span class="hljs-string">'each'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
-		can.route[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	each([<span class="hljs-string">'bind'</span>, <span class="hljs-string">'unbind'</span>, <span class="hljs-string">'on'</span>, <span class="hljs-string">'off'</span>, <span class="hljs-string">'delegate'</span>, <span class="hljs-string">'undelegate'</span>, <span class="hljs-string">'removeAttr'</span>, <span class="hljs-string">'compute'</span>, <span class="hljs-string">'_get'</span>, <span class="hljs-string">'___get'</span>,<span class="hljs-string">'each'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name</span>) </span>{
+		can.route[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1520,7 +1547,11 @@ the <code>can/map/delegate</code> plugin</p>
 
 			<span class="hljs-keyword">return</span> can.route.data[name].apply(can.route.data, <span class="hljs-built_in">arguments</span>);
 		};
-	});</pre></div></div>
+	});
+	
+	can.route.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+		<span class="hljs-keyword">return</span> can.route.data.attr.apply(can.route.data, <span class="hljs-built_in">arguments</span>);
+	};</pre></div></div>
             
         </li>
         
@@ -1531,19 +1562,13 @@ the <code>can/map/delegate</code> plugin</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
-              <p>Because everything in hashbang is in fact a string this will automaticaly convert new values to string. Works with single value, or deep hashes.
-Main motivation for this is to prevent double route event call for same value.
-Example (the problem):
-When you load page with hashbang like #!&amp;some_number=2 and bind ‘some_number’ on routes.
-It will fire event with adding of “2” (string) to ‘some_number’ property
-But when you after this set can.route.attr({some_number: 2}) or can.route.attr(‘some_number’, 2). it fires another event with change of ‘some_number’ from “2” (string) to 2 (integer)
-This wont happen again with this normalization</p>
+              <p>Allow for overriding of route batching by can.transaction</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.route.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, val)</span> </span>{
-		<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> attr,
-			newArguments;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.route.batch = can.batch;
+
+	<span class="hljs-keyword">var</span> <span class="hljs-comment">// Deparameterizes the portion of the hash of interest and assign the</span></pre></div></div>
             
         </li>
         
@@ -1554,12 +1579,18 @@ This wont happen again with this normalization</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
-              <p>Reading</p>
+              <p>values to the <code>can.route.data</code> removing existing values no longer in the hash.
+setState is called typically by hashchange which fires asynchronously
+So it’s possible that someone started changing the data before the
+hashchange event fired.  For this reason, it will not set the route data
+if the data is changing or the hash already matches the hash that was set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (val === <span class="hljs-literal">undefined</span>) {
-			newArguments = <span class="hljs-built_in">arguments</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	setState = can.route.setState = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+		<span class="hljs-keyword">var</span> hash = can.route._call(<span class="hljs-string">"matchingPartOfURL"</span>);
+		<span class="hljs-keyword">var</span> oldParams = curParams;
+		curParams = can.route.deparam(hash);</pre></div></div>
             
         </li>
         
@@ -1570,12 +1601,16 @@ This wont happen again with this normalization</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
-              <p>Sets object</p>
+              <p>if the hash data is currently changing, or
+the hash is what we set it to anyway, do NOT change the hash</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type !== <span class="hljs-string">"string"</span> &amp;&amp; type !== <span class="hljs-string">"number"</span>) {
-			newArguments = [stringify(attr), val];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!changingData || hash !== lastHash) {
+			can.route.batch.start();
+			recursiveClean(oldParams, curParams, can.route.data);
+
+			can.route.attr(curParams);</pre></div></div>
             
         </li>
         
@@ -1586,80 +1621,16 @@ This wont happen again with this normalization</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
-              <p>Sets key - value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> {
-			newArguments = [attr, stringify(val)];
-		}
-
-		<span class="hljs-keyword">return</span> can.route.data.attr.apply(can.route.data, newArguments);
-	};
-
-	<span class="hljs-keyword">var</span> <span class="hljs-comment">// Deparameterizes the portion of the hash of interest and assign the</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-74">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
-              </div>
-              <p>values to the <code>can.route.data</code> removing existing values no longer in the hash.
-setState is called typically by hashchange which fires asynchronously
-So it’s possible that someone started changing the data before the
-hashchange event fired.  For this reason, it will not set the route data
-if the data is changing or the hash already matches the hash that was set.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	setState = can.route.setState = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">var</span> hash = can.route._call(<span class="hljs-string">"matchingPartOfURL"</span>);
-		<span class="hljs-keyword">var</span> oldParams = curParams;
-		curParams = can.route.deparam(hash);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-75">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
-              </div>
-              <p>if the hash data is currently changing, or
-the hash is what we set it to anyway, do NOT change the hash</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!changingData || hash !== lastHash) {
-			can.batch.start();
-			recursiveClean(oldParams, curParams, can.route.data);
-
-			can.route.attr(curParams);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-76">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
               <p>trigger a url change so its possible to live-bind on url-based changes</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.batch.trigger(eventsObject,<span class="hljs-string">"__url"</span>,[hash, lastHash]);
-			can.batch.stop();
+            <div class="content"><div class='highlight'><pre>			can.route.batch.trigger(eventsObject,<span class="hljs-string">"__url"</span>,[hash, lastHash]);
+			can.route.batch.stop();
 		}
 	};
 
-	<span class="hljs-keyword">var</span> recursiveClean = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(old, cur, data)</span></span>{
+	<span class="hljs-keyword">var</span> recursiveClean = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">old, cur, data</span>)</span>{
 		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> attr <span class="hljs-keyword">in</span> old){
 			<span class="hljs-keyword">if</span>(cur[attr] === <span class="hljs-literal">undefined</span>){
 				data.removeAttr(attr);

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/stache/expression.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.54</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">728</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">110.58</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">7.45</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&quot;can/util&quot;,
+	&quot;./utils&quot;,
+	&quot;./mustache_helpers&quot;,
+	&quot;can/view/scope&quot;,
+	function(can, utils, mustacheHelpers, Scope){
+	
+	
+	// ## Helpers
+	
+	// Helper for getting a bound compute in the scope.
+	var getKeyComputeData = function (key, scope, readOptions) {
+
+			var data = scope.computeData(key, readOptions);
+	
+			can.compute.temporarilyBind(data.compute);
+	
+			return data;
+		},
+		// Looks up a value in the scope and returns a compute if the value is
+		// observable and the value if not.
+		lookupValue = function(key, scope, helperOptions, readOptions){
+			var computeData = getKeyComputeData(key, scope, readOptions);
+			// If there are no dependencies, just return the value.
+			if (!computeData.compute.computeInstance.hasDependencies) {
+				return {value: computeData.initialValue, computeData: computeData};
+			} else {
+				return {value: computeData.compute, computeData: computeData};
+			}
+		},
+		// Looks up a value in the scope, and if it is `undefined`, looks up
+		// the value as a helper.
+		lookupValueOrHelper = function(key, scope, helperOptions, readOptions){
+			var res = lookupValue(key, scope, helperOptions, readOptions);
+	
+			// If it doesn&#039;t look like a helper and there is no value, check helpers
+			// anyway. This is for when foo is a helper in `{{foo}}`.
+			if( res.computeData.initialValue === undefined ) {
+				if(key.charAt(0) === &quot;@&quot; &amp;&amp; key !== &quot;@index&quot;) {
+					key = key.substr(1);
+				}
+				var helper = mustacheHelpers.getHelper(key, helperOptions);
+				res.helper = helper &amp;&amp; helper.fn;
+			}
+			return res;
+		},
+		// If not a Literal or an Arg, convert to an arg for caching.
+		convertToArgExpression = function(expr){
+			if(!(expr instanceof Arg) &amp;&amp; !(expr instanceof Literal) &amp;&amp; !(expr instanceof Hashes)) {
+				return new Arg(expr);
+			} else {
+				return expr;
+			}
+			
+		};
+	
+	// ## Expression Types
+	//
+	// These expression types return a value. They are assembled by `expression.parse`.
+	
+	// ### Literal
+	// For inline static values like `{{&quot;Hello World&quot;}}`
+	var Literal = function(value){
+		this._value = value;
+	};
+	Literal.prototype.value = function(){
+		return this._value;
+	};
+	
+	// ### Lookup
+	// `new Lookup(String, [Expression])`
+	// Finds a value in the scope or a helper.
+	var Lookup = function(key, root) {
+		this.key = key;
+		this.rootExpr = root;
+	};
+	Lookup.prototype.value = function(scope, helperOptions){
+		var result = lookupValueOrHelper(this.key, scope, helperOptions);
+		// TODO: remove this.  This is hacky.
+		this.isHelper = result.helper &amp;&amp; !result.helper.callAsMethod;
+		return result.helper || result.value;
+	};
+	
+	// ### ScopeLookup
+	// Looks up a value in the scope, returns a compute for the value it finds.
+	// If passed an expression, that is used to lookup data
+	var ScopeLookup = function(key, root) {
+		Lookup.apply(this, arguments);
+	};
+	ScopeLookup.prototype.value = function(scope, helperOptions){
+		return lookupValue(this.key, scope, helperOptions).value;
+	};
+	
+	// ### Arg
+	// `new Arg(Expression [,modifierOptions] )`
+	// Used to identify an expression that should return a value.
+	var Arg = function(expression, modifiers){
+		this.expr = expression;
+		this.modifiers = modifiers || {};
+		this.isCompute = false;
+	};
+	Arg.prototype.value = function(){
+		return this.expr.value.apply(this.expr, arguments);
+	};
+	
+	// ### Hashes
+	// A placeholder. This isn&#039;t actually used.
+	var Hashes = function(hashExpressions){
+		this.hashExprs = hashExpressions;
+	};
+	Hashes.prototype.value = function(){
+		var hash = {};
+		for(var prop in this.hashExprs) {
+			var val = this.hashExprs[prop],
+				value = val.value.apply(val, arguments);
+				
+			hash[prop] = {
+				call: value &amp;&amp; value.isComputed &amp;&amp; (!val.modifiers || !val.modifiers.compute),
+				value: value
+			};
+		}
+		return can.compute(function(){
+			var finalHash = {};
+			for(var prop in hash) {
+				finalHash[prop] = hash[prop].call ? hash[prop].value() : hash[prop].value;
+			}
+			return finalHash;
+		});
+	};
+
+	
+	// ### Call
+	// `new Call( new Lookup(&quot;method&quot;), [new ScopeExpr(&quot;name&quot;)], {})`
+	// A call expression like `method(arg1, arg2)` that, by default,
+	// calls `method` with non compute values.
+	var Call = function(methodExpression, argExpressions, hashes){
+		if(hashes &amp;&amp; !can.isEmptyObject(hashes)) {
+			argExpressions.push(new Hashes(hashes));
+		}
+		this.methodExpr = methodExpression;
+		this.argExprs = can.map(argExpressions, convertToArgExpression);
+	};
+	Call.prototype.args = function(scope, helperOptions){
+		var args = [];
+		for(var i = 0, len = this.argExprs.length; i &lt; len; i++) {
+			var arg = this.argExprs[i];
+			var value = arg.value.apply(arg, arguments);
+			args.push({
+				call: value &amp;&amp; value.isComputed  &amp;&amp; (!arg.modifiers || !arg.modifiers.compute),
+				value: value
+			});
+		}
+		return function(){
+			var finalArgs = [];
+			for(var i = 0, len = args.length; i &lt; len; i++) {
+				finalArgs[i] = args[i].call ? args[i].value() : args[i].value;
+			}
+			return finalArgs;
+		};
+	};
+	
+	
+	Call.prototype.value = function(scope, helperScope, helperOptions){
+		
+		var method = this.methodExpr.value(scope, helperScope);
+		// TODO: remove this hack
+		this.isHelper = this.methodExpr.isHelper;
+		
+		var getArgs = this.args(scope, helperScope);
+		
+		return can.compute(function(newVal){
+			var func = method;
+			if(func &amp;&amp; func.isComputed) {
+				func = func();
+			}
+			if(typeof func === &quot;function&quot;) {
+				var args = getArgs();
+				
+				// if fn/inverse is needed
+				if(helperOptions) {
+					args.push(helperOptions);
+				}
+				if(arguments.length) {
+					args.unshift(new expression.SetIdentifier(newVal));
+				}
+				
+				return func.apply(null, args);
+			}
+			
+		});
+		
+	};
+	
+	
+	
+	// ### HelperLookup
+	// An expression that looks up a value in the helper or scope.
+	// Any functions found prior to the last one are called with
+	// the context and scope.
+	var HelperLookup = function(){
+		Lookup.apply(this, arguments);
+	};
+	HelperLookup.prototype.value = function(scope, helperOptions){
+		var result = lookupValueOrHelper(this.key, scope, helperOptions, {isArgument: true, args: [scope.attr(&#039;.&#039;), scope]});
+		return result.helper || result.value;
+	};
+	
+	// ### HelperScopeLookup
+	// An expression that looks up a value in the scope.
+	// Any functions found prior to the last one are called with
+	// the context and scope.
+	var HelperScopeLookup = function(){
+		Lookup.apply(this, arguments);
+	};
+	HelperScopeLookup.prototype.value = function(scope, helperOptions){
+		return lookupValue(this.key, scope, helperOptions, {callMethodsOnObservables: true, isArgument: true, args: [scope.attr(&#039;.&#039;), scope]}).value;
+	};
+	
+	var Helper = function(methodExpression, argExpressions, hashExpressions){
+		this.methodExpr = methodExpression;
+		this.argExprs = argExpressions;
+		this.hashExprs = hashExpressions;
+		this.mode = null;
+	};
+	Helper.prototype.args = function(scope, helperOptions){
+		var args = [];
+		for(var i = 0, len = this.argExprs.length; i &lt; len; i++) {
+			var arg = this.argExprs[i];
+			args.push( arg.value.apply(arg, arguments) );
+		}
+		return args;
+	};
+	Helper.prototype.hash = function(scope, helperOptions){
+		var hash = {};
+		for(var prop in this.hashExprs) {
+			var val = this.hashExprs[prop];
+			hash[prop] = val.value.apply(val, arguments);
+		}
+		return hash;
+	};
+	// looks up the name key in the scope
+	// returns a `helper` property if there is a helper for the key.
+	// returns a `value` property if the value is looked up.
+	Helper.prototype.helperAndValue = function(scope, helperOptions){
+		
+		//{{foo bar}}
+		var looksLikeAHelper = this.argExprs.length || !can.isEmptyObject(this.hashExprs),
+			helper,
+			value,
+			// If a literal, this means it should be treated as a key. But helpers work this way for some reason.
+			// TODO: fix parsing so numbers will also be assumed to be keys.
+			methodKey = this.methodExpr instanceof Literal ?
+				&quot;&quot;+this.methodExpr._value : this.methodExpr.key,
+			initialValue,
+			args;
+			
+		// If the expression looks like a helper, try to get a helper right away.
+		if (looksLikeAHelper) {
+			// Try to find a registered helper.
+			helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+
+			// If a function is on top of the context, call that as a helper.
+			var context = scope.attr(&quot;.&quot;);
+			if(!helper &amp;&amp; typeof context[methodKey] === &quot;function&quot;) {
+				//!steal-remove-start
+				can.dev.warn(&#039;can/view/stache/mustache_core.js: In 3.0, method &quot;&#039; + methodKey + &#039;&quot; will not be called as a helper, but as a method.&#039;);
+				//!steal-remove-end
+				helper = {fn: context[methodKey]};
+			}
+
+		}
+		if(!helper) {
+			args = this.args(scope, helperOptions);
+			// Get info about the compute that represents this lookup.
+			// This way, we can get the initial value without &quot;reading&quot; the compute.
+			var computeData = getKeyComputeData(methodKey, scope, {
+				isArgument: false,
+				args: args &amp;&amp; args.length ? args : [scope.attr(&#039;.&#039;), scope]
+			}),
+				compute = computeData.compute;
+
+			initialValue = computeData.initialValue;
+
+			// Set name to be the compute if the compute reads observables,
+			// or the value of the value of the compute if no observables are found.
+			if(computeData.compute.computeInstance.hasDependencies) {
+				value = compute;
+			} else {
+				value = initialValue;
+			}
+
+			// If it doesn&#039;t look like a helper and there is no value, check helpers
+			// anyway. This is for when foo is a helper in `{{foo}}`.
+			if( !looksLikeAHelper &amp;&amp; initialValue === undefined ) {
+				helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+			}
+
+		}
+		
+		//!steal-remove-start
+		if ( !helper &amp;&amp; initialValue === undefined) {
+			if(looksLikeAHelper) {
+				can.dev.warn(&#039;can/view/stache/mustache_core.js: Unable to find helper &quot;&#039; + methodKey + &#039;&quot;.&#039;);
+			} else {
+				can.dev.warn(&#039;can/view/stache/mustache_core.js: Unable to find key or helper &quot;&#039; + methodKey + &#039;&quot;.&#039;);
+			}
+		}
+		//!steal-remove-end
+		
+		return {
+			value: value,
+			args: args,
+			helper: helper &amp;&amp; helper.fn
+		};
+	};
+	Helper.prototype.evaluator = function(helper, scope, helperOptions, /*REMOVE*/readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly){
+
+		var helperOptionArg = {
+			fn: function () {},
+			inverse: function () {},
+			stringOnly: stringOnly
+		},
+			context = scope.attr(&quot;.&quot;),
+			args = this.args(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly),
+			hash = this.hash(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+
+		// Add additional data to be used by helper functions
+		utils.convertToScopes(helperOptionArg, scope,helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+
+		can.simpleExtend(helperOptionArg, {
+			context: context,
+			scope: scope,
+			contexts: scope,
+			hash: hash,
+			nodeList: nodeList,
+			exprData: this,
+			helperOptions: helperOptions,
+			helpers: helperOptions
+		});
+
+		args.push(helperOptionArg);
+		// Call the helper.
+		return function () {
+			return helper.apply(context, args);
+		};
+	};
+	
+	Helper.prototype.value = function(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly){
+		
+		var helperAndValue = this.helperAndValue(scope, helperOptions);
+		
+		var helper = helperAndValue.helper;
+		// a method could have been called, resulting in a value
+		if(!helper) {
+			return helperAndValue.value;
+		}
+		
+		var fn = this.evaluator(helper, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+		
+		var compute = can.compute(fn);
+		
+		can.compute.temporarilyBind(compute);
+		
+		if (!compute.computeInstance.hasDependencies) {
+			return compute();
+		} else {
+			return compute;
+		}
+	};
+	
+	
+	// NAME - \w
+	// KEY - foo, foo.bar, foo@bar, %foo (special), &amp;foo (references), ../foo, ./foo
+	// ARG - ~KEY, KEY, CALLEXPRESSION, PRIMITIVE
+	// CALLEXPRESSION = KEY(ARG,ARG, NAME=ARG)
+	// HELPEREXPRESSION = KEY ARG ARG NAME=ARG
+	// DOT .NAME
+	// AT @NAME
+	// 
+	var keyRegExp = /[\w\.\\\-_@\/\&amp;%]+/,
+		tokensRegExp = /(&#039;.*?&#039;|&quot;.*?&quot;|=|[\w\.\\\-_@\/*%\$:]+|[\(\)]|,|\~)/g,
+		literalRegExp = /^(&#039;.*?&#039;|&quot;.*?&quot;|[0-9]+\.?[0-9]*|true|false|null|undefined)$/;
+	
+	var isTokenKey = function(token){
+		return keyRegExp.test(token);
+	};
+	
+	var testDot = /^[\.@]\w/;
+	var isAddingToExpression = function(token) {
+		
+		return isTokenKey(token) &amp;&amp; testDot.test(token);
+	};
+	
+	var ensureChildren = function(type) {
+		if(!type.children) {
+			type.children = [];
+		}
+		return type;
+	};
+	
+	var Stack = function(){
+		
+		this.root = {children: [], type: &quot;Root&quot;};
+		this.current = this.root;
+		this.stack = [this.root];
+	};
+	can.simpleExtend(Stack.prototype,{
+		top: function(){
+			return can.last(this.stack);
+		},
+		isRootTop: function(){
+			return this.top() === this.root;
+		},
+		popTo: function(types){
+			this.popUntil(types);
+			if(!this.isRootTop()) {
+				this.stack.pop();
+			}
+		},
+		firstParent: function(types){
+			var curIndex = this.stack.length- 2;
+			while( curIndex &gt; 0 &amp;&amp; can.inArray(  this.stack[curIndex].type, types) === -1 ) {
+				curIndex--;
+			}
+			return this.stack[curIndex];
+		},
+		popUntil: function(types){
+			while( can.inArray(  this.top().type, types) === -1 &amp;&amp; !this.isRootTop() ) {
+				this.stack.pop();
+			}
+			return this.top();
+		},
+		addTo: function(types, type){
+			var cur = this.popUntil(types);
+			ensureChildren(cur).children.push(type);
+		},
+		addToAndPush: function(types, type){
+			this.addTo(types, type);
+			this.stack.push(type);
+		},
+		topLastChild: function(){
+			return can.last(this.top().children);
+		},
+		replaceTopLastChild: function(type){
+			var children = ensureChildren(this.top()).children;
+			children.pop();
+			children.push(type);
+			return type;
+		},
+		replaceTopLastChildAndPush: function(type) {
+			this.replaceTopLastChild(type);
+			this.stack.push(type);
+		},
+		replaceTopAndPush: function(type){
+			var children;
+			if(this.top() === this.root) {
+				children = ensureChildren(this.top()).children;
+			} else {
+				this.stack.pop();
+				// get parent and clean
+				children = ensureChildren(this.top()).children;
+			}
+			
+			children.pop();
+			children.push(type);
+			this.stack.push(type);
+			return type;
+		}
+	});
+	
+	// converts 
+	// - &quot;../foo&quot; -&gt; &quot;../@foo&quot;, 
+	// - &quot;foo&quot; -&gt; &quot;@foo&quot;, 
+	// - &quot;.foo&quot; -&gt; &quot;@foo&quot;, 
+	// - &quot;./foo&quot; -&gt; &quot;./@foo&quot;
+	// - &quot;foo.bar&quot; -&gt; &quot;foo@bar&quot;
+	var convertKeyToLookup = function(key){
+		var lastPath = key.lastIndexOf(&quot;./&quot;);
+		var lastDot = key.lastIndexOf(&quot;.&quot;);
+		if(lastDot &gt; lastPath) {
+			return key.substr(0, lastDot)+&quot;@&quot;+key.substr(lastDot+1);
+		}
+		var firstNonPathCharIndex = lastPath === -1 ? 0 : lastPath+2;
+		var firstNonPathChar = key.charAt(firstNonPathCharIndex);
+		if(firstNonPathChar === &quot;.&quot; || firstNonPathChar === &quot;@&quot; ) {
+			return key.substr(0, firstNonPathCharIndex)+&quot;@&quot;+key.substr(firstNonPathCharIndex+1);
+		} else {
+			return key.substr(0, firstNonPathCharIndex)+&quot;@&quot;+key.substr(firstNonPathCharIndex);
+		}
+	};
+	var convertToAtLookup = function(ast){
+		if(ast.type === &quot;Lookup&quot;) {
+			ast.key = convertKeyToLookup(ast.key);
+		}
+		return ast;
+	};
+	
+	var convertToHelperIfTopIsLookup = function(stack){
+		var top = stack.top();
+		// if two scopes, that means a helper
+		if(top &amp;&amp; top.type === &quot;Lookup&quot;) {
+			
+			var base = stack.stack[stack.stack.length - 2];
+			// That lookup shouldn&#039;t be part of a Helper already or
+			if(base.type !== &quot;Helper&quot; &amp;&amp; base) {
+				stack.replaceTopAndPush({
+					type: &quot;Helper&quot;,
+					method: top
+				});
+			}
+		}
+	};
+	
+	var expression = {
+		convertKeyToLookup: convertKeyToLookup,
+		Literal: Literal,
+		Lookup: Lookup,
+		ScopeLookup: ScopeLookup,
+		
+		Arg: Arg,
+		Hashes: Hashes,
+		Call: Call,
+		Helper: Helper,
+		HelperLookup: HelperLookup,
+		HelperScopeLookup: HelperScopeLookup,
+		
+		
+		SetIdentifier: function(value){ this.value = value; },
+		tokenize: function(expression){
+			var tokens = [];
+			(can.trim(expression) + &#039; &#039;).replace(tokensRegExp, function (whole, arg) {
+				tokens.push(arg);
+			});
+			return tokens;
+		},
+		lookupRules: {
+			&quot;default&quot;: function(ast, methodType, isArg){
+				var name = (methodType === &quot;Helper&quot; &amp;&amp; !ast.root ? &quot;Helper&quot; : &quot;&quot;)+(isArg ? &quot;Scope&quot; : &quot;&quot;)+&quot;Lookup&quot;;
+				return expression[name];
+			},
+			&quot;method&quot;: function(ast, methodType, isArg){
+				return ScopeLookup;
+			}
+		},
+		methodRules: {
+			&quot;default&quot;: function(ast){
+				
+				return ast.type === &quot;Call&quot; ? Call : Helper;
+			},
+			&quot;call&quot;: function(ast){
+				return Call;
+			}
+		},
+		// ## expression.parse
+		// 
+		// - {String} expressionString - A stache expression like &quot;abc foo()&quot;
+		// - {Object} options
+		//   - baseMethodType - Treat this like a Helper or Call.  Default to &quot;Helper&quot;
+		//   - lookupRule - &quot;default&quot; or &quot;method&quot;
+		//   - methodRule - &quot;default&quot; or &quot;call&quot;
+		parse: function(expressionString, options){
+			options =  options || {};
+			var ast = this.ast(expressionString);
+			
+			if(!options.lookupRule) {
+				options.lookupRule = &quot;default&quot;;
+			}
+			if(typeof options.lookupRule === &quot;string&quot;) {
+				options.lookupRule = expression.lookupRules[options.lookupRule];
+			}
+			if(!options.methodRule) {
+				options.methodRule = &quot;default&quot;;
+			}
+			if(typeof options.methodRule === &quot;string&quot;) {
+				options.methodRule = expression.methodRules[options.methodRule];
+			}
+			
+			var expr = this.hydrateAst(ast, options, options.baseMethodType || &quot;Helper&quot;);
+			
+			return expr;
+		},
+		hydrateAst: function(ast, options, methodType, isArg){
+			var hashes,
+				self = this;
+			if(ast.type === &quot;Lookup&quot;) {
+				return new (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root &amp;&amp; this.hydrateAst(ast.root, options, methodType) );
+			}
+			else if(ast.type === &quot;Literal&quot;) {
+				return new Literal(ast.value);
+			}
+			else if(ast.type === &quot;Arg&quot;) {
+				return new Arg(this.hydrateAst(ast.children[0], options, methodType, isArg),{compute: true});
+			}
+			else if(ast.type === &quot;Hashes&quot;) {
+				hashes = {};
+				can.each(ast.children, function(child){
+					hashes[child.prop] = self.hydrateAst( child.children[0], options, ast.type, true );
+				});
+				return new Hashes(hashes);
+			}
+			else if(ast.type === &quot;Hash&quot;) {
+				throw new Error(&quot;&quot;);
+			}
+			else if(ast.type === &quot;Call&quot; || ast.type === &quot;Helper&quot;) {
+				//get all arguments and hashes
+				
+				var args = [];
+				hashes = {};
+				
+				can.each(ast.children, function(child){
+					if(child.type === &quot;Hash&quot;) {
+						hashes[child.prop] = self.hydrateAst( child.children[0], options, ast.type, true );
+					} else {
+						args.push( self.hydrateAst(child, options, ast.type, true) );
+					}
+				});
+				
+				return new (options.methodRule(ast))(this.hydrateAst(ast.method, options, ast.type), args, hashes);
+			}
+		},
+		ast: function(expression){
+			var tokens = this.tokenize(expression);
+			return this.parseAst(tokens, {
+				index: 0
+			});
+		},
+		parseAst: function(tokens, cursor) {
+			var stack = new Stack(),
+				top;
+			
+			while(cursor.index &lt; tokens.length) {
+				var token = tokens[cursor.index],
+					nextToken = tokens[cursor.index+1];
+				
+				cursor.index++;
+				
+				// Literal
+				if(literalRegExp.test( token )) {
+					convertToHelperIfTopIsLookup(stack);
+					stack.addTo([&quot;Helper&quot;, &quot;Call&quot;, &quot;Hash&quot;], {type: &quot;Literal&quot;, value: utils.jsonParse( token )});
+				}
+				// Hash 
+				else if(nextToken === &quot;=&quot;) {
+					//convertToHelperIfTopIsLookup(stack);
+					top = stack.top();
+					
+					// If top is a Lookup, we might need to convert to a helper.
+					if(top &amp;&amp; top.type === &quot;Lookup&quot;) {
+						
+						// Check if current Lookup is part of a Call, Helper, or Hash
+						// If it happens to be first within a Call or Root, that means
+						// this is helper syntax.
+						var firstParent = stack.firstParent([&quot;Call&quot;,&quot;Helper&quot;,&quot;Hash&quot;]);
+						if(firstParent.type === &quot;Call&quot; || firstParent.type === &quot;Root&quot;) {
+							
+							stack.popUntil([&quot;Call&quot;]);
+							top = stack.top();
+							stack.replaceTopAndPush({
+								type: &quot;Helper&quot;,
+								method: top.type === &quot;Root&quot; ? can.last(top.children) : top
+							});
+							
+						}
+					}
+					// if top is a call expression
+					// then we are added this as a hashes
+					top = stack.popUntil([&quot;Helper&quot;, &quot;Call&quot;,&quot;Hashes&quot;]);
+					// Call expressions group hash in hashes
+					if(top.type === &quot;Call&quot;) {
+						stack.addToAndPush([&quot;Call&quot;], {type: &quot;Hashes&quot;});
+					}
+
+					stack.addToAndPush([&quot;Helper&quot;, &quot;Hashes&quot;], {type: &quot;Hash&quot;, prop: token});
+					cursor.index++;
+					
+				}
+				// Lookup
+				else if(keyRegExp.test(token)) {
+					var last = stack.topLastChild();
+
+					// if we had `foo().bar`, we need to change to a Lookup that looks up from last.
+					if(last &amp;&amp; last.type === &quot;Call&quot; &amp;&amp; isAddingToExpression(token)) {
+						stack.replaceTopLastChildAndPush({
+							type: &quot;Lookup&quot;,
+							root: last,
+							key: token
+						});
+					} else {
+						// if two scopes, that means a helper
+						convertToHelperIfTopIsLookup(stack);
+						
+						stack.addToAndPush([&quot;Helper&quot;, &quot;Call&quot;,&quot;Hash&quot;,&quot;Arg&quot;], {type: &quot;Lookup&quot;, key: token});
+					}
+					
+				}
+				// Arg
+				else if(token === &quot;~&quot;) {
+					convertToHelperIfTopIsLookup(stack);
+					stack.addToAndPush([&quot;Helper&quot;, &quot;Call&quot;,&quot;Hash&quot;], {type: &quot;Arg&quot;, key: token});
+				}
+				// Call
+				else if(token === &quot;(&quot;) {
+					top = stack.top();
+					if(top.type === &quot;Lookup&quot;) {
+						stack.replaceTopAndPush({
+							type: &quot;Call&quot;,
+							method: convertToAtLookup(top)
+						});
+					} else {
+						throw new Error(&quot;Unable to understand expression &quot;+tokens.join(&#039;&#039;));
+					}
+				}
+				// End Call
+				else if(token === &quot;)&quot;) {
+					stack.popTo([&quot;Call&quot;]);
+				}
+				// End Call argument
+				else if(token === &quot;,&quot;) {
+					stack.popUntil([&quot;Call&quot;]);
+				}
+			}
+			return stack.root.children[0];
+		}
+	};
+
+	can.expression = expression;
+	return expression;
+	
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

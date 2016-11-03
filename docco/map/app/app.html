@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>app.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>app.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/map"</span>, <span class="hljs-string">"can/compute"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sortedSetJson</span>(<span class="hljs-params">set</span>)</span>{
+		<span class="hljs-keyword">if</span>(set == <span class="hljs-literal">null</span>) {
+			<span class="hljs-keyword">return</span> set;
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">var</span> sorted = {};
+
+			<span class="hljs-keyword">var</span> keys = [];
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> k <span class="hljs-keyword">in</span> set){
+				keys.push(k);
+			}
+			keys.sort();
+			can.each(keys, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">prop</span>)</span>{
+				sorted[prop] = set[prop];
+			});
+			<span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify(sorted);
+		}
+	}
+
+	can.AppMap = can.Map.extend({
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			can.Map.prototype.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">this</span>.__readyPromises = [];
+			<span class="hljs-keyword">this</span>.__pageData = {};
+
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> System !== <span class="hljs-string">"undefined"</span> &amp;&amp; System.has(<span class="hljs-string">"asset-register"</span>)) {
+				<span class="hljs-keyword">var</span> register = System.get(<span class="hljs-string">"asset-register"</span>)[<span class="hljs-string">"default"</span>];
+				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+				register(<span class="hljs-string">"inline-cache"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">var</span> script = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"script"</span>);
+					<span class="hljs-keyword">var</span> text = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">"\nINLINE_CACHE = "</span> + <span class="hljs-built_in">JSON</span>.stringify(self.__pageData) + <span class="hljs-string">";\n"</span>);
+					script.appendChild(text);
+					<span class="hljs-keyword">return</span> script;
+				});
+			}
+		},
+		<span class="hljs-attr">waitFor</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">promise</span>)</span>{
+			<span class="hljs-keyword">this</span>.__readyPromises.push(promise);
+			<span class="hljs-keyword">return</span> promise;
+		},
+		<span class="hljs-attr">pageData</span>: can.__notObserve(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, set, inst</span>)</span>{
+			<span class="hljs-keyword">var</span> appState = <span class="hljs-keyword">this</span>;
+
+			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">store</span>(<span class="hljs-params">data</span>)</span>{
+				<span class="hljs-keyword">var</span> keyData = appState.__pageData[key];
+				<span class="hljs-keyword">if</span>(!keyData) {
+					keyData = appState.__pageData[key] = {};
+				}
+
+				keyData[sortedSetJson(set)] = <span class="hljs-keyword">typeof</span> data.serialize === <span class="hljs-string">"function"</span> ?
+					data.serialize() : data;
+			}
+
+			<span class="hljs-keyword">if</span>(can.isPromise(inst)){
+				<span class="hljs-keyword">this</span>.waitFor(inst);
+				inst.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+					store(data);
+				});
+			} <span class="hljs-keyword">else</span> {
+				store(inst);
+			}
+
+			<span class="hljs-keyword">return</span> inst;
+		})
+	});
+
+	<span class="hljs-keyword">return</span> can.AppMap;
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

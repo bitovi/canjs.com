@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -755,6 +752,18 @@ people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']
 <h2>Deep properties</h2>
 <p><code>attr</code> can also set and read deep properties. All you have to do is specify
 the property name as you normally would if you weren't using <code>attr</code>.</p>
+<pre><code class="language-js">var people = new can.List([{name: 'Alex'}, {name: 'Bob'}]);
+
+// set a property:
+people.attr('0.name', 'Alice');
+
+// get a property:
+people.attr('0.name');  // 'Alice'
+people[0].attr('name'); // 'Alice'
+
+// get all properties:
+people.attr(); // [{name: 'Alice'}, {name: 'Bob'}]
+</code></pre>
 <p>The discussion of deep properties under <code><a href="can.Map.prototype.attr.html">attr</a></code> may also
 be enlightening.</p>
 <h2>Events</h2>
@@ -769,6 +778,11 @@ be enlightening.</p>
 <h3>The <em>change</em> event</h3>
 <p>The first event that is fired is the <em>change</em> event. The <em>change</em> event is useful
 if you want to react to all changes on an List.</p>
+<pre><code class="language-js">var list = new can.List([]);
+list.bind('change', function(ev, index, how, newVal, oldVal) {
+    console.log('Something changed.');
+});
+</code></pre>
 <p>The parameters of the event handler for the <em>change</em> event are:</p>
 <ul>
 <li><em>ev</em> The event object.</li>
@@ -783,6 +797,18 @@ were added, and <code>undefined</code> if elements were removed.</li>
 were removed, and <code>undefined</code> if elements were added.</li>
 </ul>
 <p>Here is a concrete tour through the <em>change</em> event handler's arguments:</p>
+<pre><code class="language-js">var list = new can.List();
+list.bind('change', function(ev, index, how, newVal, oldVal) {
+    console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);
+});
+
+list.attr(['Alexis', 'Bill']); // [object Object], 0, add, ['Alexis', 'Bill'], undefined
+list.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined
+list.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis
+list.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam
+                               // [object Object], 1, set, Bob, Bill
+list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob
+</code></pre>
 <h3>The <em>set</em> event</h3>
 <p><em>set</em> events are fired when an element at an index that already exists in the List is
 modified. Actions can cause <em>set</em> events to fire never also cause <em>length</em> events
@@ -795,6 +821,18 @@ may cause unrelated sets of events to fire after being batched).</p>
 <li><em>index</em> where the set took place.</li>
 </ul>
 <p>Here is a concrete tour through the <em>set</em> event handler's arguments:</p>
+<pre><code class="language-js">var list = new can.List();
+list.bind('set', function(ev, newVal, index) {
+    console.log(newVal + ', ' + index);
+});
+
+list.attr(['Alexis', 'Bill']);
+list.attr(2, 'Eve');
+list.attr(0, 'Adam');          // Adam, 0
+list.attr(['Alice', 'Bob']);   // Alice, 0
+                               // Bob, 1
+list.removeAttr(1);
+</code></pre>
 <h3>The <em>add</em> event</h3>
 <p><em>add</em> events are fired when elements are added or inserted
 into the List.</p>
@@ -807,6 +845,18 @@ Otherwise, it is simply the new element itself.</li>
 <li><em>index</em> Where the add or insert took place.</li>
 </ul>
 <p>Here is a concrete tour through the <em>add</em> event handler's arguments:</p>
+<pre><code class="language-js">var list = new can.List();
+list.bind('add', function(ev, newElements, index) {
+    console.log(newElements + ', ' + index);
+});
+
+list.attr(['Alexis', 'Bill']); // ['Alexis', 'Bill'], 0
+list.attr(2, 'Eve');           // Eve, 2
+list.attr(0, 'Adam');
+list.attr(['Alice', 'Bob']);
+
+list.removeAttr(1);
+</code></pre>
 <h3>The <em>remove</em> event</h3>
 <p><em>remove</em> events are fired when elements are removed from the list.</p>
 <p>The parameters of the event handler for the <em>remove</em> event are:</p>
@@ -818,6 +868,18 @@ Otherwise, it is simply the element itself.</li>
 <li><em>index</em> Where the removal took place.</li>
 </ul>
 <p>Here is a concrete tour through the <em>remove</em> event handler's arguments:</p>
+<pre><code class="language-js">var list = new can.List();
+list.bind('remove', function(ev, removedElements, index) {
+    console.log(removedElements + ', ' + index);
+});
+
+list.attr(['Alexis', 'Bill']);
+list.attr(2, 'Eve');
+list.attr(0, 'Adam');
+list.attr(['Alice', 'Bob']);
+
+list.removeAttr(1);            // Bob, 1
+</code></pre>
 <h3>The <em>length</em> event</h3>
 <p><em>length</em> events are fired whenever the list changes.</p>
 <p>The parameters of the event handler for the <em>length</em> event are:</p>
@@ -830,9 +892,23 @@ of this, you may recieve multiple <em>length</em> events with the same
 <em>length</em> parameter.</li>
 </ul>
 <p>Here is a concrete tour through the <em>length</em> event handler's arguments:</p>
+<pre><code class="language-js">var list = new can.List();
+list.bind('length', function(ev, length) {
+    console.log(length);
+});
+
+list.attr(['Alexis', 'Bill']); // 2
+list.attr(2, 'Eve');           // 3
+list.attr(0, 'Adam');
+list.attr(['Alice', 'Bob']);
+
+list.removeAttr(1);            // 2
+</code></pre>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -848,7 +924,7 @@ of this, you may recieve multiple <em>length</em> events with the same
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -859,11 +935,8 @@ of this, you may recieve multiple <em>length</em> events with the same
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -873,7 +946,7 @@ of this, you may recieve multiple <em>length</em> events with the same
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -881,19 +954,19 @@ of this, you may recieve multiple <em>length</em> events with the same
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.List.prototype.attr","parent":"can.List.prototype","src":"list/list.js","line":283,"codeLine":539,"description":"Get or set elements in a List.","title":"attr","signatures":[{"code":"list.attr()","description":"Gets an array of all the elements in this `can.List`.","params":[],"returns":{"types":[{"type":"Array","options":[]}],"description":"An array with all the elements in this List."}},{"code":"list.attr(index)","description":"Reads an element from this `can.List`.","params":[{"types":[{"type":"Number"}],"name":"index","description":"The element to read."}],"returns":{"types":[{"type":"*"}],"description":"The value at _index_."}},{"code":"list.attr(index, value)","description":"Assigns _value_ to the index _index_ on this `can.List`, expanding the list if necessary.","params":[{"types":[{"type":"Number"}],"name":"index","description":"The element to set."},{"types":[{"type":"*"}],"name":"value","description":"The value to assign at _index_."}],"returns":{"types":[{"type":"can.List"}],"description":"This list, for chaining."}},{"code":"list.attr(elements[, replaceCompletely])","description":"Merges the members of _elements_ into this List, replacing each from the beginning in order. If\n_elements_ is longer than the current List, the current List will be expanded. If _elements_\nis shorter than the current List, the extra existing members are not affected (unless\n_replaceCompletely_ is `true`). To remove elements without replacing them, use `[can.Map::removeAttr removeAttr]`.","params":[{"types":[{"type":"Array","options":[]}],"name":"elements","description":"An array of elements to merge in."},{"types":[{"type":"bool"}],"optional":true,"name":"replaceCompletely","defaultValue":"false","description":"whether to completely replace the elements of List\nIf _replaceCompletely_ is `true` and _elements_ is shorter than the List, the existing\nextra members of the List will be removed."}],"returns":{"types":[{"type":"can.List"}],"description":"This list, for chaining."}}],"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
+		var docObject = {"type":"function","name":"can.List.prototype.attr","parent":"can.List.prototype","src":"list/list.js","line":283,"codeLine":539,"description":"Get or set elements in a List.","title":"attr","signatures":[{"code":"list.attr()","description":"Gets an array of all the elements in this `can.List`.","params":[],"returns":{"types":[{"type":"Array","options":[]}],"description":"An array with all the elements in this List."}},{"code":"list.attr(index)","description":"Reads an element from this `can.List`.","params":[{"types":[{"type":"Number"}],"name":"index","description":"The element to read."}],"returns":{"types":[{"type":"*"}],"description":"The value at _index_."}},{"code":"list.attr(index, value)","description":"Assigns _value_ to the index _index_ on this `can.List`, expanding the list if necessary.","params":[{"types":[{"type":"Number"}],"name":"index","description":"The element to set."},{"types":[{"type":"*"}],"name":"value","description":"The value to assign at _index_."}],"returns":{"types":[{"type":"can.List"}],"description":"This list, for chaining."}},{"code":"list.attr(elements[, replaceCompletely])","description":"Merges the members of _elements_ into this List, replacing each from the beginning in order. If\n_elements_ is longer than the current List, the current List will be expanded. If _elements_\nis shorter than the current List, the extra existing members are not affected (unless\n_replaceCompletely_ is `true`). To remove elements without replacing them, use `[can.Map::removeAttr removeAttr]`.","params":[{"types":[{"type":"Array","options":[]}],"name":"elements","description":"An array of elements to merge in."},{"types":[{"type":"bool"}],"optional":true,"name":"replaceCompletely","defaultValue":"false","description":"whether to completely replace the elements of List\nIf _replaceCompletely_ is `true` and _elements_ is shorter than the List, the existing\nextra members of the List will be removed."}],"returns":{"types":[{"type":"can.List"}],"description":"This list, for chaining."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -902,13 +975,13 @@ of this, you may recieve multiple <em>length</em> events with the same
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

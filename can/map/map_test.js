@@ -155,12 +155,12 @@ steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(
 	})
 
 	test("can.Map serialize triggers reading (#626)", function () {
-		var old = can.__reading;
+		var old = can.__observe;
 
 		var attributesRead = [];
 		var readingTriggeredForKeys = false;
 
-		can.__reading = function (object, attribute) {
+		can.__observe = function (object, attribute) {
 			if (attribute === "__keys") {
 				readingTriggeredForKeys = true;
 			} else {
@@ -180,7 +180,7 @@ steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(
 		ok(can.inArray("cats", attributesRead ) !== -1 && can.inArray( "dogs", attributesRead ) !== -1, "map serialization triggered __reading on all attributes");
 		ok(readingTriggeredForKeys, "map serialization triggered __reading for __keys");
 
-		can.__reading = old;
+		can.__observe = old;
 	})
 
 	test("Test top level attributes", 7, function () {
@@ -220,11 +220,11 @@ steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(
 			});
 		map.bind('name', handler);
 		map.bind('name', handler);
-		equal(map._computedBindings.name.count, 2, '2 handlers listening to computed property');
+		equal(map._computedAttrs.name.count, 2, '2 handlers listening to computed property');
 		map.unbind('name', handler);
 		map.unbind('name', handler);
-		equal(map._computedBindings.name.count, 0, '0 handlers listening to computed property');
-		ok(!map._computedBindings.name.handler, 'computed property handler removed');
+		equal(map._computedAttrs.name.count, 0, '0 handlers listening to computed property');
+		
 	});
 
 	test("serializing cycles", function(){
@@ -303,6 +303,18 @@ steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(
 
 		equal(map._bindings, 1, 'The number of bindings is still correct');
 	});
+	
+	test("Should be able to get and set attribute named 'watch' on can.Map in Firefox", function() {
+		var map = new can.Map({});
+		map.attr("watch");
+		ok(true, "can have attribute named 'watch' on a can.Map instance");
+	});
+
+	test("Should be able to get and set attribute named 'unwatch' on can.Map in Firefox", function() {
+		var map = new can.Map({});
+		map.attr("unwatch");
+		ok(true, "can have attribute named 'unwatch' on a can.Map instance");
+	});
 
 	test('Creating map in compute dispatches all events properly', function() {
 		expect(2);
@@ -326,4 +338,31 @@ steal("can/map", "can/compute", "can/test", "can/list", "steal-qunit", function(
 		source(1);
 		can.batch.stop();
 	});
+
+	test('should get an empty string property value correctly', function() {
+		var map = new can.Map({
+			foo: 'foo',
+			'': 'empty string'
+		});
+
+		equal(map.attr(''), 'empty string');
+	});
+	
+
+	test("can.Map::attr setting is observable", function() {
+		expect(0);
+		var c = can.compute(function() {
+			return new can.Map();
+		});
+
+		c.bind('change', function() {
+			ok(false, "the compute should not be updated");
+		});
+
+		var map = c();
+
+		// recomputes c
+		map.attr('foo', 'bar');
+	});
+
 });

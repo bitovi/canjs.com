@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/deferred.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">72.70</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">175</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">63.45</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.54</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util/can.js&#039;, function (can) {
+	// deferred.js
+	// ---------
+	// _Lightweight, jQuery style deferreds._
+	// extend is usually provided by the wrapper but to avoid steal.then calls
+	// we define a simple extend here as well
+	var extend = function (target, src) {
+		for (var key in src) {
+			if (src.hasOwnProperty(key)) {
+				target[key] = src[key];
+			}
+		}
+	}, Deferred = function (func) {
+			if (!(this instanceof Deferred)) {
+				return new Deferred();
+			}
+			this._doneFuncs = [];
+			this._failFuncs = [];
+			this._resultArgs = null;
+			this._status = &#039;&#039;;
+			// Check for option `function` -- call it with this as context and as first
+			// parameter, as specified in jQuery API.
+			if (func) {
+				func.call(this, this);
+			}
+		};
+	can.Deferred = Deferred;
+	can.when = Deferred.when = function () {
+		var args = can.makeArray(arguments);
+		if (args.length &lt; 2) {
+			var obj = args[0];
+			if (obj &amp;&amp; (can.isFunction(obj.isResolved) &amp;&amp; can.isFunction(obj.isRejected))) {
+				return obj;
+			} else {
+				return Deferred()
+					.resolve(obj);
+			}
+		} else {
+			var df = Deferred(),
+				done = 0,
+				// Resolve params -- params of each resolve, we need to track them down 
+				// to be able to pass them in the correct order if the master 
+				// needs to be resolved.
+				rp = [];
+			can.each(args, function (arg, j) {
+				arg.done(function () {
+					rp[j] = arguments.length &lt; 2 ? arguments[0] : arguments;
+					if (++done === args.length) {
+						df.resolve.apply(df, rp);
+					}
+				})
+					.fail(function () {
+						df.reject(arguments.length === 1 ? arguments[0] : arguments);
+					});
+			});
+			return df;
+		}
+	};
+	var resolveFunc = function (type, _status) {
+		return function (context) {
+			var args = this._resultArgs = arguments.length &gt; 1 ? arguments[1] : [];
+			return this.exec(context, this[type], args, _status);
+		};
+	}, doneFunc = function doneFunc(type, _status) {
+			return function () {
+				var self = this;
+				// In Safari, the properties of the `arguments` object are not enumerable, 
+				// so we have to convert arguments to an `Array` that allows `can.each` to loop over them.
+				can.each(Array.prototype.slice.call(arguments), function (v, i, args) {
+					if (!v) {
+						return;
+					}
+					if (v.constructor === Array) {
+						doneFunc.apply(self, v);
+					} else {
+						// Immediately call the `function` if the deferred has been resolved.
+						if (self._status === _status) {
+							v.apply(self, self._resultArgs || []);
+						}
+						self[type].push(v);
+					}
+				});
+				return this;
+			};
+		};
+	
+	var isDeferred = function(obj){
+		return obj &amp;&amp; obj.then &amp;&amp; obj.fail &amp;&amp; obj.done;
+	};
+	
+	var wire = function(parentDeferred, result, setter, value){
+		if( isDeferred(result) ) {
+			result.done(can.proxy(parentDeferred.resolve, parentDeferred))
+				.fail( can.proxy(parentDeferred.reject, parentDeferred) );
+		} else {
+			setter.call(parentDeferred,result !== undefined ? result : value);
+		}
+	};
+	extend(Deferred.prototype, {
+		then: function (done, fail) {
+			var d = can.Deferred(),
+				resolve = d.resolve,
+				reject = d.reject;
+			this.done(function (value) {
+				if(typeof done === &quot;function&quot;) {
+					wire(d, done.apply(this, arguments), resolve, value);
+				} else {
+					resolve.apply(d, arguments);
+				}
+				
+			});
+			this.fail(function (value) {
+				if (typeof fail === &quot;function&quot;) {
+					wire(d, fail.apply(this, arguments), reject, value);
+				} else {
+					reject.apply(d, arguments);
+				}
+			});
+			return d;
+		},
+		resolveWith: resolveFunc(&#039;_doneFuncs&#039;, &#039;rs&#039;),
+		rejectWith: resolveFunc(&#039;_failFuncs&#039;, &#039;rj&#039;),
+		done: doneFunc(&#039;_doneFuncs&#039;, &#039;rs&#039;),
+		fail: doneFunc(&#039;_failFuncs&#039;, &#039;rj&#039;),
+		always: function () {
+			var args = can.makeArray(arguments);
+			if (args.length &amp;&amp; args[0]) {
+				this.done(args[0])
+					.fail(args[0]);
+			}
+			return this;
+		},
+		state: function () {
+			switch (this._status) {
+			case &#039;rs&#039;:
+				return &#039;resolved&#039;;
+			case &#039;rj&#039;:
+				return &#039;rejected&#039;;
+			default:
+				return &#039;pending&#039;;
+			}
+		},
+		isResolved: function () {
+			return this._status === &#039;rs&#039;;
+		},
+		isRejected: function () {
+			return this._status === &#039;rj&#039;;
+		},
+		reject: function () {
+			return this.rejectWith(this, arguments);
+		},
+		resolve: function () {
+			return this.resolveWith(this, arguments);
+		},
+		exec: function (context, dst, args, st) {
+			if (this._status !== &#039;&#039;) {
+				return this;
+			}
+			this._status = st;
+			can.each(dst, function (d) {
+				if (typeof d.apply === &#039;function&#039;) {
+					d.apply(context, args);
+				}
+			});
+			return this;
+		},
+		promise: function(){
+			var promise = this.then();
+			promise.reject = promise.resolve = undefined;
+			return promise;
+		}
+	});
+	Deferred.prototype.pipe = Deferred.prototype.then;
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

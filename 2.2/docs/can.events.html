@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS  - can.events</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.$.html" 
+							data-search="can.$">
+							can.$
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="constructor" 
+							href="can.Deferred.html" 
+							data-search="can.Deferred">
+							can.Deferred
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Object.same.html" 
+							data-search="can.Object.same">
+							can.Object.same
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Object.subset.html" 
+							data-search="can.Object.subset">
+							can.Object.subset
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.Object.subsets.html" 
+							data-search="can.Object.subsets">
+							can.Object.subsets
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.addClass.html" 
+							data-search="can.addClass">
+							can.addClass
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.ajax.html" 
+							data-search="can.ajax">
+							can.ajax
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.append.html" 
+							data-search="can.append">
+							can.append
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="page" 
+							href="can.batch.html" 
+							data-search="can.batch">
+							can.batch
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.bind.html" 
+							data-search="can.bind">
+							can.bind
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.buildFragment.html" 
+							data-search="can.buildFragment">
+							can.buildFragment
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.camelize.html" 
+							data-search="can.camelize">
+							can.camelize
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.capitalize.html" 
+							data-search="can.capitalize">
+							can.capitalize
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.data.html" 
+							data-search="can.data">
+							can.data
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.delegate.html" 
+							data-search="can.delegate">
+							can.delegate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.deparam.html" 
+							data-search="can.deparam">
+							can.deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.each.html" 
+							data-search="can.each">
+							can.each
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.esc.html" 
+							data-search="can.esc">
+							can.esc
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active parent expanded">
+						<a 	class="page" 
+							href="can.events.html" 
+							data-search="can.events">
+							can.events
+						</a>
+						
+							
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.events.attributes.html" 
+							data-search="can.events.attributes">
+							attributes
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.events.inserted.html" 
+							data-search="can.events.inserted">
+							inserted
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="typedef" 
+							href="can.events.removed.html" 
+							data-search="can.events.removed">
+							removed
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.extend.html" 
+							data-search="can.extend">
+							can.extend
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.frag.html" 
+							data-search="can.frag">
+							can.frag
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.getObject.html" 
+							data-search="can.getObject">
+							can.getObject
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.hyphenate.html" 
+							data-search="can.hyphenate">
+							can.hyphenate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.import.html" 
+							data-search="can.import">
+							can.import
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.isArray.html" 
+							data-search="can.isArray">
+							can.isArray
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.isDeferred.html" 
+							data-search="can.isDeferred">
+							can.isDeferred
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.isEmptyObject.html" 
+							data-search="can.isEmptyObject">
+							can.isEmptyObject
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.isFunction.html" 
+							data-search="can.isFunction">
+							can.isFunction
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.makeArray.html" 
+							data-search="can.makeArray">
+							can.makeArray
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.off.html" 
+							data-search="can.off">
+							can.off
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.on.html" 
+							data-search="can.on">
+							can.on
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.param.html" 
+							data-search="can.param">
+							can.param
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.proxy.html" 
+							data-search="can.proxy">
+							can.proxy
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.remove.html" 
+							data-search="can.remove">
+							can.remove
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.sub.html" 
+							data-search="can.sub">
+							can.sub
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.trigger.html" 
+							data-search="can.trigger">
+							can.trigger
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.trim.html" 
+							data-search="can.trim">
+							can.trim
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.unbind.html" 
+							data-search="can.unbind">
+							can.unbind
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.undelegate.html" 
+							data-search="can.undelegate">
+							can.undelegate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.underscore.html" 
+							data-search="can.underscore">
+							can.underscore
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.viewModel.html" 
+							data-search="can.viewModel">
+							can.viewModel
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.when.html" 
+							data-search="can.when">
+							can.when
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>can.events</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-legacy/util/events/events.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>CanJS adds the following DOM events to the base library:</p>
+
+		</section>
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<ul>
+<li><a href="can.events.attributes.html">attributes</a> - called when an element's attributes are changed</li>
+<li><a href="can.events.inserted.html">inserted</a> - called when an element is inserted into the document</li>
+<li><a href="can.events.removed.html">removed</a> - called when an element is removed from the document</li>
+</ul>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"can.events","src":"util/events/events.md","description":"CanJS adds the following DOM events to the base library:","parent":"can.util","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

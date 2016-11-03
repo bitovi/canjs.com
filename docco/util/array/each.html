@@ -19,8 +19,18 @@
           <div id="jump_page">
             
               
+              <a class="source" href="diff.html">
+                diff.js
+              </a>
+            
+              
               <a class="source" href="each.html">
                 each.js
+              </a>
+            
+              
+              <a class="source" href="isArrayLike.html">
+                isArrayLike.js
               </a>
             
               
@@ -52,34 +62,17 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>The following is from jQuery</p>
+steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-string">'can/util/array/isArrayLike.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isArrayLike = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
-		<span class="hljs-keyword">var</span> length = obj.length;
-		<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> arr !== <span class="hljs-string">"function"</span> &amp;&amp;
-			( length === <span class="hljs-number">0</span> || <span class="hljs-keyword">typeof</span> length === <span class="hljs-string">"number"</span> &amp;&amp; length &gt; <span class="hljs-number">0</span> &amp;&amp; ( length - <span class="hljs-number">1</span> ) <span class="hljs-keyword">in</span> obj );
-	};
-	
-	can.each = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elements, callback, context)</span> </span>{
+
+
+	can.each = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">elements, callback, context</span>) </span>{
 		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,
 			key,
 			len,
 			item;
 		<span class="hljs-keyword">if</span> (elements) {
-			<span class="hljs-keyword">if</span> ( isArrayLike(elements) ) {
+			<span class="hljs-keyword">if</span> ( can.isArrayLike(elements) ) {
 				<span class="hljs-keyword">if</span>(can.List &amp;&amp; elements <span class="hljs-keyword">instanceof</span> can.List ) {
 					<span class="hljs-keyword">for</span> (len = elements.attr(<span class="hljs-string">"length"</span>); i &lt; len; i++) {
 						item = elements.attr(i);
@@ -95,9 +88,9 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-func
 						}
 					}
 				}
-				
+
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> elements === <span class="hljs-string">"object"</span>) {
-				
+
 				<span class="hljs-keyword">if</span> (can.Map &amp;&amp; elements <span class="hljs-keyword">instanceof</span> can.Map || elements === can.route) {
 					<span class="hljs-keyword">var</span> keys = can.Map.keys(elements);
 					<span class="hljs-keyword">for</span>(i =<span class="hljs-number">0</span>, len = keys.length; i &lt; len; i++) {
@@ -109,12 +102,12 @@ steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-func
 					}
 				} <span class="hljs-keyword">else</span> {
 					<span class="hljs-keyword">for</span> (key <span class="hljs-keyword">in</span> elements) {
-						<span class="hljs-keyword">if</span> (elements.hasOwnProperty(key) &amp;&amp; callback.call(context || elements[key], elements[key], key, elements) === <span class="hljs-literal">false</span>) {
+						<span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.hasOwnProperty.call(elements, key) &amp;&amp; callback.call(context || elements[key], elements[key], key, elements) === <span class="hljs-literal">false</span>) {
 							<span class="hljs-keyword">break</span>;
 						}
 					}
 				}
-				
+
 			}
 		}
 		<span class="hljs-keyword">return</span> elements;

@@ -1,4 +1,4 @@
-steal('can/util', 'can/view/mustache', 'can/util/attr', 'steal-qunit', function () {
+steal('can/util', 'can/view/stache', 'can/util/attr', 'steal-qunit', function () {
 	QUnit.module("can/util/attr");
 
 	test("attributes event", function () {
@@ -43,7 +43,7 @@ steal('can/util', 'can/view/mustache', 'can/util/attr', 'steal-qunit', function 
 
 	test("template attr updating", function () {
 
-		var template = can.mustache("<div my-attr='{{value}}'></div>"),
+		var template = can.stache("<div my-attr='{{value}}'></div>"),
 			compute = can.compute("foo");
 
 		var div = template({
@@ -82,6 +82,83 @@ steal('can/util', 'can/view/mustache', 'can/util/attr', 'steal-qunit', function 
 
 		equal(input.checked, true);
 		can.remove(can.$("#qunit-fixture>*"));
+	});
+
+	test("attr.set READONLY property should be set correctly via template binding #1874", function () {
+
+		var template = can.stache('<input type="text" {{#if flag}}READONLY{{/if}}></input>'),
+			compute = can.compute(false);
+
+		var input = template({
+			flag: compute
+		}).childNodes[0];
+
+		equal(input.readOnly, false, "readOnly should be false");
+		compute(true);
+		equal(input.readOnly, true, "readOnly should be set to true");
+		compute(false);
+		equal(input.readOnly, false, "readOnly should be set back to false");
+	});
+
+	test("attr.set READONLY property should be set correctly via one way binding #2431", function () {
+
+		var template = can.stache('<input type="text" {$readonly}="flag"></input>'),
+			compute = can.compute(false);
+
+		var input = template({
+			flag: compute
+		}).childNodes[0];
+
+		equal(input.readOnly, false, "readOnly should be false");
+		compute(true);
+		equal(input.readOnly, true, "readOnly should be set to true");
+		compute(false);
+		equal(input.readOnly, false, "readOnly should be set back to false");
+	});
+
+	test("Map special attributes", function () {
+
+		var div = document.createElement("label");
+
+		document.getElementById("qunit-fixture").appendChild(div);
+
+		can.attr.set(div, "for", "my-for");
+		equal(div.htmlFor, "my-for", "Map for to htmlFor");
+
+		can.attr.set(div, "innertext", "my-inner-text");
+		equal(div.innerText, "my-inner-text", "Map innertext to innerText");
+
+		can.attr.set(div, "textcontent", "my-content");
+		equal(div.textContent, "my-content", "Map textcontent to textContent");
+
+		can.attr.set(div, "readonly", true);
+		equal(div.readOnly, true, "Map readonly to readOnly");
+
+		can.remove(can.$("#qunit-fixture>*"));
+	});
+
+	test('set class attribute via className or setAttribute for svg (#2015)', function() {
+		var div = document.createElement('div');
+		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		var obj = { toString: function() { return 'my-class'; } };
+
+		can.attr.set(div, 'class', 'my-class');
+		equal(div.getAttribute('class'), 'my-class', 'class mapped to className');
+
+		can.attr.set(div, 'class', undefined);
+		equal(div.getAttribute('class'), '', 'an undefined className is an empty string');
+
+		can.attr.set(div, 'class', obj);
+		equal(div.getAttribute('class'), 'my-class', 'you can pass an object to className');
+
+		can.attr.set(svg, 'class', 'my-class');
+		equal(svg.getAttribute('class'), 'my-class', 'svg class was set as an attribute');
+
+		can.attr.set(svg, 'class', undefined);
+		equal(svg.getAttribute('class'), '', 'an undefined svg class is an empty string');
+
+		can.attr.set(svg, 'class', obj);
+		equal(svg.getAttribute('class'), 'my-class', 'you can pass an object to svg class');
 	});
 
 	if (window.jQuery || window.Zepto) {

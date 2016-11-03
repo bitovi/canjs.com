@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>can/map/map_hepers</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="bubble.html">
+                bubble.js
+              </a>
+            
+              
+              <a class="source" href="map.html">
+                map.js
+              </a>
+            
+              
+              <a class="source" href="map_benchmark.html">
+                map_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="map_helpers.html">
+                map_helpers.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="can-map-map_hepers">can/map/map_hepers</h1>
+<p>Helper functions that are primarily used to serialize
+a map, or track the maps created from plain JavaScript objects.
+<code>can.Map</code> handles cycles in objects nicely!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/object/isplain'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
+	
+	<span class="hljs-keyword">var</span> mapHelpers = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="maphelpers-attrparts">mapHelpers.attrParts</h3>
+<p>Parses attribute name into its parts.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		attrParts: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, keepKey</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Keep key intact</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (keepKey ) {
+				<span class="hljs-keyword">return</span> [attr];
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Split key on ‘.’</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> attr === <span class="hljs-string">"object"</span> ? attr : (<span class="hljs-string">""</span> + attr)
+				.split(<span class="hljs-string">"."</span>);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="can-maphelpers-canmakeobserve">can.mapHelpers.canMakeObserve</h3>
+<p>Determines if an object can be made into an observable.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		canMakeObserve: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">return</span> obj &amp;&amp; !can.isPromise(obj) &amp;&amp; (can.isArray(obj) || can.isPlainObject(obj) );
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="maphelpers-serialize">mapHelpers.serialize</h3>
+<p>Serializes a Map or Map.List by recursively calling the <code>how</code>
+method on any child objects. This is able to handle
+cycles.
+<code>map</code> - the map or list to serialize.
+<code>how</code> - the method to call recursively.
+<code>where</code> - the target Object or Array that becomes the serialized result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		serialize: (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>A temporary mapping of map cids to the serialized result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> serializeMap = <span class="hljs-literal">null</span>;
+			
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">map, how, where</span>) </span>{
+				<span class="hljs-keyword">var</span> cid = can.cid(map),
+					firstSerialize = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>If there isn’t an existing serializeMap, this means
+this is the initial non-recursive call to this function. 
+We mark this  as the first call, and then setup the serializeMap.
+The serialize map is further devided into <code>how</code> because
+<code>.serialize</code> might call <code>.attr</code>. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(!serializeMap) {
+					firstSerialize = <span class="hljs-literal">true</span>;
+					serializeMap = {
+						<span class="hljs-attr">attr</span>: {},
+						<span class="hljs-attr">serialize</span>: {}
+					};
+				}
+				
+				serializeMap[how][cid] = where;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Go through each property.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				map.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, name</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>If the value is an <code>object</code>, and has an <code>attr</code> or <code>serialize</code> function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> result,
+						isObservable =  can.isMapLike(val),
+						serialized = isObservable &amp;&amp; serializeMap[how][can.cid(val)];
+						
+					<span class="hljs-keyword">if</span>( serialized ) {
+						result = serialized;
+					} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>special attr or serializer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(map[<span class="hljs-string">"___"</span>+how]) {
+							result =  map[<span class="hljs-string">"___"</span>+how](name, val);
+						} <span class="hljs-keyword">else</span> {
+							result = mapHelpers.getValue(map, name, val, how);
+						}
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>this is probably removable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(result !== <span class="hljs-literal">undefined</span>){
+						where[name] = result;
+					}
+				});
+			
+				<span class="hljs-keyword">if</span>(firstSerialize) {
+					serializeMap = <span class="hljs-literal">null</span>;
+				}
+				<span class="hljs-keyword">return</span> where;
+			};
+		})(),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2 id="getvalue">getValue</h2>
+<p>If <code>val</code> is an observable, calls <code>how</code> on it; otherwise
+returns the value of <code>val</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getValue: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">map, name, val, how</span>)</span>{
+			<span class="hljs-keyword">if</span>( can.isMapLike(val) ) {
+				<span class="hljs-keyword">return</span> val[how]();
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> val;
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="define">define</h2>
+<p>A hook to call whenever a Map is defined.<br>We need a better place for this.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		define: <span class="hljs-literal">null</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h2 id="addcomputedattr">addComputedAttr</h2>
+<p>Adds a compute so it will control the behavior of an
+attribute.  Each computedAttrs object has:</p>
+<ul>
+<li><code>compute</code> - the compute that will be read and updated.</li>
+<li><code>count</code> - the number of bindings to this individual property.
+This is used to know when to bind <code>handler</code> to the compute.</li>
+<li><code>handler</code> - a function that when bound to <code>compute</code> forwards all
+events to <code>map</code>.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		addComputedAttr: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">map, attrName, compute</span>)</span>{
+			map._computedAttrs[attrName] = {
+				<span class="hljs-attr">compute</span>: compute,
+				<span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+				<span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal, oldVal</span>) </span>{
+					map._triggerChange(attrName, <span class="hljs-string">"set"</span>, newVal, oldVal, ev.batchNum);
+				}
+			};
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h3 id="can-maphelpers-addtomap">can.mapHelpers.addToMap</h3>
+<p>Tracks map instances created from JS objects.
+This should be called whenever an instance is created for a particular object.
+This may return a <code>teardown</code> function that should be called after all instances
+might be created.</p>
+<p>While creating map instances from plain ole JS objects (POJOs), it’s
+possible that the same JS object exists as two different properties and
+we want only one map instance created for one JS object.</p>
+<pre><code><span class="hljs-keyword">var</span> obj = {<span class="hljs-attr">name</span>: <span class="hljs-string">"I am everywhere"</span>}
+<span class="hljs-keyword">var</span> map = <span class="hljs-keyword">new</span> can.Map({<span class="hljs-attr">obj1</span>: obj, <span class="hljs-attr">obj2</span>: obj});
+ok( map.attr(<span class="hljs-string">"obj1"</span>) === map.attr(<span class="hljs-string">"obj2"</span>) )
+</code></pre><p>This works by temporarily adding a <code>cid</code> to any found POJO object
+and storing it in a temporary Object that maps those <code>cid</code>s to 
+the POJO and the instance created for it.<br>The <code>teardown</code> function removes those temporary <code>cid</code>s and 
+clears the map for memory safety.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		addToMap: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addToMap</span>(<span class="hljs-params">obj, instance</span>) </span>{
+			<span class="hljs-keyword">var</span> teardown;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Setup a fresh mapping if <code>madeMap</code> is missing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!madeMap) {
+				teardown = teardownMap;
+				madeMap = {};
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Record if Object has a <code>_cid</code> before adding one.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> hasCid = obj._cid;
+			<span class="hljs-keyword">var</span> cid = can.cid(obj);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Only update if there already isn’t one already.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!madeMap[cid]) {
+		
+				madeMap[cid] = {
+					<span class="hljs-attr">obj</span>: obj,
+					<span class="hljs-attr">instance</span>: instance,
+					<span class="hljs-attr">added</span>: !hasCid
+				};
+			}
+			<span class="hljs-keyword">return</span> teardown;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h3 id="getmapfromobject">getMapFromObject</h3>
+<p>Returns the map instance already created for this object <code>obj</code> or
+<code>undefined</code> if nothing has been already created.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getMapFromObject: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">return</span> madeMap &amp;&amp; madeMap[obj._cid] &amp;&amp; madeMap[obj._cid].instance;
+		},
+		<span class="hljs-attr">twoLevelDeepExtend</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">destination, source</span>) </span>{
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> source) {
+				destination[prop] = destination[prop] || {};
+				can.simpleExtend(destination[prop], source[prop]);
+			}
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h2 id="pojos-to-map-instance-helpers">POJOs to Map instance helpers</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <h3 id="mademap">madeMap</h3>
+<p>A temporary map of Maps that have been made from plain JS objects.
+<code>{POJO_CID: {obj: POJO, instance: MAP, added: Boolean}}</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> madeMap = <span class="hljs-literal">null</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <h3 id="teardownmap">teardownMap</h3>
+<p>Clears out map of converted objects and removes temporary <code>cids</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> teardownMap = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> cid <span class="hljs-keyword">in</span> madeMap) {
+			<span class="hljs-keyword">if</span> (madeMap[cid].added) {
+				<span class="hljs-keyword">delete</span> madeMap[cid].obj._cid;
+			}
+		}
+		madeMap = <span class="hljs-literal">null</span>;
+	};
+	
+	<span class="hljs-keyword">return</span> mapHelpers;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-steal("can/list", function (list) {
+steal("can/util/can.js", "can/list", function (can) {
 
 	var oldReplace = can.List.prototype.replace;
 
@@ -6,9 +6,13 @@ steal("can/list", function (list) {
 		// First call the old replace so its
 		// deferred callbacks will be called first
 		var result = oldReplace.apply(this, arguments);
-
-		// If there is a deferred:
-		if (can.isDeferred(data)) {
+		
+		// If there is a promise:
+		if (can.isPromise(data)) {
+			if(this._deferred) {
+				this._deferred.__cancelState = true;
+			}
+			
 			// Set up its state.  Must call this way
 			// because we are working on an array.
 			can.batch.start();
@@ -19,17 +23,22 @@ steal("can/list", function (list) {
 			var self = this;
 			// update its state when it changes
 			var deferred = this._deferred = new can.Deferred();
+			deferred.__cancelState = false;
 			
 			data.then(function(){
-				self.attr("state", data.state());
-				// The deferred methods will always return this object
-				deferred.resolve(self);
+				if(!deferred.__cancelState) {
+					self.attr("state", data.state());
+					// The deferred methods will always return this object
+					deferred.resolve(self);
+				}
 			},function(reason){
-				can.batch.start();
-				self.attr("state", data.state());
-				self.attr("reason", reason);
-				can.batch.stop();
-				deferred.reject(reason);
+				if(!deferred.__cancelState) {
+					can.batch.start();
+					self.attr("state", data.state());
+					self.attr("reason", reason);
+					can.batch.stop();
+					deferred.reject(reason);
+				}
 			});
 		}
 		return result;

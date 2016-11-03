@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/mustache/mustache.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">61.80</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">2312</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">85.47</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">6.86</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;,
+	&#039;can/view/scope&#039;,
+	&#039;can/view&#039;,
+	&#039;can/view/scanner.js&#039;,
+	&#039;can/compute&#039;,
+	&#039;can/view/render.js&#039;,
+	&#039;can/view/bindings&#039;,
+	function (can) {
+
+		// # mustache.js
+		// `can.Mustache`: The Mustache templating engine.
+		// 
+		// See the [Transformation](#section-29) section within *Scanning Helpers* for a detailed explanation 
+		// of the runtime render code design. The majority of the Mustache engine implementation 
+		// occurs within the *Transformation* scanning helper.
+
+		// ## Initialization
+		//
+		// Define the view extension.
+		can.view.ext = &quot;.mustache&quot;;
+
+		// ### Setup internal helper variables and functions.
+		//
+		// An alias for the context variable used for tracking a stack of contexts.
+		// This is also used for passing to helper functions to maintain proper context.
+		var SCOPE = &#039;scope&#039;,
+			// An alias for the variable used for the hash object that can be passed
+			// to helpers via `options.hash`.
+			HASH = &#039;___h4sh&#039;,
+			// An alias for the most used context stacking call.
+			CONTEXT_OBJ = &#039;{scope:&#039; + SCOPE + &#039;,options:options}&#039;,
+			// a context object used to incidate being special
+			SPECIAL_CONTEXT_OBJ = &#039;{scope:&#039; + SCOPE + &#039;,options:options, special: true}&#039;,
+			// argument names used to start the function (used by scanner and steal)
+			ARG_NAMES = SCOPE + &quot;,options&quot;,
+
+			// matches arguments inside a {{ }}
+			argumentsRegExp = /((([^&#039;&quot;\s]+?=)?(&#039;.*?&#039;|&quot;.*?&quot;))|.*?)\s/g,
+
+			// matches a literal number, string, null or regexp
+			literalNumberStringBooleanRegExp = /^((&#039;.*?&#039;|&quot;.*?&quot;|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=((&#039;.*?&#039;|&quot;.*?&quot;|[0-9]+\.?[0-9]*|true|false)|(.+))))$/,
+
+			// returns an object literal that we can use to look up a value in the current scope
+			makeLookupLiteral = function (type) {
+				return &#039;{get:&quot;&#039; + type.replace(/&quot;/g, &#039;\\&quot;&#039;) + &#039;&quot;}&#039;;
+			},
+			// returns if the object is a lookup
+			isLookup = function (obj) {
+				return obj &amp;&amp; typeof obj.get === &quot;string&quot;;
+			},
+
+			/*
+			 * Checks whether an object is like a can.Map. This takes into
+			 * fact that can.route is can.Map like.
+			 * @param  {[can.Map]}  observable
+			 * @return {Boolean} returns if the object is observable like.
+			 */
+			isObserveLike = function (obj) {
+				return obj instanceof can.Map || (obj &amp;&amp; !! obj._get);
+			},
+
+			/*
+			 * Tries to determine if the object passed is an array.
+			 * @param  {Array}  obj The object to check.
+			 * @return {Boolean} returns if the object is an array.
+			 */
+			isArrayLike = function (obj) {
+				return obj &amp;&amp; obj.splice &amp;&amp; typeof obj.length === &#039;number&#039;;
+			},
+			// used to make sure .fn and .inverse are always called with a Scope like object
+			makeConvertToScopes = function (original, scope, options) {
+				var originalWithScope = function(ctx, opts){
+					return original(ctx || scope, opts);
+				};
+				return function (updatedScope, updatedOptions) {
+					if (updatedScope !== undefined &amp;&amp; !(updatedScope instanceof can.view.Scope)) {
+						updatedScope = scope.add(updatedScope);
+					}
+					if (updatedOptions !== undefined &amp;&amp; !(updatedOptions instanceof can.view.Options)) {
+						updatedOptions = options.add(updatedOptions);
+					}
+					return originalWithScope(updatedScope, updatedOptions || options);
+				};
+			};
+
+		// ## Mustache
+		/**
+		 * @hide
+		 * The Mustache templating engine.
+		 * @param {Object} options	Configuration options
+		 */
+		var Mustache = function (options, helpers) {
+			// Support calling Mustache without the constructor.
+			// This returns a function that renders the template.
+			if (this.constructor !== Mustache) {
+				var mustache = new Mustache(options);
+				return function (data, options) {
+					return mustache.render(data, options);
+				};
+			}
+
+			// If we get a `function` directly, it probably is coming from
+			// a `steal`-packaged view.
+			if (typeof options === &quot;function&quot;) {
+				this.template = {
+					fn: options
+				};
+				return;
+			}
+
+			// Set options on self.
+			can.extend(this, options);
+			this.template = this.scanner.scan(this.text, this.name);
+		};
+
+		/**
+		 * @add can.MustacheConstructor
+		 */
+		// Put Mustache on the `can` object.
+		can.Mustache = can.global.Mustache = Mustache;
+
+		/** 
+		 * @prototype
+		 */
+		Mustache.prototype.
+		/**
+		 * @function can.MustacheConstructor.prototype.render render
+		 * @parent can.MustacheConstructor.prototype
+		 * @signature `mustache.render( data [, helpers] )`
+		 * @param {Object} data Data to interpolate into the template.
+		 * @return {String} The template with interpolated data, in string form.
+		 * @hide
+		 *
+		 * @body
+		 * Renders an object with view helpers attached to the view.
+		 *
+		 *		 new Mustache({text: &quot;&lt;%= message %&gt;&quot;}).render({
+		 *			 message: &quot;foo&quot;
+		 *		 })
+		 */
+		render = function (data, options) {
+			if (!(data instanceof can.view.Scope)) {
+				data = new can.view.Scope(data || {});
+			}
+			if (!(options instanceof can.view.Options)) {
+				options = new can.view.Options(options || {});
+			}
+			options = options || {};
+
+			return this.template.fn.call(data, data, options);
+		};
+
+		can.extend(Mustache.prototype, {
+			// Share a singleton scanner for parsing templates.
+			scanner: new can.view.Scanner({
+				// A hash of strings for the scanner to inject at certain points.
+				text: {
+					// This is the logic to inject at the beginning of a rendered template. 
+					// This includes initializing the `context` stack.
+					start: &quot;&quot;, //&quot;var &quot;+SCOPE+&quot;= this instanceof can.view.Scope? this : new can.view.Scope(this);\n&quot;,
+					scope: SCOPE,
+					options: &quot;,options: options&quot;,
+					argNames: ARG_NAMES
+				},
+
+				// An ordered token registry for the scanner.
+				// This needs to be ordered by priority to prevent token parsing errors.
+				// Each token follows the following structure:
+				//
+				//		[
+				//			// Which key in the token map to match.
+				//			&quot;tokenMapName&quot;,
+				//
+				//			// A simple token to match, like &quot;{{&quot;.
+				//			&quot;token&quot;,
+				//
+				//			// Optional. A complex (regexp) token to match that 
+				//			// overrides the simple token.
+				//			&quot;[\\s\\t]*{{&quot;,
+				//
+				//			// Optional. A function that executes advanced 
+				//			// manipulation of the matched content. This is 
+				//			// rarely used.
+				//			function(content){   
+				//				return content;
+				//			}
+				//		]
+				tokens: [
+					/**
+					 * @function can.mustache.tags.escaped {{key}}
+					 *
+					 * @description Insert the value of the [can.mustache.key key] into the
+					 * output of the template.
+					 *
+					 * @parent can.mustache.tags 0
+					 *
+					 * @signature `{{key}}`
+					 *
+					 * @param {can.mustache.key} key A key that references one of the following:
+					 *
+					 *  - A [can.mustache.registerHelper registered helper].
+					 *  - A value within the current or parent
+					 *    [can.mustache.context context]. If the value is a function or [can.compute], the
+					 *    function&#039;s return value is used.
+					 *
+					 * @return {String|Function|*}
+					 *
+					 * After the key&#039;s value is found (and set to any function&#039;s return value),
+					 * it is passed to [can.view.txt] as the result of a call to its `func`
+					 * argument. There, if the value is a:
+					 *
+					 *  - `null` or `undefined` - an empty string is inserted into the rendered template result.
+					 *  - `String` or `Number` - the value is inserted into the rendered template result.
+					 *  - `Function` - A [can.view.hook hookup] attribute or element is inserted so this function
+					 *    will be called back with the DOM element after it is created.
+					 *
+					 * @body
+					 *
+					 * ## Use
+					 *
+					 * `{{key}}` insert data into the template. It most commonly references
+					 * values within the current [can.mustache.context context]. For example:
+					 *
+					 * Rendering:
+					 *
+					 *     &lt;h1&gt;{{name}}&lt;/h1&gt;
+					 *
+					 * With:
+					 *
+					 *     {name: &quot;Austin&quot;}
+					 *
+					 * Results in:
+					 *
+					 *     &lt;h1&gt;Austin&lt;/h1&gt;
+					 *
+					 * If the key value is a String or Number, it is inserted into the template.
+					 * If it is `null` or `undefined`, nothing is added to the template.
+					 *
+					 *
+					 * ## Nested Properties
+					 *
+					 * Mustache supports nested paths, making it possible to
+					 * look up properties nested deep inside the current context. For example:
+					 *
+					 * Rendering:
+					 *
+					 *     &lt;h1&gt;{{book.author}}&lt;/h1&gt;
+					 *
+					 * With:
+					 *
+					 *     {
+					 *       book: {
+					 *         author: &quot;Ernest Hemingway&quot;
+					 *       }
+					 *     }
+					 *
+					 * Results in:
+					 *
+					 *     &lt;h1&gt;Ernest Hemingway&lt;/h1&gt;
+					 *
+					 * ## Looking up values in parent contexts
+					 *
+					 * Sections and block helpers can create their own contexts. If a key&#039;s value
+					 * is not found in the current context, it will look up the key&#039;s value
+					 * in parent contexts. For example:
+					 *
+					 * Rendering:
+					 *
+					 *     {{#chapters}}
+					 *        &lt;li&gt;{{title}} - {{name}}&lt;/li&gt;
+					 *     {{/chapters}}
+					 *
+					 * With:
+					 *
+					 *     {
+					 *       title: &quot;The Book of Bitovi&quot;
+					 *       chapters: [{name: &quot;Breakdown&quot;}]
+					 *     }
+					 *
+					 * Results in:
+					 *
+					 *     &lt;li&gt;The Book of Bitovi - Breakdown&lt;/li&gt;
+					 *
+					 *
+					 */
+					// Return unescaped
+					[&quot;returnLeft&quot;, &quot;{{{&quot;, &quot;{{[{&amp;]&quot;],
+					// Full line comments
+					[&quot;commentFull&quot;, &quot;{{!}}&quot;, &quot;^[\\s\\t]*{{!.+?}}\\n&quot;],
+					/**
+					 * @function can.mustache.tags.comment {{!key}}
+					 *
+					 * @parent can.mustache.tags 7
+					 *
+					 * @description A comment that doesn&#039;t get inserted into the rendered result.
+					 *
+					 * @signature `{{!key}}`
+					 *
+					 * The comment tag operates similarly to a `&lt;!-- --&gt;` tag in HTML. It exists in your template but never shows up.
+					 *
+					 * @param {can.mustache.key} key Everything within this tag is completely ignored.
+					 * @return {String}
+					 *
+					 */
+					// Inline comments
+					[&quot;commentLeft&quot;, &quot;{{!&quot;, &quot;(\\n[\\s\\t]*{{!|{{!)&quot;],
+					/**
+					 * @function can.mustache.tags.unescaped {{{key}}}
+					 *
+					 * @parent can.mustache.tags 1
+					 *
+					 * @description Insert the unescaped value of the [can.mustache.key key] into the
+					 * output of the template.
+					 *
+					 * @signature `{{{key}}}`
+					 *
+					 * Behaves just like [can.mustache.tags.escaped {{key}}] and [can.mustache.helpers.helper {{helper}}] but does not
+					 * escape the result.
+					 *
+					 * @param {can.mustache.key} key A key that references a value within the current or parent
+					 * context. If the value is a function or can.compute, the function&#039;s return value is used.
+					 * @return {String|Function|*}
+					 *
+					 *
+					 */
+					//
+					/**
+					 * @function can.mustache.tags.unescaped2 {{&amp;key}}
+					 *
+					 * @parent can.mustache.tags 2
+					 *
+					 * @description Insert the unescaped value of the [can.mustache.key key] into the
+					 * output of the template.
+					 *
+					 * @signature `{{&amp;key}}`
+					 *
+					 * The `{{&amp;key}}` tag is an alias for [can.mustache.tags.unescaped {{{key}}}], behaving just
+					 * like [can.mustache.tags.escaped {{key}}] and [can.mustache.helpers.helper {{helper}}] but does not
+					 * escape the result.
+					 *
+					 * @param {can.mustache.key} key A key that references a value within the current or parent
+					 * context. If the value is a function or can.compute, the function&#039;s return value is used.
+					 * @return {String|Function|*}
+					 *
+					 */
+					// Full line escapes
+					// This is used for detecting lines with only whitespace and an escaped tag
+					[&quot;escapeFull&quot;, &quot;{{}}&quot;, &quot;(^[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}$)&quot;,
+						function (content) {
+							return {
+								before: /^\n.+?\n$/.test(content) ? &#039;\n&#039; : &#039;&#039;,
+								content: content.match(/\{\{(.+?)\}\}/)[1] || &#039;&#039;
+							};
+						}
+					],
+					// Return escaped
+					[&quot;escapeLeft&quot;, &quot;{{&quot;],
+					// Close return unescaped
+					[&quot;returnRight&quot;, &quot;}}}&quot;],
+					// Close tag
+					[&quot;right&quot;, &quot;}}&quot;]
+				],
+
+				// ## Scanning Helpers
+				//
+				// This is an array of helpers that transform content that is within escaped tags like `{{token}}`. These helpers are solely for the scanning phase; they are unrelated to Mustache/Handlebars helpers which execute at render time. Each helper has a definition like the following:
+				//
+				//		{
+				//			// The content pattern to match in order to execute.
+				//			// Only the first matching helper is executed.
+				//			name: /pattern to match/,
+				//
+				//			// The function to transform the content with.
+				//			// @param {String} content   The content to transform.
+				//			// @param {Object} cmd       Scanner helper data.
+				//			//                           {
+				//			//                             insert: &quot;insert command&quot;,
+				//			//                             tagName: &quot;div&quot;,
+				//			//                             status: 0
+				//			//                           }
+				//			fn: function(content, cmd) {
+				//				return &#039;for text injection&#039; || 
+				//					{ raw: &#039;to bypass text injection&#039; };
+				//			}
+				//		}
+				helpers: [
+					// ### Partials
+					//
+					// Partials begin with a greater than sign, like {{&gt; box}}.
+					// 
+					// Partials are rendered at runtime (as opposed to compile time), 
+					// so recursive partials are possible. Just avoid infinite loops.
+					// 
+					// For example, this template and partial:
+					// 
+					// 		base.mustache:
+					// 			&lt;h2&gt;Names&lt;/h2&gt;
+					// 			{{#names}}
+					// 				{{&gt; user}}
+					// 			{{/names}}
+					// 			
+					// 		user.mustache:
+					// 			&lt;strong&gt;{{name}}&lt;/strong&gt;
+					{
+						name: /^&gt;[\s]*\w*/,
+						fn: function (content, cmd) {
+							// Get the template name and call back into the render method,
+							// passing the name and the current context.
+							var templateName = can.trim(content.replace(/^&gt;\s?/, &#039;&#039;))
+								.replace(/[&quot;|&#039;]/g, &quot;&quot;);
+							return &quot;can.Mustache.renderPartial(&#039;&quot; + templateName + &quot;&#039;,&quot; + ARG_NAMES + &quot;)&quot;;
+						}
+					},
+
+					// ### Data Hookup
+					// 
+					// This will attach the data property of `this` to the element
+					// its found on using the first argument as the data attribute
+					// key.
+					// 
+					// For example:
+					// 	
+					//		&lt;li id=&quot;nameli&quot; {{ data &#039;name&#039; }}&gt;&lt;/li&gt;
+					// 
+					// then later you can access it like:
+					// 
+					//		can.$(&#039;#nameli&#039;).data(&#039;name&#039;);
+					/**
+					 * @function can.mustache.helpers.data {{data name}}
+					 * @parent can.mustache.htags 7
+					 * @signature `{{data name}}`
+					 *
+					 * Adds the current [can.mustache.context context] to the
+					 * element&#039;s [can.data].
+					 *
+					 * @param {String} name The name of the data attribute to use for the
+					 * context.
+					 *
+					 * @body
+					 *
+					 * ## Use
+					 *
+					 * It is common for you to want some data in the template to be available
+					 * on an element.  `{{data name}}` allows you to save the
+					 * context so it can later be retrieved by [can.data] or
+					 * `$.fn.data`. For example,
+					 *
+					 * The template:
+					 *
+					 *     &lt;ul&gt;
+					 *       &lt;li id=&quot;person&quot; {{data &#039;person&#039;}}&gt;{{name}}&lt;/li&gt;
+					 *     &lt;/ul&gt;
+					 *
+					 * Rendered with:
+					 *
+					 *     document.body.appendChild(
+					 *       can.view.mustache(template,{ person: { name: &#039;Austin&#039; } });
+					 *
+					 * Retrieve the person data back with:
+					 *
+					 *     $(&quot;#person&quot;).data(&quot;person&quot;)
+					 *
+					 */
+					{
+						name: /^\s*data\s/,
+						fn: function (content, cmd) {
+							var attr = content.match(/[&quot;|&#039;](.*)[&quot;|&#039;]/)[1];
+							// return a function which calls `can.data` on the element
+							// with the attribute name with the current context.
+							return &quot;can.proxy(function(__){&quot; +
+							// &quot;var context = this[this.length-1];&quot; +
+							// &quot;context = context.&quot; + STACKED + &quot; ? context[context.length-2] : context; console.warn(this, context);&quot; +
+							&quot;can.data(can.$(__),&#039;&quot; + attr + &quot;&#039;, this.attr(&#039;.&#039;)); }, &quot; + SCOPE + &quot;)&quot;;
+						}
+					}, {
+						name: /\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/,
+						fn: function (content) {
+							var quickFunc = /\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/,
+								parts = content.match(quickFunc);
+
+							//find 
+							return &quot;can.proxy(function(__){var &quot; + parts[1] + &quot;=can.$(__);with(&quot; + SCOPE + &quot;.attr(&#039;.&#039;)){&quot; + parts[2] + &quot;}}, this);&quot;;
+						}
+					},
+					// ### Transformation (default)
+					//
+					// This transforms all content to its interpolated equivalent,
+					// including calls to the corresponding helpers as applicable. 
+					// This outputs the render code for almost all cases.
+					//
+					// #### Definitions
+					// 
+					// * `context` - This is the object that the current rendering context operates within. 
+					//		Each nested template adds a new `context` to the context stack.
+					// * `stack` - Mustache supports nested sections, 
+					//		each of which add their own context to a stack of contexts.
+					//		Whenever a token gets interpolated, it will check for a match against the 
+					//		last context in the stack, then iterate through the rest of the stack checking for matches.
+					//		The first match is the one that gets returned.
+					// * `Mustache.txt` - This serializes a collection of logic, optionally contained within a section.
+					//		If this is a simple interpolation, only the interpolation lookup will be passed.
+					//		If this is a section, then an `options` object populated by the truthy (`options.fn`) and 
+					//		falsey (`options.inverse`) encapsulated functions will also be passed. This section handling 
+					//		exists to support the runtime context nesting that Mustache supports.
+					// * `Mustache.get` - This resolves an interpolation reference given a stack of contexts.
+					// * `options` - An object containing methods for executing the inner contents of sections or helpers.  
+					//		`options.fn` - Contains the inner template logic for a truthy section.  
+					//		`options.inverse` - Contains the inner template logic for a falsey section.  
+					//		`options.hash` - Contains the merged hash object argument for custom helpers.
+					//
+					// #### Design
+					//
+					// This covers the design of the render code that the transformation helper generates.
+					//
+					// ##### Pseudocode
+					// 
+					// A detailed explanation is provided in the following sections, but here is some brief pseudocode
+					// that gives a high level overview of what the generated render code does (with a template similar to  
+					// `&quot;{{#a}}{{b.c.d.e.name}}{{/a}}&quot; == &quot;Phil&quot;`).
+					//
+					// *Initialize the render code.*
+					// 
+					// 		view = []
+					// 		context = []
+					// 		stack = fn { context.concat([this]) }
+					// 		
+					// *Render the root section.*
+					//
+					// 		view.push( &quot;string&quot; )
+					// 		view.push( can.view.txt(
+					//
+					// *Render the nested section with `can.Mustache.txt`.*
+					//
+					// 			txt( 
+					//
+					// *Add the current context to the stack.*
+					//
+					// 				stack(), 
+					//
+					// *Flag this for truthy section mode.*
+					//
+					// 				&quot;#&quot;,
+					//
+					// *Interpolate and check the `a` variable for truthyness using the stack with `can.Mustache.get`.*
+					// 
+					// 				get( &quot;a&quot;, stack() ),
+					//
+					// *Include the nested section&#039;s inner logic.
+					// The stack argument is usually the parent section&#039;s copy of the stack, 
+					// but it can be an override context that was passed by a custom helper.
+					// Sections can nest `0..n` times -- **NESTCEPTION**.*
+					//
+					// 				{ fn: fn(stack) {
+					//
+					// *Render the nested section (everything between the `{{#a}}` and `{{/a}}` tokens).*
+					//
+					// 					view = []
+					// 					view.push( &quot;string&quot; )
+					// 					view.push(
+					//
+					// *Add the current context to the stack.*
+					//
+					// 						stack(),
+					//
+					// *Flag this as interpolation-only mode.*
+					//
+					// 						null,
+					//
+					// *Interpolate the `b.c.d.e.name` variable using the stack.*
+					//
+					// 						get( &quot;b.c.d.e.name&quot;, stack() ),
+					// 					)
+					// 					view.push( &quot;string&quot; )
+					//
+					// *Return the result for the nested section.*
+					//
+					// 					return view.join()
+					// 				}}
+					// 			)
+					// 		))
+					// 		view.push( &quot;string&quot; )
+					//
+					// *Return the result for the root section, which includes all nested sections.*
+					//
+					// 		return view.join()
+					//
+					// ##### Initialization
+					//
+					// Each rendered template is started with the following initialization code:
+					//
+					// 		var ___v1ew = [];
+					// 		var ___c0nt3xt = [];
+					// 		___c0nt3xt.__sc0pe = true;
+					// 		var __sc0pe = function(context, self) {
+					// 			var s;
+					// 			if (arguments.length == 1 &amp;&amp; context) {
+					// 				s = !context.__sc0pe ? [context] : context;
+					// 			} else {
+					// 				s = context &amp;&amp; context.__sc0pe 
+					//					? context.concat([self]) 
+					//					: __sc0pe(context).concat([self]);
+					// 			}
+					// 			return (s.__sc0pe = true) &amp;&amp; s;
+					// 		};
+					//
+					// The `___v1ew` is the the array used to serialize the view.
+					// The `___c0nt3xt` is a stacking array of contexts that slices and expands with each nested section.
+					// The `__sc0pe` function is used to more easily update the context stack in certain situations.
+					// Usually, the stack function simply adds a new context (`self`/`this`) to a context stack. 
+					// However, custom helpers will occasionally pass override contexts that need their own context stack.
+					//
+					// ##### Sections
+					//
+					// Each section, `{{#section}} content {{/section}}`, within a Mustache template generates a section 
+					// context in the resulting render code. The template itself is treated like a root section, with the 
+					// same execution logic as any others. Each section can have `0..n` nested sections within it.
+					//
+					// Here&#039;s an example of a template without any descendent sections.  
+					// Given the template: `&quot;{{a.b.c.d.e.name}}&quot; == &quot;Phil&quot;`  
+					// Would output the following render code:
+					//
+					//		___v1ew.push(&quot;\&quot;&quot;);
+					//		___v1ew.push(can.view.txt(1, &#039;&#039;, 0, this, function() {
+					// 			return can.Mustache.txt(__sc0pe(___c0nt3xt, this), null, 
+					//				can.Mustache.get(&quot;a.b.c.d.e.name&quot;, 
+					//					__sc0pe(___c0nt3xt, this))
+					//			);
+					//		}));
+					//		___v1ew.push(&quot;\&quot; == \&quot;Phil\&quot;&quot;);
+					//
+					// The simple strings will get appended to the view. Any interpolated references (like `{{a.b.c.d.e.name}}`) 
+					// will be pushed onto the view via `can.view.txt` in order to support live binding.
+					// The function passed to `can.view.txt` will call `can.Mustache.txt`, which serializes the object data by doing 
+					// a context lookup with `can.Mustache.get`.
+					//
+					// `can.Mustache.txt`&#039;s first argument is a copy of the context stack with the local context `this` added to it.
+					// This stack will grow larger as sections nest.
+					//
+					// The second argument is for the section type. This will be `&quot;#&quot;` for truthy sections, `&quot;^&quot;` for falsey, 
+					// or `null` if it is an interpolation instead of a section.
+					//
+					// The third argument is the interpolated value retrieved with `can.Mustache.get`, which will perform the 
+					// context lookup and return the approriate string or object.
+					//
+					// Any additional arguments, if they exist, are used for passing arguments to custom helpers.
+					//
+					// For nested sections, the last argument is an `options` object that contains the nested section&#039;s logic.
+					//
+					// Here&#039;s an example of a template with a single nested section.  
+					// Given the template: `&quot;{{#a}}{{b.c.d.e.name}}{{/a}}&quot; == &quot;Phil&quot;`  
+					// Would output the following render code:
+					//
+					//		___v1ew.push(&quot;\&quot;&quot;);
+					// 		___v1ew.push(can.view.txt(0, &#039;&#039;, 0, this, function() {
+					// 			return can.Mustache.txt(__sc0pe(___c0nt3xt, this), &quot;#&quot;, 
+					//				can.Mustache.get(&quot;a&quot;, __sc0pe(___c0nt3xt, this)), 
+					//					[{
+					// 					_: function() {
+					// 						return ___v1ew.join(&quot;&quot;);
+					// 					}
+					// 				}, {
+					// 					fn: function(___c0nt3xt) {
+					// 						var ___v1ew = [];
+					// 						___v1ew.push(can.view.txt(1, &#039;&#039;, 0, this, 
+					//								function() {
+					//                                  return can.Mustache.txt(
+					// 									__sc0pe(___c0nt3xt, this), 
+					// 									null, 
+					// 									can.Mustache.get(&quot;b.c.d.e.name&quot;, 
+					// 										__sc0pe(___c0nt3xt, this))
+					// 								);
+					// 							}
+					// 						));
+					// 						return ___v1ew.join(&quot;&quot;);
+					// 					}
+					// 				}]
+					//			)
+					// 		}));
+					//		___v1ew.push(&quot;\&quot; == \&quot;Phil\&quot;&quot;);
+					//
+					// This is specified as a truthy section via the `&quot;#&quot;` argument. The last argument includes an array of helper methods used with `options`.
+					// These act similarly to custom helpers: `options.fn` will be called for truthy sections, `options.inverse` will be called for falsey sections.
+					// The `options._` function only exists as a dummy function to make generating the section nesting easier (a section may have a `fn`, `inverse`,
+					// or both, but there isn&#039;t any way to determine that at compilation time).
+					// 
+					// Within the `fn` function is the section&#039;s render context, which in this case will render anything between the `{{#a}}` and `{{/a}}` tokens.
+					// This function has `___c0nt3xt` as an argument because custom helpers can pass their own override contexts. For any case where custom helpers
+					// aren&#039;t used, `___c0nt3xt` will be equivalent to the `__sc0pe(___c0nt3xt, this)` stack created by its parent section. The `inverse` function
+					// works similarly, except that it is added when `{{^a}}` and `{{else}}` are used. `var ___v1ew = []` is specified in `fn` and `inverse` to 
+					// ensure that live binding in nested sections works properly.
+					//
+					// All of these nested sections will combine to return a compiled string that functions similar to EJS in its uses of `can.view.txt`.
+					//
+					// #### Implementation
+					{
+						name: /^.*$/,
+						fn: function (content, cmd) {
+							var mode = false,
+								result = {
+									content: &quot;&quot;,
+									startTxt: false,
+									startOnlyTxt: false,
+									end: false
+								};
+
+							// Trim the content so we don&#039;t have any trailing whitespace.
+							content = can.trim(content);
+
+							// Determine what the active mode is.
+							// 
+							// * `#` - Truthy section
+							// * `^` - Falsey section
+							// * `/` - Close the prior section
+							// * `else` - Inverted section (only exists within a truthy/falsey section)
+							if (content.length &amp;&amp; (mode = content.match(/^([#^/]|else$)/))) {
+								mode = mode[0];
+								switch (mode) {
+									/**
+									 * @function can.mustache.helpers.section {{#key}}
+									 * @parent can.mustache.tags 3
+									 *
+									 * @signature `{{#key}}BLOCK{{/key}}`
+									 *
+									 * Render blocks of text one or more times, depending
+									 * on the value of the key in the current context.
+									 *
+									 * @param {can.mustache.key} key A key that references a value within the current or parent
+									 * [can.mustache.context context]. If the value is a function or [can.compute], the
+									 * function&#039;s return value is used.
+									 *
+									 *
+									 * @return {String}
+									 *
+									 * Depending on the value&#039;s type, the following actions happen:
+									 *
+									 * - `Array` or [can.List] - the block is rendered for
+									 *   each item in the array. The [can.mustache.context context] is set to
+									 *   the item within each block rendering.
+									 * - A `truthy` value - the block is rendered with the [can.mustache.context context]
+									 *   set to the value.
+									 * - A `falsey` value - the block is not rendered.
+									 *
+									 * The rendered result of the blocks, block or an empty string is returned.
+									 *
+									 * @body
+									 *
+									 * Sections contain text blocks and evaluate whether to render it or not.  If
+									 * the object evaluates to an array it will iterate over it and render the block
+									 * for each item in the array.  There are four different types of sections.
+									 *
+									 * ## Falseys or Empty Arrays
+									 *
+									 * If the value returns a `false`, `undefined`, `null`, `&quot;&quot;` or `[]` we consider
+									 * that a *falsey* value.
+									 *
+									 * If the value is falsey, the section will **NOT** render the block.
+									 *
+									 *     {
+									 *       friends: false
+									 *     }
+									 *
+									 *     {{#friends}}
+									 *       Never shown!
+									 *     {{/friends}}
+									 *
+									 *
+									 * ## Arrays
+									 *
+									 * If the value is a non-empty array, sections will iterate over the
+									 * array of items, rendering the items in the block.
+									 *
+									 * For example, a list of friends will iterate
+									 * over each of those items within a section.
+									 *
+									 *     {
+									 *         friends: [
+									 *             { name: &quot;Austin&quot; },
+									 *             { name: &quot;Justin&quot; }
+									 *         ]
+									 *     }
+									 *
+									 *     &lt;ul&gt;
+									 *         {{#friends}}
+									 *             &lt;li&gt;{{name}}&lt;/li&gt;
+									 *         {{/friends}}
+									 *     &lt;/ul&gt;
+									 *
+									 * would render:
+									 *
+									 *     &lt;ul&gt;
+									 *         &lt;li&gt;Austin&lt;/li&gt;
+									 *         &lt;li&gt;Justin&lt;/li&gt;
+									 *     &lt;/ul&gt;
+									 *
+									 * Reminder: Sections will reset the current context to the value for which it is iterating.
+									 * See the [basics of contexts](#Basics) for more information.
+									 *
+									 * ## Truthys
+									 *
+									 * When the value is a non-falsey object but not a list, it is considered truthy and will be used
+									 * as the context for a single rendering of the block.
+									 *
+									 *     {
+									 *         friends: { name: &quot;Jon&quot; }
+									 *     }
+									 *
+									 *     {{#friends}}
+									 *         Hi {{name}}
+									 *     {{/friends}}
+									 *
+									 * would render:
+									 *
+									 *     Hi Jon!
+									 * 
+									 * ## Understanding when to use Sections with lists
+									 * 
+									 * Section iteration will re-render the entire section for any change in the list. It is the prefered method to
+									 * use when a list is replaced or changing significantly. Whereas [can.stache.helpers.each {{#each key}}] iteration
+									 * will do basic diffing and aim to only update the DOM where the change occured. When doing single list item
+									 * changes frequently, [can.stache.helpers.each {{#each key}}] iteration is the faster choice.
+									 * 
+									 * For example, assuming &quot;list&quot; is a can.List instance:
+									 * 
+									 * {{#if list}} will check for the truthy value of list. This is akin to checking for the truthy value of any JS object and will result to true, regardless of list contents or length.
+									 * 
+									 * {{#if list.length}} will check for the truthy value of the length attribute. If you have an empty list, the length will be 0, so the #if will result to false and no contents will be rendered. If there is a length &gt;= 1, this will result to true and the contents of the #if will be rendered.
+									 * 
+									 * {{#each list}} and {{#list}} both iterate through an instance of can.List, however we setup the bindings differently.
+									 * 
+									 * {{#each list}} will setup bindings on every individual item being iterated through, while {{#list}} will not. This makes a difference in two scenarios:
+									 * 
+									 * 1) You have a large list, with minimal updates planned after initial render. In this case, {{#list}} might be more advantageous as there will be a faster initial render. However, if any part of the list changes, the entire {{#list}} area will be re-processed.
+									 * 
+									 * 2) You have a large list, with many updates planned after initial render. A grid with many columns of editable fields, for instance. In this case, you many want to use {{#each list}}, even though it will be slower on initial render(we&#039;re setting up more bindings), you&#039;ll have faster updates as there are now many sections.
+									 */
+									// 
+									/**
+									 * @function can.mustache.helpers.helper {{helper args hashes}}
+									 * @parent can.mustache.htags 0
+									 *
+									 * @description Calls a mustache helper function and inserts its return value into
+									 * the rendered template.
+									 *
+									 * @signature `{{helper [args...] [hashProperty=hashValue...]}}`
+									 *
+									 * Calls a mustache helper function or a function. For example:
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;{{madLib &quot;Lebron James&quot; verb 4 foo=&quot;bar&quot;}}&lt;/p&gt;
+									 *
+									 * Rendered with:
+									 *
+									 *     {verb: &quot;swept&quot;}
+									 *
+									 * Will call a `madLib` helper with the following arguements:
+									 *
+									 *     can.mustache.registerHelper(&#039;madLib&#039;,
+									 *       function(subject, verb, number, options){
+									 *         // subject -&gt; &quot;Lebron James&quot;
+									 *         // verb -&gt; &quot;swept&quot;
+									 *         // number -&gt; 4
+									 *         // options.hash.foo -&gt; &quot;bar&quot;
+									 *     });
+									 *
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
+									 *
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
+									 * that get passed to the helper function as arguments. If the key&#039;s value is a:
+									 *
+									 *  - [can.Map] - A getter/setter [can.compute] is passed.
+									 *  - [can.compute] - The can.compute is passed.
+									 *  - `function` - The function&#039;s return value is passed.
+									 *
+									 * @param {String} hashProperty
+									 *
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]&#039;s
+									 * hash object.
+									 *
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]&#039;s
+									 * hash object.
+									 *
+									 * @body
+									 *
+									 * ## Use
+									 *
+									 * The `{{helper}}` syntax is used to call out to Mustache [can.mustache.helper helper functions] functions
+									 * that may contain more complex functionality. `helper` is a [can.mustache.key key] that must match either:
+									 *
+									 *  - a [can.mustache.registerHelper registered helper function], or
+									 *  - a function in the current or parent [can.mustache.context contexts]
+									 *
+									 * The following example shows both cases.
+									 *
+									 * The Template:
+									 *
+									 *     &lt;p&gt;{{greeting}} {{user}}&lt;/p&gt;
+									 *
+									 * Rendered with data:
+									 *
+									 *     {
+									 *       user: function(){ return &quot;Justin&quot; }
+									 *     }
+									 *
+									 * And a with a registered helper like:
+									 *
+									 *     can.mustache.registerHelper(&#039;greeting&#039;, function(){
+									 *       return &quot;Hello&quot;
+									 *     });
+									 *
+									 * Results in:
+									 *
+									 *     &lt;p&gt;Hello Justin&lt;/p&gt;
+									 *
+									 * ## Arguments
+									 *
+									 * Arguments can be passed from the template to helper function by
+									 * listing space seperated strings, numbers or other [can.mustache.key keys] after the
+									 * `helper` name.  For example:
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;{{madLib &quot;Lebron James&quot; verb 4}}&lt;/p&gt;
+									 *
+									 * Rendered with:
+									 *
+									 *     {verb: &quot;swept&quot;}
+									 *
+									 * Will call a `madLib` helper with the following arguements:
+									 *
+									 *     can.mustache.registerHelper(&#039;madLib&#039;,
+									 *       function(subject, verb, number, options){
+									 *         // subject -&gt; &quot;Lebron James&quot;
+									 *         // verb -&gt; &quot;swept&quot;
+									 *         // number -&gt; 4
+									 *     });
+									 *
+									 * If an argument `key` value is a [can.Map] property, the Observe&#039;s
+									 * property is converted to a getter/setter [can.compute]. For example:
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;What! My name is: {{mr user.name}}&lt;/p&gt;
+									 *
+									 * Rendered with:
+									 *
+									 *     {user: new can.Map({name: &quot;Slim Shady&quot;})}
+									 *
+									 * Needs the helper to check if name is a function or not:
+									 *
+									 *     can.mustache.registerHelper(&#039;mr&#039;,function(name){
+									 *       return &quot;Mr. &quot;+ (typeof name === &quot;function&quot; ?
+									 *                       name():
+									 *                       name)
+									 *     })
+									 *
+									 * This behavior enables two way binding helpers and is explained in more detail
+									 * on the [can.mustache.helper helper functions] docs.
+									 *
+									 * ## Hash
+									 *
+									 * If enumerated arguments isn&#039;t an appropriate way to configure the behavior
+									 * of a helper, it&#039;s possible to pass a hash of key-value pairs to the
+									 * [can.mustache.helperOptions helper option argument]&#039;s
+									 * hash object.  Properties and values are specified
+									 * as `hashProperty=hashValue`.  For example:
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;My {{excuse who=pet how=&quot;shreded&quot;}}&lt;/p&gt;
+									 * `
+									 * And the helper:
+									 *
+									 *     can.mustache.registerHelper(&quot;excuse&quot;,function(options){
+									 *       return [&quot;My&quot;,
+									 *         options.hash.who || &quot;dog&quot;.
+									 *         options.hash.how || &quot;ate&quot;,
+									 *         &quot;my&quot;,
+									 *         options.hash.what || &quot;homework&quot;].join(&quot; &quot;)
+									 *     })
+									 *
+									 * Render with:
+									 *
+									 *     {pet: &quot;cat&quot;}
+									 *
+									 * Results in:
+									 *
+									 *     &lt;p&gt;My cat shareded my homework&lt;/p&gt;
+									 *
+									 * ## Returning an element callback function
+									 *
+									 * If a helper returns a function, that function is called back after
+									 * the template has been rendered into DOM elements. This can
+									 * be used to create mustache tags that have rich behavior. Read about it
+									 * on the [can.mustache.helper helper function] page.
+									 *
+									 */
+									// 
+									/**
+									 * @function can.mustache.helpers.sectionHelper {{#helper args hashes}}
+									 * @parent can.mustache.htags 1
+									 *
+									 * Calls a mustache helper function with a block, and optional inverse
+									 * block.
+									 *
+									 * @signature `{{#helper [args...] [hashName=hashValue...]}}BLOCK{{/helper}}`
+									 *
+									 * Calls a mustache helper function or a function with a block to
+									 * render.
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;{{#countTo number}}{{num}}{{/countTo}}&lt;/p&gt;
+									 *
+									 * Rendered with:
+									 *
+									 *     {number: 5}
+									 *
+									 * Will call the `countTo` helper:
+									 *
+									 *     can.mustache.registerHelper(&#039;countTo&#039;,
+									 *       function(number, options){
+									 *         var out = [];
+									 *         for(var i =0; i &lt; number; i++){
+									 *           var docFrag = options.fn({num: i+1});
+									 *           out.push( docFrag.textContent );
+									 *         }
+									 *         return out.join(&quot; &quot;);
+									 *     });
+									 *
+									 * Results in:
+									 *
+									 *     &lt;p&gt;1 2 3 4 5&lt;/p&gt;
+									 *
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
+									 *
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
+									 * that get passed to the helper function as arguments. If the key&#039;s value is a:
+									 *
+									 *  - [can.Map] - A getter/setter [can.compute] is passed.
+									 *  - [can.compute] - The can.compute is passed.
+									 *  - `function` - The function&#039;s return value is passed.
+									 *
+									 * @param {String} hashProperty
+									 *
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]&#039;s
+									 * hash object.
+									 *
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]&#039;s
+									 * hash object.
+									 *
+									 * @param {mustache} BLOCK A mustache template that gets compiled and
+									 * passed to the helper function as the [can.mustache.helperOptions options argument&#039;s] `fn`
+									 * property.
+									 *
+									 *
+									 * @signature `{{#helper [args...] [hashName=hashValue...]}}BLOCK{{else}}INVERSE{{/helper}}`
+									 *
+									 * Calls a mustache helper function or a function with a `fn` and `inverse` block to
+									 * render.
+									 *
+									 * The template:
+									 *
+									 *     &lt;p&gt;The bed is
+									 *        {{#isJustRight firmness}}
+									 *           pefect!
+									 *        {{else}}
+									 *           uncomfortable.
+									 *        {{/justRight}}&lt;/p&gt;
+									 *
+									 * Rendered with:
+									 *
+									 *     {firmness: 45}
+									 *
+									 * Will call the `isJustRight` helper:
+									 *
+									 *     can.mustache.registerHelper(&#039;isJustRight&#039;,
+									 *       function(number, options){
+									 *         if(number &gt; 50){
+									 *           return options.fn(this);
+									 *         } else {
+									 *           return options.inverse(this);
+									 *         }
+									 *     });
+									 *
+									 * Results in:
+									 *
+									 *     &lt;p&gt;The bed is uncomfortable.&lt;/p&gt;
+									 *
+									 * @param {can.mustache.key} helper A key that finds a [can.mustache.helper helper function]
+									 * that is either [can.mustache.registerHelper registered] or found within the
+									 * current or parent [can.mustache.context context].
+									 *
+									 * @param {...can.mustache.key|String|Number} [args] Space seperated arguments
+									 * that get passed to the helper function as arguments. If the key&#039;s value is a:
+									 *
+									 *  - [can.Map] - A getter/setter [can.compute] is passed.
+									 *  - [can.compute] - The can.compute is passed.
+									 *  - `function` - The function&#039;s return value is passed.
+									 *
+									 * @param {String} hashProperty
+									 *
+									 * A property name that gets added to a [can.mustache.helperOptions helper options]&#039;s
+									 * hash object.
+									 *
+									 * @param {...can.mustache.key|String|Number} hashValue A value that gets
+									 * set as a property value of the [can.mustache.helperOptions helper option argument]&#039;s
+									 * hash object.
+									 *
+									 * @param {mustache} BLOCK A mustache template that gets compiled and
+									 * passed to the helper function as the [can.mustache.helperOptions options argument&#039;s] `fn`
+									 * property.
+									 *
+									 * @param {mustache} INVERSE A mustache template that gets compiled and
+									 * passed to the helper function as the [can.mustache.helperOptions options argument&#039;s] `inverse`
+									 * property.
+									 *
+									 *
+									 * @body
+									 *
+									 * ## Use
+									 *
+									 * Read the [use section of {{helper}}](can.mustache.helpers.helper.html#section_Use) to better understand how:
+									 *
+									 *  - [Helper functions are found](can.mustache.helpers.helper.html#section_Arguments)
+									 *  - [Arguments are passed to the helper](can.mustache.helpers.helper.html#section_Arguments)
+									 *  - [Hash values are passed to the helper](can.mustache.helpers.helper.html#section_Hash)
+									 *
+									 * Read how [helpers that return functions](can.mustache.helper.html#section_Returninganelementcallbackfunction) can
+									 * be used for rich behavior like 2-way binding.
+									 *
+									 */
+									// Open a new section.
+								case &#039;#&#039;:
+									/**
+									 * @function can.mustache.helpers.inverse {{^key}}
+									 * @parent can.mustache.tags 5
+									 *
+									 * @signature `{{^key}}BLOCK{{/key}}`
+									 *
+									 * Render blocks of text if the value of the key
+									 * is falsey.  An inverted section syntax is similar to regular
+									 * sections except it begins with a caret rather than a
+									 * pound. If the value referenced is falsey, the section will render.
+									 *
+									 * @param {can.mustache.key} key A key that references a value within the current or parent
+									 * [can.mustache.context context]. If the value is a function or [can.compute], the
+									 * function&#039;s return value is used.
+									 *
+									 * @return {String}
+									 *
+									 * Depending on the value&#039;s type, the following actions happen:
+									 *
+									 * - A `truthy` value - the block is not rendered.
+									 * - A `falsey` value - the block is rendered.
+									 *
+									 * The rendered result of the block or an empty string is returned.
+									 *
+									 * @body
+									 *
+									 * ## Use
+									 *
+									 * Inverted sections match falsey values. An inverted section
+									 * syntax is similar to regular sections except it begins with a caret
+									 * rather than a pound. If the value referenced is falsey, the section
+									 * will render. For example:
+									 *
+									 *
+									 * The template:
+									 *
+									 *     &lt;ul&gt;
+									 *         {{#friends}}
+									 *             &lt;/li&gt;{{name}}&lt;/li&gt;
+									 *         {{/friends}}
+									 *         {{^friends}}
+									 *             &lt;li&gt;No friends.&lt;/li&gt;
+									 *         {{/friends}}
+									 *     &lt;/ul&gt;
+									 *
+									 * And data:
+									 *
+									 *     {
+									 *         friends: []
+									 *     }
+									 *
+									 * Results in:
+									 *
+									 *
+									 *     &lt;ul&gt;
+									 *         &lt;li&gt;No friends.&lt;/li&gt;
+									 *     &lt;/ul&gt;
+									 */
+								case &#039;^&#039;:
+									if (cmd.specialAttribute) {
+										result.startOnlyTxt = true;
+										//result.push(cmd.insert + &#039;can.view.onlytxt(this,function(){ return &#039;);
+									} else {
+										result.startTxt = true;
+										// sections should never be escaped
+										result.escaped = 0;
+										//result.push(cmd.insert + &#039;can.view.txt(0,\&#039;&#039; + cmd.tagName + &#039;\&#039;,&#039; + cmd.status + &#039;,this,function(){ return &#039;);
+									}
+									break;
+									// Close the prior section.
+									/**
+									 * @function can.mustache.helpers.close {{/key}}
+									 * @parent can.mustache.tags 4
+									 *
+									 * @signature `{{/key}}`
+									 *
+									 * Ends a [can.mustache.helpers.section {{#key}}] or [can.mustache.helpers.sectionHelper {{#helper}}]
+									 * block.
+									 *
+									 * @param {can.mustache.key} [key] A key that matches the opening key or helper name. It&#039;s also
+									 * possible to simply write `{{/}}` to end a block.
+									 */
+								case &#039;/&#039;:
+									result.end = true;
+									result.content += &#039;return ___v1ew.join(&quot;&quot;);}}])&#039;;
+									return result;
+								}
+
+								// Trim the mode off of the content.
+								content = content.substring(1);
+							}
+
+							// `else` helpers are special and should be skipped since they don&#039;t 
+							// have any logic aside from kicking off an `inverse` function.
+							if (mode !== &#039;else&#039;) {
+								var args = [],
+									hashes = [],
+									i = 0,
+									m;
+
+								// Start the content render block.
+								result.content += &#039;can.Mustache.txt(\n&#039; +
+									(cmd.specialAttribute ? SPECIAL_CONTEXT_OBJ : CONTEXT_OBJ ) +
+									&#039;,\n&#039; + (mode ? &#039;&quot;&#039; + mode + &#039;&quot;&#039; : &#039;null&#039;) + &#039;,&#039;;
+
+								// Parse the helper arguments.
+								// This needs uses this method instead of a split(/\s/) so that 
+								// strings with spaces can be correctly parsed.
+								(can.trim(content) + &#039; &#039;)
+									.replace(argumentsRegExp, function (whole, arg) {
+
+										// Check for special helper arguments (string/number/boolean/hashes).
+										if (i &amp;&amp; (m = arg.match(literalNumberStringBooleanRegExp))) {
+											// Found a native type like string/number/boolean.
+											if (m[2]) {
+												args.push(m[0]);
+											}
+											// Found a hash object.
+											else {
+												// Addd to the hash object.
+
+												hashes.push(m[4] + &quot;:&quot; + (m[6] ? m[6] : makeLookupLiteral(m[5])));
+											}
+										}
+										// Otherwise output a normal interpolation reference.
+										else {
+											args.push(makeLookupLiteral(arg));
+										}
+										i++;
+									});
+
+								result.content += args.join(&quot;,&quot;);
+								if (hashes.length) {
+									result.content += &quot;,{&quot; + HASH + &quot;:{&quot; + hashes.join(&quot;,&quot;) + &quot;}}&quot;;
+								}
+
+							}
+
+							// Create an option object for sections of code.
+							if (mode &amp;&amp; mode !== &#039;else&#039;) {
+								result.content += &#039;,[\n\n&#039;;
+							}
+							switch (mode) {
+								// Truthy section
+							case &#039;^&#039;:
+							case &#039;#&#039;:
+								result.content += (&#039;{fn:function(&#039; + ARG_NAMES + &#039;){var ___v1ew = [];&#039;);
+								break;
+								// If/else section
+								// Falsey section
+								/**
+								 * @function can.mustache.helpers.else {{else}}
+								 * @parent can.mustache.htags 3
+								 *
+								 * @signature `{{#helper}}BLOCK{{else}}INVERSE{{/helper}}`
+								 *
+								 * Creates an `inverse` block for a [can.mustache.helper helper function]&#039;s
+								 * [can.mustache.helperOptions options argument]&#039;s `inverse` property.
+								 *
+								 * @param {can.mustache} INVERSE a mustache template coverted to a
+								 * function and set as the [can.mustache.helper helper function]&#039;s
+								 * [can.mustache.helperOptions options argument]&#039;s `inverse` property.
+								 *
+								 * @body
+								 *
+								 * ## Use
+								 *
+								 * For more information on how `{{else}}` is used checkout:
+								 *
+								 *  - [can.mustache.helpers.if {{if key}}]
+								 *  - [can.mustache.helpers.sectionHelper {{#helper}}]
+								 *
+								 */
+							case &#039;else&#039;:
+								result.content += &#039;return ___v1ew.join(&quot;&quot;);}},\n{inverse:function(&#039; + ARG_NAMES + &#039;){\nvar ___v1ew = [];&#039;;
+								break;
+
+								// Not a section, no mode
+							default:
+								result.content += (&#039;)&#039;);
+								break;
+							}
+
+							if (!mode) {
+								result.startTxt = true;
+								result.end = true;
+							}
+
+							return result;
+						}
+					}
+				]
+			})
+		});
+
+		// Add in default scanner helpers first.
+		// We could probably do this differently if we didn&#039;t &#039;break&#039; on every match.
+		var helpers = can.view.Scanner.prototype.helpers;
+		for (var i = 0; i &lt; helpers.length; i++) {
+			Mustache.prototype.scanner.helpers.unshift(helpers[i]);
+		}
+
+		/**
+		 * @function can.MustacheConstructor.txt
+		 * @hide
+		 *
+		 * Evaluates the resulting string based on the context/name.
+		 *
+		 * @param {Object|Array} context	The context stack to be used with evaluation.
+		 * @param {String} mode		The mode to evaluate the section with: # for truthy, ^ for falsey
+		 * @param {String|Object} name	The string (or sometimes object) to pass to the given helper method.
+		 */
+		Mustache.txt = function (scopeAndOptions, mode, name) {
+
+			// here we are going to cache the lookup values so future calls are much faster
+			var scope = scopeAndOptions.scope,
+				options = scopeAndOptions.options,
+				args = [],
+				helperOptions = {
+					fn: function () {},
+					inverse: function () {}
+				},
+				hash,
+				context = scope.attr(&quot;.&quot;),
+				getHelper = true,
+				helper;
+
+			// convert lookup values to actual values in name, arguments, and hash
+			for (var i = 3; i &lt; arguments.length; i++) {
+				var arg = arguments[i];
+				if (mode &amp;&amp; can.isArray(arg)) {
+					// merge into options
+					helperOptions = can.extend.apply(can, [helperOptions].concat(arg));
+				} else if (arg &amp;&amp; arg[HASH]) {
+					hash = arg[HASH];
+					// get values on hash
+					for (var prop in hash) {
+						if (isLookup(hash[prop])) {
+							hash[prop] = Mustache.get(hash[prop].get, scopeAndOptions, false, true);
+						}
+					}
+				} else if (arg &amp;&amp; isLookup(arg)) {
+					args.push(Mustache.get(arg.get, scopeAndOptions, false, true, true));
+				} else {
+					args.push(arg);
+				}
+			}
+
+			if (isLookup(name)) {
+				var get = name.get;
+				name = Mustache.get(name.get, scopeAndOptions, args.length, false);
+
+				// Base whether or not we will get a helper on whether or not the original
+				// name.get and Mustache.get resolve to the same thing. Saves us from running
+				// into issues like {{text}} / {text: &#039;with&#039;}
+				getHelper = (get === name);
+			}
+
+			// overwrite fn and inverse to always convert to scopes
+			helperOptions.fn = makeConvertToScopes(helperOptions.fn, scope, options);
+			helperOptions.inverse = makeConvertToScopes(helperOptions.inverse, scope, options);
+
+			// if mode is ^, swap fn and inverse
+			if(mode === &#039;^&#039;) {
+				var tmp = helperOptions.fn;
+				helperOptions.fn = helperOptions.inverse;
+				helperOptions.inverse = tmp;
+			}
+
+			// Check for a registered helper or a helper-like function.
+			if (helper = (getHelper &amp;&amp; (typeof name === &quot;string&quot; &amp;&amp; Mustache.getHelper(name, options)) || (can.isFunction(name) &amp;&amp; !name.isComputed &amp;&amp; {
+				fn: name
+			}))) {
+				// Add additional data to be used by helper functions
+
+				can.extend(helperOptions, {
+					context: context,
+					scope: scope,
+					contexts: scope,
+					hash: hash
+				});
+
+				args.push(helperOptions);
+				// Call the helper.
+				return function () {
+					var result = helper.fn.apply(context, args);
+					return result == null ? &#039;&#039; : result;
+				};
+
+			}
+			/*if( !mode &amp;&amp; !args.length &amp;&amp; can.isFunction(name) &amp;&amp; name.isComputed ) {
+				if(!scopeAndOptions.special) {
+					name.canReadForChangeEvent = false;
+				}
+				return name;
+			}*/
+			return function () {
+				//{{#foo.bar zed ted}}
+				var value;
+				if (can.isFunction(name) &amp;&amp; name.isComputed) {
+					value = name();
+				} else {
+					value = name;
+				}
+				// An array of arguments to check for truthyness when evaluating sections.
+				var validArgs = args.length ? args : [value],
+					// Whether the arguments meet the condition of the section.
+					valid = true,
+					result = [],
+					i, argIsObserve, arg;
+				// Validate the arguments based on the section mode.
+				if (mode) {
+					for (i = 0; i &lt; validArgs.length; i++) {
+						arg = validArgs[i];
+						argIsObserve = typeof arg !== &#039;undefined&#039; &amp;&amp; isObserveLike(arg);
+						// Array-like objects are falsey if their length = 0.
+						if (isArrayLike(arg)) {
+							// Use .attr to trigger binding on empty lists returned from function
+							if (mode === &#039;#&#039;) {
+								valid = valid &amp;&amp; !! (argIsObserve ? arg.attr(&#039;length&#039;) : arg.length);
+							} else if (mode === &#039;^&#039;) {
+								valid = valid &amp;&amp; !(argIsObserve ? arg.attr(&#039;length&#039;) : arg.length);
+							}
+						}
+						// Otherwise just check if it is truthy or not.
+						else {
+							valid = mode === &#039;#&#039; ? valid &amp;&amp; !! arg : mode === &#039;^&#039; ? valid &amp;&amp; !arg : valid;
+						}
+					}
+				}
+
+				// Otherwise interpolate like normal.
+				if (valid) {
+
+					if (mode === &quot;#&quot;) {
+						if (isArrayLike(value)) {
+							var isObserveList = isObserveLike(value);
+
+							// Add the reference to the list in the contexts.
+							for (i = 0; i &lt; value.length; i++) {
+								result.push(helperOptions.fn(
+									isObserveList ? value.attr(&#039;&#039; + i) : value[i]));
+							}
+							return result.join(&#039;&#039;);
+						}
+						// Normal case.
+						else {
+							return helperOptions.fn(value || {}) || &#039;&#039;;
+						}
+					} else if (mode === &quot;^&quot;) {
+						return helperOptions.inverse(value || {}) || &#039;&#039;;
+					} else {
+						return &#039;&#039; + (value != null ? value : &#039;&#039;);
+					}
+				}
+
+				return &#039;&#039;;
+			};
+		};
+
+		/**
+		 * @function can.MustacheConstructor.get
+		 * @hide
+		 *
+		 * Resolves a key for a given object (and then a context if that fails).
+		 *
+		 *     obj = this
+		 *     context = { a: true }
+		 *     ref = &#039;a.b.c&#039;
+		 *          =&gt; obj.a.b.c || context.a.b.c || &#039;&#039;
+		 *
+		 * This implements the following Mustache specs:
+		 * Deeply Nested Contexts
+		 * All elements on the context stack should be accessible.
+		 *
+		 *     {{#bool}}B {{#bool}}C{{/bool}} D{{/bool}}
+		 *     { bool: true }
+		 *     =&gt; &quot;B C D&quot;
+		 *
+		 * Basic Context Miss Interpolation
+		 * Failed context lookups should default to empty strings.
+		 *
+		 *     {{cannot}}
+		 *     =&gt; &quot;&quot;
+		 *
+		 * Dotted Names - Broken Chains
+		 * Any falsey value prior to the last part of the name should yield &#039;&#039;.
+		 *		{{a.b.c}}
+		 *		{ a: { d: 1 } }
+		 *		=&gt; &quot;&quot;
+		 *
+		 * @param {can.mustache.key} key The reference to check for on the obj/context.
+		 * @param {Object} obj The object to use for checking for a reference.
+		 * @param {Object} context The context to use for checking for a reference if it doesn&#039;t exist in the object.
+		 * @param {Boolean} [isHelper] Whether the reference is seen as a helper.
+		 */
+		Mustache.get = function (key, scopeAndOptions, isHelper, isArgument, isLookup) {
+
+			// Cache a reference to the current context and options, we will use them a bunch.
+			var context = scopeAndOptions.scope.attr(&#039;.&#039;),
+				options = scopeAndOptions.options || {};
+
+			// If key is called as a helper,
+			if (isHelper) {
+				// try to find a registered helper.
+				if (Mustache.getHelper(key, options)) {
+					return key;
+				}
+				// Support helper-like functions as anonymous helpers.
+				// Check if there is a method directly in the &quot;top&quot; context.
+				if (scopeAndOptions.scope &amp;&amp; can.isFunction(context[key])) {
+					return context[key];
+				}
+
+				//!steal-remove-start
+				can.dev.warn(&#039;can/view/mustache/mustache.js: Unable to find helper &quot;&#039; + key + &#039;&quot;.&#039;);
+				//!steal-remove-end
+			}
+
+			// Get a compute (and some helper data) that represents key&#039;s value in the current scope
+			var computeData = scopeAndOptions.scope.computeData(key, {
+				isArgument: isArgument,
+				args: [context, scopeAndOptions.scope]
+			}),
+				compute = computeData.compute;
+
+			// Bind on the compute to cache its value. We will unbind in a timeout later.
+			can.compute.temporarilyBind(compute);
+
+			// computeData gives us an initial value
+			var initialValue = computeData.initialValue,
+				helperObj = Mustache.getHelper(key, options);
+			  
+			//!steal-remove-start
+			if (initialValue === undefined &amp;&amp; !isHelper &amp;&amp; !helperObj) {
+				can.dev.warn(&#039;can/view/mustache/mustache.js: Unable to find key &quot;&#039; + key + &#039;&quot;.&#039;);
+			}
+			//!steal-remove-end
+
+			// Use helper over the found value if the found value isn&#039;t in the current context
+			if (!isLookup &amp;&amp; (initialValue === undefined || computeData.scope !== scopeAndOptions.scope) &amp;&amp; Mustache.getHelper(key, options)) {
+				return key;
+			}
+
+			// If there are no dependencies, just return the value.
+			if (!compute.computeInstance.hasDependencies) {
+				return initialValue;
+			} else {
+				return compute;
+			}
+		};
+
+		/**
+		 * @hide
+		 *
+		 * Resolves an object to its truthy equivalent.
+		 *
+		 * @param {Object} value    The object to resolve.
+		 * @return {Object} The resolved object.
+		 */
+		Mustache.resolve = function (value) {
+			if (isObserveLike(value) &amp;&amp; isArrayLike(value) &amp;&amp; value.attr(&#039;length&#039;)) {
+				return value;
+			} else if (can.isFunction(value)) {
+				return value();
+			} else {
+				return value;
+			}
+		};
+
+		/**
+		 * @static
+		 */
+
+		
+
+		// ## Helpers
+		//
+		// Helpers are functions that can be called from within a template.
+		// These helpers differ from the scanner helpers in that they execute
+		// at runtime instead of during compilation.
+		//
+		// Custom helpers can be added via `can.Mustache.registerHelper`,
+		// but there are also some built-in helpers included by default.
+		// Most of the built-in helpers are little more than aliases to actions 
+		// that the base version of Mustache simply implies based on the 
+		// passed in object.
+		// 
+		// Built-in helpers:
+		// 
+		// * `data` - `data` is a special helper that is implemented via scanning helpers. 
+		//		It hooks up the active element to the active data object: `&lt;div {{data &quot;key&quot;}} /&gt;`
+		// * `if` - Renders a truthy section: `{{#if var}} render {{/if}}`
+		// * `unless` - Renders a falsey section: `{{#unless var}} render {{/unless}}`
+		// * `each` - Renders an array: `{{#each array}} render {{this}} {{/each}}`
+		// * `with` - Opens a context section: `{{#with var}} render {{/with}}`
+		Mustache._helpers = {};
+		/**
+		 * @function can.mustache.registerHelper
+		 * @parent can.mustache.methods
+		 * @description Register a helper.
+		 * @function can.mustache.registerHelper registerHelper
+		 * @signature `Mustache.registerHelper(name, helper)`
+		 * @param {String} name The name of the helper.
+		 * @param {can.mustache.helper} helper The helper function.
+		 *
+		 * @body
+		 * Registers a helper with the Mustache system.
+		 * Pass the name of the helper followed by the
+		 * function to which Mustache should invoke.
+		 * These are run at runtime.
+		 */
+		Mustache.registerHelper = function (name, fn) {
+			this._helpers[name] = {
+				name: name,
+				fn: fn
+			};
+		};
+
+		/**
+		 * @function can.mustache.registerSimpleHelper
+		 * @parent can.mustache.methods
+		 * @description Register a simple helper.
+		 * @function can.mustache.registerSimpleHelper registerSimpleHelper
+		 * @signature `Mustache.registerSimpleHelper(name, helper)`
+		 * @param {String} name The name of the helper.
+		 * @param {can.mustache.simplehelper} helper The simple helper function.
+		 *
+		 * @body
+		 * Registers a helper with the Mustache system that passes the values
+		 * instead of computes as arguments. This is useful if your helper does not
+		 * modify the argument computes and you only need the actual values.
+		 * Pass the name of the helper followed by the
+		 * function to which Mustache should invoke.
+		 * These are run at runtime.
+		 */
+		Mustache.registerSimpleHelper = function(name, fn) {
+			Mustache.registerHelper(name, can.view.simpleHelper(fn));
+		};
+
+		/**
+		 * @hide
+		 * @function can.MustacheConstructor.getHelper getHelper
+		 * @description Retrieve a helper.
+		 * @signature `Mustache.getHelper(name)`
+		 * @param {String} name The name of the helper.
+		 * @return {Function|null} The helper, or `null` if
+		 * no helper by that name is found.
+		 *
+		 * @body
+		 * Returns a helper given the name.
+		 */
+		Mustache.getHelper = function (name, options) {
+			var helper;
+			if (options) {
+				helper = options.get(&quot;helpers.&quot; + name,{proxyMethods: false});
+			}
+			return helper ? {
+				fn: helper
+			} : this._helpers[name];
+		};
+
+		/**
+		 * @function can.MustacheConstructor.static.render render
+		 * @hide
+		 * @parent can.Mustache.static
+		 * @signature `Mustache.render(partial, context)`
+		 * @param {Object} partial
+		 * @param {can.view.Scope} scope
+		 *
+		 * @body
+		 * `Mustache.render` is a helper method that calls
+		 * into `can.view.render` passing the partial
+		 * and the context object.
+		 *
+		 * Its purpose is to determine if the partial object
+		 * being passed represents a template like:
+		 *
+		 *     partial === &quot;movember.mustache&quot;
+		 *
+		 * or if the partial is a variable name that represents
+		 * a partial on the context object such as:
+		 *
+		 *     context[partial] === &quot;movember.mustache&quot;
+		 */
+		Mustache.render = function (partial, scope, options) {
+			// TOOD: clean up the following
+			// If there is a &quot;partial&quot; property and there is not
+			// an already-cached partial, we use the value of the 
+			// property to look up the partial
+			
+			// if this partial is not cached ...
+			if (!can.view.cached[partial]) {
+				// we don&#039;t want to bind to changes so clear and restore reading
+				can.__notObserve(function(){
+					var scopePartialName = scope.attr(partial);
+					if (scopePartialName) {
+						partial = scopePartialName;
+					}
+				})();
+				
+			}
+
+			// Call into `can.view.render` passing the
+			// partial and scope.
+			return can.view.render(partial, scope, options);
+		};
+
+		/**
+		 * @function can.mustache.safeString
+		 * @parent can.mustache.methods
+		 * 
+		 * @signature `can.mustache.safeString(str)`
+		 *
+		 * @param {String} str A string you don&#039;t want to become escaped.
+		 * @return {String} A string flagged by `can.mustache` as safe, which will
+		 * not become escaped, even if you use [can.mustache.tags.unescaped](triple slash).
+		 *
+		 * @body
+		 * If you write a helper that generates its own HTML, you will
+		 * usually want to return a `can.mustache.safeString.` In this case,
+		 * you will want to manually escape parameters with `[can.esc].`
+		 *
+		 * ```
+		 * can.mustache.registerHelper(&#039;link&#039;, function(text, url) {
+		 *   text = can.esc(text);
+		 *   url  = can.esc(url);
+		 *
+		 *   var result = &#039;&lt;a href=&quot;&#039; + url + &#039;&quot;&gt;&#039; + text + &#039;&lt;/a&gt;&#039;;
+		 *   return can.mustache.safeString(result);
+		 * });
+		 * ```
+		 *
+		 * Rendering:
+		 * ```
+		 * &lt;div&gt;{{link &quot;Google&quot;, &quot;http://google.com&quot;}}&lt;/div&gt;
+		 * ```
+		 *
+		 * Results in:
+		 *
+		 * ```
+		 * &lt;div&gt;&lt;a href=&quot;http://google.com&quot;&gt;Google&lt;/a&gt;&lt;/div&gt;
+		 * ```
+		 *
+		 * As an anchor tag whereas if we would have just returned the result rather than a
+		 * `can.mustache.safeString` our template would have rendered a div with the escaped anchor tag.
+		 *
+		 */
+		Mustache.safeString = function (str) {
+			return {
+				toString: function () {
+					return str;
+				}
+			};
+		};
+
+		Mustache.renderPartial = function (partialName, scope, options) {
+			var partial = options.get(&quot;partials.&quot; + partialName,{proxyMethods: false});
+			if (partial) {
+				return partial.render ? partial.render(scope, options) :
+					partial(scope, options);
+			} else {
+				return can.Mustache.render(partialName, scope, options);
+			}
+		};
+
+		// The built-in Mustache helpers.
+		can.each({
+			// Implements the `if` built-in helper.
+			/**
+			 * @function can.mustache.helpers.if {{#if key}}
+			 * @parent can.mustache.htags 2
+			 * @signature `{{#if key}}BLOCK{{/if}}`
+			 *
+			 * Renders the `BLOCK` template within the current template.
+			 *
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
+			 * context. If the value is a function or can.compute, the function&#039;s return value is used.
+			 *
+			 * @param {can.mustache} BLOCK A mustache template.
+			 *
+			 * @return {String} If the key&#039;s value is truthy, the `BLOCK` is rendered with the
+			 * current context and its value is returned; otherwise, an empty string.
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 * `{{#if key}}` provides explicit conditional truthy tests. For example,
+			 *
+			 * The template:
+			 *
+			 *     {{#if user.isFemale}}
+			 *       {{#if user.isMarried}}
+			 *         Mrs
+			 *       {{/if}}
+			 *       {{#if user.isSingle}}
+			 *         Miss
+			 *       {{/if}}
+			 *     {{/if}}
+			 *
+			 * Rendered with:
+			 *
+			 *     {user: {isFemale: true, isMarried: true}}
+			 *
+			 * Results in:
+			 *
+			 *     Mrs
+			 *
+			 * If can be used with [can.mustache.helpers.else {{else}}] too. For example,
+			 *
+			 *     {{#if user.isFemale}}
+			 *       {{#if user.isMarried}}
+			 *         Mrs
+			 *       {{else}}
+			 *         Miss
+			 *       {{/if}}
+			 *     {{/if}}
+			 *
+			 * Rendered with:
+			 *
+			 *     {user: {isFemale: true, isMarried: false}}
+			 *
+			 * Results in:
+			 *
+			 *     Miss
+			 */
+			&#039;if&#039;: function (expr, options) {
+				var value;
+				// if it&#039;s a function, wrap its value in a compute
+				// that will only change values from true to false
+				if (can.isFunction(expr)) {
+					value = can.compute.truthy(expr)();
+				} else {
+					value = !! Mustache.resolve(expr);
+				}
+
+				if (value) {
+					return options.fn(options.contexts || this);
+				} else {
+					return options.inverse(options.contexts || this);
+				}
+			},
+			/**
+			* @function can.stache.helpers.is {{#is expr1 expr2 expr3}}
+			* @parent can.stache.htags 12
+			*
+			* @signature `{{#is expr1 expr2}}BLOCK{{/is}}`
+			*
+			* Renders the `BLOCK` template within the current template.
+			*
+			* @param {can.stache.expression} [expr...] An expression or key that references a
+			* value within the current or parent
+			*
+			* @param {can.stache} BLOCK A template that is rendered
+			* if the result of comparsion `expr1` and `expr2` value is truthy.
+			*
+			* @return {DocumentFragment} If the key&#039;s value is truthy, the `BLOCK` is rendered with the
+			* current context and its value is returned; otherwise, an empty string.
+			*
+			* @body
+			*
+			* The `is` helper compares expr1 and expr2 and renders the blocks accordingly.
+			*
+			*	{{#is expr1 expr2}}
+			*		// truthy
+			*	{{else}}
+			*		// falsey
+			*	{{/is}}
+			*/
+			&#039;is&#039;: function() {
+				var lastValue, curValue,
+					options = arguments[arguments.length - 1];
+
+				if (arguments.length - 2 &lt;= 0) {
+					return options.inverse();
+				}
+
+				for (var i = 0; i &lt; arguments.length - 1; i++) {
+					curValue = Mustache.resolve(arguments[i]);
+					curValue = can.isFunction(curValue) ? curValue() : curValue;
+
+					if (i &gt; 0) {
+						if (curValue !== lastValue) {
+							return options.inverse();
+						}
+					}
+					lastValue = curValue;
+				}
+
+				return options.fn();
+			},
+			&#039;eq&#039;: function() {
+				return Mustache._helpers.is.fn.apply(this, arguments);
+			},
+			// Implements the `unless` built-in helper.
+			/**
+			 * @function can.mustache.helpers.unless {{#unless key}}
+			 * @parent can.mustache.htags 4
+			 *
+			 * @signature `{{#unless key}}BLOCK{{/unless}}`
+			 *
+			 * Render the block of text if the key&#039;s value is falsey.
+			 *
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
+			 * context. If the value is a function or can.compute, the function&#039;s
+			 * return value is used.
+			 *
+			 * @param {can.mustache} BLOCK A template that is rendered
+			 * if the `key`&#039;s value is falsey.
+			 *
+			 * @body
+			 *
+			 * The `unless` helper evaluates the inverse of the value
+			 * of the key and renders the block between the helper and the slash.
+			 *
+			 *     {{#unless expr}}
+			 *       // unless
+			 *     {{/unless}}
+			 */
+			&#039;unless&#039;: function (expr, options) {
+				return Mustache._helpers[&#039;if&#039;].fn.apply(this, [expr, can.extend({}, options, {
+					fn: options.inverse,
+					inverse: options.fn
+				})]);
+			},
+
+			// Implements the `each` built-in helper.
+			/**
+			 * @function can.mustache.helpers.each {{#each key}}
+			 * @parent can.mustache.htags 5
+			 *
+			 * @signature `{{#each key}}BLOCK{{/each}}`
+			 *
+			 * Render the block of text for each item in key&#039;s value.
+			 *
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
+			 * context. If the value is a function or can.compute, the function&#039;s
+			 * return value is used.
+			 *
+			 * If the value of the key is a [can.List], the resulting HTML is updated when the
+			 * list changes. When a change in the list happens, only the minimum amount of DOM
+			 * element changes occur.
+			 *
+			 * If the value of the key is a [can.Map], the resulting HTML is updated whenever
+			 * attributes are added or removed. When a change in the map happens, only
+			 * the minimum amount of DOM element changes occur.
+			 *
+			 * @param {can.mustache} BLOCK A template that is rendered for each item in
+			 * the `key`&#039;s value. The `BLOCK` is rendered with the context set to the item being rendered.
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 * Use the `each` helper to iterate over a array
+			 * of items and render the block between the helper and the slash. For example,
+			 *
+			 * The template:
+			 *
+			 *     &lt;ul&gt;
+			 *       {{#each friends}}
+			 *         &lt;li&gt;{{name}}&lt;/li&gt;
+			 *       {{/each}}
+			 *     &lt;/ul&gt;
+			 *
+			 * Rendered with:
+			 *
+			 *     {friends: [{name: &quot;Austin&quot;},{name: &quot;Justin&quot;}]}
+			 *
+			 * Renders:
+			 *
+			 *     &lt;ul&gt;
+			 *       &lt;li&gt;Austin&lt;/li&gt;
+			 *       &lt;li&gt;Justin&lt;/li&gt;
+			 *     &lt;/ul&gt;
+			 *
+			 * ## Object iteration
+			 *
+			 * As of 2.1, you can now iterate over properties of objects and attributes with
+			 * the `each` helper. When iterating over [can.Map] it will only iterate over the
+			 * map&#039;s [keys](can.Map.keys.html) and none of the hidden properties of a can.Map. For example,
+			 *
+			 * The template:
+			 *
+			 *     &lt;ul&gt;
+			 *       {{#each person}}
+			 *         &lt;li&gt;{{.}}&lt;/li&gt;
+			 *       {{/each}}
+			 *     &lt;/ul&gt;
+			 *
+			 * Rendered with:
+			 *
+			 *     {person: {name: &#039;Josh&#039;, age: 27}}
+			 *
+			 * Renders:
+			 *
+			 *     &lt;ul&gt;
+			 *       &lt;li&gt;Josh&lt;/li&gt;
+			 *       &lt;li&gt;27&lt;/li&gt;
+			 *     &lt;/ul&gt;
+			 * 
+			 * ## Understanding when to use #each with lists
+			 * 
+			 * {{#each key}} iteration will do basic diffing and aim to only update the DOM where the change occured. Whereas
+			 * [can.stache.Sections Sections] iteration will re-render the entire section for any change in the list.
+			 * [can.stache.Sections Sections] iteration is the prefered method to use when a list is replaced or changing significantly.
+			 * When doing single list item changes frequently, {{#each key}} iteration is the faster choice.
+			 * 
+			 * For example, assuming &quot;list&quot; is a can.List instance:
+			 * 
+			 * {{#if list}} will check for the truthy value of list. This is akin to checking for the truthy value of any JS object and will result to true, regardless of list contents or length.
+			 * 
+			 * {{#if list.length}} will check for the truthy value of the length attribute. If you have an empty list, the length will be 0, so the #if will result to false and no contents will be rendered. If there is a length &gt;= 1, this will result to true and the contents of the #if will be rendered.
+			 * 
+			 * {{#each list}} and {{#list}} both iterate through an instance of can.List, however we setup the bindings differently.
+			 * 
+			 * {{#each list}} will setup bindings on every individual item being iterated through, while {{#list}} will not. This makes a difference in two scenarios:
+			 * 
+			 * 1) You have a large list, with minimal updates planned after initial render. In this case, {{#list}} might be more advantageous as there will be a faster initial render. However, if any part of the list changes, the entire {{#list}} area will be re-processed.
+			 * 
+			 * 2) You have a large list, with many updates planned after initial render. A grid with many columns of editable fields, for instance. In this case, you many want to use {{#each list}}, even though it will be slower on initial render(we&#039;re setting up more bindings), you&#039;ll have faster updates as there are now many sections.
+			 */
+			&#039;each&#039;: function (expr, options) {
+				// Check if this is a list or a compute that resolves to a list, and setup
+				// the incremental live-binding 
+
+				// First, see what we are dealing with.  It&#039;s ok to read the compute
+				// because can.view.text is only temporarily binding to what is going on here.
+				// Calling can.view.lists prevents anything from listening on that compute.
+				var resolved = Mustache.resolve(expr),
+					result = [],
+					keys,
+					key,
+					i;
+
+				// When resolved === undefined, the property hasn&#039;t been defined yet
+				// Assume it is intended to be a list
+				if (can.view.lists &amp;&amp; (resolved instanceof can.List || (expr &amp;&amp; expr.isComputed &amp;&amp; resolved === undefined))) {
+					return can.view.lists(expr, function (item, index) {
+						return options.fn(options.scope.add({
+								&quot;@index&quot;: index
+							})
+							.add(item));
+					});
+				}
+				expr = resolved;
+
+				if ( !! expr &amp;&amp; isArrayLike(expr)) {
+					for (i = 0; i &lt; expr.length; i++) {
+						result.push(options.fn(options.scope.add({
+								&quot;@index&quot;: i
+							})
+							.add(expr[i])));
+					}
+					return result.join(&#039;&#039;);
+				} else if (isObserveLike(expr)) {
+					keys = can.Map.keys(expr);
+					// listen to keys changing so we can livebind lists of attributes.
+
+					for (i = 0; i &lt; keys.length; i++) {
+						key = keys[i];
+						result.push(options.fn(options.scope.add({
+								&quot;@key&quot;: key
+							})
+							.add(expr[key])));
+					}
+					return result.join(&#039;&#039;);
+				} else if (expr instanceof Object) {
+					for (key in expr) {
+						result.push(options.fn(options.scope.add({
+								&quot;@key&quot;: key
+							})
+							.add(expr[key])));
+					}
+					return result.join(&#039;&#039;);
+
+				}
+			},
+			// Implements the `with` built-in helper.
+			/**
+			 * @function can.mustache.helpers.with {{#with key}}
+			 * @parent can.mustache.htags 6
+			 *
+			 * @signature `{{#with key}}BLOCK{{/with}}`
+			 *
+			 * Changes the context within a block.
+			 *
+			 * @param {can.mustache.key} key A key that references a value within the current or parent
+			 * context. If the value is a function or can.compute, the function&#039;s
+			 * return value is used.
+			 *
+			 * @param {can.mustache} BLOCK A template that is rendered
+			 * with the context of the `key`&#039;s value.
+			 *
+			 * @body
+			 *
+			 * Mustache typically applies the context passed in the section
+			 * at compiled time.  However, if you want to override this
+			 * context you can use the `with` helper.
+			 *
+			 *     {{#with arr}}
+			 *       // with
+			 *     {{/with}}
+			 */
+			&#039;with&#039;: function (expr, options) {
+				var ctx = expr;
+				expr = Mustache.resolve(expr);
+				if ( !! expr) {
+					return options.fn(ctx);
+				}
+			},
+			/**
+			 * @function can.mustache.helpers.log {{log}}
+			 * @parent can.mustache.htags 9
+			 *
+			 * @signature `{{#log [message]}}`
+			 *
+			 * Logs the context of the current block with an optional message.
+			 *
+			 * @param {*} message An optional message to log out in addition to the
+			 * current context.
+			 *
+			 */
+			&#039;log&#039;: function (expr, options) {
+				if(typeof console !== &quot;undefined&quot; &amp;&amp; console.log) {
+					if (!options) {
+						console.log(expr.context);
+					} else {
+						console.log(expr, options.context);
+					}
+				}
+			},
+			/**
+			 * @function can.mustache.helpers.elementCallback {{(el)-&gt;CODE}}
+			 *
+			 * @parent can.mustache.htags 8
+			 *
+			 * @signature `{{(el) -&gt; CODE}}`
+			 *
+			 * Executes an element callback with the inline code on the element.
+			 *
+			 * @param {String} code The inline code to execute on the element.
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 * It is common for you to want to execute some code on a given
+			 * DOM element. An example would be for initializing a jQuery plugin
+			 * on the new HTML.
+			 *
+			 *     &lt;div class=&quot;tabs&quot; {{(el) -&gt; el.jquery_tabs()}}&gt;&lt;/div&gt;
+			 *
+			 */
+			//
+			/**
+			 * @function can.mustache.helpers.index {{@index}}
+			 *
+			 * @parent can.mustache.htags 10
+			 *
+			 * @signature `{{@index [offset]}}`
+			 *
+			 * Insert the index of an Array or can.List we are iterating on with [#each](can.mustache.helpers.each)
+			 *
+			 * @param {Number} offset The number to optionally offset the index by.
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 * When iterating over and array or list of items, you might need to render the index
+			 * of the item. Use the `@index` directive to do so. For example,
+			 *
+			 * The template:
+			 *
+			 *     &lt;ul&gt;
+			 *       {{#each items}}
+			 *         &lt;li&gt; {{@index}} - {{.}} &lt;/li&gt;
+			 *       {{/each}}
+			 *     &lt;/ul&gt;
+			 *
+			 * Rendered with:
+			 *
+			 *     { items: [&#039;Josh&#039;, &#039;Eli&#039;, &#039;David&#039;] }
+			 *
+			 * Renders:
+			 *
+			 *     &lt;ul&gt;
+			 *       &lt;li&gt; 0 - Josh &lt;/li&gt;
+			 *       &lt;li&gt; 1 - Eli &lt;/li&gt;
+			 *       &lt;li&gt; 2 - David &lt;/li&gt;
+			 *     &lt;/ul&gt;
+			 *
+			 */
+			&quot;@index&quot;: function(offset, options) {
+				if (!options) {
+					options = offset;
+					offset = 0;
+				}
+				var index = options.scope.read(&quot;@index&quot;,{isArgument: true}).value;
+				return &quot;&quot;+((can.isFunction(index) ? index() : index) + offset);
+			}
+			/**
+			 * @function can.mustache.helpers.key {{@key}}
+			 *
+			 * @parent can.mustache.htags 11
+			 *
+			 * @signature `{{@key}}`
+			 *
+			 * Insert the property name of an Object or attribute name of a can.Map that we iterate over with [#each](can.mustache.helpers.each)
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 * Use `{{@key}}` to render the property or attribute name of an Object or can.Map, when iterating over it with [#each](can.mustache.helpers.each). For example,
+			 *
+			 * The template:
+			 *
+			 *     &lt;ul&gt;
+			 *       {{#each person}}
+			 *         &lt;li&gt; {{@key}}: {{.}} &lt;/li&gt;
+			 *       {{/each}}
+			 *     &lt;/ul&gt;
+			 *
+			 * Rendered with:
+			 *
+			 *     { person: {name: &#039;Josh&#039;, age: 27, likes: &#039;Mustache, JavaScript, High Fives&#039;} }
+			 *
+			 * Renders:
+			 *
+			 *     &lt;ul&gt;
+			 *       &lt;li&gt; name: Josh &lt;/li&gt;
+			 *       &lt;li&gt; age: 27 &lt;/li&gt;
+			 *       &lt;li&gt; likes: Mustache, JavaScript, High Fives &lt;/li&gt;
+			 *     &lt;/ul&gt;
+			 *
+			 */
+		}, function (fn, name) {
+			Mustache.registerHelper(name, fn);
+		});
+
+		// ## Registration
+		//
+		// Registers Mustache with can.view.
+		can.view.register({
+			suffix: &quot;mustache&quot;,
+
+			contentType: &quot;x-mustache-template&quot;,
+
+			// Returns a `function` that renders the view.
+			script: function (id, src) {
+				return &quot;can.Mustache(function(&quot; + ARG_NAMES + &quot;) { &quot; + new Mustache({
+					text: src,
+					name: id
+				})
+					.template.out + &quot; })&quot;;
+			},
+
+			renderer: function (id, text) {
+				return Mustache({
+					text: text,
+					name: id
+				});
+			}
+		});
+		
+		can.mustache.registerHelper = can.proxy(can.Mustache.registerHelper, can.Mustache);
+		can.mustache.safeString = can.Mustache.safeString;
+		return can;
+	});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

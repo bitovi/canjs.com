@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>can/compute/get_value_and_bind</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="compute.html">
+                compute.js
+              </a>
+            
+              
+              <a class="source" href="get_value_and_bind.html">
+                get_value_and_bind.js
+              </a>
+            
+              
+              <a class="source" href="proto_compute.html">
+                proto_compute.js
+              </a>
+            
+              
+              <a class="source" href="read.html">
+                read.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="can-compute-get_value_and_bind">can/compute/get_value_and_bind</h1>
+<p>This module:</p>
+<p>Exports a function that calls an arbitrary function and binds to any observables that
+function reads. When any of those observables change, a callback function is called.</p>
+<p>And …</p>
+<p>Adds two main methods to can:</p>
+<ul>
+<li>can.__observe - All other observes call this method to be visible to computed functions.</li>
+<li>can.__notObserve - Returns a function that can not be observed.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ObservedInfo</span>(<span class="hljs-params">func, context, compute</span>)</span>{
+		<span class="hljs-keyword">this</span>.newObserved = {};
+		<span class="hljs-keyword">this</span>.oldObserved = <span class="hljs-literal">null</span>;
+		<span class="hljs-keyword">this</span>.func = func;
+		<span class="hljs-keyword">this</span>.context = context;
+		<span class="hljs-keyword">this</span>.compute = compute;
+		<span class="hljs-keyword">this</span>.onDependencyChange = can.proxy(<span class="hljs-keyword">this</span>.onDependencyChange, <span class="hljs-keyword">this</span>);
+		<span class="hljs-keyword">this</span>.depth = <span class="hljs-literal">null</span>;
+		<span class="hljs-keyword">this</span>.childDepths = {};
+		<span class="hljs-keyword">this</span>.ignore = <span class="hljs-number">0</span>;
+		<span class="hljs-keyword">this</span>.inBatch = <span class="hljs-literal">false</span>;
+		<span class="hljs-keyword">this</span>.ready = <span class="hljs-literal">false</span>;
+		compute.observedInfo = <span class="hljs-keyword">this</span>;
+		<span class="hljs-keyword">this</span>.setReady = can.proxy(<span class="hljs-keyword">this</span>._setReady, <span class="hljs-keyword">this</span>);
+	}
+
+	can.simpleExtend(ObservedInfo.prototype,{
+		<span class="hljs-attr">getPrimaryDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.compute._primaryDepth;
+		},
+		<span class="hljs-attr">_setReady</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">this</span>.ready = <span class="hljs-literal">true</span>;
+		},
+		<span class="hljs-attr">getDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.depth !== <span class="hljs-literal">null</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.depth;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span>.depth = <span class="hljs-keyword">this</span>._getDepth());
+			}
+		},
+		<span class="hljs-attr">_getDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">var</span> max = <span class="hljs-number">0</span>,
+				childDepths = <span class="hljs-keyword">this</span>.childDepths;
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> cid <span class="hljs-keyword">in</span> childDepths) {
+				<span class="hljs-keyword">if</span>(childDepths[cid] &gt; max) {
+					max = childDepths[cid];
+				}
+			}
+			<span class="hljs-keyword">return</span> max + <span class="hljs-number">1</span>;
+		},
+		<span class="hljs-attr">addEdge</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">objEv</span>)</span>{
+			objEv.obj.bind(objEv.event, <span class="hljs-keyword">this</span>.onDependencyChange);
+			<span class="hljs-keyword">if</span>(objEv.obj.observedInfo) {
+				<span class="hljs-keyword">this</span>.childDepths[objEv.obj._cid] = objEv.obj.observedInfo.getDepth();
+				<span class="hljs-keyword">this</span>.depth = <span class="hljs-literal">null</span>;
+			}
+		},
+		<span class="hljs-attr">removeEdge</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">objEv</span>)</span>{
+			objEv.obj.unbind(objEv.event, <span class="hljs-keyword">this</span>.onDependencyChange);
+			<span class="hljs-keyword">if</span>(objEv.obj.observedInfo) {
+				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.childDepths[objEv.obj._cid];
+				<span class="hljs-keyword">this</span>.depth = <span class="hljs-literal">null</span>;
+			}
+		},
+		<span class="hljs-attr">dependencyChange</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.bound &amp;&amp; <span class="hljs-keyword">this</span>.ready) {
+				<span class="hljs-keyword">if</span>(ev.batchNum !== <span class="hljs-literal">undefined</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Only need to register once per batchNum</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(ev.batchNum !== <span class="hljs-keyword">this</span>.batchNum) {
+						ObservedInfo.registerUpdate(<span class="hljs-keyword">this</span>);
+						<span class="hljs-keyword">this</span>.batchNum = ev.batchNum;
+					}
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">this</span>.updateCompute(ev.batchNum);
+				}
+			}
+		},
+		<span class="hljs-attr">onDependencyChange</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newVal, oldVal</span>)</span>{
+			<span class="hljs-keyword">this</span>.dependencyChange(ev, newVal, oldVal);
+		},
+		<span class="hljs-attr">updateCompute</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">batchNum</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>It’s possible this became unbound since it was registered to update
+Only actually update if something didn’t come in and unbind it. (#2188).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.bound) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Keep the old value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> oldValue = <span class="hljs-keyword">this</span>.value;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Get the new value and register this event handler to any new observables.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.getValueAndBind();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Update the compute with the new value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.compute.updater(<span class="hljs-keyword">this</span>.value, oldValue, batchNum);
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2 id="getvalueandbind">getValueAndBind</h2>
+<p>Calls <code>func</code> with “this” as <code>context</code> and binds to any observables that
+<code>func</code> reads. When any of those observables change, <code>onchanged</code> is called.
+<code>oldObservedInfo</code> is A map of observable / event pairs this function used to be listening to.
+Returns the <code>newInfo</code> set of listeners and the value <code>func</code> returned.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getValueAndBind: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">true</span>;
+			<span class="hljs-keyword">this</span>.oldObserved = <span class="hljs-keyword">this</span>.newObserved || {};
+			<span class="hljs-keyword">this</span>.ignore = <span class="hljs-number">0</span>;
+			<span class="hljs-keyword">this</span>.newObserved = {};
+			<span class="hljs-keyword">this</span>.ready = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Add this function call’s observedInfo to the stack,
+runs the function, pops off the observedInfo, and returns it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+			observedInfoStack.push(<span class="hljs-keyword">this</span>);
+			<span class="hljs-keyword">this</span>.value = <span class="hljs-keyword">this</span>.func.call(<span class="hljs-keyword">this</span>.context);
+			observedInfoStack.pop();
+			<span class="hljs-keyword">this</span>.updateBindings();
+			can.batch.afterPreviousEvents(<span class="hljs-keyword">this</span>.setReady);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="updatebindings">updateBindings</h3>
+<p>Unbinds everything in <code>oldObserved</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		updateBindings: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">var</span> newObserved = <span class="hljs-keyword">this</span>.newObserved,
+				oldObserved = <span class="hljs-keyword">this</span>.oldObserved,
+				name,
+				obEv;
+
+			<span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> newObserved) {
+				obEv = newObserved[name];
+				<span class="hljs-keyword">if</span>(!oldObserved[name]) {
+					<span class="hljs-keyword">this</span>.addEdge(obEv);
+				} <span class="hljs-keyword">else</span> {
+					oldObserved[name] = <span class="hljs-literal">null</span>;
+				}
+			}
+			<span class="hljs-keyword">for</span> (name <span class="hljs-keyword">in</span> oldObserved) {
+				obEv = oldObserved[name];
+				<span class="hljs-keyword">if</span>(obEv) {
+					<span class="hljs-keyword">this</span>.removeEdge(obEv);
+				}
+			}
+		},
+		<span class="hljs-attr">teardown</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>track this because events can be in the queue.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">false</span>;
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.newObserved) {
+				<span class="hljs-keyword">var</span> ob = <span class="hljs-keyword">this</span>.newObserved[name];
+				<span class="hljs-keyword">this</span>.removeEdge(ob);
+			}
+			<span class="hljs-keyword">this</span>.newObserved = {};
+		}
+	});
+
+
+
+	<span class="hljs-keyword">var</span> updateOrder = [],
+		curPrimaryDepth = <span class="hljs-literal">Infinity</span>,
+		maxPrimaryDepth = <span class="hljs-number">0</span>,
+		currentBatchNum;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>could get a registerUpdate from a 5 while a 1 is going on because the 5 listens to the 1</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	ObservedInfo.registerUpdate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">observeInfo, batchNum</span>)</span>{
+		<span class="hljs-keyword">var</span> depth = observeInfo.getDepth()<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">var</span> primaryDepth = observeInfo.getPrimaryDepth();
+
+		curPrimaryDepth = <span class="hljs-built_in">Math</span>.min(primaryDepth, curPrimaryDepth);
+		maxPrimaryDepth = <span class="hljs-built_in">Math</span>.max(primaryDepth, maxPrimaryDepth);
+
+		<span class="hljs-keyword">var</span> primary = updateOrder[primaryDepth] ||
+			(updateOrder[primaryDepth] = {
+				<span class="hljs-attr">observeInfos</span>: [],
+				<span class="hljs-attr">current</span>: <span class="hljs-literal">Infinity</span>,
+				<span class="hljs-attr">max</span>: <span class="hljs-number">0</span>
+			});
+		<span class="hljs-keyword">var</span> objs = primary.observeInfos[depth] || (primary.observeInfos[depth] = []);
+
+		objs.push(observeInfo);
+
+		primary.current = <span class="hljs-built_in">Math</span>.min(depth, primary.current);
+		primary.max = <span class="hljs-built_in">Math</span>.max(depth, primary.max);
+	};
+
+	<span class="hljs-comment">/*
+	 * update all computes to the specified place.
+	 */</span>
+	ObservedInfo.updateUntil = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">primaryDepth, depth</span>)</span>{
+		<span class="hljs-keyword">var</span> cur;
+
+		<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+			<span class="hljs-keyword">if</span>(curPrimaryDepth &lt;= maxPrimaryDepth &amp;&amp; curPrimaryDepth &lt;= primaryDepth) {
+				<span class="hljs-keyword">var</span> primary = updateOrder[curPrimaryDepth];
+
+				<span class="hljs-keyword">if</span>(primary &amp;&amp; primary.current &lt;= primary.max) {
+					<span class="hljs-keyword">if</span>(primary.current &gt; depth) {
+						<span class="hljs-keyword">return</span>;
+					}
+					
+					<span class="hljs-keyword">var</span> last = primary.observeInfos[primary.current];
+					<span class="hljs-keyword">if</span>(last &amp;&amp; (cur = last.pop())) {
+						cur.updateCompute(currentBatchNum);
+					} <span class="hljs-keyword">else</span> {
+						primary.current++;
+					}
+				} <span class="hljs-keyword">else</span> {
+					curPrimaryDepth++;
+				}
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span>;
+			}
+		}
+	};
+
+	ObservedInfo.batchEnd = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">batchNum</span>)</span>{
+		<span class="hljs-keyword">var</span> cur;
+		currentBatchNum = batchNum;
+		<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+			<span class="hljs-keyword">if</span>(curPrimaryDepth &lt;= maxPrimaryDepth) {
+				<span class="hljs-keyword">var</span> primary = updateOrder[curPrimaryDepth];
+
+				<span class="hljs-keyword">if</span>(primary &amp;&amp; primary.current &lt;= primary.max) {
+					<span class="hljs-keyword">var</span> last = primary.observeInfos[primary.current];
+					<span class="hljs-keyword">if</span>(last &amp;&amp; (cur = last.pop())) {
+						cur.updateCompute(batchNum);
+					} <span class="hljs-keyword">else</span> {
+						primary.current++;
+					}
+				} <span class="hljs-keyword">else</span> {
+					curPrimaryDepth++;
+				}
+			} <span class="hljs-keyword">else</span> {
+				updateOrder = [];
+				curPrimaryDepth = <span class="hljs-literal">Infinity</span>;
+				maxPrimaryDepth = <span class="hljs-number">0</span>;
+				<span class="hljs-keyword">return</span>;
+			}
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h3 id="observedinfostack">observedInfoStack</h3>
+<p>This is the stack of all <code>observedInfo</code> objects that are the result of
+recursive <code>getValueAndBind</code> calls.
+<code>getValueAndBind</code> can indirectly call itself anytime a compute reads another
+compute.</p>
+<p>An <code>observedInfo</code> entry looks like:</p>
+<pre><code>{
+  <span class="hljs-attr">observed</span>: {
+    <span class="hljs-string">"map1|first"</span>: {<span class="hljs-attr">obj</span>: map, <span class="hljs-attr">event</span>: <span class="hljs-string">"first"</span>},
+    <span class="hljs-string">"map1|last"</span> : {<span class="hljs-attr">obj</span>: map, <span class="hljs-attr">event</span>: <span class="hljs-string">"last"</span>}
+  },
+  <span class="hljs-attr">names</span>: <span class="hljs-string">"map1|firstmap1|last"</span>
+}
+</code></pre><p>Where:</p>
+<ul>
+<li><code>observed</code> is a map of <code>&quot;cid|event&quot;</code> to the observable and event.
+We use keys like <code>&quot;cid|event&quot;</code> to quickly identify if we have already observed this observable.</li>
+<li><code>names</code> is all the keys so we can quickly tell if two observedInfo objects are the same.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> observedInfoStack = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h2 id="can-__observe">can.__observe</h2>
+<p>Indicates that an observable is being read.
+Updates the top of the stack with the observable being read.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.__observe = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, event</span>) </span>{
+		<span class="hljs-keyword">var</span> top = observedInfoStack[observedInfoStack.length<span class="hljs-number">-1</span>];
+		<span class="hljs-keyword">if</span> (top &amp;&amp; !top.ignore) {
+			<span class="hljs-keyword">var</span> evStr = event + <span class="hljs-string">""</span>,
+				name = obj._cid + <span class="hljs-string">'|'</span> + evStr;
+				
+			<span class="hljs-keyword">if</span>(top.traps) {
+				top.traps.push({<span class="hljs-attr">obj</span>: obj, <span class="hljs-attr">event</span>: evStr, <span class="hljs-attr">name</span>: name});
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!top.newObserved[name]) {
+				top.newObserved[name] = {
+					<span class="hljs-attr">obj</span>: obj,
+					<span class="hljs-attr">event</span>: evStr
+				};
+			}
+		}
+	};
+
+	can.__reading = can.__observe;
+
+	can.__trapObserves = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">if</span> (observedInfoStack.length) {
+			<span class="hljs-keyword">var</span> top = observedInfoStack[observedInfoStack.length<span class="hljs-number">-1</span>];
+			<span class="hljs-keyword">var</span> traps = top.traps = [];
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				top.traps = <span class="hljs-literal">null</span>;
+				<span class="hljs-keyword">return</span> traps;
+			};
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<span class="hljs-keyword">return</span> [];};
+		}
+	};
+	can.__observes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">observes</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>a bit more optimized so we don’t have to repeat everything in can.__observe</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> top = observedInfoStack[observedInfoStack.length<span class="hljs-number">-1</span>];
+		<span class="hljs-keyword">if</span> (top) {
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>, len = observes.length; i &lt; len; i++) {
+				<span class="hljs-keyword">var</span> trap = observes[i],
+					name = trap.name;
+
+				<span class="hljs-keyword">if</span>(!top.newObserved[name]) {
+					top.newObserved[name] = trap;
+				}
+			}
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h3 id="can-__isrecordingobserves">can.__isRecordingObserves</h3>
+<p>Returns if some function is in the process of recording observes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.__isRecordingObserves = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">var</span> len = observedInfoStack.length,
+			last = observedInfoStack[len<span class="hljs-number">-1</span>];
+		<span class="hljs-keyword">return</span> len &amp;&amp; (last.ignore === <span class="hljs-number">0</span>) &amp;&amp; last;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h3 id="can-__notobserve">can.__notObserve</h3>
+<p>Protects a function from being observed.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.__notObserve = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn</span>)</span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">if</span> (observedInfoStack.length) {
+				<span class="hljs-keyword">var</span> top = observedInfoStack[observedInfoStack.length<span class="hljs-number">-1</span>];
+				top.ignore++;
+				<span class="hljs-keyword">var</span> res = fn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+				top.ignore--;
+				<span class="hljs-keyword">return</span> res;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> fn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			}
+		};
+	};
+
+	can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
+
+	<span class="hljs-keyword">return</span> ObservedInfo;
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

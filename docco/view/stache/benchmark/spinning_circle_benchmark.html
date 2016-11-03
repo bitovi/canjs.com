@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>spinning_circle_benchmark.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="compile_benchmark.html">
+                compile_benchmark.js
+              </a>
+            
+              
+              <a class="source" href="spinning_circle_benchmark.html">
+                spinning_circle_benchmark.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>spinning_circle_benchmark.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,<span class="hljs-string">'can/view/stache'</span>, <span class="hljs-string">'steal-benchmark'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, stache, b</span>) </span>{
+
+	<span class="hljs-comment">/* jshint ignore:start */</span>
+	<span class="hljs-keyword">var</span> suite = b.suite(<span class="hljs-string">"can/view/stache spinning circle"</span>);
+	
+	
+	suite.add(
+		<span class="hljs-string">"basics"</span>,
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			can.batch.start();
+			<span class="hljs-keyword">for</span>( <span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span> ; n &lt; boxes.length; n++ ) {
+        		boxes[n].tick();
+        	}
+        	can.batch.stop();
+		},
+		{
+			<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">var</span> template = can.stache(
+					<span class="hljs-string">"{{#each boxes}}"</span>+
+						<span class="hljs-string">"&lt;div class='box-view'&gt;"</span>+
+							<span class="hljs-string">"&lt;div class='box' id='box-{{number}}'  style='{{style}}'&gt;"</span>+
+								<span class="hljs-string">"{{content}}"</span>+
+							<span class="hljs-string">"&lt;/div&gt;"</span>+
+						<span class="hljs-string">"&lt;/div&gt;"</span>+
+					<span class="hljs-string">"{{/each}}"</span>);
+					
+					
+				<span class="hljs-keyword">var</span> boxes = <span class="hljs-keyword">new</span> can.List(),
+					Box = can.Map.extend({
+						<span class="hljs-attr">top</span>: <span class="hljs-number">0</span>,
+					    <span class="hljs-attr">left</span>: <span class="hljs-number">0</span>,
+					    <span class="hljs-attr">content</span>: <span class="hljs-number">0</span>,
+					    <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+					
+					    <span class="hljs-attr">tick</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					        <span class="hljs-keyword">var</span> count = <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'count'</span>) + <span class="hljs-number">1</span>;
+					        
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'count'</span>, count);
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'top'</span>, <span class="hljs-built_in">Math</span>.sin(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>);
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'left'</span>, <span class="hljs-built_in">Math</span>.cos(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>);
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'color'</span>, count % <span class="hljs-number">255</span>);
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'content'</span>, count % <span class="hljs-number">100</span>);
+					        <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'style'</span>, <span class="hljs-keyword">this</span>.computeStyle());
+					        
+					    },
+					
+					    <span class="hljs-attr">computeStyle</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					        <span class="hljs-keyword">return</span> <span class="hljs-string">'top: '</span> + <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'top'</span>) + <span class="hljs-string">'px; left: '</span> +  <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'left'</span>) +<span class="hljs-string">'px; background: rgb(0,0,'</span> + <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'color'</span>) + <span class="hljs-string">');'</span>;
+					    }
+					});
+				
+				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) {
+					<span class="hljs-keyword">var</span> box = <span class="hljs-keyword">new</span> Box({ <span class="hljs-attr">number</span>: i });
+					box.tick();
+					boxes.push( box );
+				}
+				
+				<span class="hljs-keyword">var</span> frag = template({<span class="hljs-attr">boxes</span>: boxes});
+				<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
+				div.appendChild(frag);
+				$(<span class="hljs-built_in">document</span>.body).append(frag);
+			},
+			<span class="hljs-attr">teardown</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				$(div).remove();
+			},
+			<span class="hljs-attr">onStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-built_in">console</span>.profile(<span class="hljs-string">"init"</span>)
+			},
+			<span class="hljs-attr">onComplete</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-built_in">console</span>.profileEnd(<span class="hljs-string">"init"</span>)
+			}
+		});
+	<span class="hljs-comment">/*
+	suite.add(
+		"initial render",
+		function () {
+			
+			var frag = template({boxes: boxes});
+			window.frag = frag;
+		},
+		{
+			setup: function(){
+				var template = can.stache(
+					"{{#each boxes}}"+
+						"&lt;div class='box-view'&gt;"+
+							"&lt;div class='box' id='box-{{number}}'  style='{{style}}'&gt;"+
+								"{{content}}"+
+							"&lt;/div&gt;"+
+						"&lt;/div&gt;"+
+					"{{/each}}");
+					
+					
+				var boxes = new can.List(),
+					Box = can.Map.extend({
+						top: 0,
+					    left: 0,
+					    content: 0,
+					    count: 0,
+					
+					    tick: function() {
+					        var count = this.attr('count') + 1;
+					        
+					        this.attr('count', count);
+					        this.attr('top', Math.sin(count / 10) * 10);
+					        this.attr('left', Math.cos(count / 10) * 10);
+					        this.attr('color', count % 255);
+					        this.attr('content', count % 100);
+					        this.attr('style', this.computeStyle());
+					        
+					    },
+					
+					    computeStyle: function() {
+					        return 'top: ' + this.attr('top') + 'px; left: ' +  this.attr('left') +'px; background: rgb(0,0,' + this.attr('color') + ');';
+					    }
+					});
+				
+				for(var i =0; i &lt; 100; i++) {
+					var box = new Box({ number: i });
+					box.tick();
+					boxes.push( box );
+				}
+				
+			},
+			teardown: function(){
+				
+				window.frag = null;
+			},
+			onStart: function(){
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>console.profile(“init”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			},
+			<span class="hljs-attr">onComplete</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>console.profileEnd(“init”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}
+		});*/
+	/* jshint ignore:end */
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Data Models and Fixtures </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started Tutorial">
+				Getting Started Tutorial
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ApplicationDesign.html" 
+							data-search="Application Design">
+							Application Design
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructors.html" 
+							data-search="Constructors">
+							Constructors
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="TheDefinePlugin.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="StacheTemplates.html" 
+							data-search="Stache Templates">
+							Stache Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="AppStateAndRouting.html" 
+							data-search="App State and Routing">
+							App State and Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ViewModels.html" 
+							data-search="View Models">
+							View Models
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="DataModelsAndFixtures.html" 
+							data-search="Data Models and Fixtures">
+							Data Models and Fixtures
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="LoadingStates.html" 
+							data-search="Loading States">
+							Loading States
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EventHandling.html" 
+							data-search="Event Handling">
+							Event Handling
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="WebServiceCommunication.html" 
+							data-search="Web Service Communication">
+							Web Service Communication
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Data Models and Fixtures</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">DataModelsAndFixtures</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/guides/getting-started-tutorial/data-models-and-fixtures.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<div class="getting-started">
+<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li><code>can.Model</code></li>
+<li><code>can.fixture</code></li>
+<li>Connecting <code>can.Model</code> with <code>can.Component</code></li>
+</ul>
+<p>Get the code for: <a href="/guides/examples/PlaceMyOrder/ch-6_canjs-getting-started.zip">chapter: data models and fixtures</a></p>
+<hr />
+<p>The next item we’re going to go over is <a href="../docs/can.Model.html">can.Model</a>.
+Models make interacting with JSON REST services <em>really easy</em>. They do this by
+encapsulating most of the code required to connect to a service and managing
+the data the service returns. Additionally, <code>can.Model</code> extends
+<a href="../docs/can.Map.html">can.Map</a>, meaning that the objects returned have all of
+the features of a <code>can.Map</code>, such as being <a href="Observables.html">observable</a>.</p>
+<p>For applications requiring real-time, high performance, restful data connections
+you should check out <a href="http://connect.canjs.com/">can-connect</a>. For our simple case,
+we’ll use <code>can.Model</code> to provide data for our state and city elements from
+the last chapter.</p>
+<p>First, let’s open the <code>models/state.js</code> file and add the following code:</p>
+<pre><code>var State = can.Model.extend({
+  findAll: 'GET /api/states'
+}, {
+  // Include second, empty parameter object to set instanceProperties
+});
+</code></pre>
+<p>Then add the following to <code>models/city.js</code>:</p>
+<pre><code>var City = can.Model.extend({
+  findAll: 'GET /api/cities'
+}, {
+  // Include second, empty parameter object to set instanceProperties
+});
+</code></pre>
+<p>Because it is a <a href="../docs/can.Construct.html">can.Construct</a>, <code>can.Model.extend</code>
+can take up to three parameters:</p>
+<ol>
+<li><code>name</code></li>
+<li><code>staticProperties</code></li>
+<li><code>instanceProperties</code></li>
+</ol>
+<p>A <code>can.Model</code>’s <code>staticProperties</code> parameter has several reserved properties you
+can add that simplify accessing data from a JSON REST service. These
+properties are:</p>
+<ol>
+<li><code>findAll</code></li>
+<li><code>findOne</code></li>
+<li><code>create</code></li>
+<li><code>update</code></li>
+<li><code>destroy</code></li>
+</ol>
+<p>The <code>find*</code>, <code>create</code>, <code>update</code>, and <code>destroy</code> functions are available directly
+off of the object definition (i.e., they are static). The <code>destroy</code> function is
+available off of specific instances of a <code>can.Model</code>. We’ll see how to
+use these below.</p>
+<p><strong>Reminder</strong>: The number of parameters you pass in to an <code>extend</code> function is
+important. If you pass in a single parameter object, the <code>extend</code> function will
+use that to set the <code>instanceProperties</code>. If you pass in two parameter
+objects, the <em>first</em> object passed in will be used to set the
+<code>staticProperties</code>. The second parameter will be used to set the
+<code>instanceProperties</code>. Here, we only want to set the <code>staticProperties</code>, so we
+must pass in a second, empty object.</p>
+<p>A few examples below illustrate this important point:</p>
+<pre><code>var MyModel = can.Model.extend({
+  findAll: function () {
+    // Static function
+  }
+}, {
+  destroy: function () {
+    // Instance function
+  }
+});
+
+MyModel.findAll(); // Reference a function defined on the constructor
+
+var modelInstance = new MyModel();
+modelInstance.destroy(); // Reference a function defined on the prototype
+</code></pre>
+<h2>The Data for Our Model</h2>
+<p>We’re not going to connect to a server to retrieve our data; however, we’re
+going to code our model as if we were. How can this possibly work? CanJS
+provides a handy utility, <code>can.fixture</code>, that we can use to easily mimic the
+functionality of connecting to a server. <code>can.fixture</code>
+intercepts an AJAX request and simulates a server response with a file or a
+function. You can use <code>can.fixture</code> to develop JavaScript independently of
+backend services.</p>
+<p><code>can.fixture</code> is not included with the base CanJS package. It’s a good practice
+to keep it separate from your production CanJS library, which is why we
+downloaded it as a separate file, and then loaded it into index.html via a separate
+script tag, rather than including it with our custom download.
+<em>If you use <code>can.fixture</code> during development, remember
+to remove it once you need to connect to your REST services</em>.</p>
+<p>Let’s create a fixture that will respond to our requests for the list of states.
+Add the following code to the <code>models/fixtures.js</code> file:</p>
+<pre><code>can.fixture('GET /api/states', 'models/states.json');
+</code></pre>
+<p>The first argument to <code>can.fixture</code>, <code>GET /api/states</code>, tells CanJS to
+intercept any <code>GET</code> requests to the resource <code>/api/states</code>. The second argument
+is a path to a file with the data the fixture will return. Because we’re simulating
+a <code>findAll</code> function, we need to return an array. The <code>findAll</code> function
+expects an array. By default, if it does not receive one, it will throw an error.
+If you need to connect to services that return data that doesn’t match the expected
+return type of the <code>find*</code> functions, don’t fret. There are ways to manage this,
+which we’ll work with later on.</p>
+<p>Let’s also create a fixture that will respond to our requests for the list
+of cities for each state. This one is going to be a little different because
+we want to be able to return a different list depending on which state is
+included in the request. Thankfully, <code>can.fixture</code> is flexible and allows
+you to dynamically respond to requests. Let’s add the following code to the
+<code>models/fixtures.js</code> file:</p>
+<pre><code>can.fixture('GET /api/cities', function(request, response) {
+    can.ajax({
+        url: 'models/' + request.data.state + '.json',
+        success: function(data) {
+            response(data);
+        }
+    });
+});
+</code></pre>
+<p>The first argument to <code>can.fixture</code>, <code>GET /api/cities</code>, is similar to our
+restaurants example: we’re setting up this fixture to intercept any <code>GET</code>
+requests to <code>/api/cities</code>. The second argument, however, is different: it
+is a function that returns the data we want to get when the application makes
+a service call. In our example, we’re making an AJAX request (via
+<a href="../docs/can.ajax.html">can.ajax</a>) to get the fixture data from a JSON file,
+then responding to the request with the data we fetched.</p>
+<h2>Connecting the Model to the Component</h2>
+<p>It’s time to connect all of this together in our view model. Simply open up
+<code>components/restaurant_list/restaurant_list.js</code>, find the states property:</p>
+<pre><code>        states: {
+            value: [
+                {
+                    cities: ['Green Bay', 'Milwaukee'],
+                    name: 'Wisconsin'
+                },
+                {
+                    cities: ['Detroit', 'Ann Arbor'],
+                    name: 'Michigan'
+                },
+                {
+                    cities: ['Chicago', 'Peoria'],
+                    name: 'Illinois'
+                }
+            ]
+        },
+</code></pre>
+<p>and replace it with this:</p>
+<pre><code>        states: {
+            get: function() {
+                return State.findAll({});
+            }
+        },
+</code></pre>
+<p>In the same file, find the cities property:</p>
+<pre><code>        cities: {
+            get: function() {
+                var state = this.attr('state');
+                return state &amp;&amp; this.attr('citiesByState')[state];
+            }
+        },
+</code></pre>
+<p>and replace it with this:</p>
+<pre><code>        cities: {
+            get: function() {
+                var state = this.attr('state');
+                return state ? City.findAll({ state: state }) : null;
+            }
+        },
+</code></pre>
+<p>You can remove the <code>citiesByState</code> property since we won’t be using it anymore.
+Let’s also update the <code>components/restaurant_list/restaurant_list.stache</code> file
+to match the changes we made in the view model. The most significant change is
+that our <code>cities</code> and <code>states</code> properties now return a <a href="../docs/can.List.plugins.promise.html">promise</a>
+instead of just an array. Find the <code>form</code> element:</p>
+<pre><code>  &lt;form class=&quot;form&quot;&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;State&lt;/label&gt;
+      &lt;select {($value)}=&quot;state&quot;&gt;
+        {{^if state}}
+        &lt;option value=&quot;&quot;&gt;Choose a state&lt;/option&gt;
+        {{/if}}
+        {{#each states}}
+        &lt;option value=&quot;{{name}}&quot;&gt;{{name}}&lt;/option&gt;
+        {{/each}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;City&lt;/label&gt;
+      &lt;select {($value)}=&quot;city&quot;&gt;
+        {{^if city}}
+        &lt;option value=&quot;&quot;&gt;Choose a city&lt;/option&gt;
+        {{/if}}
+        {{#each cities}}
+        &lt;option&gt;{{.}}&lt;/option&gt;
+        {{/each}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+</code></pre>
+<p>and replace it with this new one:</p>
+<pre><code>  &lt;form class=&quot;form&quot;&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;State&lt;/label&gt;
+      &lt;select {($value)}=&quot;state&quot; {{#if states.isPending}}disabled{{/if}}&gt;
+        {{#if states.isPending}}
+          &lt;option value=&quot;&quot;&gt;Loading...&lt;/option&gt;
+        {{else}}
+          {{^if state}}
+          &lt;option value=&quot;&quot;&gt;Choose a state&lt;/option&gt;
+          {{/if}}
+          {{#each states.value}}
+          &lt;option value=&quot;{{short}}&quot;&gt;{{name}}&lt;/option&gt;
+          {{/each}}
+        {{/if}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;form-group&quot;&gt;
+      &lt;label&gt;City&lt;/label&gt;
+      &lt;select {($value)}=&quot;city&quot; {{^if state}}disabled{{/if}}&gt;
+        {{#if cities.isPending}}
+          &lt;option value=&quot;&quot;&gt;Loading...&lt;/option&gt;
+        {{else}}
+          {{^if city}}
+          &lt;option value=&quot;&quot;&gt;Choose a city&lt;/option&gt;
+          {{/if}}
+          {{#each cities.value}}
+          &lt;option&gt;{{name}}&lt;/option&gt;
+          {{/each}}
+        {{/if}}
+      &lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+</code></pre>
+<p>Note that there are a few ways to call a <code>findAll</code> function on a <code>can.Model</code>. The
+first way is to call the function explicitly. Using the <code>State</code> model as an
+example, that would look like this:</p>
+<pre><code>State.findAll({ /* paramsObject */ },
+  function(returnedObject){
+    // ...
+  },
+  function(errorObject){
+    // ...
+  });
+</code></pre>
+<p>We also have the ability to use <code>can.Deferred</code>, which allows us to chain
+callback functions off of each other. You can read more about this from the
+<a href="https://api.jquery.com/category/deferred-object/">jQuery API</a>. Using this
+method, we could write our <code>findAll</code> like this:</p>
+<pre><code>State.findAll({ /* paramsObject */ })
+  /* When the API call succeeds, .done() is called */
+  .done(function(returnedObject) {
+    // ...
+  })
+  /* When the API call errors, .fails() is called */
+  .fail(function(errorObject) {
+    // ...
+  });
+</code></pre>
+<p>Both are acceptable, but throughout the guide we will use the Deferred method
+as it more explicitly states which callback function is which.</p>
+<p>Finally, let’s add the scripts we modified to our <code>index.html</code> file.
+Find these lines:</p>
+<pre><code>    &lt;!-- Replace with city model script --&gt;
+    &lt;!-- Replace with fixtures script --&gt;
+    &lt;!-- Replace with state model script --&gt;
+</code></pre>
+<p>and replace it with these lines:</p>
+<pre><code>    &lt;script src=&quot;models/city.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;models/fixtures.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;models/state.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Let’s go back to our app now and see what happens! If everything went
+according to plan, you should be able to refresh the Restaurants page
+and see the same list that we had before. Selecting a state, then a city,
+should work the same as well.</p>
+<p><img src="../can/guides/images/view-models/view_model_city.png" alt="set up state selector" /></p>
+<hr />
+<p><span class="pull-left"><a href="ViewModels.html">&lsaquo; View Models</a></span>
+<span class="pull-right"><a href="LoadingStates.html">Loading States &rsaquo;</a></span></p>
+</div>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"DataModelsAndFixtures","src":"guides/getting-started-tutorial/data-models-and-fixtures.md","description":"","title":"Data Models and Fixtures","parent":"Tutorial","order":9,"disabletableofcontents":true,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,guides/**/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

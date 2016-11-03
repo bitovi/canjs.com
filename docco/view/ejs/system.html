@@ -52,14 +52,14 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-string">"format steal"</span>;
-steal(<span class="hljs-string">"can/view/ejs"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
+steal(<span class="hljs-string">"can/view/ejs"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">translate</span><span class="hljs-params">(load)</span> </span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">translate</span>(<span class="hljs-params">load</span>) </span>{
 		<span class="hljs-keyword">return</span> <span class="hljs-string">"define(['can/view/ejs/ejs'],function(can){"</span> +
 			<span class="hljs-string">"return can.view.preloadStringRenderer('"</span> + load.metadata.pluginArgument + <span class="hljs-string">"',"</span> +
 			<span class="hljs-string">'can.EJS(function(_CONTEXT,_VIEW) { '</span> + <span class="hljs-keyword">new</span> can.EJS({
-				text: load.source,
-				name: load.name
+				<span class="hljs-attr">text</span>: load.source,
+				<span class="hljs-attr">name</span>: load.name
 			})
 			.template.out + <span class="hljs-string">' })'</span> +
 			<span class="hljs-string">")"</span> +
@@ -67,7 +67,7 @@ steal(<span class="hljs-string">"can/view/ejs"</span>, <span class="hljs-functio
 	}
 
 	<span class="hljs-keyword">return</span> {
-		translate: translate
+		<span class="hljs-attr">translate</span>: translate
 	};
 
 });</pre></div></div>

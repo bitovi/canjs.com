@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -86,17 +96,17 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,<span class="hljs-string">"can/view/target"</span>,<span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"./mustache_core.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( can, target, utils, mustacheCore )</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,<span class="hljs-string">"can/view/target"</span>,<span class="hljs-string">"./utils.js"</span>,<span class="hljs-string">"./mustache_core.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> can, target, utils, mustacheCore </span>) </span>{
 
-	
-	<span class="hljs-keyword">var</span> decodeHTML = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+
+	<span class="hljs-keyword">var</span> decodeHTML = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 		<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html)</span></span>{
-			<span class="hljs-keyword">if</span>(html.indexOf(<span class="hljs-string">"&amp;"</span>) === -<span class="hljs-number">1</span>) {
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">html</span>)</span>{
+			<span class="hljs-keyword">if</span>(html.indexOf(<span class="hljs-string">"&amp;"</span>) === <span class="hljs-number">-1</span>) {
 				<span class="hljs-keyword">return</span> html.replace(<span class="hljs-regexp">/\r\n/g</span>,<span class="hljs-string">"\n"</span>);
 			}
 			el.innerHTML = html;
-			<span class="hljs-keyword">return</span> el.childNodes.length === <span class="hljs-number">0</span> ? <span class="hljs-string">""</span> : el.childNodes[<span class="hljs-number">0</span>].nodeValue;
+			<span class="hljs-keyword">return</span> el.childNodes.length === <span class="hljs-number">0</span> ? <span class="hljs-string">""</span> : el.childNodes.item(<span class="hljs-number">0</span>).nodeValue;
 		};
 	})();</pre></div></div>
             
@@ -112,21 +122,21 @@
               <h2 id="htmlsectionbuilder">HTMLSectionBuilder</h2>
 <p>Contains a stack of HTMLSections.
 An HTMLSection is created everytime a subsection is found. For example:</p>
-<pre><code>{{#<span class="hljs-keyword">if</span> items}} {{#items}} X
-</code></pre><p>At the point X was being processed, their would be 2 HTMLSections in the 
+<pre><code>{{#if items}} {{#items}} X
+</code></pre><p>At the point X was being processed, their would be 2 HTMLSections in the
 stack.  One for the content of <code>{{#if items}}</code> and the other for the
 content of <code>{{#items}}</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> HTMLSectionBuilder = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> HTMLSectionBuilder = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 		<span class="hljs-keyword">this</span>.stack = [<span class="hljs-keyword">new</span> HTMLSection()];
 	};
-	
+
 	can.extend(HTMLSectionBuilder.prototype,utils.mixins);
-	
+
 	can.extend(HTMLSectionBuilder.prototype,{
-		startSubSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(process)</span></span>{
+		<span class="hljs-attr">startSubSection</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">process</span>)</span>{
 			<span class="hljs-keyword">var</span> newSection = <span class="hljs-keyword">new</span> HTMLSection(process);
 			<span class="hljs-keyword">this</span>.stack.push(newSection);
 			<span class="hljs-keyword">return</span> newSection;
@@ -146,7 +156,7 @@ But only returns a renderer if there is a template.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		endSubSectionAndReturnRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <div class="content"><div class='highlight'><pre>		endSubSectionAndReturnRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.last().isEmpty()) {
 				<span class="hljs-keyword">this</span>.stack.pop();
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
@@ -155,7 +165,7 @@ But only returns a renderer if there is a template.</p>
 				<span class="hljs-keyword">return</span> can.proxy(htmlSection.compiled.hydrate, htmlSection.compiled);
 			}
 		},
-		startSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( process )</span> </span>{
+		<span class="hljs-attr">startSection</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> process </span>) </span>{
 			<span class="hljs-keyword">var</span> newSection = <span class="hljs-keyword">new</span> HTMLSection(process);
 			<span class="hljs-keyword">this</span>.last().add(newSection.targetCallback);</pre></div></div>
             
@@ -175,35 +185,35 @@ the stack has section …</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.stack.push(newSection);
 		},
-		endSection: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">endSection</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">this</span>.last().compile();
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack.pop();
 		},
-		inverse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">inverse</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">this</span>.last().inverse();
 		},
-		compile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">compile</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">var</span> compiled = <span class="hljs-keyword">this</span>.stack.pop().compile();
-			
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span></span>{
+
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, options, nodeList</span>)</span>{
 				<span class="hljs-keyword">if</span> ( !(scope <span class="hljs-keyword">instanceof</span> can.view.Scope) ) {
-					scope = <span class="hljs-keyword">new</span> can.view.Scope(scope || {});
+					scope = can.view.Scope.refsScope().add(scope || {});
 				}
 				<span class="hljs-keyword">if</span> ( !(options <span class="hljs-keyword">instanceof</span> mustacheCore.Options) ) {
 					options = <span class="hljs-keyword">new</span> mustacheCore.Options(options || {});
 				}
-				<span class="hljs-keyword">return</span> compiled.hydrate(scope, options);
+				<span class="hljs-keyword">return</span> compiled.hydrate(scope, options, nodeList);
 			};
 		},
-		push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chars)</span></span>{
+		<span class="hljs-attr">push</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">chars</span>)</span>{
 			<span class="hljs-keyword">this</span>.last().push(chars);
 		},
-		pop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">pop</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.last().pop();
 		}
 	});
-	
-	<span class="hljs-keyword">var</span> HTMLSection = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(process)</span></span>{
+
+	<span class="hljs-keyword">var</span> HTMLSection = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">process</span>)</span>{
 		<span class="hljs-keyword">this</span>.data = <span class="hljs-string">"targetData"</span>;
 		<span class="hljs-keyword">this</span>.targetData = [];</pre></div></div>
             
@@ -222,7 +232,7 @@ the stack has section …</p>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>.targetStack = [];
 		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-		<span class="hljs-keyword">this</span>.targetCallback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options, sectionNode)</span></span>{
+		<span class="hljs-keyword">this</span>.targetCallback = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, options, sectionNode</span>)</span>{
 			process.call(<span class="hljs-keyword">this</span>,
 				scope,
 				options,
@@ -232,7 +242,7 @@ the stack has section …</p>
 		};
 	};
 	can.extend(HTMLSection.prototype,{
-		inverse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">inverse</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">this</span>.inverseData = [];
 			<span class="hljs-keyword">this</span>.data = <span class="hljs-string">"inverseData"</span>;
 		},</pre></div></div>
@@ -250,36 +260,35 @@ the stack has section …</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		push: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+            <div class="content"><div class='highlight'><pre>		push: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
 			<span class="hljs-keyword">this</span>.add(data);
 			<span class="hljs-keyword">this</span>.targetStack.push(data);
 		},
-		pop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">pop</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.targetStack.pop();
 		},
-		add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span></span>{
+		<span class="hljs-attr">add</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">"string"</span>){
 				data = decodeHTML(data);
 			}
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.targetStack.length) {
-				<span class="hljs-keyword">this</span>.targetStack[<span class="hljs-keyword">this</span>.targetStack.length-<span class="hljs-number">1</span>].children.push(data);
+				can.last(<span class="hljs-keyword">this</span>.targetStack).children.push(data);
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.data].push(data);
 			}
 		},
-		compile: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-			<span class="hljs-keyword">this</span>.compiled = target(<span class="hljs-keyword">this</span>.targetData);
+		<span class="hljs-attr">compile</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">this</span>.compiled = target(<span class="hljs-keyword">this</span>.targetData, can.document || can.global.document);
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.inverseData) {
-				<span class="hljs-keyword">this</span>.inverseCompiled = target(<span class="hljs-keyword">this</span>.inverseData);
+				<span class="hljs-keyword">this</span>.inverseCompiled = target(<span class="hljs-keyword">this</span>.inverseData, can.document || can.global.document);
 				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.inverseData;
 			}
-			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.targetData;
-			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.targetStack;
+			<span class="hljs-keyword">this</span>.targetStack = <span class="hljs-keyword">this</span>.targetData = <span class="hljs-literal">null</span>;
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.compiled;
 		},
-		children: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">children</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.targetStack.length) {
-				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.targetStack[<span class="hljs-keyword">this</span>.targetStack.length-<span class="hljs-number">1</span>].children;
+				<span class="hljs-keyword">return</span> can.last(<span class="hljs-keyword">this</span>.targetStack).children;
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.data];
 			}
@@ -298,13 +307,13 @@ the stack has section …</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isEmpty: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <div class="content"><div class='highlight'><pre>		isEmpty: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">return</span> !<span class="hljs-keyword">this</span>.targetData.length;
 		}
 	});
-	
+	HTMLSectionBuilder.HTMLSection = HTMLSection;
 	<span class="hljs-keyword">return</span> HTMLSectionBuilder;
-	
+
 });</pre></div></div>
             
         </li>

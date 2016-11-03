@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/stache/benchmark/todomvc/todomvc-base.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">63.59</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">248</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">38.30</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.47</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* global _ */
+(function () {
+	&#039;use strict&#039;;
+
+	/* jshint ignore:start */
+	// Underscore&#039;s Template Module
+	// Courtesy of underscorejs.org
+	var _ = (function (_) {
+		_.defaults = function (object) {
+			if (!object) {
+				return object;
+			}
+			for (var argsIndex = 1, argsLength = arguments.length; argsIndex &lt; argsLength; argsIndex++) {
+				var iterable = arguments[argsIndex];
+				if (iterable) {
+					for (var key in iterable) {
+						if (object[key] == null) {
+							object[key] = iterable[key];
+						}
+					}
+				}
+			}
+			return object;
+		}
+
+		// By default, Underscore uses ERB-style template delimiters, change the
+		// following template settings to use alternative delimiters.
+		_.templateSettings = {
+			evaluate    : /&lt;%([\s\S]+?)%&gt;/g,
+			interpolate : /&lt;%=([\s\S]+?)%&gt;/g,
+			escape      : /&lt;%-([\s\S]+?)%&gt;/g
+		};
+
+		// When customizing `templateSettings`, if you don&#039;t want to define an
+		// interpolation, evaluation or escaping regex, we need one that is
+		// guaranteed not to match.
+		var noMatch = /(.)^/;
+
+		// Certain characters need to be escaped so that they can be put into a
+		// string literal.
+		var escapes = {
+			&quot;&#039;&quot;:      &quot;&#039;&quot;,
+			&#039;\\&#039;:     &#039;\\&#039;,
+			&#039;\r&#039;:     &#039;r&#039;,
+			&#039;\n&#039;:     &#039;n&#039;,
+			&#039;\t&#039;:     &#039;t&#039;,
+			&#039;\u2028&#039;: &#039;u2028&#039;,
+			&#039;\u2029&#039;: &#039;u2029&#039;
+		};
+
+		var escaper = /\\|&#039;|\r|\n|\t|\u2028|\u2029/g;
+
+		// JavaScript micro-templating, similar to John Resig&#039;s implementation.
+		// Underscore templating handles arbitrary delimiters, preserves whitespace,
+		// and correctly escapes quotes within interpolated code.
+		_.template = function(text, data, settings) {
+			var render;
+			settings = _.defaults({}, settings, _.templateSettings);
+
+			// Combine delimiters into one regular expression via alternation.
+			var matcher = new RegExp([
+				(settings.escape || noMatch).source,
+				(settings.interpolate || noMatch).source,
+				(settings.evaluate || noMatch).source
+			].join(&#039;|&#039;) + &#039;|$&#039;, &#039;g&#039;);
+
+			// Compile the template source, escaping string literals appropriately.
+			var index = 0;
+			var source = &quot;__p+=&#039;&quot;;
+			text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
+				source += text.slice(index, offset)
+					.replace(escaper, function(match) { return &#039;\\&#039; + escapes[match]; });
+
+				if (escape) {
+					source += &quot;&#039;+\n((__t=(&quot; + escape + &quot;))==null?&#039;&#039;:_.escape(__t))+\n&#039;&quot;;
+				}
+				if (interpolate) {
+					source += &quot;&#039;+\n((__t=(&quot; + interpolate + &quot;))==null?&#039;&#039;:__t)+\n&#039;&quot;;
+				}
+				if (evaluate) {
+					source += &quot;&#039;;\n&quot; + evaluate + &quot;\n__p+=&#039;&quot;;
+				}
+				index = offset + match.length;
+				return match;
+			});
+			source += &quot;&#039;;\n&quot;;
+
+			// If a variable is not specified, place data values in local scope.
+			if (!settings.variable) source = &#039;with(obj||{}){\n&#039; + source + &#039;}\n&#039;;
+
+			source = &quot;var __t,__p=&#039;&#039;,__j=Array.prototype.join,&quot; +
+				&quot;print=function(){__p+=__j.call(arguments,&#039;&#039;);};\n&quot; +
+				source + &quot;return __p;\n&quot;;
+
+			try {
+				render = new Function(settings.variable || &#039;obj&#039;, &#039;_&#039;, source);
+			} catch (e) {
+				e.source = source;
+				throw e;
+			}
+
+			if (data) return render(data, _);
+			var template = function(data) {
+				return render.call(this, data, _);
+			};
+
+			// Provide the compiled function source as a convenience for precompilation.
+			template.source = &#039;function(&#039; + (settings.variable || &#039;obj&#039;) + &#039;){\n&#039; + source + &#039;}&#039;;
+
+			return template;
+		};
+
+		return _;
+	})({});
+
+	if (location.hostname === &#039;todomvc.com&#039;) {
+		(function(i,s,o,g,r,a,m){i[&#039;GoogleAnalyticsObject&#039;]=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,&#039;script&#039;,&#039;https://www.google-analytics.com/analytics.js&#039;,&#039;ga&#039;);
+		ga(&#039;create&#039;, &#039;UA-31081062-1&#039;, &#039;auto&#039;);
+		ga(&#039;send&#039;, &#039;pageview&#039;);
+	}
+	/* jshint ignore:end */
+
+	function redirect() {
+		if (location.hostname === &#039;tastejs.github.io&#039;) {
+			location.href = location.href.replace(&#039;tastejs.github.io/todomvc&#039;, &#039;todomvc.com&#039;);
+		}
+	}
+
+	function findRoot() {
+		var base = location.href.indexOf(&#039;examples/&#039;);
+		return location.href.substr(0, base);
+	}
+
+	function getFile(file, callback) {
+		if (!location.host) {
+			return console.info(&#039;Miss the info bar? Run TodoMVC from a server to avoid a cross-origin error.&#039;);
+		}
+
+		var xhr = new XMLHttpRequest();
+
+		xhr.open(&#039;GET&#039;, findRoot() + file, true);
+		xhr.send();
+
+		xhr.onload = function () {
+			if (xhr.status === 200 &amp;&amp; callback) {
+				callback(xhr.responseText);
+			}
+		};
+	}
+
+	function Learn(learnJSON, config) {
+		if (!(this instanceof Learn)) {
+			return new Learn(learnJSON, config);
+		}
+
+		var template, framework;
+
+		if (typeof learnJSON !== &#039;object&#039;) {
+			try {
+				learnJSON = JSON.parse(learnJSON);
+			} catch (e) {
+				return;
+			}
+		}
+
+		if (config) {
+			template = config.template;
+			framework = config.framework;
+		}
+
+		if (!template &amp;&amp; learnJSON.templates) {
+			template = learnJSON.templates.todomvc;
+		}
+
+		if (!framework &amp;&amp; document.querySelector(&#039;[data-framework]&#039;)) {
+			framework = document.querySelector(&#039;[data-framework]&#039;).dataset.framework;
+		}
+
+		this.template = template;
+
+		if (learnJSON.backend) {
+			this.frameworkJSON = learnJSON.backend;
+			this.frameworkJSON.issueLabel = framework;
+			this.append({
+				backend: true
+			});
+		} else if (learnJSON[framework]) {
+			this.frameworkJSON = learnJSON[framework];
+			this.frameworkJSON.issueLabel = framework;
+			this.append();
+		}
+
+		this.fetchIssueCount();
+	}
+
+	Learn.prototype.append = function (opts) {
+		var aside = document.createElement(&#039;aside&#039;);
+		aside.innerHTML = _.template(this.template, this.frameworkJSON);
+		aside.className = &#039;learn&#039;;
+
+		if (opts &amp;&amp; opts.backend) {
+			// Remove demo link
+			var sourceLinks = aside.querySelector(&#039;.source-links&#039;);
+			var heading = sourceLinks.firstElementChild;
+			var sourceLink = sourceLinks.lastElementChild;
+			// Correct link path
+			var href = sourceLink.getAttribute(&#039;href&#039;);
+			sourceLink.setAttribute(&#039;href&#039;, href.substr(href.lastIndexOf(&#039;http&#039;)));
+			sourceLinks.innerHTML = heading.outerHTML + sourceLink.outerHTML;
+		} else {
+			// Localize demo links
+			var demoLinks = aside.querySelectorAll(&#039;.demo-link&#039;);
+			Array.prototype.forEach.call(demoLinks, function (demoLink) {
+				if (demoLink.getAttribute(&#039;href&#039;).substr(0, 4) !== &#039;http&#039;) {
+					demoLink.setAttribute(&#039;href&#039;, findRoot() + demoLink.getAttribute(&#039;href&#039;));
+				}
+			});
+		}
+
+		document.body.className = (document.body.className + &#039; learn-bar&#039;).trim();
+		document.body.insertAdjacentHTML(&#039;afterBegin&#039;, aside.outerHTML);
+	};
+
+	Learn.prototype.fetchIssueCount = function () {
+		var issueLink = document.getElementById(&#039;issue-count-link&#039;);
+		if (issueLink) {
+			var url = issueLink.href.replace(&#039;https://github.com&#039;, &#039;https://api.github.com/repos&#039;);
+			var xhr = new XMLHttpRequest();
+			xhr.open(&#039;GET&#039;, url, true);
+			xhr.onload = function (e) {
+				var parsedResponse = JSON.parse(e.target.responseText);
+				if (parsedResponse instanceof Array) {
+					var count = parsedResponse.length;
+					if (count !== 0) {
+						issueLink.innerHTML = &#039;This app has &#039; + count + &#039; open issues&#039;;
+						document.getElementById(&#039;issue-count&#039;).style.display = &#039;inline&#039;;
+					}
+				}
+			};
+			xhr.send();
+		}
+	};
+
+	redirect();
+	getFile(&#039;learn.json&#039;, Learn);
+})();</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

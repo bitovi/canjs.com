@@ -1,8 +1,8 @@
 {
   "name": "canjs",
-  "repo": "bitovi/canjs",
-  "description": "Can do JavaScript MVC",
-  "version": "2.2.4",
+  "repo": "canjs/canjs",
+  "description": "Can do JavaScript",
+  "version": "2.3.17",
   "main": "can.js",
   "keywords": [
     "mvc",
@@ -16,9 +16,9 @@
     "benchmark": "~1.0.0",
     "requirejs": "~2.1.10",
     "mootools": "~1.5.1",
-    "jquery": "~2.1.3",
-    "html5shiv": "~3.7.2",
-    "dojo": "~1.10.4"
+    "jquery": "^1.12.0",
+    "dojo": "~1.10.4",
+    "modernizr": "~2.8.3"
   },
   "system": {
     "map": {

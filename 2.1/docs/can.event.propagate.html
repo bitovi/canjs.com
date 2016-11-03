@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -515,6 +512,58 @@
 		<section class="description">
 			<p>This changes <a href="can.event.dispatch.html">can.event.dispatch</a> to add support for propagating events to parent objects.</p>
 <p>This is implemented similarly to how events work in the DOM: Events dispatched on an object will be dispatched on their parent object, all the way up until no more parent objects are defined.</p>
+<p>Now that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.</p>
+<pre><code class="language-js">var instance = new SomeClass();
+var root = new SomeClass();
+
+root.on(&quot;parent&quot;, function(ev, obj, parent) {
+    // obj has set root as its parent
+});
+
+// This triggers the &quot;parent&quot; event on instance
+// The &quot;parent&quot; event then propagates and triggers on root as well!
+instance.setParent(root);
+</code></pre>
+<h2>Stopping propagation</h2>
+<p>When using the propagate plugin, <code>stopPropagation()</code> and <code>isPropagationStopped()</code> methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.</p>
+<pre><code class="language-js">SomeClass.prototype.setParent = function(obj) {
+    this.parent = obj;
+    var event = this.dispatch(&quot;parent&quot;, [this, obj]);
+
+    console.log(event.isPropagationStopped()); // =&gt; true
+};
+
+instance.on(&quot;parent&quot;, function(ev, obj, parent) {
+    // Don't let this propagate past this object
+    ev.stopPropagation();
+});
+
+root.on(&quot;parent&quot;, function(ev, obj, parent) {
+    // This code is never reached
+});
+
+// This will execute the instance listener, but not the
+// root listener, because propagation has been stopped.
+instance.setParent(root);
+</code></pre>
+<h2>Preventing default functionality</h2>
+<p>When using the propagate plugin, <code>preventDefault()</code> and <code>isDefaultPrevented()</code> methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.</p>
+<pre><code class="language-js">SomeClass.prototype.setParent = function(obj) {
+    this.parent = obj;
+    var event = this.dispatch(&quot;parent&quot;, [this, obj]);
+
+    // Only execute this code if the default isn't prevented
+    if (!event.isDefaultPrevented()) {
+        this.parent.children = this.parent.children || [];
+        this.parent.children.push(this);
+    }
+};
+
+instance.on(&quot;parent&quot;, function(ev, obj, parent) {
+    // Don't let the default functionality execute
+    ev.preventDefault();
+});
+</code></pre>
 
 		</section>
 		
@@ -529,11 +578,17 @@
 <p>The extra object, <code>{ propagate: &quot;parent&quot; }</code>, is used to define which object property is that object's parent. With the <code>propagate</code> property set to <code>&quot;parent&quot;</code>, any event dispatched on the <code>YourClass</code> instances will also be dispatched on <code>instance.parent</code> if it exists.</p>
 <h2>Using propagation</h2>
 <p>In order to add propagation to an object or prototype, mix it into the object using <code>can.extend</code> along with whatever property should be considered the propagation property.</p>
-<p>Now that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.</p>
-<h2>Stopping propagation</h2>
-<p>When using the propagate plugin, <code>stopPropagation()</code> and <code>isPropagationStopped()</code> methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.</p>
-<h2>Preventing default functionality</h2>
-<p>When using the propagate plugin, <code>preventDefault()</code> and <code>isDefaultPrevented()</code> methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.</p>
+<pre><code class="language-js">var SomeClass = can.Construct(&quot;SomeClass&quot;, {
+    init: function() {
+        this.value = 0;
+    },
+    setParent: function(obj) {
+        this.parent = obj;
+        this.dispatch(&quot;parent&quot;, [this, obj]);
+    }
+});
+can.extend(SomeClass.prototype, can.event, { propagate: &quot;parent&quot; });
+</code></pre>
 
 
 
@@ -554,6 +609,8 @@
 		
 
 		
+
+		
 	
 	
 	</article>
@@ -566,7 +623,7 @@
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -577,11 +634,8 @@
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -591,7 +645,7 @@
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -599,19 +653,19 @@
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"can.event.propagate","src":"event/propagate/propagate.md","description":"This changes [can.event.dispatch can.event.dispatch] to add support for propagating events to parent objects.\n\nThis is implemented similarly to how events work in the DOM: Events dispatched on an object will be dispatched on their parent object, all the way up until no more parent objects are defined.","parent":"can.event.plugins","plugin":"can/event/propagate","test":"can/event/propagate/test.html","download":"http://donejs.com/can/dist/can.event.propagate.js","signatures":[{"code":"can.extend(YourClass.prototype, can.event, { propagate: \"parent\" })","description":"Adds event functionality with event propagation to `YourClass` objects. This can also be applied to normal objects: `can.extend(someObject, can.event, { propagate: \"parent\" })`.\n\nThe extra object, `{ propagate: \"parent\" }`, is used to define which object property is that object's parent. With the `propagate` property set to `\"parent\"`, any event dispatched on the `YourClass` instances will also be dispatched on `instance.parent` if it exists.\n\n## Using propagation\n\nIn order to add propagation to an object or prototype, mix it into the object using `can.extend` along with whatever property should be considered the propagation property.\n\n\nNow that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.\n\n\n## Stopping propagation\n\nWhen using the propagate plugin, `stopPropagation()` and `isPropagationStopped()` methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.\n\n\n## Preventing default functionality\n\nWhen using the propagate plugin, `preventDefault()` and `isDefaultPrevented()` methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.","params":[]}],"forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
+		var docObject = {"type":"page","name":"can.event.propagate","src":"event/propagate/propagate.md","description":"This changes [can.event.dispatch can.event.dispatch] to add support for propagating events to parent objects.\n\nThis is implemented similarly to how events work in the DOM: Events dispatched on an object will be dispatched on their parent object, all the way up until no more parent objects are defined.\n\n\nNow that propagation has been added, events will be dispatched up the tree for as long as a valid propagate property exists.\n\n\n```js\nvar instance = new SomeClass();\nvar root = new SomeClass();\n\nroot.on(\"parent\", function(ev, obj, parent) {\n\t// obj has set root as its parent\n});\n\n// This triggers the \"parent\" event on instance\n// The \"parent\" event then propagates and triggers on root as well!\ninstance.setParent(root);\n```\n## Stopping propagation\n\nWhen using the propagate plugin, `stopPropagation()` and `isPropagationStopped()` methods will be added to the event object. These methods can be used to prevent the event from propagating further up the tree.\n\n\n```js\nSomeClass.prototype.setParent = function(obj) {\n\tthis.parent = obj;\n\tvar event = this.dispatch(\"parent\", [this, obj]);\n\n\tconsole.log(event.isPropagationStopped()); // => true\n};\n\ninstance.on(\"parent\", function(ev, obj, parent) {\n\t// Don't let this propagate past this object\n\tev.stopPropagation();\n});\n\nroot.on(\"parent\", function(ev, obj, parent) {\n\t// This code is never reached\n});\n\n// This will execute the instance listener, but not the\n// root listener, because propagation has been stopped.\ninstance.setParent(root);\n```\n## Preventing default functionality\n\nWhen using the propagate plugin, `preventDefault()` and `isDefaultPrevented()` methods will be added to the event object. An object might implement some logic that will be executed after an event is dispatched. In the case that this logic should be optional dependent on the event handlers, default prevention can be used.\n\n\n```js\nSomeClass.prototype.setParent = function(obj) {\n\tthis.parent = obj;\n\tvar event = this.dispatch(\"parent\", [this, obj]);\n\n\t// Only execute this code if the default isn't prevented\n\tif (!event.isDefaultPrevented()) {\n\t\tthis.parent.children = this.parent.children || [];\n\t\tthis.parent.children.push(this);\n\t}\n};\n\ninstance.on(\"parent\", function(ev, obj, parent) {\n\t// Don't let the default functionality execute\n\tev.preventDefault();\n});\n```","parent":"can.event.plugins","plugin":"can/event/propagate","test":"can/event/propagate/test.html","download":"http://donejs.com/can/dist/can.event.propagate.js","signatures":[{"code":"can.extend(YourClass.prototype, can.event, { propagate: \"parent\" })","description":"Adds event functionality with event propagation to `YourClass` objects. This can also be applied to normal objects: `can.extend(someObject, can.event, { propagate: \"parent\" })`.\n\nThe extra object, `{ propagate: \"parent\" }`, is used to define which object property is that object's parent. With the `propagate` property set to `\"parent\"`, any event dispatched on the `YourClass` instances will also be dispatched on `instance.parent` if it exists.\n\n## Using propagation\n\nIn order to add propagation to an object or prototype, mix it into the object using `can.extend` along with whatever property should be considered the propagation property.\n\n```js\nvar SomeClass = can.Construct(\"SomeClass\", {\n\tinit: function() {\n\t\tthis.value = 0;\n\t},\n\tsetParent: function(obj) {\n\t\tthis.parent = obj;\n\t\tthis.dispatch(\"parent\", [this, obj]);\n\t}\n});\ncan.extend(SomeClass.prototype, can.event, { propagate: \"parent\" });\n```","params":[]}],"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -620,13 +674,13 @@
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

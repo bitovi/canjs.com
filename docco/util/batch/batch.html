@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -41,7 +41,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Which batch of events this is for — might not want to send multiple
+              <p>Which batch of events this is for – might not want to send multiple
 messages on the same batch.  This is mostly for event delegation.</p>
 
             </div>
@@ -61,39 +61,12 @@ messages on the same batch.  This is mostly for event delegation.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		transactions = <span class="hljs-number">0</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>an array of events within a transaction</p>
+            <div class="content"><div class='highlight'><pre>		transactions = <span class="hljs-number">0</span>,
+		dispatchingBatch = <span class="hljs-literal">null</span>,
+		collectingBatch = <span class="hljs-literal">null</span>,
+		batches = [],
+		dispatchingBatches = <span class="hljs-literal">false</span>;
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		batchEvents = [],
-		stopCallbacks = [],</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>an array of the currently dispatching batch events … here so we can add things to the end of it (1519).</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		currentBatchEvents = <span class="hljs-literal">null</span>;
-		
 	can.batch = {
 		<span class="hljs-comment">/**
 		 * @function can.batch.start
@@ -113,7 +86,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * In this example, you can see how the _first_ and _change_ events are not fired (and their handlers
 		 * are not called) until `can.batch.stop` is called.
 		 *
-		 * @codestart
+		 * ```
 		 * var person = new can.Map({
 		 *     first: 'Alexis',
 		 *     last: 'Abril'
@@ -134,11 +107,11 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // Still in the batch.
 		 * // First name changed.
 		 * // Something changed.
-		 * @codeend
+		 * ```
 		 *
 		 * You can also pass a callback to `can.batch.start` which will be called after all the events have
 		 * been fired:
-		 * @codestart
+		 * ```
 		 * can.batch.start(function() {
 		 *     console.log('The batch is over.');
 		 * });
@@ -151,7 +124,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // First name changed.
 		 * // Something changed.
 		 * // The batch is over.
-		 * @codeend
+		 * ```
 		 *
 		 * ## Calling `can.batch.start` multiple times
 		 *
@@ -162,7 +135,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * Here is an example that demonstrates how events are affected by calling
 		 * `can.batch.start` multiple times.
 		 *
-		 * @codestart
+		 * ```
 		 * var addPeople = function(observable) {
 		 *     can.batch.start();
 		 *     observable.attr('a', 'Alice');
@@ -191,13 +164,23 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // The list changed.
 		 * // The list changed.
 		 * // The list changed.
-		 * @codeend
+		 * ```
 		 */</span>
-		start: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(batchStopHandler)</span> </span>{
+		start: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">batchStopHandler</span>) </span>{
 			transactions++;
-			<span class="hljs-keyword">if</span> (batchStopHandler) {
-				stopCallbacks.push(batchStopHandler);
+			<span class="hljs-keyword">if</span>(transactions === <span class="hljs-number">1</span>) {
+				<span class="hljs-keyword">var</span> batch = {
+					<span class="hljs-attr">events</span>: [],
+					<span class="hljs-attr">callbacks</span>: [],
+					<span class="hljs-attr">number</span>: batchNum++
+				};
+				batches.push(batch);
+				<span class="hljs-keyword">if</span> (batchStopHandler) {
+					batch.callbacks.push(batchStopHandler);
+				}
+				collectingBatch = batch;
 			}
+
 		},
 		<span class="hljs-comment">/**
 		 * @function can.batch.stop
@@ -217,7 +200,7 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * See `[can.batch.start]` for examples of `can.batch.start` and `can.batch.stop` in normal use.
 		 *
 		 * In this example, the batch is forceably ended in the `addPeople` function.
-		 * @codestart
+		 * ```
 		 * var addPeople = function(observable) {
 		 *     can.batch.start();
 		 *     observable.attr('a', 'Alice');
@@ -246,55 +229,52 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * // The list changed.
 		 * // The list changed.
 		 * // Still in the batch.
-		 * @codeend
+		 * ```
 		 */</span>
-		stop: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(force, callStart)</span> </span>{
+		stop: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">force, callStart</span>) </span>{
 			<span class="hljs-keyword">if</span> (force) {
 				transactions = <span class="hljs-number">0</span>;
 			} <span class="hljs-keyword">else</span> {
 				transactions--;
 			}
 			<span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
-				<span class="hljs-keyword">if</span>(currentBatchEvents !== <span class="hljs-literal">null</span>) {
-					<span class="hljs-keyword">return</span>;
+				collectingBatch = <span class="hljs-literal">null</span>;
+				<span class="hljs-keyword">var</span> batch;
+				<span class="hljs-keyword">if</span>(dispatchingBatches === <span class="hljs-literal">false</span>) {
+					dispatchingBatches = <span class="hljs-literal">true</span>;
+					<span class="hljs-keyword">var</span> callbacks = [],
+						i;
+					<span class="hljs-keyword">while</span>(batch = batches.shift()) {
+						<span class="hljs-keyword">var</span> events = batch.events;
+						callbacks.push.apply(callbacks,  batch.callbacks );
+						dispatchingBatch = batch;
+						can.batch.batchNum = batch.number;
+						
+						<span class="hljs-keyword">var</span> len;
+
+						<span class="hljs-keyword">if</span> (callStart) {
+							can.batch.start();
+						}
+						<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = events.length; i &lt; len; i++) {
+							can.dispatch.apply(events[i][<span class="hljs-number">0</span>],events[i][<span class="hljs-number">1</span>]);
+						}
+
+						can.batch._onDispatchedEvents(batch.number);
+
+						dispatchingBatch = <span class="hljs-literal">null</span>;
+						can.batch.batchNum = <span class="hljs-literal">undefined</span>;
+
+					}
+					<span class="hljs-keyword">for</span>(i = callbacks.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span> ; i--) {
+						callbacks[i]();
+					}
+					dispatchingBatches = <span class="hljs-literal">false</span>;
 				}
 
-				currentBatchEvents = batchEvents.slice(<span class="hljs-number">0</span>);
 
-				<span class="hljs-keyword">var</span>	callbacks = stopCallbacks.slice(<span class="hljs-number">0</span>),
-					i, len;
-				batchEvents = [];
-				stopCallbacks = [];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Capture current batchNum so it can be check in live bindings</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				can.batch.batchNum = batchNum;
-				batchNum++;
-				<span class="hljs-keyword">if</span> (callStart) {
-					can.batch.start();
-				}
-				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; currentBatchEvents.length; i++) {
-					can.dispatch.apply(currentBatchEvents[i][<span class="hljs-number">0</span>],currentBatchEvents[i][<span class="hljs-number">1</span>]);
-				}
-				currentBatchEvents = <span class="hljs-literal">null</span>;
-
-				<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = callbacks.length; i &lt; callbacks.length; i++) {
-					callbacks[i]();
-				}
-				can.batch.batchNum = <span class="hljs-literal">undefined</span>;
 			}
 		},
+		<span class="hljs-attr">_onDispatchedEvents</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{},
 		<span class="hljs-comment">/**
 		 * @function can.batch.trigger
 		 * @parent can.batch
@@ -309,7 +289,63 @@ messages on the same batch.  This is mostly for event delegation.</p>
 		 * to the batch. If events are not currently being batched, the event is triggered
 		 * immediately.
 		 */</span>
-		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, event, args)</span> </span>{</pre></div></div>
+		trigger: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, event, args</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Don’t send events if initalizing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!item.__inSetup) {
+				event = <span class="hljs-keyword">typeof</span> event === <span class="hljs-string">'string'</span> ? {
+					<span class="hljs-attr">type</span>: event
+				} : event;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>if there’s a batch, add it to this batches events</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(collectingBatch) {
+					event.batchNum = collectingBatch.number;
+					collectingBatch.events.push([
+						item,
+						[event, args]
+					]);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>if this is trying to belong to another batch, let it fire</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(event.batchNum) {
+					can.dispatch.call( item, event, args );
+				}</pre></div></div>
             
         </li>
         
@@ -320,31 +356,76 @@ messages on the same batch.  This is mostly for event delegation.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Don’t send events if initalizing.</p>
+              <p>if there are batches, but this doesn’t belong to a batch
+add it to its own batch</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!item._init) {
-				event = <span class="hljs-keyword">typeof</span> event === <span class="hljs-string">'string'</span> ? {
-					type: event
-				} : event;
-
-				<span class="hljs-keyword">if</span>( currentBatchEvents) {
-
-					currentBatchEvents.push([
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(batches.length) {
+					can.batch.start();
+					event.batchNum = collectingBatch.number;
+					collectingBatch.events.push([
 						item,
 						[event, args]
 					]);
+					can.batch.stop();
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>there are no batches, so just fire the event.</p>
 
-				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (transactions === <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">return</span> can.dispatch.call( item, event, args );
-				} <span class="hljs-keyword">else</span> {
-					event.batchNum = batchNum;
-					batchEvents.push([
-						item,
-						[event, args]
-					]);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
+					can.dispatch.call( item, event, args );
 				}
+
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>call handler after any events from currently settled stated have fired
+but before any future change events fire.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		afterPreviousEvents: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">handler</span>)</span>{
+			<span class="hljs-keyword">var</span> batch = can.last(batches);
+
+			<span class="hljs-keyword">if</span>(batch) {
+				<span class="hljs-keyword">var</span> obj = {};
+				can.bind.call(obj,<span class="hljs-string">"ready"</span>, handler);
+				batch.events.push([
+					obj,
+					[{<span class="hljs-attr">type</span>: <span class="hljs-string">"ready"</span>}, []]
+				]);
+			} <span class="hljs-keyword">else</span> {
+				handler({});
+			}
+		},
+		<span class="hljs-attr">after</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">handler</span>)</span>{
+			<span class="hljs-keyword">var</span> batch = collectingBatch || dispatchingBatch;
+
+			<span class="hljs-keyword">if</span>(batch) {
+				batch.callbacks.push(handler);
+			} <span class="hljs-keyword">else</span> {
+				handler({});
 			}
 		}
 	};

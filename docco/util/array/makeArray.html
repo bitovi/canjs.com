@@ -19,8 +19,18 @@
           <div id="jump_page">
             
               
+              <a class="source" href="diff.html">
+                diff.js
+              </a>
+            
+              
               <a class="source" href="each.html">
                 each.js
+              </a>
+            
+              
+              <a class="source" href="isArrayLike.html">
+                isArrayLike.js
               </a>
             
               
@@ -51,10 +61,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'./each.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-	can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arr)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'./each.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
+	can.makeArray = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">arr</span>) </span>{
 		<span class="hljs-keyword">var</span> ret = [];
-		can.each(arr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, i)</span> </span>{
+		can.each(arr, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, i</span>) </span>{
 			ret[i] = a;
 		});
 		<span class="hljs-keyword">return</span> ret;

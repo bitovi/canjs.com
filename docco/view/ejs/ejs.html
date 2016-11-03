@@ -53,7 +53,7 @@
 	<span class="hljs-string">'can/compute'</span>,
 	<span class="hljs-string">'can/view/scanner.js'</span>,
 	<span class="hljs-string">'can/view/render.js'</span>,
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -69,7 +69,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> extend = can.extend,
-		EJS = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options)</span> </span>{</pre></div></div>
+		EJS = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -87,7 +87,7 @@ This returns a function that renders the template.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.constructor !== EJS) {
 				<span class="hljs-keyword">var</span> ejs = <span class="hljs-keyword">new</span> EJS(options);
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, helpers</span>) </span>{
 					<span class="hljs-keyword">return</span> ejs.render(data, helpers);
 				};
 			}</pre></div></div>
@@ -108,7 +108,7 @@ a <code>steal</code>-packaged view.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">'function'</span>) {
 				<span class="hljs-keyword">this</span>.template = {
-					fn: options
+					<span class="hljs-attr">fn</span>: options
 				};
 				<span class="hljs-keyword">return</span>;
 			}</pre></div></div>
@@ -161,7 +161,7 @@ a <code>steal</code>-packaged view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	render = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object, extraHelpers)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	render = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">object, extraHelpers</span>) </span>{
 		object = object || {};
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.template.fn.call(object, object, <span class="hljs-keyword">new</span> EJS.Helpers(object, extraHelpers || {}));
 	};
@@ -193,11 +193,11 @@ for more information.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		scanner: <span class="hljs-keyword">new</span> can.view.Scanner({
-			text: {
-				outStart: <span class="hljs-string">'with(_VIEW) { with (_CONTEXT) {'</span>,
-				outEnd: <span class="hljs-string">"}}"</span>,
-				argNames: <span class="hljs-string">'_CONTEXT,_VIEW'</span>,
-				context: <span class="hljs-string">"this"</span>
+			<span class="hljs-attr">text</span>: {
+				<span class="hljs-attr">outStart</span>: <span class="hljs-string">'with(_VIEW) { with (_CONTEXT) {'</span>,
+				<span class="hljs-attr">outEnd</span>: <span class="hljs-string">"}}"</span>,
+				<span class="hljs-attr">argNames</span>: <span class="hljs-string">'_CONTEXT,_VIEW'</span>,
+				<span class="hljs-attr">context</span>: <span class="hljs-string">"this"</span>
 			},</pre></div></div>
             
         </li>
@@ -270,7 +270,7 @@ based on which tags are considered opening/closing as well as escaped, etc.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
+            <div class="content"><div class='highlight'><pre>					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content</span>) </span>{
 						<span class="hljs-keyword">var</span> quickFunc = <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
 							parts = content.match(quickFunc);
 
@@ -301,8 +301,8 @@ if they contained unmatched brackets.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			transform: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source)</span> </span>{
-				<span class="hljs-keyword">return</span> source.replace(<span class="hljs-regexp">/&lt;%([\s\S]+?)%&gt;/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, part)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			transform: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">source</span>) </span>{
+				<span class="hljs-keyword">return</span> source.replace(<span class="hljs-regexp">/&lt;%([\s\S]+?)%&gt;/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">whole, part</span>) </span>{
 					<span class="hljs-keyword">var</span> brackets = [],
 						foundBracketPair, i;</pre></div></div>
             
@@ -319,7 +319,7 @@ if they contained unmatched brackets.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					part.replace(<span class="hljs-regexp">/[{}]/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bracket, offset)</span> </span>{
+            <div class="content"><div class='highlight'><pre>					part.replace(<span class="hljs-regexp">/[{}]/gm</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">bracket, offset</span>) </span>{
 						brackets.push([
 							bracket,
 							offset
@@ -415,7 +415,7 @@ if they contained unmatched brackets.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	EJS.Helpers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, extras)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	EJS.Helpers = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, extras</span>) </span>{
 		<span class="hljs-keyword">this</span>._data = data;
 		<span class="hljs-keyword">this</span>._extras = extras;
 		extend(<span class="hljs-keyword">this</span>, extras);
@@ -436,8 +436,8 @@ if they contained unmatched brackets.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		list: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, cb)</span> </span>{
-			can.each(list, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, i)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		list: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">list, cb</span>) </span>{
+			can.each(list, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, i</span>) </span>{
 				cb(item, i, list);
 			});
 		},</pre></div></div>
@@ -456,7 +456,7 @@ and sets up live binding when possible.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		each: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(list, cb)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		each: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">list, cb</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -493,18 +493,18 @@ and sets up live binding when possible.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.view.register({
-		suffix: <span class="hljs-string">'ejs'</span>,
-		script: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, src)</span> </span>{
+		<span class="hljs-attr">suffix</span>: <span class="hljs-string">'ejs'</span>,
+		<span class="hljs-attr">script</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, src</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">'can.EJS(function(_CONTEXT,_VIEW) { '</span> + <span class="hljs-keyword">new</span> EJS({
-				text: src,
-				name: id
+				<span class="hljs-attr">text</span>: src,
+				<span class="hljs-attr">name</span>: id
 			})
 				.template.out + <span class="hljs-string">' })'</span>;
 		},
-		renderer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+		<span class="hljs-attr">renderer</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, text</span>) </span>{
 			<span class="hljs-keyword">return</span> EJS({
-				text: text,
-				name: id
+				<span class="hljs-attr">text</span>: text,
+				<span class="hljs-attr">name</span>: id
 			});
 		}
 	});

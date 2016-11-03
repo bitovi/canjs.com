@@ -61,11 +61,11 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 
 	<span class="hljs-keyword">var</span> doc = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">document</span>: <span class="hljs-literal">null</span>;
 
-	<span class="hljs-keyword">var</span> selectsCommentNodes = doc &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+	<span class="hljs-keyword">var</span> selectsCommentNodes = doc &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 		<span class="hljs-keyword">return</span> can.$(<span class="hljs-built_in">document</span>.createComment(<span class="hljs-string">'~'</span>)).length === <span class="hljs-number">1</span>;
 	})();
 
@@ -77,9 +77,9 @@
 	 * of DOM elements.
 	 */</span>
 	<span class="hljs-keyword">var</span> elements = {
-		tagToContentPropMap: {
-			option: ( doc &amp;&amp; <span class="hljs-string">"textContent"</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"option"</span>) ) ? <span class="hljs-string">"textContent"</span> : <span class="hljs-string">"innerText"</span>,
-			textarea: <span class="hljs-string">'value'</span>
+		<span class="hljs-attr">tagToContentPropMap</span>: {
+			<span class="hljs-attr">option</span>: ( doc &amp;&amp; <span class="hljs-string">"textContent"</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"option"</span>) ) ? <span class="hljs-string">"textContent"</span> : <span class="hljs-string">"innerText"</span>,
+			<span class="hljs-attr">textarea</span>: <span class="hljs-string">'value'</span>
 		},
 		<span class="hljs-comment">/**
 		 * @property {Object.&lt;String,(String|Boolean|function)&gt;} can.view.elements.attrMap
@@ -171,16 +171,16 @@
 		 */</span>
 		tagMap: {
 			<span class="hljs-string">''</span>: <span class="hljs-string">'span'</span>,
-			colgroup: <span class="hljs-string">'col'</span>,
-			table: <span class="hljs-string">'tbody'</span>,
-			tr: <span class="hljs-string">'td'</span>,
-			ol: <span class="hljs-string">'li'</span>,
-			ul: <span class="hljs-string">'li'</span>,
-			tbody: <span class="hljs-string">'tr'</span>,
-			thead: <span class="hljs-string">'tr'</span>,
-			tfoot: <span class="hljs-string">'tr'</span>,
-			select: <span class="hljs-string">'option'</span>,
-			optgroup: <span class="hljs-string">'option'</span>
+			<span class="hljs-attr">colgroup</span>: <span class="hljs-string">'col'</span>,
+			<span class="hljs-attr">table</span>: <span class="hljs-string">'tbody'</span>,
+			<span class="hljs-attr">tr</span>: <span class="hljs-string">'td'</span>,
+			<span class="hljs-attr">ol</span>: <span class="hljs-string">'li'</span>,
+			<span class="hljs-attr">ul</span>: <span class="hljs-string">'li'</span>,
+			<span class="hljs-attr">tbody</span>: <span class="hljs-string">'tr'</span>,
+			<span class="hljs-attr">thead</span>: <span class="hljs-string">'tr'</span>,
+			<span class="hljs-attr">tfoot</span>: <span class="hljs-string">'tr'</span>,
+			<span class="hljs-attr">select</span>: <span class="hljs-string">'option'</span>,
+			<span class="hljs-attr">optgroup</span>: <span class="hljs-string">'option'</span>
 		},</pre></div></div>
             
         </li>
@@ -197,12 +197,12 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>		reverseTagMap: {
-			col: <span class="hljs-string">'colgroup'</span>,
-			tr: <span class="hljs-string">'tbody'</span>,
-			option: <span class="hljs-string">'select'</span>,
-			td: <span class="hljs-string">'tr'</span>,
-			th: <span class="hljs-string">'tr'</span>,
-			li: <span class="hljs-string">'ul'</span>
+			<span class="hljs-attr">col</span>: <span class="hljs-string">'colgroup'</span>,
+			<span class="hljs-attr">tr</span>: <span class="hljs-string">'tbody'</span>,
+			<span class="hljs-attr">option</span>: <span class="hljs-string">'select'</span>,
+			<span class="hljs-attr">td</span>: <span class="hljs-string">'tr'</span>,
+			<span class="hljs-attr">th</span>: <span class="hljs-string">'tr'</span>,
+			<span class="hljs-attr">li</span>: <span class="hljs-string">'ul'</span>
 		},</pre></div></div>
             
         </li>
@@ -214,12 +214,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Used to determine the parentNode if el is directly within a documentFragment</p>
+              <p>tags that should be handled as self-closing and should not have content in them
+when generated as part of binding hookup</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getParentNode: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, defaultParentNode)</span> </span>{
-			<span class="hljs-keyword">return</span> defaultParentNode &amp;&amp; el.parentNode.nodeType === <span class="hljs-number">11</span> ? defaultParentNode : el.parentNode;
+            <div class="content"><div class='highlight'><pre>		selfClosingTags: {
+			<span class="hljs-attr">col</span>: <span class="hljs-literal">true</span>
 		},</pre></div></div>
             
         </li>
@@ -231,11 +232,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>3.0 TODO: remove</p>
+              <p>Used to determine the parentNode if el is directly within a documentFragment</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		setAttr: can.attr.set,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		getParentNode: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, defaultParentNode</span>) </span>{
+			<span class="hljs-keyword">return</span> defaultParentNode &amp;&amp; el.parentNode.nodeType === <span class="hljs-number">11</span> ? defaultParentNode : el.parentNode;
+		},</pre></div></div>
             
         </li>
         
@@ -250,7 +253,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getAttr: can.attr.get,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		setAttr: can.attr.set,</pre></div></div>
             
         </li>
         
@@ -265,7 +268,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		removeAttr: can.attr.remove,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		getAttr: can.attr.get,</pre></div></div>
             
         </li>
         
@@ -276,14 +279,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Gets a “pretty” value for something</p>
+              <p>3.0 TODO: remove</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		contentText: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> </span>{
-			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> text === <span class="hljs-string">'string'</span>) {
-				<span class="hljs-keyword">return</span> text;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		removeAttr: can.attr.remove,</pre></div></div>
             
         </li>
         
@@ -293,6 +293,24 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Gets a “pretty” value for something</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		contentText: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">text</span>) </span>{
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> text === <span class="hljs-string">'string'</span>) {
+				<span class="hljs-keyword">return</span> text;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>If has no value, return an empty string.</p>
 
@@ -312,26 +330,26 @@
 		 * @param {Array.&lt;HTMLElement&gt;} oldElements
 		 * @param {DocumentFragment} newFrag
 		 */</span>
-		after: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> </span>{
+		after: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">oldElements, newFrag</span>) </span>{
 			<span class="hljs-keyword">var</span> last = oldElements[oldElements.length - <span class="hljs-number">1</span>];</pre></div></div>
             
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Insert it in the <code>document</code> or <code>documentFragment</code></p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (last.nextSibling) {
-				can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+				can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
 			} <span class="hljs-keyword">else</span> {
-				can.appendChild(last.parentNode, newFrag);
+				can.appendChild(last.parentNode, newFrag, can.document);
 			}
 		},
 		<span class="hljs-comment">/**
@@ -343,14 +361,41 @@
 		 * @param {Array.&lt;HTMLElement&gt;} oldElements
 		 * @param {DocumentFragment} newFrag
 		 */</span>
-		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldElements, newFrag)</span> </span>{
+		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">oldElements, newFrag</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>The following helps make sure that a selected <option> remains
+the same by removing <code>selected</code> from the currently selected option
+and adding selected to an option that has the same value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> selectedValue,
+				parentNode = oldElements[<span class="hljs-number">0</span>].parentNode;
+				
+			<span class="hljs-keyword">if</span>(parentNode.nodeName.toUpperCase() === <span class="hljs-string">"SELECT"</span> &amp;&amp; parentNode.selectedIndex &gt;= <span class="hljs-number">0</span>) {
+				selectedValue = parentNode.value;
+			}
+			
+			
 			elements.after(oldElements, newFrag);
 			<span class="hljs-keyword">if</span>(can.remove(can.$(oldElements)).length &lt; oldElements.length &amp;&amp; !selectsCommentNodes) {
-				can.each(oldElements, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span> </span>{
+				can.each(oldElements, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>) </span>{
 					<span class="hljs-keyword">if</span>(el.nodeType === <span class="hljs-number">8</span>) {
 						el.parentNode.removeChild(el);
 					}
 				});
+			}
+			<span class="hljs-keyword">if</span>(selectedValue !== <span class="hljs-literal">undefined</span>) {
+				parentNode.value = selectedValue;
 			}
 		}
 	};

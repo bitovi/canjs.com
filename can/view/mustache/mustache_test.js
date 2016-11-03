@@ -26,7 +26,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				"{{/animals}}</ul>";
 
 		}
-	})
+	});
 
 	// Override expected spec result for whitespace only issues
 	var override = {
@@ -285,6 +285,10 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		can.Mustache.registerHelper('there', function (options) {
 			return 'there';
 		});
+		// Test for #1109
+		can.Mustache.registerHelper('zero', function (options) {
+			return 0;
+		});
 		can.Mustache.registerHelper('bark', function (obj, str, number, options) {
 			var hash = options.hash || {};
 			return 'The ' + obj + ' barked at ' + str + ' ' + number + ' times, ' +
@@ -292,8 +296,8 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				hash.where + ' times' + (hash.loud === true ? ' loudly' : '') + '.';
 		});
 		var t = {
-			template: "{{hello}} {{there}}!\n{{bark name 'Austin and Andy' 3 obj=name action='growled and snarled' where=2 loud=true}}",
-			expected: "Hello there!\nThe dog barked at Austin and Andy 3 times, then the dog growled and snarled 2 times loudly.",
+			template: "{{hello}} {{there}}!\n{{bark name 'Austin and Andy' 3 obj=name action='growled and snarled' where=2 loud=true}} Then there were {{zero}} barks :(",
+			expected: "Hello there!\nThe dog barked at Austin and Andy 3 times, then the dog growled and snarled 2 times loudly. Then there were 0 barks :(",
 			data: {
 				name: 'dog',
 				hello: 'Hello'
@@ -302,10 +306,8 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 		var expected = t.expected.replace(/&quot;/g, '&#34;')
 			.replace(/\r\n/g, '\n');
-		deepEqual(new can.Mustache({
-				text: t.template
-			})
-			.render(t.data), expected);
+
+		deepEqual(new can.Mustache({ text: t.template }).render(t.data), expected);
 	});
 
 	test("Handlebars advanced helpers (from docs)", function () {
@@ -570,13 +572,18 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 
 	test("Handlebars helper: unless", function () {
 		var t = {
-			template: "{{#unless missing}}Andy is missing!{{/unless}}",
-			expected: "Andy is missing!",
+			template: "{{#unless missing}}Andy is missing!{{/unless}}" +
+			          "{{#unless isCool}} But he wasn't cool anyways.{{/unless}}",
+			expected: "Andy is missing! But he wasn't cool anyways.",
 			data: {
 				name: 'Andy'
 			},
 			liveData: new can.Map({
-				name: 'Andy'
+				name: 'Andy',
+				// #1202 #unless does not work with computes
+				isCool: can.compute(function () {
+					return t.liveData.attr("missing");
+				})
 			})
 		};
 
@@ -1830,7 +1837,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('li')[0].innerHTML, 'Todo #1', 'Pushing to the list works');
 	});
 
-	// https://github.com/bitovi/canjs/issues/228
+	// https://github.com/canjs/canjs/issues/228
 	test("Contexts within helpers not always resolved correctly", function () {
 		can.Mustache.registerHelper("bad_context", function (context, options) {
 			return "<span>" + this.text + "</span> should not be " + options.fn(context);
@@ -1852,7 +1859,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('span')[2].innerHTML, "In the inner context", 'Incorrect other_text in helper inner template');
 	});
 
-	// https://github.com/bitovi/canjs/issues/227
+	// https://github.com/canjs/canjs/issues/227
 	test("Contexts are not always passed to partials properly", function () {
 		can.view.registerView('inner', '{{#if other_first_level}}{{other_first_level}}{{else}}{{second_level}}{{/if}}', ".mustache")
 
@@ -1870,7 +1877,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('span')[1].innerHTML, "foo", 'Incorrect text in helper inner template');
 	});
 
-	// https://github.com/bitovi/canjs/issues/231
+	// https://github.com/canjs/canjs/issues/231
 	test("Functions and helpers should be passed the same context", function () {
 		can.Mustache.registerHelper("to_upper", function (fn, options) {
 			if (!fn.fn) {
@@ -1903,7 +1910,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		equal(div.getElementsByTagName('span')[1].innerHTML, data.next_level.other_text.toUpperCase(), 'Incorrect context passed to helper');
 	});
 
-	// https://github.com/bitovi/canjs/issues/153
+	// https://github.com/canjs/canjs/issues/153
 	test("Interpolated values when iterating through an Observe.List should still render when not surrounded by a DOM node", function () {
 		var renderer = can.view.mustache('{{ #todos }}{{ name }}{{ /todos }}'),
 			renderer2 = can.view.mustache('{{ #todos }}<span>{{ name }}</span>{{ /todos }}'),
@@ -3301,12 +3308,15 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 				visible: true
 			}]
 		});
-
+		var unbindCount = 0;
 		function handler(eventType) {
 			can.Map.prototype.unbind.apply(this, arguments);
 			if (eventType === "visible") {
-				start();
-				ok(true, "unbound visible")
+				ok(true, "unbound visible");
+				unbindCount++;
+				if(unbindCount >= 1) {
+					start();
+				}
 			}
 		}
 
@@ -3320,7 +3330,7 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 		}]);
 
 		stop();
-	})
+	});
 
 	test("direct live section", function () {
 		var template = can.view.mustache("{{#if visible}}<label/>{{/if}}");
@@ -3977,4 +3987,109 @@ steal("can/model", "can/view/mustache", "can/test", "can/view/mustache/spec/spec
 			equal(Object.keys(can.view.nodeLists.nodeMap).length, 0, 'All nodes have been removed from nodeMap');
 		});
 	}
+
+	test('registerSimpleHelper', 3, function() {
+		can.Mustache.registerSimpleHelper('simple', function(first, second) {
+			equal(first, 2);
+			equal(second, 4);
+			return first + second;
+		});
+
+		var template = can.view.mustache('<div>Result: {{simple first second}}</div>');
+		var frag = template(new can.Map({
+			first: 2,
+			second: 4
+		}));
+		equal(frag.childNodes[0].innerHTML, 'Result: 6');
+	});
+	
+	test('Helper handles list replacement (#1652)', 3, function () {
+
+		var state = new can.Map({
+			list: []
+		});
+
+		var helpers = {
+			listHasLength: function (options) {
+				ok(true, 'listHasLength helper evaluated');
+				return this.attr('list').attr('length') ?
+					options.fn() :
+					options.inverse();
+			}
+		};
+
+		// Helper evaluated 1st time...
+		can.mustache('{{#listHasLength}}{{/listHasLength}}')(state, helpers);
+
+		// Helper evaluated 2nd time...
+		state.attr('list', []);
+		
+		// Helper evaluated 3rd time...
+		state.attr('list').push('...')
+
+	});
+
+	test('Helper binds to nested properties (#1651)', function () {
+
+		var nestedAttrsCount = 0,
+			state = new can.Map({
+				parent: null
+			});
+
+		var helpers = {
+			bindViaNestedAttrs: function (options) {
+
+				nestedAttrsCount++;
+
+				if (nestedAttrsCount === 3) {
+					ok(true, 'bindViaNestedAttrs helper evaluated 3 times');
+				}
+
+				return this.attr('parent') && this.attr('parent').attr('child') ?
+					options.fn() :
+					options.inverse();
+			}
+		};
+
+		// Helpers evaluated 1st time...
+		can.mustache('{{#bindViaNestedAttrs}}{{/bindViaNestedAttrs}}')(state, helpers);
+
+		// Helpers evaluated 2nd time...
+		state.attr('parent', {
+			child: 'foo'
+		});
+
+		// Helpers evaluated 3rd time...
+		state.attr('parent.child', 'bar');
+	});
+
+	test('registerSimpleHelper', 3, function() {
+		can.Mustache.registerSimpleHelper('simple', function(first, second) {
+			equal(first, 2);
+			equal(second, 4);
+			return first + second;
+		});
+
+		var template = can.view.mustache('<div>Result: {{simple first second}}</div>');
+		var frag = template(new can.Map({
+			first: 2,
+			second: 4
+		}));
+		equal(frag.childNodes[0].innerHTML, 'Result: 6');
+	});
+
+	test('registerSimpleHelper', 3, function() {
+		can.Mustache.registerSimpleHelper('simple', function(first, second) {
+			equal(first, 2);
+			equal(second, 4);
+			return first + second;
+		});
+
+		var template = can.view.mustache('<div>Result: {{simple first second}}</div>');
+		var frag = template(new can.Map({
+			first: 2,
+			second: 4
+		}));
+		equal(frag.childNodes[0].innerHTML, 'Result: 6');
+	});
 });

@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -74,7 +74,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.Model(<span class="hljs-string">'can.Model.Cached'</span>, {
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			can.Model.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);</pre></div></div>
             
         </li>
@@ -96,17 +96,17 @@
 				<span class="hljs-keyword">this</span>._cached = {};
 			}
 		},
-		cachedKey: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">cachedKey</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">'cached'</span> + <span class="hljs-keyword">this</span>._shortName;
 		},
-		cacheClear: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">cacheClear</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-built_in">window</span>.localStorage.removeItem(<span class="hljs-keyword">this</span>.cachedKey());
 			<span class="hljs-keyword">this</span>._cached = {};
 		},
-		cacheItems: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> </span>{
+		<span class="hljs-attr">cacheItems</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items</span>) </span>{
 			<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>._cached,
 				id = <span class="hljs-keyword">this</span>.id;
-			can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
+			can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item</span>) </span>{
 				<span class="hljs-keyword">var</span> idVal = item[id],
 					obj = data[idVal];
 				<span class="hljs-keyword">if</span> (obj) {
@@ -117,7 +117,7 @@
 			});
 			<span class="hljs-built_in">window</span>.localStorage.setItem(<span class="hljs-keyword">this</span>.cachedKey(), <span class="hljs-built_in">JSON</span>.stringify(data));
 		},
-		findAllCached: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">findAllCached</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -175,7 +175,7 @@
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> list;
 		},
-		pagination: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> </span>{
+		<span class="hljs-attr">pagination</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items, params</span>) </span>{
 			<span class="hljs-keyword">var</span> offset = <span class="hljs-built_in">parseInt</span>(params.offset, <span class="hljs-number">10</span>) || <span class="hljs-number">0</span>,
 				limit = <span class="hljs-built_in">parseInt</span>(params.limit, <span class="hljs-number">10</span>) || items.length - offset;
 			<span class="hljs-keyword">return</span> items.slice(offset, offset + limit);
@@ -186,23 +186,23 @@
 		 * By default uses an order property in the param
 		 * @param {Object} items
 		 */</span>
-		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, params)</span> </span>{
+		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items, params</span>) </span>{
 			can.each((params.order || [])
 				.slice(<span class="hljs-number">0</span>)
-				.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, i)</span> </span>{
+				.reverse(), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, i</span>) </span>{
 					<span class="hljs-keyword">var</span> split = name.split(<span class="hljs-string">' '</span>);
-					items = items.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
+					items = items.sort(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, b</span>) </span>{
 						<span class="hljs-keyword">if</span> (split[<span class="hljs-number">1</span>].toUpperCase() !== <span class="hljs-string">'ASC'</span>) {
 							<span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] &lt; b[split[<span class="hljs-number">0</span>]]) {
 								<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
 							} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] === b[split[<span class="hljs-number">0</span>]]) {
 								<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 							} <span class="hljs-keyword">else</span> {
-								<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+								<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
 							}
 						} <span class="hljs-keyword">else</span> {
 							<span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] &lt; b[split[<span class="hljs-number">0</span>]]) {
-								<span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+								<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
 							} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[split[<span class="hljs-number">0</span>]] === b[split[<span class="hljs-number">0</span>]]) {
 								<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 							} <span class="hljs-keyword">else</span> {
@@ -222,7 +222,7 @@
 		 * @param {Object} item
 		 * @param {Object} params
 		 */</span>
-		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, params)</span> </span>{</pre></div></div>
+		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, params</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -259,12 +259,12 @@
 				}
 			}
 		},
-		compare: {},
-		_compare: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, itemData, paramData)</span> </span>{
+		<span class="hljs-attr">compare</span>: {},
+		<span class="hljs-attr">_compare</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, itemData, paramData</span>) </span>{
 			<span class="hljs-keyword">return</span> can.Object.same(itemData, paramData, <span class="hljs-keyword">this</span>.compare[prop]);
 		},
-		makeFindAll: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(findAll)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, success, error)</span> </span>{
+		<span class="hljs-attr">makeFindAll</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">findAll</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params, success, error</span>) </span>{
 				<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">new</span> can.Deferred(),</pre></div></div>
             
         </li>
@@ -285,15 +285,15 @@
 				def.then(success, error);
 				<span class="hljs-keyword">if</span> (data.length) {
 					<span class="hljs-keyword">var</span> list = <span class="hljs-keyword">this</span>.models(data);
-					findAllDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(json)</span> </span>{
+					findAllDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">json</span>) </span>{
 						<span class="hljs-keyword">this</span>.cacheItems(json);
-						list.attr(json, <span class="hljs-literal">true</span>); <span class="hljs-comment">// TODO: update cached instances</span>
-					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+						list.attr(json, <span class="hljs-literal">true</span>); <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> update cached instances</span>
+					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 						can.trigger(list, <span class="hljs-string">'error'</span>, <span class="hljs-built_in">arguments</span>);
 					});
 					def.resolve(list);
 				} <span class="hljs-keyword">else</span> {
-					findAllDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
+					findAllDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -339,15 +339,15 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>						def.resolve(list);
-					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 						def.reject(data);
 					});
 				}
 				<span class="hljs-keyword">return</span> def;
 			};
 		},
-		makeFindOne: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(findOne)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params, success, error)</span> </span>{
+		<span class="hljs-attr">makeFindOne</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">findOne</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params, success, error</span>) </span>{
 				<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">new</span> can.Deferred(),</pre></div></div>
             
         </li>
@@ -439,7 +439,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> instance = <span class="hljs-keyword">this</span>.model(data);
-					findOneDeferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(json)</span> </span>{</pre></div></div>
+					findOneDeferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">json</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -455,7 +455,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>						instance.updated(json);
-					}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+					}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 						can.trigger(instance, <span class="hljs-string">'error'</span>, data);
 					});</pre></div></div>
             
@@ -474,7 +474,7 @@
             
             <div class="content"><div class='highlight'><pre>					def.resolve(instance); <span class="hljs-comment">// Otherwise hand off the deferred to the ajax request</span>
 				} <span class="hljs-keyword">else</span> {
-					findOneDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
+					findOneDeferred.then(can.proxy(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -520,7 +520,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>						def.resolve(instance);
-					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+					}, <span class="hljs-keyword">this</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 						def.reject(data);
 					});
 				}
@@ -528,7 +528,7 @@
 			};
 		}
 	}, {
-		updated: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">updated</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -560,7 +560,7 @@
             
             <div class="content"><div class='highlight'><pre>			can.Model.prototype.updated.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		created: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">created</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -592,7 +592,7 @@
             
             <div class="content"><div class='highlight'><pre>			can.Model.prototype.created.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		destroyed: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">destroyed</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{</pre></div></div>
             
         </li>
         

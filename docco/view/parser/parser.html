@@ -51,36 +51,42 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
-	
-	
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeMap</span><span class="hljs-params">(str)</span></span>{
-		<span class="hljs-keyword">var</span> obj = {}, items = str.split(<span class="hljs-string">","</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7,node:true*/</span>
+steal(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">each</span>(<span class="hljs-params">items, callback</span>)</span>{
 		<span class="hljs-keyword">for</span> ( <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; items.length; i++ ) {
-			obj[ items[i] ] = <span class="hljs-literal">true</span>;
+			callback(items[i], i);
 		}
-			
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeMap</span>(<span class="hljs-params">str</span>)</span>{
+		<span class="hljs-keyword">var</span> obj = {}, items = str.split(<span class="hljs-string">","</span>);
+		each(items, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
+			obj[name] = <span class="hljs-literal">true</span>;
+		});
 		<span class="hljs-keyword">return</span> obj;
 	}
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleIntermediate</span><span class="hljs-params">(intermediate, handler)</span></span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleIntermediate</span>(<span class="hljs-params">intermediate, handler</span>)</span>{
 		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = intermediate.length; i &lt; len; i++) {
 			<span class="hljs-keyword">var</span> item = intermediate[i];
 			handler[item.tokenType].apply(handler, item.args);
 		}
 		<span class="hljs-keyword">return</span> intermediate;
 	}
-	
-	<span class="hljs-keyword">var</span> alphaNumericHU = <span class="hljs-string">"-:A-Za-z0-9_"</span>,
-		attributeNames = <span class="hljs-string">"[a-zA-Z_:]["</span>+alphaNumericHU+<span class="hljs-string">":.]*"</span>,
+
+	<span class="hljs-keyword">var</span> alphaNumeric = <span class="hljs-string">"A-Za-z0-9"</span>,
+		alphaNumericHU = <span class="hljs-string">"-:_"</span>+alphaNumeric,
+		attributeNames = <span class="hljs-string">"[^=&gt;\\s\\/]+"</span>,
 		spaceEQspace = <span class="hljs-string">"\\s*=\\s*"</span>,
-		dblQuote2dblQuote = <span class="hljs-string">"\"((?:\\\\.|[^\"])*)\""</span>,
-		quote2quote = <span class="hljs-string">"'((?:\\\\.|[^'])*)'"</span>,
+		singleCurly = <span class="hljs-string">"\\{[^\\}\\{]\\}"</span>,
+		doubleCurly = <span class="hljs-string">"\\{\\{[^\\}]\\}\\}\\}?"</span>,
 		attributeEqAndValue = <span class="hljs-string">"(?:"</span>+spaceEQspace+<span class="hljs-string">"(?:"</span>+
-		  <span class="hljs-string">"(?:\"[^\"]*\")|(?:'[^']*')|[^&gt;\\s]+))?"</span>,
+		  <span class="hljs-string">"(?:"</span>+doubleCurly+<span class="hljs-string">")|(?:"</span>+singleCurly+<span class="hljs-string">")|(?:\"[^\"]*\")|(?:'[^']*')|[^&gt;\\s]+))?"</span>,
 		matchStash = <span class="hljs-string">"\\{\\{[^\\}]*\\}\\}\\}?"</span>,
 		stash = <span class="hljs-string">"\\{\\{([^\\}]*)\\}\\}\\}?"</span>,
-		startTag = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^&lt;(["</span>+alphaNumericHU+<span class="hljs-string">"]+)"</span>+
+		startTag = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^&lt;(["</span>+alphaNumeric+<span class="hljs-string">"]["</span>+alphaNumericHU+<span class="hljs-string">"]*)"</span>+
 				<span class="hljs-string">"("</span> +
 					<span class="hljs-string">"(?:\\s*"</span>+
 						<span class="hljs-string">"(?:(?:"</span>+
@@ -90,15 +96,9 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
 	                <span class="hljs-string">")*"</span>+
 	            <span class="hljs-string">")\\s*(\\/?)&gt;"</span>),
 		endTag = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^&lt;\\/(["</span>+alphaNumericHU+<span class="hljs-string">"]+)[^&gt;]*&gt;"</span>),
-		attr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"(?:"</span>+
-					<span class="hljs-string">"(?:("</span>+attributeNames+<span class="hljs-string">")|"</span>+stash+<span class="hljs-string">")"</span>+
-								<span class="hljs-string">"(?:"</span>+spaceEQspace+
-									<span class="hljs-string">"(?:"</span>+
-										<span class="hljs-string">"(?:"</span>+dblQuote2dblQuote+<span class="hljs-string">")|(?:"</span>+quote2quote+<span class="hljs-string">")|([^&gt;\\s]+)"</span>+
-									<span class="hljs-string">")"</span>+
-								<span class="hljs-string">")?)"</span>,<span class="hljs-string">"g"</span>),
 		mustache = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(stash,<span class="hljs-string">"g"</span>),
-		txtBreak = <span class="hljs-regexp">/&lt;|\{\{/</span>;</pre></div></div>
+		txtBreak = <span class="hljs-regexp">/&lt;|\{\{/</span>,
+		space = <span class="hljs-regexp">/\s/</span>;</pre></div></div>
             
         </li>
         
@@ -125,7 +125,7 @@ steal(<span class="hljs-string">"can/view"</span>, <span class="hljs-function"><
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Block Elements - HTML 5
-a is traditionally inline, but should allow block-level elments inside it, so it should be treated like a block-level element when parsed</p>
+For an INLINE element which can have BLOCK children, include that element in BOTH lists</p>
 
             </div>
             
@@ -144,7 +144,7 @@ a is traditionally inline, but should allow block-level elments inside it, so it
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> inline = makeMap(<span class="hljs-string">"abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> inline = makeMap(<span class="hljs-string">"a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var"</span>);</pre></div></div>
             
         </li>
         
@@ -154,6 +154,21 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Elements for which tag case matters - shouldn’t be lowercased.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> caseMatters = makeMap(<span class="hljs-string">"altGlyph,altGlyphDef,altGlyphItem,animateColor,animateMotion,animateTransform,clipPath,feBlend,feColorMatrix,feComponentTransfer,feComposite,feConvolveMatrix,feDiffuseLighting,feDisplacementMap,feDistantLight,feFlood,feFuncA,feFuncB,feFuncG,feFuncR,feGaussianBlur,feImage,feMerge,feMergeNode,feMorphology,feOffset,fePointLight,feSpecularLighting,feSpotLight,feTile,feTurbulence,foreignObject,glyphRef,linearGradient,radialGradient,textPath"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Elements that you can, intentionally, leave open
 (and which close themselves)</p>
@@ -165,32 +180,16 @@ a is traditionally inline, but should allow block-level elments inside it, so it
         </li>
         
         
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Attributes that have their values filled in disabled=”disabled”</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> fillAttrs = makeMap(<span class="hljs-string">"checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected"</span>);</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Special Elements (can contain anything)</p>
+              <p>Attributes that have their values filled in disabled=”disabled”
+var fillAttrs = makeMap(“checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected”);</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> special = makeMap(<span class="hljs-string">"script,style"</span>);</pre></div></div>
             
         </li>
         
@@ -201,21 +200,11 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Callback names on <code>handler</code>.</p>
+              <p>Special Elements (can contain anything)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> tokenTypes = <span class="hljs-string">"start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done"</span>.split(<span class="hljs-string">","</span>);
-
-	<span class="hljs-keyword">var</span> fn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{};
-
-	<span class="hljs-keyword">var</span> HTMLParser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(html, handler, returnIntermediate)</span> </span>{
-		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> html === <span class="hljs-string">"object"</span>) {
-			<span class="hljs-keyword">return</span> handleIntermediate(html, handler);
-		}
-		<span class="hljs-keyword">var</span> intermediate = [];
-		handler = handler || {};
-		<span class="hljs-keyword">if</span>(returnIntermediate) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> special = makeMap(<span class="hljs-string">"script"</span>);</pre></div></div>
             
         </li>
         
@@ -226,41 +215,21 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>overwrite handlers so they add to intermediate</p>
+              <p>Callback names on <code>handler</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(tokenTypes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
-				<span class="hljs-keyword">var</span> callback = handler[name] || fn;
-				handler[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-					<span class="hljs-keyword">if</span>( callback.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>) !== <span class="hljs-literal">false</span> ) {
-						intermediate.push({tokenType: name, args: can.makeArray(<span class="hljs-built_in">arguments</span>)});
-					}
-				};
-			});
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> tokenTypes = <span class="hljs-string">"start,end,close,attrStart,attrEnd,attrValue,chars,comment,special,done"</span>.split(<span class="hljs-string">","</span>);
+
+	<span class="hljs-keyword">var</span> fn = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
+
+	<span class="hljs-keyword">var</span> HTMLParser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">html, handler, returnIntermediate</span>) </span>{
+		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> html === <span class="hljs-string">"object"</span>) {
+			<span class="hljs-keyword">return</span> handleIntermediate(html, handler);
 		}
-		
-		
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStartTag</span><span class="hljs-params">(tag, tagName, rest, unary)</span> </span>{
-			tagName = tagName.toLowerCase();
-
-			<span class="hljs-keyword">if</span> (block[tagName]) {
-				<span class="hljs-keyword">while</span> (stack.last() &amp;&amp; inline[stack.last()]) {
-					parseEndTag(<span class="hljs-string">""</span>, stack.last());
-				}
-			}
-
-			<span class="hljs-keyword">if</span> (closeSelf[tagName] &amp;&amp; stack.last() === tagName) {
-				parseEndTag(<span class="hljs-string">""</span>, tagName);
-			}
-			
-			unary = empty[tagName] || !!unary;
-			
-			handler.start(tagName, unary);
-			
-			<span class="hljs-keyword">if</span> (!unary) {
-				stack.push(tagName);
-			}</pre></div></div>
+		<span class="hljs-keyword">var</span> intermediate = [];
+		handler = handler || {};
+		<span class="hljs-keyword">if</span>(returnIntermediate) {</pre></div></div>
             
         </li>
         
@@ -271,18 +240,42 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>find attribute or special</p>
+              <p>overwrite handlers so they add to intermediate</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			HTMLParser.parseAttrs(rest, handler);
-
-
-			handler.end(tagName,unary);
-			
+            <div class="content"><div class='highlight'><pre>			each(tokenTypes, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
+				<span class="hljs-keyword">var</span> callback = handler[name] || fn;
+				handler[name] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">if</span>( callback.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>) !== <span class="hljs-literal">false</span> ) {
+						intermediate.push({<span class="hljs-attr">tokenType</span>: name, <span class="hljs-attr">args</span>: [].slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">0</span>) });
+					}
+				};
+			});
 		}
 
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseEndTag</span><span class="hljs-params">(tag, tagName)</span> </span>{</pre></div></div>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStartTag</span>(<span class="hljs-params">tag, tagName, rest, unary</span>) </span>{
+			tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
+
+			<span class="hljs-keyword">if</span> (block[tagName] &amp;&amp; !inline[tagName]) {
+				<span class="hljs-keyword">var</span> last = stack.last();
+				<span class="hljs-keyword">while</span> (last &amp;&amp; inline[last] &amp;&amp; !block[last]) {
+					parseEndTag(<span class="hljs-string">""</span>, last);
+					last = stack.last();
+				}
+			}
+
+			<span class="hljs-keyword">if</span> (closeSelf[tagName] &amp;&amp; stack.last() === tagName) {
+				parseEndTag(<span class="hljs-string">""</span>, tagName);
+			}
+
+			unary = empty[tagName] || !!unary;
+
+			handler.start(tagName, unary);
+
+			<span class="hljs-keyword">if</span> (!unary) {
+				stack.push(tagName);
+			}</pre></div></div>
             
         </li>
         
@@ -292,6 +285,28 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>find attribute or special</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			HTMLParser.parseAttrs(rest, handler);
+
+
+			handler.end(tagName,unary);
+
+		}
+
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseEndTag</span>(<span class="hljs-params">tag, tagName</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>If no tag name is provided, clean shop</p>
 
@@ -305,36 +320,37 @@ a is traditionally inline, but should allow block-level elments inside it, so it
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Find the closest opened tag of the same type</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> {
+				tagName = caseMatters[tagName] ? tagName : tagName.toLowerCase();
 				<span class="hljs-keyword">for</span> (pos = stack.length - <span class="hljs-number">1</span>; pos &gt;= <span class="hljs-number">0</span>; pos--) {
 					<span class="hljs-keyword">if</span> (stack[pos] === tagName) {
 						<span class="hljs-keyword">break</span>;
 					}
 				}
-					
+
 			}
-				
+
 
 			<span class="hljs-keyword">if</span> (pos &gt;= <span class="hljs-number">0</span>) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Close all the open elements, up the stack</p>
 
@@ -349,11 +365,11 @@ a is traditionally inline, but should allow block-level elments inside it, so it
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Remove the open elements from the stack</p>
 
@@ -362,36 +378,26 @@ a is traditionally inline, but should allow block-level elments inside it, so it
             <div class="content"><div class='highlight'><pre>				stack.length = pos;
 			}
 		}
-		
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseMustache</span><span class="hljs-params">(mustache, inside)</span></span>{
+
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseMustache</span>(<span class="hljs-params">mustache, inside</span>)</span>{
 			<span class="hljs-keyword">if</span>(handler.special){
 				handler.special(inside);
 			}
 		}
-		
-		
-		<span class="hljs-keyword">var</span> index, chars, match, stack = [], last = html;
-		stack.last = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>];
+		<span class="hljs-keyword">var</span> callChars = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">if</span>(charsText) {
+				<span class="hljs-keyword">if</span>(handler.chars) {
+					handler.chars(charsText);
+				}
+			}
+			charsText = <span class="hljs-string">""</span>;
 		};
 
-		<span class="hljs-keyword">while</span> (html) {
-			chars = <span class="hljs-literal">true</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>Make sure we’re not in a script or style element</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!stack.last() || !special[stack.last()]) {</pre></div></div>
+		<span class="hljs-keyword">var</span> index,
+			chars,
+			match,
+			stack = [],
+			last = html,</pre></div></div>
             
         </li>
         
@@ -402,20 +408,18 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>Comment</p>
+              <p>an accumulating text for the next .chars callback</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (html.indexOf(<span class="hljs-string">"&lt;!--"</span>) === <span class="hljs-number">0</span>) {
-					index = html.indexOf(<span class="hljs-string">"--&gt;"</span>);
+            <div class="content"><div class='highlight'><pre>			charsText = <span class="hljs-string">""</span>;
+		stack.last = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>];
+		};
 
-					<span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span>) {
-						<span class="hljs-keyword">if</span> (handler.comment) {
-							handler.comment(html.substring(<span class="hljs-number">4</span>, index));
-						}
-						html = html.substring(index + <span class="hljs-number">3</span>);
-						chars = <span class="hljs-literal">false</span>;
-					}</pre></div></div>
+		<span class="hljs-keyword">while</span> (html) {
+
+			chars = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -426,18 +430,11 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>end tag</p>
+              <p>Make sure we’re not in a script or style element</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (html.indexOf(<span class="hljs-string">"&lt;/"</span>) === <span class="hljs-number">0</span>) {
-					match = html.match(endTag);
-
-					<span class="hljs-keyword">if</span> (match) {
-						html = html.substring(match[<span class="hljs-number">0</span>].length);
-						match[<span class="hljs-number">0</span>].replace(endTag, parseEndTag);
-						chars = <span class="hljs-literal">false</span>;
-					}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!stack.last() || !special[stack.last()]) {</pre></div></div>
             
         </li>
         
@@ -448,6 +445,54 @@ a is traditionally inline, but should allow block-level elments inside it, so it
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
+              <p>Comment</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (html.indexOf(<span class="hljs-string">"&lt;!--"</span>) === <span class="hljs-number">0</span>) {
+					index = html.indexOf(<span class="hljs-string">"--&gt;"</span>);
+
+					<span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span>) {
+						callChars();
+						<span class="hljs-keyword">if</span> (handler.comment) {
+							handler.comment(html.substring(<span class="hljs-number">4</span>, index));
+						}
+						html = html.substring(index + <span class="hljs-number">3</span>);
+						chars = <span class="hljs-literal">false</span>;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>end tag</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (html.indexOf(<span class="hljs-string">"&lt;/"</span>) === <span class="hljs-number">0</span>) {
+					match = html.match(endTag);
+
+					<span class="hljs-keyword">if</span> (match) {
+						callChars();
+						html = html.substring(match[<span class="hljs-number">0</span>].length);
+						match[<span class="hljs-number">0</span>].replace(endTag, parseEndTag);
+						chars = <span class="hljs-literal">false</span>;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
               <p>start tag</p>
 
             </div>
@@ -456,14 +501,16 @@ a is traditionally inline, but should allow block-level elments inside it, so it
 					match = html.match(startTag);
 
 					<span class="hljs-keyword">if</span> (match) {
+						callChars();
 						html = html.substring(match[<span class="hljs-number">0</span>].length);
 						match[<span class="hljs-number">0</span>].replace(startTag, parseStartTag);
 						chars = <span class="hljs-literal">false</span>;
 					}
 				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (html.indexOf(<span class="hljs-string">"{{"</span>) === <span class="hljs-number">0</span> ) {
 					match = html.match(mustache);
-					
+
 					<span class="hljs-keyword">if</span> (match) {
+						callChars();
 						html = html.substring(match[<span class="hljs-number">0</span>].length);
 						match[<span class="hljs-number">0</span>].replace(mustache, parseMustache);
 					}
@@ -471,17 +518,23 @@ a is traditionally inline, but should allow block-level elments inside it, so it
 
 				<span class="hljs-keyword">if</span> (chars) {
 					index = html.search(txtBreak);
+					<span class="hljs-keyword">if</span>(index === <span class="hljs-number">0</span> &amp;&amp; html === last) {
+						charsText += html.charAt(<span class="hljs-number">0</span>);
+						html = html.substr(<span class="hljs-number">1</span>);
+						index = html.search(txtBreak);
+					}
 
 					<span class="hljs-keyword">var</span> text = index &lt; <span class="hljs-number">0</span> ? html : html.substring(<span class="hljs-number">0</span>, index);
 					html = index &lt; <span class="hljs-number">0</span> ? <span class="hljs-string">""</span> : html.substring(index);
 
-					<span class="hljs-keyword">if</span> (handler.chars &amp;&amp; text) {
-						handler.chars(text);
+					<span class="hljs-keyword">if</span> (text) {
+						charsText += text;
 					}
+
 				}
 
 			} <span class="hljs-keyword">else</span> {
-				html = html.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"([\\s\\S]*?)&lt;\/"</span> + stack.last() + <span class="hljs-string">"[^&gt;]*&gt;"</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(all, text)</span> </span>{
+				html = html.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"([\\s\\S]*?)&lt;\/"</span> + stack.last() + <span class="hljs-string">"[^&gt;]*&gt;"</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">all, text</span>) </span>{
 					text = text.replace(<span class="hljs-regexp">/&lt;!--([\s\S]*?)--&gt;|&lt;!\[CDATA\[([\s\S]*?)]]&gt;/g</span>, <span class="hljs-string">"$1$2"</span>);
 					<span class="hljs-keyword">if</span> (handler.chars) {
 						handler.chars(text);
@@ -493,20 +546,21 @@ a is traditionally inline, but should allow block-level elments inside it, so it
 			}
 
 			<span class="hljs-keyword">if</span> (html === last) {
-				<span class="hljs-keyword">throw</span> <span class="hljs-string">"Parse Error: "</span> + html;
+				<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Parse Error: "</span> + html);
 			}
-				
+
 			last = html;
-		}</pre></div></div>
+		}
+		callChars();</pre></div></div>
             
         </li>
         
         
-        <li id="section-19">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Clean up any remaining tags</p>
 
@@ -514,56 +568,301 @@ a is traditionally inline, but should allow block-level elments inside it, so it
             
             <div class="content"><div class='highlight'><pre>		parseEndTag();
 
-		
+
 		handler.done();
 		<span class="hljs-keyword">return</span> intermediate;
 	};
-	HTMLParser.parseAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(rest, handler)</span></span>{
-		
-		
-		(rest != <span class="hljs-literal">null</span> ? rest : <span class="hljs-string">""</span>).replace(attr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, name, special, dblQuote, singleQuote, val)</span> </span>{
-			<span class="hljs-keyword">if</span>(special) {
-				handler.special(special);
-				
-			}
-			<span class="hljs-keyword">if</span>(name || dblQuote || singleQuote || val) {
-				<span class="hljs-keyword">var</span> value = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">3</span>] ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">3</span>] :
-					<span class="hljs-built_in">arguments</span>[<span class="hljs-number">4</span>] ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">4</span>] :
-					<span class="hljs-built_in">arguments</span>[<span class="hljs-number">5</span>] ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">5</span>] :
-					fillAttrs[name.toLowerCase()] ? name : <span class="hljs-string">""</span>;
-				handler.attrStart(name || <span class="hljs-string">""</span>);
-				
-				<span class="hljs-keyword">var</span> last = mustache.lastIndex = <span class="hljs-number">0</span>,
-					res = mustache.exec(value),
-					chars;
-				<span class="hljs-keyword">while</span>(res) {
-					chars = value.substring(
-						last,
-						mustache.lastIndex - res[<span class="hljs-number">0</span>].length );
-					<span class="hljs-keyword">if</span>( chars.length ) {
-						handler.attrValue(chars);
-					}
-					handler.special(res[<span class="hljs-number">1</span>]);
-					last = mustache.lastIndex;
-					res = mustache.exec(value);
-				}
-				chars = value.substr(
-						last,
-						value.length );
-				<span class="hljs-keyword">if</span>(chars) {
-					handler.attrValue(chars);
-				}
-				handler.attrEnd(name || <span class="hljs-string">""</span>);
-			}
+	
+	<span class="hljs-keyword">var</span> callAttrStart = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">state, curIndex, handler, rest</span>)</span>{
+		state.attrStart = rest.substring(<span class="hljs-keyword">typeof</span> state.nameStart === <span class="hljs-string">"number"</span> ? state.nameStart : curIndex, curIndex);
+		handler.attrStart(state.attrStart);
+		state.inName = <span class="hljs-literal">false</span>;
+	};
+	
+	<span class="hljs-keyword">var</span> callAttrEnd = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">state, curIndex, handler, rest</span>)</span>{
+		<span class="hljs-keyword">if</span>(state.valueStart !== <span class="hljs-literal">undefined</span> &amp;&amp; state.valueStart &lt; curIndex) {
+			handler.attrValue(rest.substring(state.valueStart, curIndex));
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>if this never got to be inValue, like <code>DISABLED</code> then send a attrValue</p>
 
-			
-		});
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!state.inValue){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>handler.attrValue(state.attrStart);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}
+		handler.attrEnd(state.attrStart);
+		state.attrStart = <span class="hljs-literal">undefined</span>;
+		state.valueStart = <span class="hljs-literal">undefined</span>;
+		state.inValue = <span class="hljs-literal">false</span>;
+		state.inName = <span class="hljs-literal">false</span>;
+		state.lookingForEq = <span class="hljs-literal">false</span>;
+		state.inQuote = <span class="hljs-literal">false</span>;
+		state.lookingForName = <span class="hljs-literal">true</span>;
+	};
+	
+	HTMLParser.parseAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">rest, handler</span>)</span>{
+		<span class="hljs-keyword">if</span>(!rest) {
+			<span class="hljs-keyword">return</span>;
+		}
+		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+		<span class="hljs-keyword">var</span> curIndex;
+		<span class="hljs-keyword">var</span> state = {
+			<span class="hljs-attr">inDoubleCurly</span>: <span class="hljs-literal">false</span>,
+			<span class="hljs-attr">inName</span>: <span class="hljs-literal">false</span>,
+			<span class="hljs-attr">nameStart</span>: <span class="hljs-literal">undefined</span>,
+			<span class="hljs-attr">inValue</span>: <span class="hljs-literal">false</span>,
+			<span class="hljs-attr">valueStart</span>: <span class="hljs-literal">undefined</span>,
+			<span class="hljs-attr">inQuote</span>: <span class="hljs-literal">false</span>,
+			<span class="hljs-attr">attrStart</span>: <span class="hljs-literal">undefined</span>,
+			<span class="hljs-attr">lookingForName</span>: <span class="hljs-literal">true</span>,
+			<span class="hljs-attr">lookingForValue</span>: <span class="hljs-literal">false</span>,
+			<span class="hljs-attr">lookingForEq</span> : <span class="hljs-literal">false</span>
+		};
+		<span class="hljs-keyword">while</span>(i &lt; rest.length) {
+			curIndex = i;
+			<span class="hljs-keyword">var</span> cur = rest.charAt(i);
+			<span class="hljs-keyword">var</span> next = rest.charAt(i+<span class="hljs-number">1</span>);
+			<span class="hljs-keyword">var</span> nextNext = rest.charAt(i+<span class="hljs-number">2</span>);
+			i++;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>debugger;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(cur === <span class="hljs-string">"{"</span> &amp;&amp; next === <span class="hljs-string">"{"</span>) {
+				<span class="hljs-keyword">if</span>(state.inValue &amp;&amp; curIndex &gt; state.valueStart) {
+					handler.attrValue(rest.substring(state.valueStart, curIndex));
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p><code>{{#foo}}DISABLED{{/foo}}</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.inName &amp;&amp; state.nameStart &lt; curIndex) {
+					callAttrStart(state, curIndex, handler, rest);
+					callAttrEnd(state, curIndex, handler, rest);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>foo={{bar}}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.lookingForValue){
+					state.inValue = <span class="hljs-literal">true</span>;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>a {{bar}}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.lookingForEq &amp;&amp; state.attrStart) {
+					callAttrEnd(state, curIndex, handler, rest);
+				}
+				state.inDoubleCurly = <span class="hljs-literal">true</span>;
+				state.doubleCurlyStart = curIndex+<span class="hljs-number">2</span>;
+				i++;
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.inDoubleCurly) {
+				<span class="hljs-keyword">if</span>(cur === <span class="hljs-string">"}"</span> &amp;&amp; next === <span class="hljs-string">"}"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>for <code>{{{}}}</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> isTriple = nextNext === <span class="hljs-string">"}"</span> ?  <span class="hljs-number">1</span>: <span class="hljs-number">0</span>;
+					handler.special(rest.substring(state.doubleCurlyStart, curIndex));
+					state.inDoubleCurly = <span class="hljs-literal">false</span>;
+					<span class="hljs-keyword">if</span>(state.inValue) {
+						state.valueStart = curIndex+<span class="hljs-number">2</span>+isTriple;
+					}
+					i += (<span class="hljs-number">1</span>+isTriple);
+				}
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.inValue) {
+				<span class="hljs-keyword">if</span>(state.inQuote) {
+					<span class="hljs-keyword">if</span>(cur === state.inQuote) {
+						callAttrEnd(state, curIndex, handler, rest);
+					}
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(space.test(cur)) {
+					callAttrEnd(state, curIndex, handler, rest);
+				}
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>if we hit an = outside a value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(cur === <span class="hljs-string">"="</span> &amp;&amp; (state.lookingForEq || state.lookingForName || state.inName)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>if we haven’t yet started this attribute <code>{{}}=foo</code> case:</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(!state.attrStart) {
+					callAttrStart(state, curIndex, handler, rest);
+				}
+				state.lookingForValue = <span class="hljs-literal">true</span>;
+				state.lookingForEq = <span class="hljs-literal">false</span>;
+				state.lookingForName = <span class="hljs-literal">false</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>if we are currently in a name, check if we found a space</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.inName) {
+				<span class="hljs-keyword">if</span>(space.test(cur)) {
+					callAttrStart(state, curIndex, handler, rest);
+					state.lookingForEq = <span class="hljs-literal">true</span>;
+				}
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.lookingForName) {
+				<span class="hljs-keyword">if</span>(!space.test(cur)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>might have just started a name, we need to close it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(state.attrStart) {
+						callAttrEnd(state, curIndex, handler, rest);
+					}
+					state.nameStart = curIndex;
+					state.inName = <span class="hljs-literal">true</span>;
+				}
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.lookingForValue) {
+				<span class="hljs-keyword">if</span>(!space.test(cur)) {
+					state.lookingForValue = <span class="hljs-literal">false</span>;
+					state.inValue = <span class="hljs-literal">true</span>;
+					<span class="hljs-keyword">if</span>(cur === <span class="hljs-string">"'"</span> || cur === <span class="hljs-string">'"'</span>) {
+						state.inQuote = cur;
+						state.valueStart = curIndex+<span class="hljs-number">1</span>;
+					} <span class="hljs-keyword">else</span> {
+						state.valueStart = curIndex;
+					}
+				}
+			}
+		}
+		
+		<span class="hljs-keyword">if</span>(state.inName) {
+			callAttrStart(state, curIndex+<span class="hljs-number">1</span>, handler, rest);
+			callAttrEnd(state, curIndex+<span class="hljs-number">1</span>, handler, rest);
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.lookingForEq) {
+			callAttrEnd(state, curIndex+<span class="hljs-number">1</span>, handler, rest);
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.inValue) {
+			callAttrEnd(state, curIndex+<span class="hljs-number">1</span>, handler, rest);
+		}
+
+		
 	};
 
-	can.view.parser = HTMLParser;
-	
 	<span class="hljs-keyword">return</span> HTMLParser;
-	
+
 });</pre></div></div>
             
         </li>

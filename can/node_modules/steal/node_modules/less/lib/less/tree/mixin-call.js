@@ -5,10 +5,11 @@ var Node = require("./node"),
 
 var MixinCall = function (elements, args, index, currentFileInfo, important) {
     this.selector = new Selector(elements);
-    this.arguments = (args && args.length) ? args : null;
+    this.arguments = args || [];
     this.index = index;
     this.currentFileInfo = currentFileInfo;
     this.important = important;
+    this.allowRoot = true;
 };
 MixinCall.prototype = new Node();
 MixinCall.prototype.type = "MixinCall";
@@ -16,17 +17,18 @@ MixinCall.prototype.accept = function (visitor) {
     if (this.selector) {
         this.selector = visitor.visit(this.selector);
     }
-    if (this.arguments) {
+    if (this.arguments.length) {
         this.arguments = visitor.visitArray(this.arguments);
     }
 };
 MixinCall.prototype.eval = function (context) {
-    var mixins, mixin, mixinPath, args, rules = [], match = false, i, m, f, isRecursive, isOneFound, rule,
+    var mixins, mixin, mixinPath, args = [], arg, argValue,
+        rules = [], match = false, i, m, f, isRecursive, isOneFound,
         candidates = [], candidate, conditionResult = [], defaultResult, defFalseEitherCase = -1,
         defNone = 0, defTrue = 1, defFalse = 2, count, originalRuleset, noArgumentsFilter;
 
     function calcDefGroup(mixin, mixinPath) {
-        var p, namespace;
+        var f, p, namespace;
 
         for (f = 0; f < 2; f++) {
             conditionResult[f] = true;
@@ -52,9 +54,18 @@ MixinCall.prototype.eval = function (context) {
         return defFalseEitherCase;
     }
 
-    args = this.arguments && this.arguments.map(function (a) {
-        return { name: a.name, value: a.value.eval(context) };
-    });
+    for (i = 0; i < this.arguments.length; i++) {
+        arg = this.arguments[i];
+        argValue = arg.value.eval(context);
+        if (arg.expand && Array.isArray(argValue.value)) {
+            argValue = argValue.value;
+            for (m = 0; m < argValue.length; m++) {
+                args.push({value: argValue[m]});
+            }
+        } else {
+            args.push({name: arg.name, value: argValue});
+        }
+    }
 
     noArgumentsFilter = function(rule) {return rule.matchArgs(null, context);};
 
@@ -117,11 +128,12 @@ MixinCall.prototype.eval = function (context) {
                         mixin = candidates[m].mixin;
                         if (!(mixin instanceof MixinDefinition)) {
                             originalRuleset = mixin.originalRuleset || mixin;
-                            mixin = new MixinDefinition("", [], mixin.rules, null, false);
+                            mixin = new MixinDefinition("", [], mixin.rules, null, false, null, originalRuleset.visibilityInfo());
                             mixin.originalRuleset = originalRuleset;
                         }
-                        Array.prototype.push.apply(
-                            rules, mixin.evalCall(context, args, this.important).rules);
+                        var newRules = mixin.evalCall(context, args, this.important).rules;
+                        this._setVisibilityToReplacement(newRules);
+                        Array.prototype.push.apply(rules, newRules);
                     } catch (e) {
                         throw { message: e.message, index: this.index, filename: this.currentFileInfo.filename, stack: e.stack };
                     }
@@ -129,14 +141,6 @@ MixinCall.prototype.eval = function (context) {
             }
 
             if (match) {
-                if (!this.currentFileInfo || !this.currentFileInfo.reference) {
-                    for (i = 0; i < rules.length; i++) {
-                        rule = rules[i];
-                        if (rule.markReferenced) {
-                            rule.markReferenced();
-                        }
-                    }
-                }
                 return rules;
             }
         }
@@ -149,6 +153,16 @@ MixinCall.prototype.eval = function (context) {
         throw { type:    'Name',
             message: this.selector.toCSS().trim() + " is undefined",
             index:   this.index, filename: this.currentFileInfo.filename };
+    }
+};
+
+MixinCall.prototype._setVisibilityToReplacement = function (replacement) {
+    var i, rule;
+    if (this.blocksVisibility()) {
+        for (i = 0; i < replacement.length; i++) {
+            rule = replacement[i];
+            rule.addVisibilityBlock();
+        }
     }
 };
 MixinCall.prototype.format = function (args) {

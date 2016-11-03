@@ -91,7 +91,7 @@ to determine if the compute has changed values.
 
 Create a compute from an object's property value. This short-cut
 signature lets you create a compute on objects that have events
-that be listened to with [can.bind].
+that can be listened to with [can.bind].
 
     var input = document.getElementById('age')
     var age = can.compute(input,"value","change");
@@ -261,7 +261,7 @@ are observable, it means that the view of that Control will update itself whenev
 of the compute updates. Here's a simple slider that works off of a compute:
 
 ```
-var project = new Observe({
+var project = new can.Map({
     name: 'A Very Important Project',
     percentDone: .35
 });

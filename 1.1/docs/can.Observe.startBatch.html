@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -613,17 +610,82 @@ lots of changes to make to can.Observes, batching them together can help perform
 those can.Observes are live-bound to the DOM.</p>
 <p>In this example, you can see how the <em>first</em> and <em>change</em> events are not fired (and their handlers
 are not called) until <code>stopBatch</code> is called.</p>
+<pre><code class="language-js">var person = new can.Observe({
+    first: 'Alexis',
+    last: 'Abril'
+});
+
+person.bind('first', function() {
+    console.log(&quot;First name changed.&quot;);
+}).bind('change', function() {
+    console.log(&quot;Something changed.&quot;);
+});
+
+can.Observe.startBatch();
+person.attr('first', 'Alex');
+console.log('Still in the batch.');
+can.Observe.stopBatch();
+
+// the log has:
+// Still in the batch.
+// First name changed.
+// Something changed.
+</code></pre>
 <p>You can also pass a callback to <code>startBatch</code> which will be called after all the events have
 been fired:</p>
+<pre><code class="language-js">can.Observe.startBatch(function() {
+    console.log('The batch is over.');
+});
+person.attr('first', 'Izzy');
+console.log('Still in the batch.');
+can.Observe.stopBatch();
+
+// The console has:
+// Still in the batch.
+// First name changed.
+// Something changed.
+// The batch is over.
+</code></pre>
 <h2>Calling <code>startBatch</code> multiple times</h2>
 <p>If you call <code>startBatch</code> more than once, <code>stopBatch</code> needs to be called
 the same number of times before any batched events will fire. For ways
 to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</a>.</p>
 <p>Here is an example that demonstrates how events are affected by calling
 <code>startBatch</code> multiple times.</p>
+<pre><code class="language-js">var addPeople = function(observable) {
+    can.Observe.startBatch();
+    observable.attr('a', 'Alice');
+    observable.attr('b', 'Bob');
+    observable.attr('e', 'Eve');
+    can.Observe.stopBatch();
+};
+
+// In a completely different place:
+var list = new can.Observe();
+list.bind('change', function() {
+    console.log('The list changed.');
+});
+
+can.Observe.startBatch();
+addPeople(list);
+console.log('Still in the batch.');
+
+// Here, the console has:
+// Still in the batch.
+
+can.Observe.stopBatch();
+
+// Here, the console has:
+// Still in the batch.
+// The list changed.
+// The list changed.
+// The list changed.
+</code></pre>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -639,7 +701,7 @@ to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -650,11 +712,8 @@ to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -664,7 +723,7 @@ to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -672,19 +731,19 @@ to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.Observe.startBatch","parent":"can.Observe.static","src":"observe/observe.js","line":133,"codeLine":231,"description":"Begin an event batch.","title":"startBatch","signatures":[{"code":"can.Observe.startBatch([batchStopHandler])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"batchStopHandler","description":"a callback that gets called after all batched events have been called"}]}],"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
+		var docObject = {"type":"function","name":"can.Observe.startBatch","parent":"can.Observe.static","src":"observe/observe.js","line":133,"codeLine":231,"description":"Begin an event batch.","title":"startBatch","signatures":[{"code":"can.Observe.startBatch([batchStopHandler])","description":"","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"optional":true,"name":"batchStopHandler","description":"a callback that gets called after all batched events have been called"}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/1.1/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/1.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -693,13 +752,13 @@ to circumvent this process, see <a href="can.Observe.stopBatch.html">stopBatch</
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

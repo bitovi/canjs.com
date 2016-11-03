@@ -56,11 +56,11 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view/mustache'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, benchmarks)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/view/mustache'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, benchmarks</span>) </span>{
 	<span class="hljs-comment">/* jshint ignore:start */</span>
 	benchmarks.add(
 		<span class="hljs-string">"can/view/mustache Updating elements"</span>,
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 
 			<span class="hljs-keyword">var</span> template = can.view.mustache(
 				<span class="hljs-string">"{{#each boxes}}"</span> +
@@ -73,41 +73,41 @@
 
 			<span class="hljs-keyword">var</span> boxes = [],
 				Box = can.Map.extend({
-					count: <span class="hljs-number">0</span>,
-					content: <span class="hljs-number">0</span>,
-					tick: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					<span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+					<span class="hljs-attr">content</span>: <span class="hljs-number">0</span>,
+					<span class="hljs-attr">tick</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 						<span class="hljs-keyword">var</span> count = <span class="hljs-keyword">this</span>.attr(<span class="hljs-string">"count"</span>) + <span class="hljs-number">1</span>;
 						<span class="hljs-keyword">this</span>.attr({
-							count: count,
-							left: <span class="hljs-built_in">Math</span>.cos(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
-							top: <span class="hljs-built_in">Math</span>.sin(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
-							color: count % <span class="hljs-number">255</span>,
-							content: count
+							<span class="hljs-attr">count</span>: count,
+							<span class="hljs-attr">left</span>: <span class="hljs-built_in">Math</span>.cos(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
+							<span class="hljs-attr">top</span>: <span class="hljs-built_in">Math</span>.sin(count / <span class="hljs-number">10</span>) * <span class="hljs-number">10</span>,
+							<span class="hljs-attr">color</span>: count % <span class="hljs-number">255</span>,
+							<span class="hljs-attr">content</span>: count
 						});
 					}
 				});
 
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) {
 				boxes.push(<span class="hljs-keyword">new</span> Box({
-					number: i
+					<span class="hljs-attr">number</span>: i
 				}));
 			}
 
 			<span class="hljs-keyword">var</span> frag = template({
-				boxes: boxes
+				<span class="hljs-attr">boxes</span>: boxes
 			});
 			<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
 			<span class="hljs-built_in">document</span>.body.appendChild(div);
 			div.appendChild(frag);
 		},
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">2</span>; j++) {
 				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; boxes.length; n++) {
 					boxes[n].tick();
 				}
 			}
 		},
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-built_in">document</span>.body.removeChild(div);
 		});
 	<span class="hljs-comment">/* jshint ignore:end */</span>

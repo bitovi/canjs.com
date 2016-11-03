@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -98,7 +108,7 @@ steal(
 	<span class="hljs-string">"./intermediate_and_imports.js"</span>,
 	<span class="hljs-string">"can/view/callbacks"</span>,
 	<span class="hljs-string">"can/view/bindings"</span>,
-	<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks )</span></span>{</pre></div></div>
+	<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks </span>)</span>{</pre></div></div>
             
         </li>
         
@@ -114,9 +124,12 @@ steal(
             </div>
             
             <div class="content"><div class='highlight'><pre>	parser = parser || can.view.parser;
+	can.view.parser = parser;
 	viewCallbacks = viewCallbacks || can.view.callbacks;
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stache</span><span class="hljs-params">(template)</span></span>{</pre></div></div>
+	<span class="hljs-keyword">var</span> svgNamespace = <span class="hljs-string">"http://www.w3.org/2000/svg"</span>;
+	<span class="hljs-keyword">var</span> namespaces = {
+		<span class="hljs-string">"svg"</span>: svgNamespace,</pre></div></div>
             
         </li>
         
@@ -126,6 +139,25 @@ steal(
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>this allows a partial to start with g.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"g"</span>: svgNamespace
+	},
+		textContentOnlyTag = {<span class="hljs-attr">style</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">script</span>: <span class="hljs-literal">true</span>};
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stache</span>(<span class="hljs-params">template</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Remove line breaks according to mustache’s specs.</p>
 
@@ -138,11 +170,11 @@ steal(
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>The HTML section that is the root section for the entire template.</p>
 
@@ -153,28 +185,28 @@ steal(
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Tracks the state of the parser.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			state = {
-				node: <span class="hljs-literal">null</span>,
-				attr: <span class="hljs-literal">null</span>,</pre></div></div>
+				<span class="hljs-attr">node</span>: <span class="hljs-literal">null</span>,
+				<span class="hljs-attr">attr</span>: <span class="hljs-literal">null</span>,</pre></div></div>
             
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>A stack of which node / section we are in.
 There is probably a better way of doing this.</p>
@@ -186,39 +218,17 @@ There is probably a better way of doing this.</p>
         </li>
         
         
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>If text should be inserted and HTML escaped</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				text: <span class="hljs-literal">false</span>
-			},</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>This function is a catch all for taking a section and figuring out
-how to create a “renderer” that handles the functionality for a 
-given section and modify the section to use that renderer.
-For example, if an HTMLSection is passed with mode <code>#</code> it knows to 
-create a liveBindingBranchRenderer and pass that to section.add.</p>
+              <p>If text should be inserted and HTML escaped</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			makeRendererAndUpdateSection = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(section, mode, stache)</span></span>{
-				
-				<span class="hljs-keyword">if</span>(mode === <span class="hljs-string">"&gt;"</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				text: <span class="hljs-literal">false</span>,</pre></div></div>
             
         </li>
         
@@ -229,11 +239,67 @@ create a liveBindingBranchRenderer and pass that to section.add.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
+              <p>which namespace we are in</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				namespaceStack: [],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>for style and script tags
+we create a special TextSectionBuilder and add things to that
+when the element is done, we compile the text section and 
+add it as a callback to <code>section</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				textContentOnly: <span class="hljs-literal">null</span>
+				
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>This function is a catch all for taking a section and figuring out
+how to create a “renderer” that handles the functionality for a 
+given section and modify the section to use that renderer.
+For example, if an HTMLSection is passed with mode <code>#</code> it knows to 
+create a liveBindingBranchRenderer and pass that to section.add.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			makeRendererAndUpdateSection = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">section, mode, stache</span>)</span>{
+				
+				<span class="hljs-keyword">if</span>(mode === <span class="hljs-string">"&gt;"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
               <p>Partials use liveBindingPartialRenderers</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, state));
+            <div class="content"><div class='highlight'><pre>					section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, copyState()));
 
 				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(mode === <span class="hljs-string">"/"</span>) {
 					
@@ -250,11 +316,11 @@ create a liveBindingBranchRenderer and pass that to section.add.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>If we are an HTMLSection, we will generate a 
 a LiveBindingBranchRenderer; otherwise, a StringBranchRenderer.
@@ -276,11 +342,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Adds a renderer function that just reads a value or calls a helper.</p>
 
@@ -293,11 +359,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Adds a renderer function and starts a section.</p>
 
@@ -308,11 +374,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>If we are a directly nested section, count how many we are within</p>
 
@@ -326,17 +392,17 @@ text value.  </p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Adds a renderer function that only updates text.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						section.add( makeRenderer(<span class="hljs-literal">null</span>,stache, copyState({text: <span class="hljs-literal">true</span>}) ));
+            <div class="content"><div class='highlight'><pre>						section.add( makeRenderer(<span class="hljs-literal">null</span>,stache, copyState({<span class="hljs-attr">text</span>: <span class="hljs-literal">true</span>}) ));
 					}
 					
 				}
@@ -345,39 +411,63 @@ text value.  </p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Copys the state object for use in renderers.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			copyState = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(overwrites)</span></span>{
+            <div class="content"><div class='highlight'><pre>			copyState = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">overwrites</span>)</span>{
+				<span class="hljs-keyword">var</span> lastElement = state.sectionElementStack[state.sectionElementStack.length - <span class="hljs-number">1</span>];
 				<span class="hljs-keyword">var</span> cur = {
-					tag: state.node &amp;&amp; state.node.tag,
-					attr: state.attr &amp;&amp; state.attr.name,
-					directlyNested: state.sectionElementStack[state.sectionElementStack.length - <span class="hljs-number">1</span>] === <span class="hljs-string">"section"</span>
+					<span class="hljs-attr">tag</span>: state.node &amp;&amp; state.node.tag,
+					<span class="hljs-attr">attr</span>: state.attr &amp;&amp; state.attr.name,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><content> elements should be considered direclty nested</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					directlyNested: state.sectionElementStack.length ?
+						lastElement === <span class="hljs-string">"section"</span> || lastElement === <span class="hljs-string">"custom"</span>: <span class="hljs-literal">true</span>,
+					<span class="hljs-attr">textContentOnly</span>: !!state.textContentOnly
 				};
 				<span class="hljs-keyword">return</span> overwrites ? can.simpleExtend(cur, overwrites) : cur;
 			},
-			addAttributesCallback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node, callback)</span></span>{
+			addAttributesCallback = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node, callback</span>)</span>{
 				<span class="hljs-keyword">if</span>( !node.attributes ) {
 					node.attributes = [];
 				}
-				node.attributes.push(callback);
+				node.attributes.unshift(callback);
 			};
 		
 		parser(template,{
-			start: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tagName, unary)</span></span>{
+			<span class="hljs-attr">start</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tagName, unary</span>)</span>{
+				<span class="hljs-keyword">var</span> matchedNamespace = namespaces[tagName];
+				
+				<span class="hljs-keyword">if</span> (matchedNamespace &amp;&amp; !unary ) {
+					state.namespaceStack.push(matchedNamespace);
+				}
+				
 				state.node = {
-					tag: tagName,
-					children: []
+					<span class="hljs-attr">tag</span>: tagName,
+					<span class="hljs-attr">children</span>: [],
+					<span class="hljs-attr">namespace</span>: matchedNamespace || can.last(state.namespaceStack)
 				};
 			},
-			end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(tagName, unary)</span></span>{
+			<span class="hljs-attr">end</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tagName, unary</span>)</span>{
 				<span class="hljs-keyword">var</span> isCustomTag =  viewCallbacks.tag(tagName);
 				
 				<span class="hljs-keyword">if</span>(unary){</pre></div></div>
@@ -385,11 +475,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>If it’s a custom tag with content, we need a section renderer.</p>
 
@@ -397,28 +487,29 @@ text value.  </p>
             
             <div class="content"><div class='highlight'><pre>					section.add(state.node);
 					<span class="hljs-keyword">if</span>(isCustomTag) {
-						addAttributesCallback(state.node, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span></span>{
+						addAttributesCallback(state.node, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, options, parentNodeList</span>)</span>{
 							viewCallbacks.tagHandler(<span class="hljs-keyword">this</span>,tagName, {
-								scope: scope,
-								options: options,
-								subtemplate: <span class="hljs-literal">null</span>,
-								templateType: <span class="hljs-string">"stache"</span>
+								<span class="hljs-attr">scope</span>: scope,
+								<span class="hljs-attr">options</span>: options,
+								<span class="hljs-attr">subtemplate</span>: <span class="hljs-literal">null</span>,
+								<span class="hljs-attr">templateType</span>: <span class="hljs-string">"stache"</span>,
+								<span class="hljs-attr">parentNodeList</span>: parentNodeList
 							});
 						});
 					}
 				} <span class="hljs-keyword">else</span> {
 					section.push(state.node);
 					
-					state.sectionElementStack.push(<span class="hljs-string">"element"</span>);</pre></div></div>
+					state.sectionElementStack.push( isCustomTag ? <span class="hljs-string">'custom'</span>: tagName );</pre></div></div>
             
         </li>
         
         
-        <li id="section-17">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>If it’s a custom tag with content, we need a section renderer.</p>
 
@@ -426,6 +517,8 @@ text value.  </p>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>( isCustomTag ) {
 						section.startSubSection();
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(textContentOnlyTag[tagName]) {
+						state.textContentOnly = <span class="hljs-keyword">new</span> TextSectionBuilder();
 					}
 				}
 				
@@ -433,39 +526,50 @@ text value.  </p>
 				state.node =<span class="hljs-literal">null</span>;
 				
 			},
-			close: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName )</span> </span>{
+			<span class="hljs-attr">close</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName </span>) </span>{
+				<span class="hljs-keyword">var</span> matchedNamespace = namespaces[tagName];
+				
+				<span class="hljs-keyword">if</span> (matchedNamespace  ) {
+					state.namespaceStack.pop();
+				}
+				
 				<span class="hljs-keyword">var</span> isCustomTag = viewCallbacks.tag(tagName),
 					renderer;
 				
 				<span class="hljs-keyword">if</span>( isCustomTag ) {
 					renderer = section.endSubSectionAndReturnRenderer();
 				}
+				<span class="hljs-keyword">if</span>(textContentOnlyTag[tagName]) {
+					section.last().add(state.textContentOnly.compile(copyState()));
+					state.textContentOnly = <span class="hljs-literal">null</span>;
+				}
 				
 				<span class="hljs-keyword">var</span> oldNode = section.pop();
 				<span class="hljs-keyword">if</span>( isCustomTag ) {
-					addAttributesCallback(oldNode, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span></span>{
+					addAttributesCallback(oldNode, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, options, parentNodeList</span>)</span>{
 						viewCallbacks.tagHandler(<span class="hljs-keyword">this</span>,tagName, {
-							scope: scope,
-							options: options,
-							subtemplate: renderer,
-							templateType: <span class="hljs-string">"stache"</span>
+							<span class="hljs-attr">scope</span>: scope,
+							<span class="hljs-attr">options</span>: options,
+							<span class="hljs-attr">subtemplate</span>: renderer,
+							<span class="hljs-attr">templateType</span>: <span class="hljs-string">"stache"</span>,
+							<span class="hljs-attr">parentNodeList</span>: parentNodeList
 						});
 					});
 				}
 				state.sectionElementStack.pop();
 			},
-			attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attrName)</span></span>{
+			<span class="hljs-attr">attrStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attrName</span>)</span>{
 				<span class="hljs-keyword">if</span>(state.node.section) {
 					state.node.section.add(attrName+<span class="hljs-string">"=\""</span>);
 				} <span class="hljs-keyword">else</span> {
 					state.attr = {
-						name: attrName,
-						value: <span class="hljs-string">""</span>
+						<span class="hljs-attr">name</span>: attrName,
+						<span class="hljs-attr">value</span>: <span class="hljs-string">""</span>
 					};
 				}
 				
 			},
-			attrEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attrName)</span></span>{
+			<span class="hljs-attr">attrEnd</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attrName</span>)</span>{
 				<span class="hljs-keyword">if</span>(state.node.section) {
 					state.node.section.add(<span class="hljs-string">"\" "</span>);
 				} <span class="hljs-keyword">else</span> {
@@ -475,17 +579,18 @@ text value.  </p>
 					
 					state.node.attrs[state.attr.name] =
 						state.attr.section ? state.attr.section.compile(copyState()) : state.attr.value;
-					
+
 					<span class="hljs-keyword">var</span> attrCallback = viewCallbacks.attr(attrName);
 					<span class="hljs-keyword">if</span>(attrCallback) {
 						<span class="hljs-keyword">if</span>( !state.node.attributes ) {
 							state.node.attributes = [];
 						}
-						state.node.attributes.push(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(scope, options)</span></span>{
+						state.node.attributes.push(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, options, nodeList</span>)</span>{
 							attrCallback(<span class="hljs-keyword">this</span>,{
-								attributeName: attrName,
-								scope: scope,
-								options: options
+								<span class="hljs-attr">attributeName</span>: attrName,
+								<span class="hljs-attr">scope</span>: scope,
+								<span class="hljs-attr">options</span>: options,
+								<span class="hljs-attr">nodeList</span>: nodeList
 							});
 						});
 					}
@@ -495,7 +600,7 @@ text value.  </p>
 					state.attr = <span class="hljs-literal">null</span>;
 				}
 			},
-			attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+			<span class="hljs-attr">attrValue</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
 				<span class="hljs-keyword">var</span> section = state.node.section || state.attr.section;
 				<span class="hljs-keyword">if</span>(section){
 					section.add(value);
@@ -503,11 +608,10 @@ text value.  </p>
 					state.attr.value += value;
 				}
 			},
-			chars: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( text )</span> </span>{
-				section.add(text);
+			<span class="hljs-attr">chars</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> text </span>) </span>{
+				(state.textContentOnly || section).add(text);
 			},
-			special: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( text )</span></span>{
-				
+			<span class="hljs-attr">special</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> text </span>)</span>{
 				
 				<span class="hljs-keyword">var</span> firstAndText = mustacheCore.splitModeFromExpression(text, state),
 					mode = firstAndText.mode,
@@ -515,7 +619,15 @@ text value.  </p>
 				
 				
 				<span class="hljs-keyword">if</span>(expression === <span class="hljs-string">"else"</span>) {
-					(state.attr &amp;&amp; state.attr.section ? state.attr.section : section).inverse();
+					<span class="hljs-keyword">var</span> inverseSection;
+					<span class="hljs-keyword">if</span>(state.attr &amp;&amp; state.attr.section) {
+						inverseSection = state.attr.section;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.node &amp;&amp; state.node.section ) {
+						inverseSection = state.node.section;
+					} <span class="hljs-keyword">else</span> {
+						inverseSection = state.textContentOnly || section;
+					}
+					inverseSection.inverse();
 					<span class="hljs-keyword">return</span>;
 				}
 				
@@ -537,18 +649,18 @@ text value.  </p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p><code>{{}}</code> in an attribute like <code>class=&quot;{{}}&quot;</code></p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(state.attr) {
-					
+
 					<span class="hljs-keyword">if</span>(!state.attr.section) {
 						state.attr.section = <span class="hljs-keyword">new</span> TextSectionBuilder();
 						<span class="hljs-keyword">if</span>(state.attr.value) {
@@ -556,16 +668,17 @@ text value.  </p>
 						}
 					}
 					makeRendererAndUpdateSection(state.attr.section, mode, expression );
+
 				}</pre></div></div>
             
         </li>
         
         
-        <li id="section-19">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p><code>{{}}</code> in a tag like <code>&lt;div {{}}&gt;</code></p>
 
@@ -584,35 +697,33 @@ text value.  </p>
 						}
 						makeRendererAndUpdateSection(state.node.section, mode, expression );
 					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">throw</span> mode+<span class="hljs-string">" is currently not supported within a tag."</span>;
+						<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(mode+<span class="hljs-string">" is currently not supported within a tag."</span>);
 					}
-					
-					
-					
-				} <span class="hljs-keyword">else</span> {
-					makeRendererAndUpdateSection(section, mode, expression );
+				}
+				<span class="hljs-keyword">else</span> {
+					makeRendererAndUpdateSection( state.textContentOnly || section, mode, expression );
 				}
 			},
-			comment: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( text )</span> </span>{</pre></div></div>
+			<span class="hljs-attr">comment</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> text </span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-20">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>create comment node</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>				section.add({
-					comment: text
+					<span class="hljs-attr">comment</span>: text
 				});
 			},
-			done: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{}
+			<span class="hljs-attr">done</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
 		});
 
 		<span class="hljs-keyword">return</span> section.compile();
@@ -623,8 +734,8 @@ text value.  </p>
 		<span class="hljs-string">'\u2028'</span>: <span class="hljs-string">"\\u2028"</span>,
 		<span class="hljs-string">'\u2029'</span>: <span class="hljs-string">"\\u2029"</span>
 	};
-	<span class="hljs-keyword">var</span> esc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(string)</span></span>{
-		<span class="hljs-keyword">return</span> (<span class="hljs-string">''</span> + string).replace(<span class="hljs-regexp">/["'\\\n\r\u2028\u2029]/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(character)</span> </span>{
+	<span class="hljs-keyword">var</span> esc = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">string</span>)</span>{
+		<span class="hljs-keyword">return</span> (<span class="hljs-string">''</span> + string).replace(<span class="hljs-regexp">/["'\\\n\r\u2028\u2029]/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">character</span>) </span>{
 			<span class="hljs-keyword">if</span>(<span class="hljs-string">"'\"\\"</span>.indexOf(character) &gt;= <span class="hljs-number">0</span>) {
 				<span class="hljs-keyword">return</span> <span class="hljs-string">"\\"</span>+character;
 			} <span class="hljs-keyword">else</span>  {
@@ -634,27 +745,27 @@ text value.  </p>
 	};
 	
 	can.view.register({
-		suffix: <span class="hljs-string">"stache"</span>,
+		<span class="hljs-attr">suffix</span>: <span class="hljs-string">"stache"</span>,
 
-		contentType: <span class="hljs-string">"x-stache-template"</span>,</pre></div></div>
+		<span class="hljs-attr">contentType</span>: <span class="hljs-string">"x-stache-template"</span>,</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Returns a <code>function</code> that renders the view.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		fragRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, text)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		fragRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, text</span>) </span>{
 			<span class="hljs-keyword">return</span> stache(text);
 		},
-		script: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, src)</span> </span>{
+		<span class="hljs-attr">script</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, src</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">"can.stache(\""</span>+esc(src)+<span class="hljs-string">"\")"</span>;
 		}
 	});
@@ -663,11 +774,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>At this point, can.stache has been created</p>
 
@@ -678,11 +789,11 @@ text value.  </p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Copy helpers on raw stache function too so it can be used by stealing it.</p>
 
@@ -690,19 +801,19 @@ text value.  </p>
             
             <div class="content"><div class='highlight'><pre>	can.extend(stache, mustacheHelpers);
 	
-	can.stache.safeString = stache.safeString = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(text)</span></span>{
+	can.stache.safeString = stache.safeString = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>)</span>{
 		<span class="hljs-keyword">return</span> {
-				toString: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-attr">toString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> text;
 				}
 			};
 	};
-	can.stache.async = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source)</span></span>{
+	can.stache.async = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">source</span>)</span>{
 		<span class="hljs-keyword">var</span> iAi = getIntermediateAndImports(source);
-		<span class="hljs-keyword">var</span> importPromises = can.map( iAi.imports, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(moduleName)</span></span>{
+		<span class="hljs-keyword">var</span> importPromises = can.map( iAi.imports, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">moduleName</span>)</span>{
 			<span class="hljs-keyword">return</span> can[<span class="hljs-string">"import"</span>](moduleName);
 		});
-		<span class="hljs-keyword">return</span> can.when.apply(can, importPromises ).then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">return</span> can.when.apply(can, importPromises ).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">return</span> stache(iAi.intermediate);
 		});
 	};

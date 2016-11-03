@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>list/list.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.57</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">882</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">99.75</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.54</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&quot;can/util&quot;, &quot;can/map&quot;, &quot;can/map/bubble.js&quot;,&quot;can/map/map_helpers.js&quot;,function (can, Map, bubble, mapHelpers) {
+
+	// Helpers for `observable` lists.
+	var splice = [].splice,
+		// test if splice works correctly
+		spliceRemovesProps = (function () {
+			// IE&#039;s splice doesn&#039;t remove properties
+			var obj = {
+				0: &quot;a&quot;,
+				length: 1
+			};
+			splice.call(obj, 0, 1);
+			return !obj[0];
+		})();
+
+	/**
+	 * @add can.List
+	 */
+	var list = Map.extend(
+		/**
+		 * @static
+		 */
+		{
+			/**
+			 * @property {can.Map} can.List.Map
+			 *
+			 * @description Specify the Map type used to make objects added to this list observable.
+			 *
+			 * @option {can.Map} When objects are added to a can.List, those objects are
+			 * converted into can.Map instances.  For example:
+			 *
+			 *     var list = new can.List();
+			 *     list.push({name: &quot;Justin&quot;});
+			 *
+			 *     var map = list.attr(0);
+			 *     map.attr(&quot;name&quot;) //-&gt; &quot;Justin&quot;
+			 *
+			 * By changing [can.List.Map], you can specify a different type of Map instance to
+			 * create. For example:
+			 *
+			 *     var User = can.Map.extend({
+			 *       fullName: function(){
+			 *         return this.attr(&quot;first&quot;)+&quot; &quot;+this.attr(&quot;last&quot;)
+			 *       }
+			 *     });
+			 *
+			 *     User.List = can.List.extend({
+			 *       Map: User
+			 *     }, {});
+			 *
+			 *     var list = new User.List();
+			 *     list.push({first: &quot;Justin&quot;, last: &quot;Meyer&quot;});
+			 *
+			 *     var user = list.attr(0);
+			 *     user.fullName() //-&gt; &quot;Justin Meyer&quot;
+			 *
+			 *
+			 *
+			 */
+			Map: Map
+			/**
+			 * @function can.Map.extend
+			 *
+			 * @signature `can.List.extend([name,] [staticProperties,] instanceProperties)`
+			 *
+			 * Creates a new extended constructor function. Learn more at [can.Construct.extend].
+			 *
+			 * @param {String} [name] If provided, adds the extened List constructor function
+			 * to the window at the given name.
+			 *
+			 * @param {Object} [staticProperties] Properties and methods
+			 * directly on the constructor function. The most common property to set is [can.List.Map].
+			 *
+			 * @param {Object} [instanceProperties] Properties and methods on instances of this list type.
+			 *
+			 * @body
+			 *
+			 * ## Use
+			 *
+			 *
+			 */
+		},
+		/**
+		 * @prototype
+		 */
+		{
+			setup: function (instances, options) {
+				this.length = 0;
+				can.cid(this, &quot;.map&quot;);
+				this._setupComputedProperties();
+				instances = instances || [];
+				var teardownMapping;
+
+				if (can.isPromise(instances)) {
+					this.replace(instances);
+				} else {
+					teardownMapping = instances.length &amp;&amp; mapHelpers.addToMap(instances, this);
+					this.push.apply(this, can.makeArray(instances || []));
+				}
+
+				if (teardownMapping) {
+					teardownMapping();
+				}
+
+				// this change needs to be ignored
+				can.simpleExtend(this, options);
+			},
+			_triggerChange: function (attr, how, newVal, oldVal) {
+
+				Map.prototype._triggerChange.apply(this, arguments);
+				// `batchTrigger` direct add and remove events...
+				var index = +attr;
+				// Make sure this is not nested and not an expando
+				if (!~(&quot;&quot;+attr).indexOf(&#039;.&#039;) &amp;&amp; !isNaN(index)) {
+
+					if (how === &#039;add&#039;) {
+						can.batch.trigger(this, how, [newVal, index]);
+						can.batch.trigger(this, &#039;length&#039;, [this.length]);
+					} else if (how === &#039;remove&#039;) {
+						can.batch.trigger(this, how, [oldVal, index]);
+						can.batch.trigger(this, &#039;length&#039;, [this.length]);
+					} else {
+						can.batch.trigger(this, how, [newVal, index]);
+					}
+
+				}
+
+			},
+			___get: function (attr) {
+				if (attr) {
+					var computedAttr = this._computedAttrs[attr];
+					if (computedAttr &amp;&amp; computedAttr.compute) {
+						// return computedAttr.compute();
+						return computedAttr.compute();
+					} else {
+						return this[attr];
+					}
+				} else {
+					return this;
+				}
+			},
+			__set: function (prop, value, current) {
+				// We want change events to notify using integers if we&#039;re
+				// setting an integer index. Note that &lt;float&gt; % 1 !== 0;
+				prop = isNaN(+prop) || (prop % 1) ? prop : +prop;
+
+				// Check to see if we&#039;re doing a .attr() on an out of
+				// bounds index property.
+				if (typeof prop === &quot;number&quot; &amp;&amp;
+					prop &gt; this.length - 1) {
+					var newArr = new Array((prop + 1) - this.length);
+					newArr[newArr.length-1] = value;
+					this.push.apply(this, newArr);
+					return newArr;
+				}
+
+				return can.Map.prototype.__set.call(this, &quot;&quot;+prop, value, current);
+			},
+			___set: function (attr, val) {
+				this[attr] = val;
+				if (+attr &gt;= this.length) {
+					this.length = (+attr + 1);
+				}
+			},
+			__remove: function(prop, current) {
+				// if removing an expando property
+				if(isNaN(+prop)) {
+					delete this[prop];
+					this._triggerChange(prop, &quot;remove&quot;, undefined, current);
+				} else {
+					this.splice(prop, 1);
+				}
+			},
+			_each: function (callback) {
+				var data = this.___get();
+				for (var i = 0; i &lt; data.length; i++) {
+					callback(data[i], i);
+				}
+			},
+			// Returns the serialized form of this list.
+			/**
+			 * @hide
+			 * Returns the serialized form of this list.
+			 */
+			serialize: function () {
+				return mapHelpers.serialize(this, &#039;serialize&#039;, []);
+			},
+			/**
+			 * @function can.List.prototype.each each
+			 * @description Call a function on each element of a List.
+			 * @signature `list.each( callback(item, index) )`
+			 *
+			 * `each` iterates through the Map, calling a function
+			 * for each element.
+			 *
+			 * @param {function(*, Number)} callback the function to call for each element
+			 * The value and index of each element will be passed as the first and second
+			 * arguments, respectively, to the callback. If the callback returns false,
+			 * the loop will stop.
+			 *
+			 * @return {can.List} this List, for chaining
+			 *
+			 * @body
+			 * ```
+			 * var i = 0;
+			 * new can.Map([1, 10, 100]).each(function(element, index) {
+			 *     i += element;
+			 * });
+			 *
+			 * i; // 111
+			 *
+			 * i = 0;
+			 * new can.Map([1, 10, 100]).each(function(element, index) {
+			 *     i += element;
+			 *     if(index &gt;= 1) {
+			 *         return false;
+			 *     }
+			 * });
+			 *
+			 * i; // 11
+			 * ```
+			 */
+			//
+			/**
+			 * @function can.List.prototype.splice splice
+			 * @description Insert and remove elements from a List.
+			 * @signature `list.splice(index[, howMany[, ...newElements]])`
+			 * @param {Number} index where to start removing or inserting elements
+			 *
+			 * @param {Number} [howMany] the number of elements to remove
+			 * If _howMany_ is not provided, `splice` will remove all elements from `index` to the end of the List.
+			 *
+			 * @param {*} newElements elements to insert into the List
+			 *
+			 * @return {Array} the elements removed by `splice`
+			 *
+			 * @body
+			 * `splice` lets you remove elements from and insert elements into a List.
+			 *
+			 * This example demonstrates how to do surgery on a list of numbers:
+			 *
+			 * ```
+			 * var list = new can.List([0, 1, 2, 3]);
+			 *
+			 * // starting at index 2, remove one element and insert &#039;Alice&#039; and &#039;Bob&#039;:
+			 * list.splice(2, 1, &#039;Alice&#039;, &#039;Bob&#039;);
+			 * list.attr(); // [0, 1, &#039;Alice&#039;, &#039;Bob&#039;, 3]
+			 * ```
+			 *
+			 * ## Events
+			 *
+			 * `splice` causes the List it&#039;s called on to emit _change_ events,
+			 * _add_ events, _remove_ events, and _length_ events. If there are
+			 * any elements to remove, a _change_ event, a _remove_ event, and a
+			 * _length_ event will be fired. If there are any elements to insert, a
+			 * separate _change_ event, an _add_ event, and a separate _length_ event
+			 * will be fired.
+			 *
+			 * This slightly-modified version of the above example should help
+			 * make it clear how `splice` causes events to be emitted:
+			 *
+			 * ```
+			 * var list = new can.List([&#039;a&#039;, &#039;b&#039;, &#039;c&#039;, &#039;d&#039;]);
+			 * list.bind(&#039;change&#039;, function(ev, attr, how, newVals, oldVals) {
+			 *     console.log(&#039;change: &#039; + attr + &#039;, &#039; + how + &#039;, &#039; + newVals + &#039;, &#039; + oldVals);
+			 * });
+			 * list.bind(&#039;add&#039;, function(ev, newVals, where) {
+			 *     console.log(&#039;add: &#039; + newVals + &#039;, &#039; + where);
+			 * });
+			 * list.bind(&#039;remove&#039;, function(ev, oldVals, where) {
+			 *     console.log(&#039;remove: &#039; + oldVals + &#039;, &#039; + where);
+			 * });
+			 * list.bind(&#039;length&#039;, function(ev, length) {
+			 *     console.log(&#039;length: &#039; + length + &#039;, &#039; + this.attr());
+			 * });
+			 *
+			 * // starting at index 2, remove one element and insert &#039;Alice&#039; and &#039;Bob&#039;:
+			 * list.splice(2, 1, &#039;Alice&#039;, &#039;Bob&#039;); // change: 2, &#039;remove&#039;, undefined, [&#039;c&#039;]
+			 *                                    // remove: [&#039;c&#039;], 2
+			 *                                    // length: 5, [&#039;a&#039;, &#039;b&#039;, &#039;Alice&#039;, &#039;Bob&#039;, &#039;d&#039;]
+			 *                                    // change: 2, &#039;add&#039;, [&#039;Alice&#039;, &#039;Bob&#039;], [&#039;c&#039;]
+			 *                                    // add: [&#039;Alice&#039;, &#039;Bob&#039;], 2
+			 *                                    // length: 5, [&#039;a&#039;, &#039;b&#039;, &#039;Alice&#039;, &#039;Bob&#039;, &#039;d&#039;]
+			 * ```
+			 *
+			 * More information about binding to these events can be found under [can.List.attr attr].
+			 */
+			splice: function (index, howMany) {
+				var args = can.makeArray(arguments),
+					added =[],
+					i, len, listIndex,
+					allSame = args.length &gt; 2;
+
+				index = index || 0;
+
+				// converting the arguments to the right type
+				for (i = 0, len = args.length-2; i &lt; len; i++) {
+					listIndex = i + 2;
+					args[listIndex] = this.__type(args[listIndex], listIndex);
+					added.push(args[listIndex]);
+
+					// Now lets check if anything will change
+					if(this[i+index] !== args[listIndex]) {
+						allSame = false;
+					}
+				}
+
+				// if nothing has changed, then return
+				if(allSame &amp;&amp; this.length &lt;= added.length) {
+					return added;
+				}
+
+				// default howMany if not provided
+				if (howMany === undefined) {
+					howMany = args[1] = this.length - index;
+				}
+
+				var removed = splice.apply(this, args);
+
+				// delete properties for browsers who&#039;s splice sucks (old ie)
+				if (!spliceRemovesProps) {
+					for (i = this.length; i &lt; removed.length + this.length; i++) {
+						delete this[i];
+					}
+				}
+
+				can.batch.start();
+				if (howMany &gt; 0) {
+					// tears down bubbling
+					bubble.removeMany(this, removed);
+					this._triggerChange(&quot;&quot; + index, &quot;remove&quot;, undefined, removed);
+				}
+				if (args.length &gt; 2) {
+					// make added items bubble to this list
+					bubble.addMany(this, added);
+					this._triggerChange(&quot;&quot; + index, &quot;add&quot;, added, removed);
+				}
+				can.batch.stop();
+				return removed;
+			},
+			_getAttrs: function(){
+				return mapHelpers.serialize(this, &#039;attr&#039;, []);
+			},
+			_setAttrs: function (items, remove) {
+				// Create a copy.
+				items = can.makeArray(items);
+
+				can.batch.start();
+				this._updateAttrs(items, remove);
+				can.batch.stop();
+			},
+
+			_updateAttrs: function (items, remove) {
+				var len = Math.min(items.length, this.length);
+
+				for (var prop = 0; prop &lt; len; prop++) {
+					var curVal = this[prop],
+						newVal = items[prop];
+
+					if ( can.isMapLike(curVal) &amp;&amp; mapHelpers.canMakeObserve(newVal)) {
+						curVal.attr(newVal, remove);
+						//changed from a coercion to an explicit
+					} else if (curVal !== newVal) {
+						this._set(prop+&quot;&quot;, newVal);
+					} else {
+
+					}
+				}
+				if (items.length &gt; this.length) {
+					// Add in the remaining props.
+					this.push.apply(this, items.slice(this.length));
+				} else if (items.length &lt; this.length &amp;&amp; remove) {
+					this.splice(items.length);
+				}
+			}
+		}),
+
+		// Converts to an `array` of arguments.
+		getArgs = function (args) {
+			return args[0] &amp;&amp; can.isArray(args[0]) ?
+				args[0] :
+				can.makeArray(args);
+		};
+	// Create `push`, `pop`, `shift`, and `unshift`
+	can.each({
+			/**
+			 * @function can.List.prototype.push push
+			 * @description Add elements to the end of a list.
+			 * @signature `list.push(...elements)`
+			 *
+			 * `push` adds elements onto the end of a List.
+			 *
+			 * @param {*} elements the elements to add to the List
+			 *
+			 * @return {Number} the new length of the List
+			 *
+			 * @body
+			 * `push` adds elements onto the end of a List here is an example:
+			 *
+			 * ```
+			 * var list = new can.List([&#039;Alice&#039;]);
+			 *
+			 * list.push(&#039;Bob&#039;, &#039;Eve&#039;);
+			 * list.attr(); // [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]
+			 * ```
+			 *
+			 * If you have an array you want to concatenate to the end
+			 * of the List, you can use `apply`:
+			 *
+			 * ```
+			 * var names = [&#039;Bob&#039;, &#039;Eve&#039;],
+			 *     list = new can.List([&#039;Alice&#039;]);
+			 *
+			 * list.push.apply(list, names);
+			 * list.attr(); // [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]
+			 * ```
+			 *
+			 * ## Events
+			 *
+			 * `push` causes _change_, _add_, and _length_ events to be fired.
+			 *
+			 * ## See also
+			 *
+			 * `push` has a counterpart in [can.List::pop pop], or you may be
+			 * looking for [can.List::unshift unshift] and its counterpart [can.List::shift shift].
+			 */
+			push: &quot;length&quot;,
+			/**
+			 * @function can.List.prototype.unshift unshift
+			 * @description Add elements to the beginning of a List.
+			 * @signature `list.unshift(...elements)`
+			 *
+			 * `unshift` adds elements onto the beginning of a List.
+			 *
+			 * @param {*} elements the elements to add to the List
+			 *
+			 * @return {Number} the new length of the List
+			 *
+			 * @body
+			 * `unshift` adds elements to the front of the list in bulk in the order specified:
+			 *
+			 * ```
+			 * var list = new can.List([&#039;Alice&#039;]);
+			 *
+			 * list.unshift(&#039;Bob&#039;, &#039;Eve&#039;);
+			 * list.attr(); // [&#039;Bob&#039;, &#039;Eve&#039;, &#039;Alice&#039;]
+			 * ```
+			 *
+			 * If you have an array you want to concatenate to the beginning
+			 * of the List, you can use `apply`:
+			 *
+			 * ```
+			 * var names = [&#039;Bob&#039;, &#039;Eve&#039;],
+			 *     list = new can.List([&#039;Alice&#039;]);
+			 *
+			 * list.unshift.apply(list, names);
+			 * list.attr(); // [&#039;Bob&#039;, &#039;Eve&#039;, &#039;Alice&#039;]
+			 * ```
+			 *
+			 * ## Events
+			 *
+			 * `unshift` causes _change_, _add_, and _length_ events to be fired.
+			 *
+			 * ## See also
+			 *
+			 * `unshift` has a counterpart in [can.List::shift shift], or you may be
+			 * looking for [can.List::push push] and its counterpart [can.List::pop pop].
+			 */
+			unshift: 0
+		},
+		// Adds a method
+		// `name` - The method name.
+		// `where` - Where items in the `array` should be added.
+		function (where, name) {
+			var orig = [][name];
+			list.prototype[name] = function () {
+				can.batch.start();
+				// Get the items being added.
+				var args = [],
+					// Where we are going to add items.
+					len = where ? this.length : 0,
+					i = arguments.length,
+					res, val;
+
+				// Go through and convert anything to a `map` that needs to be converted.
+				while (i--) {
+					val = arguments[i];
+					args[i] = bubble.set(this, i, this.__type(val, i) );
+				}
+
+				// Call the original method.
+				res = orig.apply(this, args);
+
+				if (!this.comparator || args.length) {
+
+					this._triggerChange(&quot;&quot; + len, &quot;add&quot;, args, undefined);
+				}
+				can.batch.stop();
+				return res;
+			};
+		});
+
+	can.each({
+			/**
+			 * @function can.List.prototype.pop pop
+			 * @description Remove an element from the end of a List.
+			 * @signature `list.pop()`
+			 *
+			 * `pop` removes an element from the end of a List.
+			 *
+			 * @return {*} the element just popped off the List, or `undefined` if the List was empty
+			 *
+			 * @body
+			 * `pop` is the opposite action from `[can.List.push push]`:
+			 *
+			 * ```
+			 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]);
+			 * list.attr(); // [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]
+			 *
+			 * list.pop(); // &#039;Eve&#039;
+			 * list.pop(); // &#039;Bob&#039;
+			 * list.pop(); // &#039;Alice&#039;
+			 * list.pop(); // undefined
+			 * ```
+			 *
+			 * ## Events
+			 *
+			 * `pop` causes _change_, _remove_, and _length_ events to be fired if the List is not empty
+			 * when it is called.
+			 *
+			 * ## See also
+			 *
+			 * `pop` has its counterpart in [can.List::push push], or you may be
+			 * looking for [can.List::unshift unshift] and its counterpart [can.List::shift shift].
+			 */
+			pop: &quot;length&quot;,
+			/**
+			 * @function can.List.prototype.shift shift
+			 * @description Remove en element from the front of a list.
+			 * @signature `list.shift()`
+			 *
+			 * `shift` removes an element from the beginning of a List.
+			 *
+			 * @return {*} the element just shifted off the List, or `undefined` if the List is empty
+			 *
+			 * @body
+			 * `shift` is the opposite action from `[can.List::unshift unshift]`:
+			 *
+			 * ```
+			 * var list = new can.List([&#039;Alice&#039;]);
+			 *
+			 * list.unshift(&#039;Bob&#039;, &#039;Eve&#039;);
+			 * list.attr(); // [&#039;Bob&#039;, &#039;Eve&#039;, &#039;Alice&#039;]
+			 *
+			 * list.shift(); // &#039;Bob&#039;
+			 * list.shift(); // &#039;Eve&#039;
+			 * list.shift(); // &#039;Alice&#039;
+			 * list.shift(); // undefined
+			 * ```
+			 *
+			 * ## Events
+			 *
+			 * `pop` causes _change_, _remove_, and _length_ events to be fired if the List is not empty
+			 * when it is called.
+			 *
+			 * ## See also
+			 *
+			 * `shift` has a counterpart in [can.List::unshift unshift], or you may be
+			 * looking for [can.List::push push] and its counterpart [can.List::pop pop].
+			 */
+			shift: 0
+		},
+		// Creates a `remove` type method
+		function (where, name) {
+			list.prototype[name] = function () {
+				if (!this.length) {
+					// For shift and pop, we just return undefined without
+					// triggering events.
+					return undefined;
+				}
+
+				var args = getArgs(arguments),
+					len = where &amp;&amp; this.length ? this.length - 1 : 0;
+
+				var res = [][name].apply(this, args);
+
+				// Create a change where the args are
+				// `len` - Where these items were removed.
+				// `remove` - Items removed.
+				// `undefined` - The new values (there are none).
+				// `res` - The old, removed values (should these be unbound).
+				can.batch.start();
+				this._triggerChange(&quot;&quot; + len, &quot;remove&quot;, undefined, [res]);
+
+				if (res &amp;&amp; res.unbind) {
+					bubble.remove(this, res);
+				}
+				can.batch.stop();
+				return res;
+			};
+		});
+
+	can.extend(list.prototype, {
+		/**
+		 * @function can.List.prototype.indexOf indexOf
+		 * @description Look for an item in a List.
+		 * @signature `list.indexOf(item)`
+		 *
+		 * `indexOf` finds the position of a given item in the List.
+		 *
+		 * @param {*} item the item to find
+		 *
+		 * @return {Number} the position of the item in the List, or -1 if the item is not found.
+		 *
+		 * @body
+		 * ```
+		 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]);
+		 * list.indexOf(&#039;Alice&#039;);   // 0
+		 * list.indexOf(&#039;Charlie&#039;); // -1
+		 * ```
+		 *
+		 * It is trivial to make a `contains`-type function using `indexOf`:
+		 *
+		 * ```
+		 * function(list, item) {
+		 *     return list.indexOf(item) &gt;= 0;
+		 * }
+		 * ```
+		 */
+		indexOf: function (item, fromIndex) {
+			can.__observe(this, &quot;length&quot;);
+			return can.inArray(item, this, fromIndex);
+		},
+
+		/**
+		 * @function can.List.prototype.join join
+		 * @description Join a List&#039;s elements into a string.
+		 * @signature `list.join(separator)`
+		 *
+		 * `join` turns a List into a string by inserting _separator_ between the string representations
+		 * of all the elements of the List.
+		 *
+		 * @param {String} separator the string to seperate elements with
+		 *
+		 * @return {String} the joined string
+		 *
+		 * @body
+		 * ```
+		 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]);
+		 * list.join(&#039;, &#039;); // &#039;Alice, Bob, Eve&#039;
+		 *
+		 * var beatles = new can.List([&#039;John&#039;, &#039;Paul&#039;, &#039;Ringo&#039;, &#039;George&#039;]);
+		 * beatles.join(&#039;&amp;&#039;); // &#039;John&amp;Paul&amp;Ringo&amp;George&#039;
+		 * ```
+		 */
+		join: function () {
+			can.__observe(this, &quot;length&quot;);
+			return [].join.apply(this, arguments);
+		},
+
+		/**
+		 * @function can.List.prototype.reverse reverse
+		 * @description Reverse the order of a List.
+		 * @signature `list.reverse()`
+		 *
+		 * `reverse` reverses the elements of the List in place.
+		 *
+		 * @return {can.List} the List, for chaining
+		 *
+		 * @body
+		 * ```
+		 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]);
+		 * var reversedList = list.reverse();
+		 *
+		 * reversedList.attr(); // [&#039;Eve&#039;, &#039;Bob&#039;, &#039;Alice&#039;];
+		 * list === reversedList; // true
+		 * ```
+		 */
+		reverse: function() {
+			var list = [].reverse.call(can.makeArray(this));
+			return this.replace(list);
+		},
+
+		/**
+		 * @function can.List.prototype.slice slice
+		 * @description Make a copy of a part of a List.
+		 * @signature `list.slice([start[, end]])`
+		 *
+		 * `slice` creates a copy of a portion of the List.
+		 *
+		 * @param {Number} [start=0] the index to start copying from
+		 *
+		 * @param {Number} [end] the first index not to include in the copy
+		 * If _end_ is not supplied, `slice` will copy until the end of the list.
+		 *
+		 * @return {can.List} a new `can.List` with the extracted elements
+		 *
+		 * @body
+		 * ```
+		 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Charlie&#039;, &#039;Daniel&#039;, &#039;Eve&#039;]);
+		 * var newList = list.slice(1, 4);
+		 * newList.attr(); // [&#039;Bob&#039;, &#039;Charlie&#039;, &#039;Daniel&#039;]
+		 * ```
+		 *
+		 * `slice` is the simplest way to copy a List:
+		 *
+		 * ```
+		 * var list = new can.List([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]);
+		 * var copy = list.slice();
+		 *
+		 * copy.attr();   // [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]
+		 * list === copy; // false
+		 * ```
+		 */
+		slice: function () {
+			// tells computes to listen on length for changes.
+			can.__observe(this, &quot;length&quot;);
+			var temp = Array.prototype.slice.apply(this, arguments);
+			return new this.constructor(temp);
+		},
+
+		/**
+		 * @function can.List.prototype.concat concat
+		 * @description Merge many collections together into a List.
+		 * @signature `list.concat(...args)`
+		 * @param {Array|can.List|*} args Any number of arrays, Lists, or values to add in
+		 * For each parameter given, if it is an Array or a List, each of its elements will be added to
+		 * the end of the concatenated List. Otherwise, the parameter itself will be added.
+		 *
+		 * @body
+		 * `concat` makes a new List with the elements of the List followed by the elements of the parameters.
+		 *
+		 * ```
+		 * var list = new can.List();
+		 * var newList = list.concat(
+		 *     &#039;Alice&#039;,
+		 *     [&#039;Bob&#039;, &#039;Charlie&#039;]),
+		 *     new can.List([&#039;Daniel&#039;, &#039;Eve&#039;]),
+		 *     {f: &#039;Francis&#039;}
+		 * );
+		 * newList.attr(); // [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Charlie&#039;, &#039;Daniel&#039;, &#039;Eve&#039;, {f: &#039;Francis&#039;}]
+		 * ```
+		 */
+		concat: function () {
+			var args = [];
+			can.each(can.makeArray(arguments), function (arg, i) {
+				args[i] = arg instanceof can.List ? arg.serialize() : arg;
+			});
+			return new this.constructor(Array.prototype.concat.apply(this.serialize(), args));
+		},
+
+		/**
+		 * @function can.List.prototype.forEach forEach
+		 * @description Call a function for each element of a List.
+		 * @signature `list.forEach(callback[, thisArg])`
+		 * @param {function(element, index, list)} callback a function to call with each element of the List
+		 * The three parameters that _callback_ gets passed are _element_, the element at _index_, _index_ the
+		 * current element of the list, and _list_ the List the elements are coming from.
+		 * @param {Object} [thisArg] the object to use as `this` inside the callback
+		 *
+		 * @body
+		 * `forEach` calls a callback for each element in the List.
+		 *
+		 * ```
+		 * var list = new can.List([1, 2, 3]);
+		 * list.forEach(function(element, index, list) {
+		 *     list.attr(index, element * element);
+		 * });
+		 * list.attr(); // [1, 4, 9]
+		 * ```
+		 */
+		forEach: function (cb, thisarg) {
+			return can.each(this, cb, thisarg || this);
+		},
+
+		/**
+		 * @function can.List.prototype.replace replace
+		 * @description Replace all the elements of a List.
+		 * @signature `list.replace(collection)`
+		 * @param {Array|can.List|can.Deferred} collection the collection of new elements to use
+		 * If a [can.Deferred] is passed, it must resolve to an `Array` or `can.List`.
+		 * The elements of the list are not actually removed until the Deferred resolves.
+		 *
+		 * @body
+		 * `replace` replaces all the elements of this List with new ones.
+		 *
+		 * `replace` is especially useful when `can.List`s are live-bound into `[can.Control]`s,
+		 * and you intend to populate them with the results of a `[can.Model]` call:
+		 *
+		 * ```
+		 * can.Control({
+		 *     init: function() {
+		 *         this.list = new Todo.List();
+		 *         // live-bind the list into the DOM
+		 *         this.element.html(can.view(&#039;list.mustache&#039;, this.list));
+		 *         // when this AJAX call returns, the live-bound DOM will be updated
+		 *         this.list.replace(Todo.findAll());
+		 *     }
+		 * });
+		 * ```
+		 *
+		 * Learn more about [can.Model.List making Lists of models].
+		 *
+		 * ## Events
+		 *
+		 * A major difference between `replace` and `attr(newElements, true)` is that `replace` always emits
+		 * an _add_ event and a _remove_ event, whereas `attr` will cause _set_ events along with an _add_ or _remove_
+		 * event if needed. Corresponding _change_ and _length_ events will be fired as well.
+		 *
+		 * The differences in the events fired by `attr` and `replace` are demonstrated concretely by this example:
+		 * ```
+		 * var attrList = new can.List([&#039;Alexis&#039;, &#039;Bill&#039;]);
+		 * attrList.bind(&#039;change&#039;, function(ev, index, how, newVals, oldVals) {
+		 *     console.log(index + &#039;, &#039; + how + &#039;, &#039; + newVals + &#039;, &#039; + oldVals);
+		 * });
+		 *
+		 * var replaceList = new can.List([&#039;Alexis&#039;, &#039;Bill&#039;]);
+		 * replaceList.bind(&#039;change&#039;, function(ev, index, how, newVals, oldVals) {
+		 *     console.log(index + &#039;, &#039; + how + &#039;, &#039; + newVals + &#039;, &#039; + oldVals);
+		 * });
+		 *
+		 * attrList.attr([&#039;Adam&#039;, &#039;Ben&#039;], true);         // 0, set, Adam, Alexis
+		 *                                               // 1, set, Ben, Bill
+		 * replaceList.replace([&#039;Adam&#039;, &#039;Ben&#039;]);         // 0, remove, undefined, [&#039;Alexis&#039;, &#039;Bill&#039;]
+		 *                                               // 0, add, [&#039;Adam&#039;, &#039;Ben&#039;], [&#039;Alexis&#039;, &#039;Bill&#039;]
+		 *
+		 * attrList.attr([&#039;Amber&#039;], true);               // 0, set, Amber, Adam
+		 *                                               // 1, remove, undefined, Ben
+		 * replaceList.replace([&#039;Amber&#039;]);               // 0, remove, undefined, [&#039;Adam&#039;, &#039;Ben&#039;]
+		 *                                               // 0, add, Amber, [&#039;Adam&#039;, &#039;Ben&#039;]
+		 *
+		 * attrList.attr([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;], true); // 0, set, Alice, Amber
+		 *                                               // 1, add, [&#039;Bob&#039;, &#039;Eve&#039;], undefined
+		 * replaceList.replace([&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;]); // 0, remove, undefined, Amber
+		 *                                               // 0, add, [&#039;Alice&#039;, &#039;Bob&#039;, &#039;Eve&#039;], Amber
+		 * ```
+		 */
+		replace: function (newList) {
+			if (can.isPromise(newList)) {
+				if(this._promise) {
+					this._promise.__isCurrentPromise = false;
+				}
+				var promise = this._promise = newList;
+				promise.__isCurrentPromise = true;
+				var self = this;
+				newList.then(function(newList){
+					if(promise.__isCurrentPromise) {
+						self.replace(newList);
+					}
+				});
+			} else {
+				this.splice.apply(this, [0, this.length].concat(can.makeArray(newList || [])));
+			}
+
+			return this;
+		},
+		filter: function (callback, thisArg) {
+			var filteredList = new this.constructor(),
+				self = this,
+				filtered;
+			this.each(function(item, index, list){
+				filtered = callback.call( thisArg | self, item, index, self);
+				if(filtered){
+					filteredList.push(item);
+				}
+			});
+			return filteredList;
+		},
+		map: function (callback, thisArg) {
+			var filteredList = new can.List(),
+				self = this;
+			this.each(function(item, index, list){
+				var mapped = callback.call( thisArg | self, item, index, self);
+				filteredList.push(mapped);
+
+			});
+			return filteredList;
+		}
+	});
+	can.List = Map.List = list;
+	return can.List;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

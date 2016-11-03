@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Construct)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, Construct</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -46,12 +46,12 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
-		fnTest = <span class="hljs-regexp">/xyz/</span>.test(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		fnTest = <span class="hljs-regexp">/xyz/</span>.test(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.xyz;
 		}) ? <span class="hljs-regexp">/\b_super\b/</span> : <span class="hljs-regexp">/.*/</span>,
 		getset = [<span class="hljs-string">'get'</span>, <span class="hljs-string">'set'</span>],
-		getSuper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, name, fn)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		getSuper = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">base, name, fn</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> tmp = <span class="hljs-keyword">this</span>._super,
 					ret;</pre></div></div>
             
@@ -91,10 +91,10 @@ remove it when we’re done executing</p>
 			};
 		};
 
-	can.Construct._defineProperty = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(addTo, base, name, descriptor)</span> </span>{
+	can.Construct._defineProperty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">addTo, base, name, descriptor</span>) </span>{
 		<span class="hljs-keyword">var</span> _super = <span class="hljs-built_in">Object</span>.getOwnPropertyDescriptor(base, name);
 		<span class="hljs-keyword">if</span>(_super) {
-			can.each(getset, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> </span>{
+			can.each(getset, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method</span>) </span>{
 				<span class="hljs-keyword">if</span>(isFunction(_super[method]) &amp;&amp; isFunction(descriptor[method])) {
 					descriptor[method] = getSuper(_super, method, descriptor[method]);
 				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!isFunction(descriptor[method])) {
@@ -119,7 +119,7 @@ remove it when we’re done executing</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.Construct._overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(addTo, base, name, val)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.Construct._overwrite = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">addTo, base, name, val</span>) </span>{</pre></div></div>
             
         </li>
         

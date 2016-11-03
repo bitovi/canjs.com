@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -654,29 +651,106 @@ function.</p>
 			<p><code>can.Construct.prototype.proxy</code> takes a function and returns a new function that, when invoked,
 calls the given function with the same <code>this</code> as <code>proxy</code> was called with.</p>
 <p>Here is a counter that increments its count after a second:</p>
+<pre><code class="language-js">var DelayedCounter = can.Construct.extend({
+    init: function() {
+        this.count = 0;
+        setTimeout(this.proxy(function() {
+            this.count++;
+        }), 1000);
+    }
+});
+
+var counter = new DelayedCounter();
+// check counter's value later
+setTimeout(function() {
+    counter.count; // 1
+}, 5000);
+</code></pre>
 <p>(Recall that setTimeout executes its callback in the global scope.)</p>
 <p>If you pass the name of a function on the <code>this</code> that <code>proxy</code> is called with,
 <code>proxy</code> will use that function. Here's how you write the previous example using
 this technique:</p>
+<pre><code class="language-js">var DelayedCounter = can.Construct.extend({
+    init: function() {
+        this.count = 0;
+        setTimeout(this.proxy('increment'), 1000);
+    },
+    increment: function() {
+        this.count++;
+    }
+});
+
+var counter = new DelayedCounter();
+// check counter's value later
+setTimeout(function() {
+    counter.count; // 1
+}, 5000);
+</code></pre>
 <h2>Currying arguments</h2>
 <p>If you pass more than one parameter to <code>proxy</code>, the additional parameters will
 be passed as parameters to the callback before any parameters passed to the
 proxied function.</p>
 <p>Here's a delayed counter that increments by a given amount:</p>
+<pre><code class="language-js">var IncrementalCounter = can.Construct.extend({
+    init: function(amount) {
+        this.count = 0;
+        setTimeout(this.proxy(function(amount) {
+            this.count += amount;
+        }, amount), 1000);
+    }
+});
+
+var counter = new IncrementalCounter(5);
+// check counter's value later
+setTimeout(function() { 
+    counter.count; // 5
+}, 5000);
+</code></pre>
 <h2>Piping callbacks</h2>
 <p>If you pass an array of functions and strings as the first parameter to <code>proxy</code>,
 <code>proxy</code> will call the callbacks in sequence, passing the return value of each
 as a parameter to the next. This is useful to avoid having to curry callbacks.</p>
 <p>Here's a delayed counter that takes a callback to call after incrementing by a given amount:</p>
+<pre><code class="language-js">var IncrementalCounter = can.Construct.extend({
+    init: function(amount, callback) {
+        this.count = 0;
+        setTimeout(this.proxy([function(amount) {
+            this.count += amount;
+            return this.count;
+        }, callback], amount), 1000);
+    }
+});
+
+var counter = new IncrementalCounter(5, function(count) {
+    console.log('The count is ' + count + '.');
+});
+
+// after 1 second, the log says &quot;The count is 5.&quot;
+</code></pre>
 <h2><code>proxy</code> on constructors</h2>
 <p>can.Construct.proxy also adds <code>proxy</code> to the constructor, so you can use it
 in static functions with the constructor as <code>this</code>.</p>
 <p>Here's a counter construct that keeps its count staticly and increments after one second:</p>
+<pre><code class="language-js">var DelayedStaticCounter = can.Construct.extend({
+    setup: function() {
+        this.count = 0;
+    }
+    incrementSoon: function() {
+        setTimeout(this.proxy(function() {
+            this.count++;
+        }), 1000);
+    }
+}, {});
+
+DelayedStaticCounter.incrementSoon();
+</code></pre>
 <h2>See also</h2>
 <p><a href="can.proxy.html">can.proxy</a> is a way to proxy callbacks outside of <code>can.Construct</code>s.</p>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -692,7 +766,7 @@ in static functions with the constructor as <code>this</code>.</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -703,11 +777,8 @@ in static functions with the constructor as <code>this</code>.</p>
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -717,7 +788,7 @@ in static functions with the constructor as <code>this</code>.</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -725,19 +796,19 @@ in static functions with the constructor as <code>this</code>.</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"can.Construct.proxy","src":"construct/proxy/proxy.md","description":"Creates callback functions that have `this` set correctly.","parent":"can.Construct.plugins","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"Creates a static callback function that has `this` set to the constructor\nfunction.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"the function or functions to proxy"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"parameters to curry into the proxied functions"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"a function that calls `callback` with the same context as the current context"}},{"code":"construct.proxy(callback, [...args])","description":"Creates a static callback function that has `this` set to an instance of the constructor\nfunction.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"the function or functions to proxy."},{"variable":true,"types":[{"type":"["}],"name":"args","description":"parameters to curry into the proxied functions"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"a function that calls `callback` with the same context as the current context"}}],"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
+		var docObject = {"type":"page","name":"can.Construct.proxy","src":"construct/proxy/proxy.md","description":"Creates callback functions that have `this` set correctly.","parent":"can.Construct.plugins","test":"can/construct/proxy/test.html","download":"http://donejs.com/can/dist/can.construct.proxy.js","signatures":[{"code":"can.Construct.proxy(callback, [...args])","description":"Creates a static callback function that has `this` set to the constructor\nfunction.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"the function or functions to proxy"},{"variable":true,"types":[{"type":"["}],"name":"args","description":"parameters to curry into the proxied functions"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"a function that calls `callback` with the same context as the current context"}},{"code":"construct.proxy(callback, [...args])","description":"Creates a static callback function that has `this` set to an instance of the constructor\nfunction.","params":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"},{"type":"Array","template":[{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]},{"type":"String"}]}]}],"name":"callback","description":"the function or functions to proxy."},{"variable":true,"types":[{"type":"["}],"name":"args","description":"parameters to curry into the proxied functions"}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[]}],"description":"a function that calls `callback` with the same context as the current context"}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -746,13 +817,13 @@ in static functions with the constructor as <code>this</code>.</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

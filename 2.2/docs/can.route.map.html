@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - map </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="property" 
+							href="can.route.pushstate.html" 
+							data-search="can.route.pushstate">
+							pushstate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>static</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.current.html" 
+							data-search="current">
+							current
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.deparam.html" 
+							data-search="deparam">
+							deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.link.html" 
+							data-search="link">
+							link
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="function" 
+							href="can.route.map.html" 
+							data-search="map">
+							map
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.param.html" 
+							data-search="param">
+							param
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.ready.html" 
+							data-search="ready">
+							ready
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.url.html" 
+							data-search="url">
+							url
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>map</h1>
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">can.route.map</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-legacy/route/route_map.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>Assign a can.Map instance that acts as can.route's internal can.Map.  The purpose for this is to cross-bind a top level state object (Application State) to the can.route.</p>
+
+		</section>
+		
+
+		
+			
+				<section class="signature">
+					<h2 id="sig_can_route_map_MapConstructor_">can.route.map(MapConstructor)
+</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>MapConstructor
+				<code>{<a href="can.Map.html" >can.Map</a>}</code></h4>
+			<div class="description">
+				<p>A can.Map constructor function.  A new can.Map instance will be created and used as the can.Map internal to can.route.</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+				</section>
+			
+				<section class="signature">
+					<h2 id="sig_can_route_map_mapInstance_">can.route.map(mapInstance)
+</h2>
+<div class="signature-wrapper">
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>mapInstance
+				<code>{<a href="can.Map.html" >can.Map</a>}</code></h4>
+			<div class="description">
+				<p>A can.Map instance, used as the can.Map internal to can.route.</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+
+
+
+
+</div>
+
+				</section>
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<h2>Background</h2>
+<p>One of the biggest challenges in a complex application is getting all the different parts of the app to talk to each other simply, cleanly, and reliably.</p>
+<p>An elegant way to solve this problem is using the <a href="http://en.wikipedia.org/wiki/Observer_pattern">Observer Pattern</a>. A single object, which can be called <a href="https://www.youtube.com/watch?v=LrzK4exG5Ss">Application State</a>, holds the high level state of the application.</p>
+<h2>Use</h2>
+<p><code>can.route.map</code> provides an easy to way make your Application State object cross-bound to <code>can.route</code>, using an internal can.Map instance, which is serialized into the hash (or pushstate URLs).</p>
+<pre><code>var appState = new can.Map({
+    petType: &quot;dog&quot;,
+    storeId: 2
+});
+
+can.route.map(appState);
+</code></pre>
+<h2>When to call it</h2>
+<p>Call <code>can.route.map</code> at the  start of the application lifecycle, before any calls to <code>can.route.bind</code>. This is because <code>can.route.map</code> creates a new internal <code>can.Map</code>, replacing the default <code>can.Map</code> instance, so binding has to occur on this new object.</p>
+<pre><code>var appState = new can.Map({
+    graphType: &quot;line&quot;,
+    currencyType: &quot;USD&quot;
+});
+
+can.route.map(appState);
+</code></pre>
+<h2>Demo</h2>
+<p>The following shows creating an appState that loads data at page load, has a virtual property 'locationIds' which serializes an array, and synchronizes the appState to can.route:</p>
+<div class='demo_wrapper' data-demo-src='can/route/docs/map.html'></div>
+<h2>Using arrays and can.Lists</h2>
+<p>If the Application State contains a property which is any non-primitive type, its useful to use the <a href="can.Map.prototype.define.html">define</a> plugin to define how that property will serialize. <code>can.route</code> calls <a href="can.Map.prototype.serialize.html">serialize</a> internally to turn the Application State object into URL params.</p>
+<p>The following example shows a flags property, which is an array of string-based flags:</p>
+<pre><code>var AppState = can.Map.extend({
+  define: {
+    flags: {
+      // return a string friendly format
+      serialize: function(){
+        return this.attr('flags').join(',');
+      },
+      // convert a stringified object into an array
+      set: function(val){
+        if(val === &quot;&quot;){
+            return [];
+        }
+        var arr = val;
+        if(typeof val === &quot;string&quot;){
+            arr = val.split(',')
+        }
+        return arr;
+    }
+  }
+});
+
+var appState = new AppState({
+  flags: []
+});
+
+can.route.map(appState);
+</code></pre>
+<h2>Complete example</h2>
+<p>The following example shows loading some metadata on page load, which must be loaded as part of the Application State before the components can be initialized</p>
+<p>It also shows an example of a &quot;virtual&quot; property on the AppState, locationIds, which is the serialized version of a non-serializeable can.List, locations.  A setter is defined on locationIds, which will translate changes in locationIds back to the locations can.List.</p>
+<pre><code>var AppState = can.Map.extend({
+    define: {
+        locations: {
+            // don't serialize this property at all in the route
+            serialize: false
+        },
+        // virtual property that contains a comma separated list of ids
+        // based on locations that are selected
+        locationIds: {
+
+            // comma separated list of ids
+            serialize: function(){
+                var selected = this.attr('locations').filter(
+                    function(location){
+                        return location.attr('selected');
+                    });
+                var ids = [];
+                selected.each(function(item){
+                    ids.push(item.attr('id'));
+                })
+                return selected.join(',');
+            },
+            
+            // toggle selected from a comma separated list of ids
+            set: function(val){
+                var arr = val;
+                if(typeof val === &quot;string&quot;){
+                    arr = val.split(',')
+                }
+                // for each id, toggle any matched location
+                this.attr('locations').each(function(location){
+                    if(arr.indexOf(location.attr('id')) !== -1){
+                        location.attr('selected', true);
+                    } else {
+                        location.attr('selected', false)
+                    }
+                })
+            }
+        }
+    }
+});
+
+// initialize and call map first, so anything binding to can.route
+// will work correctly
+var appState = new AppState();
+can.route.map(appState);
+
+// GET /locations
+var locations = new Location.List({});
+
+// when the data is ready, set the locations property
+locations.done(function(){
+    var appState.attr('locations', locations)
+
+    // call ready after the appState is fully initialized
+    can.route.ready();
+})
+</code></pre>
+<h2>Why</h2>
+<p>The Application State object, which is cross-bound to the can.route via <code>can.route.map</code> and represents the overall state of the application, has several obvious uses:</p>
+<ul>
+<li>It is passed into the various components and used to communicate their own internal state.</li>
+<li>It provides deep linking and back button support. As the URL changes, Application State changes cause changes in application components.</li>
+<li>It provides the ability to &quot;save&quot; the current state of the page, by serializing the Application State object and saving it on the backend, then restoring with that object to load this saved state.</li>
+</ul>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"function","name":"can.route.map","src":"route/route_map.md","description":"Assign a can.Map instance that acts as can.route's internal can.Map.  The purpose for this is to cross-bind a top level state object (Application State) to the can.route.","title":"map","parent":"can.route.static","signatures":[{"code":"can.route.map(MapConstructor)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"MapConstructor","description":"A can.Map constructor function.  A new can.Map instance will be created and used as the can.Map internal to can.route."}]},{"code":"can.route.map(mapInstance)","description":"","params":[{"types":[{"type":"can.Map"}],"name":"mapInstance","description":"A can.Map instance, used as the can.Map internal to can.route."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

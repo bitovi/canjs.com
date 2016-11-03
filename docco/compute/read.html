@@ -24,8 +24,8 @@
               </a>
             
               
-              <a class="source" href="compute_benchmark.html">
-                compute_benchmark.js
+              <a class="source" href="get_value_and_bind.html">
+                get_value_and_bind.js
               </a>
             
               
@@ -61,7 +61,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -76,15 +76,28 @@
 for example a compute or a function you might need to call to get the next value to 
 actually check</p>
 <ul>
-<li>isArgument - should be renamed to something like “dontReadLastPropertyValue”</li>
+<li>isArgument - should be renamed to something like “onLastPropertyReadReturnFunctionInsteadOfCallingIt”.
+This is used to make a compute out of that function if necessary.</li>
+<li>readCompute - can be set to <code>false</code> to prevent reading an ending compute.  This is used by component to get a
+compute as a delegate.  In 3.0, this should be removed and force people to write “{@prop} change”</li>
+<li>callMethodsOnObservables - this is an overwrite … so normal methods won’t be called, but observable ones will.</li>
+<li>executeAnonymousFunctions - call a function if it’s found, defaults to true</li>
+<li>proxyMethods - if the last read is a method, return a function so <code>this</code> will be correct.</li>
+<li>args - arguments to call functions with.</li>
+</ul>
+<p>Callbacks</p>
+<ul>
+<li>earlyExit - called if a value could not be found</li>
+<li>foundObservable - called when an observable value is found</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> read = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent, reads, options)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> read = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parent, reads, options</span>) </span>{
+		
 		options = options || {};
 		<span class="hljs-keyword">var</span> state = {
-			foundObservable: <span class="hljs-literal">false</span>
+			<span class="hljs-attr">foundObservable</span>: <span class="hljs-literal">false</span>
 		};</pre></div></div>
             
         </li>
@@ -208,8 +221,8 @@ actually check</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> {
-					value: <span class="hljs-literal">undefined</span>,
-					parent: prev
+					<span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>,
+					<span class="hljs-attr">parent</span>: prev
 				};
 			}
 			
@@ -234,19 +247,18 @@ actually check</p>
 			}
 		}
 		<span class="hljs-keyword">return</span> {
-			value: cur,
-			parent: prev
+			<span class="hljs-attr">value</span>: cur,
+			<span class="hljs-attr">parent</span>: prev
 		};
 	};
-	
-	<span class="hljs-keyword">var</span> readValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, index, reads, options, state, prev)</span></span>{
-		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>, len = read.valueReaders.length; i &lt; len; i++){
-			<span class="hljs-keyword">if</span>( read.valueReaders[i].test(value, index, reads, options) ) {
-				value = read.valueReaders[i].read(value, index, reads, options, state, prev);
-			}
-		}
-		<span class="hljs-keyword">return</span> value;
-	};</pre></div></div>
+
+
+	<span class="hljs-keyword">var</span> isAt = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">index, reads</span>) </span>{
+		<span class="hljs-keyword">var</span> prevRead = reads[index<span class="hljs-number">-1</span>];
+		<span class="hljs-keyword">return</span> prevRead &amp;&amp; prevRead.at;
+	};
+
+	<span class="hljs-keyword">var</span> readValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, index, reads, options, state, prev</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -257,15 +269,17 @@ actually check</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>value readers check the current value
-and get a new value from it
-ideally they would keep calling until 
-none of these passed</p>
+              <p>if the previous read is AT false … we shouldn’t be doing this;</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	read.valueReaders = [{
-		name: <span class="hljs-string">"compute"</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> usedValueReader;
+		<span class="hljs-keyword">do</span> {
+			
+			usedValueReader = <span class="hljs-literal">false</span>;
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>, len = read.valueReaders.length; i &lt; len; i++){
+				<span class="hljs-keyword">if</span>( read.valueReaders[i].test(value, index, reads, options) ) {
+					value = read.valueReaders[i].read(value, index, reads, options, state, prev);</pre></div></div>
             
         </li>
         
@@ -276,26 +290,16 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>compute value reader</p>
+              <p>usedValueReader = true;</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		test: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, i, reads, options)</span></span>{
-			<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed;
-		},
-		read: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, i, reads, options, state)</span></span>{
-			<span class="hljs-keyword">if</span>(options.isArgument &amp;&amp; i === reads.length ) {
-				<span class="hljs-keyword">return</span> value;
+            <div class="content"><div class='highlight'><pre>				}
 			}
-			
-			<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
-				options.foundObservable(value, i);
-				state.foundObservable = <span class="hljs-literal">true</span>;
-			}
-			<span class="hljs-keyword">return</span> value <span class="hljs-keyword">instanceof</span> can.Compute ? value.get() : value();
-		}
-	},{
-		name: <span class="hljs-string">"function"</span>,</pre></div></div>
+		} <span class="hljs-keyword">while</span>(usedValueReader);
+		
+		<span class="hljs-keyword">return</span> value;
+	};</pre></div></div>
             
         </li>
         
@@ -306,12 +310,15 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>if this is a function before the last read and its not a constructor function</p>
+              <p>value readers check the current value
+and get a new value from it
+ideally they would keep calling until 
+none of these passed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		test: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, i, reads, options)</span></span>{
-			<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> value;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	read.valueReaders = [{
+		<span class="hljs-attr">name</span>: <span class="hljs-string">"compute"</span>,</pre></div></div>
             
         </li>
         
@@ -322,22 +329,27 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>i = reads.length if this is the last iteration of the read for-loop.</p>
+              <p>compute value reader</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> type === <span class="hljs-string">'function'</span> &amp;&amp; !value.isComputed &amp;&amp;
-				(options.executeAnonymousFunctions || (options.isArgument &amp;&amp; i === reads.length) ) &amp;&amp;
-				!(can.Construct &amp;&amp; value.prototype <span class="hljs-keyword">instanceof</span> can.Construct) &amp;&amp;
-				!(can.route &amp;&amp; value === can.route);
+            <div class="content"><div class='highlight'><pre>		test: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, i, reads, options</span>)</span>{
+			
+			<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed &amp;&amp; !isAt(i, reads);
 		},
-		read: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, i, reads, options, state, prev)</span></span>{
-			<span class="hljs-keyword">if</span> (options.isArgument &amp;&amp; i === reads.length) {
-				<span class="hljs-keyword">return</span> options.proxyMethods !== <span class="hljs-literal">false</span> ? can.proxy(value, prev) : value;
+		<span class="hljs-attr">read</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, i, reads, options, state</span>)</span>{
+			<span class="hljs-keyword">if</span>(options.readCompute === <span class="hljs-literal">false</span> &amp;&amp; i === reads.length ) {
+				<span class="hljs-keyword">return</span> value;
 			}
-			<span class="hljs-keyword">return</span> value.call(prev);
+			
+			<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
+				options.foundObservable(value, i);
+				state.foundObservable = <span class="hljs-literal">true</span>;
+			}
+			<span class="hljs-keyword">return</span> value <span class="hljs-keyword">instanceof</span> can.Compute ? value.get() : value();
 		}
-	}];</pre></div></div>
+	},{
+		<span class="hljs-attr">name</span>: <span class="hljs-string">"function"</span>,</pre></div></div>
             
         </li>
         
@@ -348,11 +360,12 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>propertyReaders actually read a property value </p>
+              <p>if this is a function before the last read and its not a constructor function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	read.propertyReaders = [</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		test: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, i, reads, options</span>)</span>{
+			<span class="hljs-keyword">var</span> type = <span class="hljs-keyword">typeof</span> value;</pre></div></div>
             
         </li>
         
@@ -363,19 +376,27 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>read a can.Map or can.route</p>
+              <p>i = reads.length if this is the last iteration of the read for-loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		{
-			name: <span class="hljs-string">"map"</span>,
-			test: can.isMapLike,
-			read: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop, index, options, state)</span></span>{
-				<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
-					options.foundObservable(value, index);
-					state.foundObservable = <span class="hljs-literal">true</span>;
-				}
-				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value[prop] === <span class="hljs-string">'function'</span> &amp;&amp; value.constructor.prototype[prop] === value[prop]) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> type === <span class="hljs-string">'function'</span> &amp;&amp; !value.isComputed &amp;&amp;
+				!(can.Construct &amp;&amp; value.prototype <span class="hljs-keyword">instanceof</span> can.Construct) &amp;&amp;
+				!(can.route &amp;&amp; value === can.route);
+		},
+		<span class="hljs-attr">read</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, i, reads, options, state, prev</span>)</span>{
+			<span class="hljs-keyword">if</span>( isAt(i, reads) ) {
+				<span class="hljs-keyword">return</span> i === reads.length ? can.proxy(value, prev) : value;
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(options.callMethodsOnObservables &amp;&amp; can.isMapLike(prev)) {
+				<span class="hljs-keyword">return</span> value.apply(prev, options.args || []);
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( options.isArgument &amp;&amp; i === reads.length ) {
+				<span class="hljs-keyword">return</span> options.proxyMethods !== <span class="hljs-literal">false</span> ? can.proxy(value, prev) : value;
+			}
+			<span class="hljs-keyword">return</span> value.apply(prev, options.args || []);
+		}
+	}];</pre></div></div>
             
         </li>
         
@@ -386,12 +407,11 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>call that method</p>
+              <p>propertyReaders actually read a property value </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (options.returnObserveMethods) {
-						<span class="hljs-keyword">return</span> value[prop];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	read.propertyReaders = [</pre></div></div>
             
         </li>
         
@@ -402,17 +422,26 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>if the property value is a can.Construct</p>
+              <p>read a can.Map or can.route</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( (prop === <span class="hljs-string">'constructor'</span> &amp;&amp; value <span class="hljs-keyword">instanceof</span> can.Construct) ||
-						(value[prop].prototype <span class="hljs-keyword">instanceof</span> can.Construct)) {
-						<span class="hljs-keyword">return</span> value[prop];
-					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">return</span> value[prop].apply(value, options.args || []);
-					}
-				} <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		{
+			<span class="hljs-attr">name</span>: <span class="hljs-string">"map"</span>,
+			<span class="hljs-attr">test</span>: can.isMapLike,
+			<span class="hljs-attr">read</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, prop, index, options, state</span>)</span>{
+				<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
+					options.foundObservable(value, index);
+					state.foundObservable = <span class="hljs-literal">true</span>;
+				}
+				<span class="hljs-keyword">var</span> res = value.attr(prop.key);
+				<span class="hljs-keyword">if</span>(res !== <span class="hljs-literal">undefined</span>) {
+					<span class="hljs-keyword">return</span> res;
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> value[prop.key];
+				}
+			}
+		},</pre></div></div>
             
         </li>
         
@@ -423,14 +452,31 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>use attr to get that value</p>
+              <p>read a promise</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> value.attr(prop);
+            <div class="content"><div class='highlight'><pre>		{
+			<span class="hljs-attr">name</span>: <span class="hljs-string">"promise"</span>,
+			<span class="hljs-attr">test</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
+				<span class="hljs-keyword">return</span> can.isPromise(value);
+			},
+			<span class="hljs-attr">read</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, prop, index, options, state</span>)</span>{
+				<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
+					options.foundObservable(value, index);
+					state.foundObservable = <span class="hljs-literal">true</span>;
 				}
-			}
-		},</pre></div></div>
+				<span class="hljs-keyword">var</span> observeData = value.__observeData;
+				<span class="hljs-keyword">if</span>(!value.__observeData) {
+					observeData = value.__observeData = {
+						<span class="hljs-attr">isPending</span>: <span class="hljs-literal">true</span>,
+						<span class="hljs-attr">state</span>: <span class="hljs-string">"pending"</span>,
+						<span class="hljs-attr">isResolved</span>: <span class="hljs-literal">false</span>,
+						<span class="hljs-attr">isRejected</span>: <span class="hljs-literal">false</span>,
+						<span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>,
+						<span class="hljs-attr">reason</span>: <span class="hljs-literal">undefined</span>
+					};
+					can.cid(observeData);</pre></div></div>
             
         </li>
         
@@ -441,31 +487,29 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>read a promise</p>
+              <p>proto based would be faster</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		{
-			name: <span class="hljs-string">"promise"</span>,
-			test: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
-				<span class="hljs-keyword">return</span> can.isPromise(value);
-			},
-			read: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop, index, options, state)</span></span>{
-				<span class="hljs-keyword">if</span> (!state.foundObservable &amp;&amp; options.foundObservable) {
-					options.foundObservable(value, index);
-					state.foundObservable = <span class="hljs-literal">true</span>;
+            <div class="content"><div class='highlight'><pre>					can.simpleExtend(observeData, can.event);
+					value.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
+						observeData.isPending = <span class="hljs-literal">false</span>;
+						observeData.isResolved = <span class="hljs-literal">true</span>;
+						observeData.value = value;
+						observeData.state = <span class="hljs-string">"resolved"</span>;
+						observeData.dispatch(<span class="hljs-string">"state"</span>,[<span class="hljs-string">"resolved"</span>,<span class="hljs-string">"pending"</span>]);
+					}, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">reason</span>)</span>{
+						observeData.isPending = <span class="hljs-literal">false</span>;
+						observeData.isRejected = <span class="hljs-literal">true</span>;
+						observeData.reason = reason;
+						observeData.state = <span class="hljs-string">"rejected"</span>;
+						observeData.dispatch(<span class="hljs-string">"state"</span>,[<span class="hljs-string">"rejected"</span>,<span class="hljs-string">"pending"</span>]);
+					});
 				}
-				<span class="hljs-keyword">var</span> observeData = value.__observeData;
-				<span class="hljs-keyword">if</span>(!value.__observeData) {
-					observeData = value.__observeData = {
-						isPending: <span class="hljs-literal">true</span>,
-						state: <span class="hljs-string">"pending"</span>,
-						isResolved: <span class="hljs-literal">false</span>,
-						isRejected: <span class="hljs-literal">false</span>,
-						value: <span class="hljs-literal">undefined</span>,
-						reason: <span class="hljs-literal">undefined</span>
-					};
-					can.cid(observeData);</pre></div></div>
+				can.__observe(observeData,<span class="hljs-string">"state"</span>);
+				<span class="hljs-keyword">return</span> prop.key <span class="hljs-keyword">in</span> observeData ? observeData[prop.key] : value[prop.key];
+			}
+		},</pre></div></div>
             
         </li>
         
@@ -476,29 +520,12 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>proto based would be faster</p>
+              <p>read a normal object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					can.simpleExtend(observeData, can.event);
-					value.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
-						observeData.isPending = <span class="hljs-literal">false</span>;
-						observeData.isResolved = <span class="hljs-literal">true</span>;
-						observeData.value = value;
-						observeData.state = <span class="hljs-string">"resolved"</span>;
-						observeData.dispatch(<span class="hljs-string">"state"</span>,[<span class="hljs-string">"resolved"</span>,<span class="hljs-string">"pending"</span>]);
-					}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(reason)</span></span>{
-						observeData.isPending = <span class="hljs-literal">false</span>;
-						observeData.isRejected = <span class="hljs-literal">true</span>;
-						observeData.reason = reason;
-						observeData.state = <span class="hljs-string">"rejected"</span>;
-						observeData.dispatch(<span class="hljs-string">"state"</span>,[<span class="hljs-string">"rejected"</span>,<span class="hljs-string">"pending"</span>]);
-					});
-				}
-				can.__reading(observeData,<span class="hljs-string">"state"</span>);
-				<span class="hljs-keyword">return</span> prop <span class="hljs-keyword">in</span> observeData ? observeData[prop] : value[prop];
-			}
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		{
+			<span class="hljs-attr">name</span>: <span class="hljs-string">"object"</span>,</pre></div></div>
             
         </li>
         
@@ -509,12 +536,18 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>read a normal object</p>
+              <p>this is the default</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		{
-			name: <span class="hljs-string">"object"</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			test: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;},
+			<span class="hljs-attr">read</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, prop</span>)</span>{
+				<span class="hljs-keyword">if</span>(value == <span class="hljs-literal">null</span>) {
+					<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">if</span>(prop.key <span class="hljs-keyword">in</span> value) {
+						<span class="hljs-keyword">return</span> value[prop.key];
+					}</pre></div></div>
             
         </li>
         
@@ -525,20 +558,11 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>this is the default</p>
+              <p>TODO: remove in 3.0.  This is for backwards compat with @key and @index.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			test: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;},
-			read: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, prop)</span></span>{
-				<span class="hljs-keyword">if</span>(value == <span class="hljs-literal">null</span>) {
-					<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-				} <span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">return</span> value[prop];
-				}
-			}
-		}
-	];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( prop.at &amp;&amp; specialRead[prop.key] &amp;&amp; ( (<span class="hljs-string">"@"</span>+prop.key) <span class="hljs-keyword">in</span> value)) {</pre></div></div>
             
         </li>
         
@@ -549,13 +573,11 @@ none of these passed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>This should be able to set a property similar to how read works.</p>
+              <p>!steal-remove-start</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	read.write = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, key, value, options)</span> </span>{
-		options = options || {};
-		<span class="hljs-keyword">if</span>(can.isMapLike(parent)) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						can.dev.warn(<span class="hljs-string">"Use %"</span>+prop.key+<span class="hljs-string">" in place of @"</span>+prop.key+<span class="hljs-string">"."</span>);</pre></div></div>
             
         </li>
         
@@ -565,6 +587,48 @@ none of these passed</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						
+						prop.at = <span class="hljs-literal">false</span>;
+						<span class="hljs-keyword">return</span> value[<span class="hljs-string">"@"</span>+prop.key];
+					}
+					
+				}
+			}
+		}
+	];
+	
+	<span class="hljs-keyword">var</span> specialRead = {<span class="hljs-attr">index</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">key</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">event</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">element</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">viewModel</span>: <span class="hljs-literal">true</span>};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>This should be able to set a property similar to how read works.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	read.write = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parent, key, value, options</span>) </span>{
+		options = options || {};
+		<span class="hljs-keyword">if</span>(can.isMapLike(parent)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>HACK! … check if the attr is a comptue, if it is, set it.</p>
 
@@ -586,6 +650,40 @@ none of these passed</p>
 		}
 	};
 	
+
+	read.reads = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>) </span>{
+		<span class="hljs-keyword">var</span> keys = [];
+		<span class="hljs-keyword">var</span> last = <span class="hljs-number">0</span>;
+		<span class="hljs-keyword">var</span> at = <span class="hljs-literal">false</span>;
+		<span class="hljs-keyword">if</span>( key.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"@"</span> ) {
+			last = <span class="hljs-number">1</span>;
+			at = <span class="hljs-literal">true</span>;
+		}
+		<span class="hljs-keyword">var</span> keyToAdd = <span class="hljs-string">""</span>;
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = last; i &lt; key.length; i++) {
+			<span class="hljs-keyword">var</span> character = key.charAt(i);
+			<span class="hljs-keyword">if</span>(character === <span class="hljs-string">"."</span> || character === <span class="hljs-string">"@"</span>) {
+				<span class="hljs-keyword">if</span>( key.charAt(i <span class="hljs-number">-1</span>) !== <span class="hljs-string">"\\"</span> ) {
+					keys.push({
+						<span class="hljs-attr">key</span>: keyToAdd,
+						<span class="hljs-attr">at</span>: at
+					});
+					at = character === <span class="hljs-string">"@"</span>;
+					keyToAdd = <span class="hljs-string">""</span>;
+				} <span class="hljs-keyword">else</span> {
+					keyToAdd = keyToAdd.substr(<span class="hljs-number">0</span>,keyToAdd.length - <span class="hljs-number">1</span>) + <span class="hljs-string">"."</span>;
+				}
+			} <span class="hljs-keyword">else</span> {
+				keyToAdd += character;
+			}
+		}
+		keys.push({
+			<span class="hljs-attr">key</span>: keyToAdd,
+			<span class="hljs-attr">at</span>: at
+		});
+		
+		<span class="hljs-keyword">return</span> keys;
+	};
 	
 	<span class="hljs-keyword">return</span> read;
 });</pre></div></div>

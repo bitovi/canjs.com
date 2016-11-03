@@ -31,7 +31,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -60,14 +60,14 @@ initializing it’s bindings.</p>
 		canGetDescriptor = <span class="hljs-literal">false</span>;
 	}
 
-	<span class="hljs-keyword">var</span> getDescriptor = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newProps, name)</span> </span>{
+	<span class="hljs-keyword">var</span> getDescriptor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newProps, name</span>) </span>{
 			<span class="hljs-keyword">var</span> descriptor = <span class="hljs-built_in">Object</span>.getOwnPropertyDescriptor(newProps, name);
 			<span class="hljs-keyword">if</span>(descriptor &amp;&amp; (descriptor.get || descriptor.set)) {
 				<span class="hljs-keyword">return</span> descriptor;
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 		},
-		inheritGetterSetter = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newProps, oldProps, addTo)</span> </span>{
+		inheritGetterSetter = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newProps, oldProps, addTo</span>) </span>{
 			addTo = addTo || newProps;
 			<span class="hljs-keyword">var</span> descriptor;
 
@@ -79,7 +79,7 @@ initializing it’s bindings.</p>
 				}
 			}
 		},
-		simpleInherit = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newProps, oldProps, addTo)</span> </span>{
+		simpleInherit = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newProps, oldProps, addTo</span>) </span>{
 			addTo = addTo || newProps;
 
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> newProps) {
@@ -90,7 +90,7 @@ initializing it’s bindings.</p>
 	<span class="hljs-comment">/**
 	 * @add can.Construct
 	 */</span>
-	can.Construct = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	can.Construct = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length) {
 			<span class="hljs-keyword">return</span> can.Construct.extend.apply(can.Construct, <span class="hljs-built_in">arguments</span>);
 		}
@@ -230,7 +230,7 @@ initializing it’s bindings.</p>
 		 * ```
 		 *
 		 */</span>
-		newInstance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+		newInstance: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -262,7 +262,9 @@ initializing it’s bindings.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (inst.setup) {
+				inst.__inSetup = <span class="hljs-literal">true</span>;
 				args = inst.setup.apply(inst, <span class="hljs-built_in">arguments</span>);
+				<span class="hljs-keyword">delete</span> inst.__inSetup;
 			}</pre></div></div>
             
         </li>
@@ -274,7 +276,8 @@ initializing it’s bindings.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Call <code>init</code> if there is an <code>init</code><br>If <code>setup</code> returned <code>args</code>, use those as the arguments</p>
+              <p>Call <code>init</code> if there is an <code>init</code>
+If <code>setup</code> returned <code>args</code>, use those as the arguments</p>
 
             </div>
             
@@ -316,7 +319,7 @@ Will only ever be called if ES5 is supported</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_defineProperty: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(what, oldProps, propName, descriptor)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		_defineProperty: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">what, oldProps, propName, descriptor</span>) </span>{
 			<span class="hljs-built_in">Object</span>.defineProperty(what, propName, descriptor);
 		},</pre></div></div>
             
@@ -335,7 +338,7 @@ the super plugin overwrites this</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_overwrite: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(what, oldProps, propName, val)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		_overwrite: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">what, oldProps, propName, val</span>) </span>{
 			what[propName] = val;
 		},</pre></div></div>
             
@@ -398,7 +401,7 @@ include option merging logic.</p>
 		 * This `Parent` class adds a reference to its base class to itself, and
 		 * so do all the classes that inherit from it.
 		 *
-		 * @codestart
+		 * ```
 		 * Parent = can.Construct.extend({
 		 *   setup : function(base, fullName, staticProps, protoProps){
 		 *     this.base = base;
@@ -413,9 +416,9 @@ include option merging logic.</p>
 		 * Child = Parent({});
 		 *
 		 * Child.base; // Parent
-		 * @codeend
+		 * ```
 		 */</span>
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName)</span> </span>{
+		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">base, fullName</span>) </span>{
 			<span class="hljs-keyword">this</span>.defaults = can.extend(<span class="hljs-literal">true</span>, {}, base.defaults, <span class="hljs-keyword">this</span>.defaults);
 		},</pre></div></div>
             
@@ -433,7 +436,7 @@ include option merging logic.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		instance: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		instance: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -618,7 +621,7 @@ include option merging logic.</p>
 		 * blackMamba.speak(); // 'ssssss'
 		 * ```
 		 */</span>
-		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, staticProperties, instanceProperties)</span> </span>{
+		extend: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, staticProperties, instanceProperties</span>) </span>{
 			<span class="hljs-keyword">var</span> fullName = name,
 				klass = staticProperties,
 				proto = instanceProperties;</pre></div></div>
@@ -684,6 +687,10 @@ don’t run the init constructor).</p>
 			<span class="hljs-keyword">if</span>(fullName) {
 				parts = fullName.split(<span class="hljs-string">'.'</span>);
 				shortName = parts.pop();
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(klass &amp;&amp; klass.shortName) {
+				shortName = klass.shortName;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.shortName) {
+				shortName = <span class="hljs-keyword">this</span>.shortName;
 			}</pre></div></div>
             
         </li>
@@ -775,7 +782,7 @@ code is removed.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> constructorName === <span class="hljs-string">'undefined'</span>) {
-				Constructor = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+				Constructor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> init.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 				};
 			}</pre></div></div>
@@ -793,7 +800,7 @@ code is removed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -992,8 +999,8 @@ code is removed.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			can.extend(Constructor, {
-				constructor: Constructor,
-				prototype: prototype,
+				<span class="hljs-attr">constructor</span>: Constructor,
+				<span class="hljs-attr">prototype</span>: prototype,
 				<span class="hljs-comment">/**
 				 * @property {String} can.Construct.namespace namespace
 				 * @parent can.Construct.static
@@ -1002,12 +1009,12 @@ code is removed.</p>
 				 * This provides a way organize code and ensure globally unique types. The
 				 * `namespace` is the [can.Construct.fullName fullName] you passed without the [can.Construct.shortName shortName].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */</span>
 				namespace: namespace,
 				<span class="hljs-comment">/**
@@ -1017,12 +1024,12 @@ code is removed.</p>
 				 * If you pass a name when creating a Construct, the `shortName` property will be set to the
 				 * name you passed without the [can.Construct.namespace namespace].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */</span>
 				_shortName: _shortName,
 				<span class="hljs-comment">/**
@@ -1033,15 +1040,15 @@ code is removed.</p>
 				 * the name you passed. The `fullName` consists of the [can.Construct.namespace namespace] and
 				 * the [can.Construct.shortName shortName].
 				 *
-				 * @codestart
+				 * ```
 				 * can.Construct("MyApplication.MyConstructor",{},{});
 				 * MyApplication.MyConstructor.namespace // "MyApplication"
 				 * MyApplication.MyConstructor.shortName // "MyConstructor"
 				 * MyApplication.MyConstructor.fullName  // "MyApplication.MyConstructor"
-				 * @codeend
+				 * ```
 				 */</span>
 				fullName: fullName,
-				_fullName: _fullName
+				<span class="hljs-attr">_fullName</span>: _fullName
 			});</pre></div></div>
             
         </li>
@@ -1161,13 +1168,13 @@ code is removed.</p>
 	 *
 	 *
 	 * Usually, you should use [can.Construct::init init] to do your constructor function's initialization.
-	 * Use `setup` instead for:
+	 * You should, instead, use `setup` when:
 	 *
-	 *   - initialization code that you want to run before the inheriting constructor's
+	 *   - there is initialization code that you want to run before the inheriting constructor's
 	 *     `init` method is called.
-	 *   - initialization code that should run whether or not inheriting constructors
+	 *   - there is initialization code that should run whether or not inheriting constructors
 	 *     call their base's `init` methods.
-	 *   - modifying the arguments that will get passed to `init`.
+	 *   - you want to modify the arguments that will get passed to `init`.
 	 *
 	 * ## Example
 	 *
@@ -1193,7 +1200,7 @@ code is removed.</p>
 	 *     });
 	 *
 	 */</span>
-	can.Construct.prototype.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
+	can.Construct.prototype.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{};
 	<span class="hljs-comment">/**
 	 * @function can.Construct.prototype.init init
 	 * @parent can.Construct.prototype
@@ -1204,15 +1211,15 @@ code is removed.</p>
 	 * @param {*} args the arguments passed to the constructor (or the items of the array returned from [can.Construct::setup])
 	 *
 	 * @body
-	 * If a prototype `init` method is provided, it is called when a new Construct is created,
+	 * If a prototype `init` method is provided, `init` is called when a new Construct is created---
 	 * after [can.Construct::setup]. The `init` method is where the bulk of your initialization code
-	 * should go, and a common thing to do in `init` is to save the arguments passed into the constructor.
+	 * should go. A common thing to do in `init` is save the arguments passed into the constructor.
 	 *
 	 * ## Examples
 	 *
 	 * First, we'll make a Person constructor that has a first and last name:
 	 *
-	 * @codestart
+	 * ```
 	 * var Person = can.Construct.extend({
 	 *     init: function(first, last) {
 	 *         this.first = first;
@@ -1223,11 +1230,11 @@ code is removed.</p>
 	 * var justin = new Person("Justin", "Meyer");
 	 * justin.first; // "Justin"
 	 * justin.last; // "Meyer"
-	 * @codeend
+	 * ```
 	 *
-	 * Then we'll extend Person into Programmer and add a favorite language:
+	 * Then, we'll extend Person into Programmer, and add a favorite language:
 	 *
-	 * @codestart
+	 * ```
 	 * var Programmer = Person.extend({
 	 *     init: function(first, last, language) {
 	 *         // call base's init
@@ -1237,23 +1244,23 @@ code is removed.</p>
 	 *         this.language = language;
 	 *     },
 	 *     bio: function() {
-	 *         return "Hi! I'm "" + this.first + " " + this.last +
+	 *         return "Hi! I'm " + this.first + " " + this.last +
 	 *             " and I write " + this.language + ".";
 	 *     }
 	 * });
 	 *
 	 * var brian = new Programmer("Brian", "Moschel", 'ECMAScript');
 	 * brian.bio(); // "Hi! I'm Brian Moschel and I write ECMAScript.";
-	 * @codeend
+	 * ```
 	 *
 	 * ## Modified Arguments
 	 *
 	 * [can.Construct::setup] is able to modify the arguments passed to `init`.
-	 * If you aren't receiving the exact arguments as those passed to `new Construct(args)`,
-	 * check to make sure that they aren't being changed by `setup` somewhere along
+	 * If you aren't receiving the arguments you passed to `new Construct(args)`,
+	 * check that they aren't being changed by `setup` along
 	 * the inheritance chain.
 	 */</span>
-	can.Construct.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
+	can.Construct.prototype.init = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{};
 	<span class="hljs-keyword">return</span> can.Construct;
 });</pre></div></div>
             

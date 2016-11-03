@@ -31,30 +31,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* jshint maxdepth:7*/</span>
-steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/elements.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can, elements)</span></span>{
-	
-	<span class="hljs-keyword">var</span> processNodes = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nodes, paths, location)</span></span>{
-		<span class="hljs-keyword">var</span> frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
-		
-		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = nodes.length; i &lt; len; i++) {
-			<span class="hljs-keyword">var</span> node = nodes[i];
-			frag.appendChild( processNode(node,paths,location.concat(i)) );
-		}
-		<span class="hljs-keyword">return</span> frag;
-	},
-		keepsTextNodes =  <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-			<span class="hljs-keyword">var</span> testFrag = <span class="hljs-built_in">document</span>.createDocumentFragment();
-			<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
-			
-			div.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
-			div.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
-			testFrag.appendChild(div);
-			
-			<span class="hljs-keyword">var</span> cloned  = testFrag.cloneNode(<span class="hljs-literal">true</span>);
-			
-			<span class="hljs-keyword">return</span> cloned.childNodes[<span class="hljs-number">0</span>].childNodes.length === <span class="hljs-number">2</span>;
-		})(),
-		clonesWork = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/elements.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, elements, vdom</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -65,10 +42,36 @@ steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"ca
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Since html5shiv is required to support custom elements, assume cloning
-works in any browser that doesn’t have html5shiv</p>
+              <p>if an object or a function
+convert into what it should look like
+then the modification can happen in place
+but it has to have more than the current node
+blah!</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> processNodes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nodes, paths, location, document</span>)</span>{
+		<span class="hljs-keyword">var</span> frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
+
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = nodes.length; i &lt; len; i++) {
+			<span class="hljs-keyword">var</span> node = nodes[i];
+			frag.appendChild( processNode(node,paths,location.concat(i), <span class="hljs-built_in">document</span>) );
+		}
+		<span class="hljs-keyword">return</span> frag;
+	},
+		keepsTextNodes =  <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">var</span> testFrag = <span class="hljs-built_in">document</span>.createDocumentFragment();
+			<span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
+
+			div.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
+			div.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
+			testFrag.appendChild(div);
+
+			<span class="hljs-keyword">var</span> cloned  = testFrag.cloneNode(<span class="hljs-literal">true</span>);
+
+			<span class="hljs-keyword">return</span> can.childNodes(cloned.firstChild).length === <span class="hljs-number">2</span>;
+		})(),
+		clonesWork = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
             
         </li>
         
@@ -78,6 +81,20 @@ works in any browser that doesn’t have html5shiv</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Since html5shiv is required to support custom elements, assume cloning
+works in any browser that doesn’t have html5shiv</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>Clone an element containing a custom tag to see if the innerHTML is what we
 expect it to be, or if not it probably was created outside of the document’s
@@ -90,7 +107,23 @@ namespace.</p>
 			<span class="hljs-keyword">var</span> clone = a.cloneNode(<span class="hljs-literal">true</span>);
 
 			<span class="hljs-keyword">return</span> clone.innerHTML === <span class="hljs-string">"&lt;xyz&gt;&lt;/xyz&gt;"</span>;
-		})();
+		})(),
+		namespacesWork = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; !!<span class="hljs-built_in">document</span>.createElementNS,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Sets the attribute on an element. Uses a hack when setAttribute complains</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		setAttribute = can.attr.setAttribute;
 
 	<span class="hljs-comment">/**
 	 * @function cloneNode
@@ -104,10 +137,10 @@ namespace.</p>
 	 * @return {DocumentFragment} a new fragment that is a clone of the provided argument
 	 */</span>
 	<span class="hljs-keyword">var</span> cloneNode = clonesWork ?
-		<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{
 			<span class="hljs-keyword">return</span> el.cloneNode(<span class="hljs-literal">true</span>);
 		} :
-		<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(node)</span></span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>)</span>{
 			<span class="hljs-keyword">var</span> copy;
 
 			<span class="hljs-keyword">if</span>(node.nodeType === <span class="hljs-number">1</span>) {
@@ -122,60 +155,88 @@ namespace.</p>
 
 			<span class="hljs-keyword">if</span>(node.attributes) {
 				<span class="hljs-keyword">var</span> attributes = can.makeArray(node.attributes);
-				can.each(attributes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
+				can.each(attributes, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node</span>) </span>{
 					<span class="hljs-keyword">if</span>(node &amp;&amp; node.specified) {
-						copy.setAttribute(node.nodeName, node.nodeValue);
+						setAttribute(copy, node.nodeName, node.nodeValue);
 					}
 				});
 			}
-			
+
 			<span class="hljs-keyword">if</span>(node.childNodes) {
-				can.each(node.childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(child)</span></span>{
+				can.each(node.childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
 					copy.appendChild( cloneNode(child) );
 				});
 			}
-			
+
 			<span class="hljs-keyword">return</span> copy;
 		};
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processNode</span><span class="hljs-params">(node, paths, location)</span></span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processNode</span>(<span class="hljs-params">node, paths, location, document</span>)</span>{
 		<span class="hljs-keyword">var</span> callback,
 			loc = location,
 			nodeType = <span class="hljs-keyword">typeof</span> node,
 			el,
 			p,
 			i , len;
-		<span class="hljs-keyword">var</span> getCallback = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-keyword">var</span> getCallback = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">if</span>(!callback) {
 				callback  = {
-					path: location,
-					callbacks: []
+					<span class="hljs-attr">path</span>: location,
+					<span class="hljs-attr">callbacks</span>: []
 				};
 				paths.push(callback);
 				loc = [];
 			}
 			<span class="hljs-keyword">return</span> callback;
 		};
-		
+		<span class="hljs-keyword">var</span> setAttr = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, attr</span>) </span>{
+			<span class="hljs-keyword">var</span> value = node.attrs[attr];
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">"function"</span>){
+				getCallback().callbacks.push({
+					<span class="hljs-attr">callback</span>:  value
+				});
+			} <span class="hljs-keyword">else</span>  {
+				setAttribute(el, attr, value);
+			}
+		};
+
 		<span class="hljs-keyword">if</span>(nodeType === <span class="hljs-string">"object"</span>) {
 			<span class="hljs-keyword">if</span>( node.tag ) {
-				el = <span class="hljs-built_in">document</span>.createElement(node.tag);
-			
-				<span class="hljs-keyword">if</span>(node.attrs) {
+				<span class="hljs-keyword">if</span>(namespacesWork &amp;&amp; node.namespace) {
+					el = <span class="hljs-built_in">document</span>.createElementNS(node.namespace, node.tag);
+				} <span class="hljs-keyword">else</span> {
+					el = <span class="hljs-built_in">document</span>.createElement(node.tag);
+				}
+
+				<span class="hljs-keyword">if</span>(node.attrs) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>If an input tag has a type attribute, set it before any other 
+attributes. This is a workaround for an IE8 bug where the value
+of an input is changed when the type is changed
+<a href="https://github.com/canjs/canjs/issues/2324">https://github.com/canjs/canjs/issues/2324</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(node.tag === <span class="hljs-string">'input'</span> &amp;&amp; node.attrs.type) {
+						setAttr(el, <span class="hljs-string">'type'</span>);
+						<span class="hljs-keyword">delete</span> node.attrs.type;
+					}
 					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> attrName <span class="hljs-keyword">in</span> node.attrs) {
-						<span class="hljs-keyword">var</span> value = node.attrs[attrName];
-						<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">"function"</span>){
-							getCallback().callbacks.push({
-								callback:  value
-							});
-						} <span class="hljs-keyword">else</span>  {
-							el.setAttribute(attrName, value);
-						}
+						setAttr(el, attrName);
 					}
 				}
 				<span class="hljs-keyword">if</span>(node.attributes) {
 					<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = node.attributes.length; i &lt; len; i++ ) {
-						getCallback().callbacks.push({callback: node.attributes[i]});
+						getCallback().callbacks.push({<span class="hljs-attr">callback</span>: node.attributes[i]});
 					}
 				}
 				<span class="hljs-keyword">if</span>(node.children &amp;&amp; node.children.length) {</pre></div></div>
@@ -183,11 +244,11 @@ namespace.</p>
         </li>
         
         
-        <li id="section-4">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>add paths</p>
 
@@ -198,79 +259,103 @@ namespace.</p>
 					} <span class="hljs-keyword">else</span> {
 						p = paths;
 					}
-					el.appendChild( processNodes(node.children, p, loc) );
+
+					el.appendChild( processNodes(node.children, p, loc, <span class="hljs-built_in">document</span>) );
 				}
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(node.comment) {
 				el = <span class="hljs-built_in">document</span>.createComment(node.comment);
-				
+
 				<span class="hljs-keyword">if</span>(node.callbacks) {
 					<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = node.attributes.length; i &lt; len; i++ ) {
-						getCallback().callbacks.push({callback: node.callbacks[i]});
+						getCallback().callbacks.push({<span class="hljs-attr">callback</span>: node.callbacks[i]});
 					}
 				}
 			}
-			
-			
+
+
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nodeType === <span class="hljs-string">"string"</span>){
+
 			el = <span class="hljs-built_in">document</span>.createTextNode(node);
+
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nodeType === <span class="hljs-string">"function"</span>) {
-			
+
 			<span class="hljs-keyword">if</span>(keepsTextNodes) {
 				el = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>);
-				getCallback().callbacks.push({callback: node});
+				getCallback().callbacks.push({
+					<span class="hljs-attr">callback</span>: node
+				});
 			} <span class="hljs-keyword">else</span> {
 				el = <span class="hljs-built_in">document</span>.createComment(<span class="hljs-string">"~"</span>);
-				getCallback().callbacks.push({callback: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-					<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>);
-					elements.replace([<span class="hljs-keyword">this</span>], el);
-					<span class="hljs-keyword">return</span> node.apply(el,<span class="hljs-built_in">arguments</span> );
-				}});
+				getCallback().callbacks.push({
+					<span class="hljs-attr">callback</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						<span class="hljs-keyword">var</span> el = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>);
+						elements.replace([<span class="hljs-keyword">this</span>], el);
+						<span class="hljs-keyword">return</span> node.apply(el,<span class="hljs-built_in">arguments</span> );
+					}
+				});
 			}
-			
+
 		}
 		<span class="hljs-keyword">return</span> el;
 	}
-	
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hydratePath</span><span class="hljs-params">(el, pathData, args)</span></span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCallbacks</span>(<span class="hljs-params">el, pathData, elementCallbacks</span>)</span>{
 		<span class="hljs-keyword">var</span> path = pathData.path,
 			callbacks = pathData.callbacks,
 			paths = pathData.paths,
-			callbackData,
-			child = el;
-		
-		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = path.length; i &lt; len; i++) {
-			child = child.childNodes[path[i]];
+			child = el,
+			pathLength = path ? path.length : <span class="hljs-number">0</span>,
+			pathsLength = paths ? paths.length : <span class="hljs-number">0</span>;
+
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; pathLength; i++) {
+			child = child.childNodes.item(path[i]);
 		}
-		
-		<span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>, len = callbacks.length; i &lt; len; i++) {
+
+		<span class="hljs-keyword">for</span>( i= <span class="hljs-number">0</span> ; i &lt; pathsLength; i++) {
+			getCallbacks(child, paths[i], elementCallbacks);
+		}
+
+		elementCallbacks.push({<span class="hljs-attr">element</span>: child, <span class="hljs-attr">callbacks</span>: callbacks});
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hydrateCallbacks</span>(<span class="hljs-params">callbacks, args</span>) </span>{
+		<span class="hljs-keyword">var</span> len = callbacks.length,
+			callbacksLength,
+			callbackElement,
+			callbackData;
+
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
 			callbackData = callbacks[i];
-			callbackData.callback.apply(child, args );
-		}
-		<span class="hljs-keyword">if</span>(paths &amp;&amp; paths.length){
-			<span class="hljs-keyword">for</span>( i= paths.length - <span class="hljs-number">1</span> ; i &gt;= <span class="hljs-number">0</span>; i--) {
-				hydratePath(child,paths[i], args);
+			callbacksLength = callbackData.callbacks.length;
+			callbackElement = callbackData.element;
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> c = <span class="hljs-number">0</span>; c &lt; callbacksLength; c++) {
+				callbackData.callbacks[c].callback.apply(callbackElement, args);
 			}
 		}
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeTarget</span><span class="hljs-params">(nodes)</span></span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeTarget</span>(<span class="hljs-params">nodes, doc</span>)</span>{
 		<span class="hljs-keyword">var</span> paths = [];
-		<span class="hljs-keyword">var</span> frag = processNodes(nodes, paths, []);
+		<span class="hljs-keyword">var</span> frag = processNodes(nodes, paths, [], doc || can.global.document);
 		<span class="hljs-keyword">return</span> {
-			paths: paths,
-			clone: frag,
-			hydrate: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-attr">paths</span>: paths,
+			<span class="hljs-attr">clone</span>: frag,
+			<span class="hljs-attr">hydrate</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 				<span class="hljs-keyword">var</span> cloned = cloneNode(<span class="hljs-keyword">this</span>.clone);
 				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
-				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = paths.length - <span class="hljs-number">1</span>; i &gt;=<span class="hljs-number">0</span> ; i--) {
-					hydratePath(cloned,paths[i], args);
+
+				<span class="hljs-keyword">var</span> callbacks = [];
+				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; paths.length; i++) {
+					getCallbacks(cloned, paths[i], callbacks);
 				}
+				hydrateCallbacks(callbacks, args);
+
 				<span class="hljs-keyword">return</span> cloned;
 			}
 		};
 	}
 	makeTarget.keepsTextNodes = keepsTextNodes;
-	
+
 	can.view.target = makeTarget;
 
 	<span class="hljs-keyword">return</span> makeTarget;

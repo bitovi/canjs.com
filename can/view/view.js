@@ -20,7 +20,7 @@ steal('can/util', function (can) {
 	 * @hide
 	 * Rendering function factory method
 	 * @param textRenderer
-	 * @returns {renderer}
+	 * @return {renderer}
 	 */
 	var makeRenderer = function(textRenderer) {
 		var renderer = function() {
@@ -43,7 +43,7 @@ steal('can/util', function (can) {
 			can.dev.log("can/view/view.js: There is no template or an empty template at " + url);
 			//!steal-remove-end
 
-			throw "can.view: No template or empty template:" + url;
+			throw new Error("can.view: No template or empty template:" + url);
 		}
 	};
 
@@ -54,7 +54,7 @@ steal('can/util', function (can) {
 	 * @function get
 	 * @param {String | Object} obj url string or object with url property
 	 * @param {Boolean} async If the ajax request should be asynchronous.
-	 * @returns {can.Deferred} a `view` renderer deferred.
+	 * @return {can.Deferred} a `view` renderer deferred.
 	 */
 	var	getRenderer = function (obj, async) {
 		// If `obj` already is a renderer function just resolve a Deferred with it
@@ -153,17 +153,17 @@ steal('can/util', function (can) {
 	/**
 	 * @hide
 	 * @param {Object|can.Deferred} data
-	 * @returns {Array} deferred objects
+	 * @return {Array} deferred objects
 	 */
 	var getDeferreds = function (data) {
 		var deferreds = [];
 
 		// pull out deferreds
-		if (can.isDeferred(data)) {
+		if (can.isPromise(data)) {
 			return [data];
 		} else {
 			for (var prop in data) {
-				if (can.isDeferred(data[prop])) {
+				if (can.isPromise(data[prop])) {
 					deferreds.push(data[prop]);
 				}
 			}
@@ -180,7 +180,7 @@ steal('can/util', function (can) {
 	 * @hide
 	 * @function usefulPart
 	 * @param {Array|*} resolved
-	 * @returns {*}
+	 * @return {*}
 	 */
 	var usefulPart = function (resolved) {
 		return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
@@ -218,15 +218,7 @@ steal('can/util', function (can) {
 		// #### fragment
 		// this is used internally to create a document fragment, insert it,then hook it up
 		fragment: function (result) {
-			if(typeof result !== "string" && result.nodeType === 11) {
-				return result;
-			}
-			var frag = can.buildFragment(result, document.body);
-			// If we have an empty frag...
-			if (!frag.childNodes.length) {
-				frag.appendChild(document.createTextNode(''));
-			}
-			return frag;
+			return can.frag(result, document);
 		},
 
 		// ##### toId
@@ -254,7 +246,7 @@ steal('can/util', function (can) {
 		 * hook up a fragment to its parent node
 		 * @param fragment
 		 * @param parentNode
-		 * @returns {*}
+		 * @return {*}
 		 */
 		hookup: function (fragment, parentNode) {
 			var hookupEls = [],
@@ -486,7 +478,7 @@ steal('can/util', function (can) {
 		 * into the view cache.
 		 * @param id
 		 * @param stringRenderer
-		 * @returns {*}
+		 * @return {*}
 		 */
 		preloadStringRenderer: function(id, stringRenderer) {
 			return this.preload(id, makeRenderer(stringRenderer) );
@@ -519,6 +511,7 @@ steal('can/util', function (can) {
 		 * @param {Object} [data] The data to populate the template with.
 		 * @param {Object.<String, function>} [helpers] Helper methods referenced in the template.
 		 * @param {Function} [callback] A function executed after the template has been processed.
+		 * @param {NodeList} nodelist parent nodelist to register partial template contents with
 		 * @return {String|can.Deferred} The template with interpolated data in string form
 		 * or a Deferred that resolves to the template with interpolated data.
 		 *
@@ -562,8 +555,8 @@ steal('can/util', function (can) {
 		 */
 		//call `renderAs` with a hardcoded string, as view.render
 		// always operates against resolved template files or hardcoded strings
-		render: function (view, data, helpers, callback) {
-			return can.view.renderAs("string",view, data, helpers, callback);
+		render: function (view, data, helpers, callback, nodelist) {
+			return can.view.renderAs("string",view, data, helpers, callback, nodelist);
 		},
 
 		// ##### renderTo
@@ -575,10 +568,11 @@ steal('can/util', function (can) {
 		 * @param {Function} renderer
 		 * @param data
 		 * @param {Object} helpers helper methods for this template
-		 * @returns {*}
+		 * @param {NodeList} nodelist parent nodelist to register partial template contents with
+		 * @return {*}
 		 */
-		renderTo: function(format, renderer, data, helpers){
-			return (format === "string" && renderer.render ? renderer.render : renderer)(data, helpers);
+		renderTo: function(format, renderer, data, helpers, nodelist){
+			return (format === "string" && renderer.render ? renderer.render : renderer)(data, helpers, nodelist);
 		},
 
 		/**
@@ -589,9 +583,16 @@ steal('can/util', function (can) {
 		 * @param data
 		 * @param helpers
 		 * @param callback
-		 * @returns {*}
+		 * @param nodelist
+		 * @return {*}
 		 */
-		renderAs: function (format, view, data, helpers, callback) {
+		renderAs: function (format, view, data, helpers, callback, nodelist) {
+			// if callback has expression prop its actually the nodelist
+			if (callback !== undefined && typeof callback.expression === 'string') {
+				nodelist = callback;
+				callback = undefined;
+			}
+			
 			// If helpers is a `function`, it is actually a callback.
 			if (isFunction(helpers)) {
 				callback = helpers;
@@ -600,7 +601,7 @@ steal('can/util', function (can) {
 
 			// See if we got passed any deferreds.
 			var deferreds = getDeferreds(data);
-			var reading, deferred, dataCopy, async, response;
+			var deferred, dataCopy, async, response;
 			if (deferreds.length) {
 				// Does data contain any deferreds?
 				// The deferred that resolves into the rendered content...
@@ -620,20 +621,20 @@ steal('can/util', function (can) {
 							result;
 
 						// Make data look like the resolved deferreds.
-						if (can.isDeferred(data)) {
+						if (can.isPromise(data)) {
 							dataCopy = usefulPart(resolved);
 						} else {
 							// Go through each prop in data again and
 							// replace the defferreds with what they resolved to.
 							for (var prop in data) {
-								if (can.isDeferred(data[prop])) {
+								if (can.isPromise(data[prop])) {
 									dataCopy[prop] = usefulPart(objs.shift());
 								}
 							}
 						}
 
 						// Get the rendered result.
-						result = can.view.renderTo(format, renderer, dataCopy, helpers);
+						result = can.view.renderTo(format, renderer, dataCopy, helpers, nodelist);
 
 						// Resolve with the rendered view.
 						deferred.resolve(result, dataCopy);
@@ -648,18 +649,13 @@ steal('can/util', function (can) {
 				// Return the deferred...
 				return deferred;
 			} else {
-				// get is called async but in 
-				// ff will be async so we need to temporarily reset
-				reading = can.__clearReading();
 
 				// If there's a `callback` function
 				async = isFunction(callback);
-				// Get the `view` type
-				deferred = getRenderer(view, async);
-
-				if (reading) {
-					can.__setReading(reading);
-				}
+				
+				// get is called async but in
+				// ff will be async so we need to temporarily reset
+				deferred = can.__notObserve(getRenderer)(view, async);
 
 				// If we are `async`...
 				if (async) {
@@ -667,7 +663,7 @@ steal('can/util', function (can) {
 					response = deferred;
 					// And fire callback with the rendered result.
 					deferred.then(function (renderer) {
-						callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
+						callback(data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer);
 					});
 				} else {
 					// if the deferred is resolved, call the cached renderer instead
@@ -681,12 +677,12 @@ steal('can/util', function (can) {
 					// In the future, we might simply store either a deferred or the cached result.
 					if (deferred.state() === 'resolved' && deferred.__view_id) {
 						var currentRenderer = $view.cachedRenderers[deferred.__view_id];
-						return data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+						return data ? can.view.renderTo(format, currentRenderer, data, helpers, nodelist) : currentRenderer;
 					} else {
 						// Otherwise, the deferred is complete, so
 						// set response to the result of the rendering.
 						deferred.then(function (renderer) {
-							response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+							response = data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer;
 						});
 					}
 				}
@@ -694,7 +690,7 @@ steal('can/util', function (can) {
 				return response;
 			}
 		},
-		
+
 		/**
 		 * @hide
 		 * Registers a view with `cached` object.  This is used
@@ -713,7 +709,7 @@ steal('can/util', function (can) {
 			} else {
 				renderer = makeRenderer( info.renderer(id, text) );
 			}
-			
+
 			def = def || new can.Deferred();
 
 			// Cache if we are caching.
@@ -726,6 +722,23 @@ steal('can/util', function (can) {
 			// Return the objects for the response's `dataTypes`
 			// (in this case view).
 			return def.resolve(renderer);
+		},
+
+		// Returns a function that automatically converts all computes passed to it
+		simpleHelper: function(fn) {
+			return function() {
+				var realArgs = [];
+				var fnArgs = arguments;
+				can.each(fnArgs, function(val, i) {
+					if (i <= fnArgs.length) {
+						while (val && val.isComputed) {
+							val = val();
+						}
+						realArgs.push(val);
+					}
+				});
+				return fn.apply(this, realArgs);
+			};
 		}
 	});
 

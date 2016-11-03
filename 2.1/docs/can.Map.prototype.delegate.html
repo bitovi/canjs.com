@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -836,6 +833,8 @@ called with:</p>
 		
 
 		
+
+		
 	
 	
 	</article>
@@ -848,7 +847,7 @@ called with:</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -859,11 +858,8 @@ called with:</p>
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -873,7 +869,7 @@ called with:</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -881,19 +877,19 @@ called with:</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.Map.prototype.delegate","src":"map/delegate/doc/prototype.delegate.md","description":"","title":"delegate","parent":"can.Map.delegate","order":0,"plugin":"can/map/delegate","signatures":[{"code":"observe.delegate( selector, event, handler )","description":"`delegate( selector, event, handler(ev,newVal,oldVal,from) )` listen for changes\nin a child attribute from the parent. The child attribute\ndoes not have to exist.\n\n```\n// create an observable\nvar o = new can.Map({\n    foo : {\n        bar : 'Hello World'\n    }\n});\n\n//listen to changes on a property\no.delegate('foo.bar', 'change', function(ev, prop, how, newVal, oldVal) {\n    // foo.bar has been added, set, or removed\n    this //->\n});\n\n// change the property\no.attr('foo.bar', 'Goodbye Cruel World');\n```\n\n## Types of events\n\nDelegate lets you listen to add, set, remove, and change events on property.\n\n__add__\n\nAn add event is fired when a new property has been added.\n\n```\nvar o = new can.Control({});\n\no.delegate('name', 'add', function(ev, value) {\n    // called once\n    can.$('#name').show()\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n```\n\nListening to add events is useful for 'setup' functionality (in this case\nshowing the <code>#name</code> element.\n\n__set__\n\nSet events are fired when a property takes on a new value.  set events are\nalways fired after an add.\n\n```\no.delegate('name', 'set', function(ev, value) {\n    // called twice\n    can.$('#name').text(value)\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n```\n\n__remove__\n\nRemove events are fired after a property is removed.\n\n```\no.delegate('name', 'remove', function(ev) {\n    // called once\n    $('#name').text(value)\n});\n\no.attr('name', 'Justin');\no.removeAttr('name');\n```\n\n## Wildcards - matching multiple properties\n\nSometimes, you want to know when any property within some part\nof an observe has changed. Delegate lets you use wildcards to\nmatch any property name.  The following listens for any change\non an attribute of the params attribute:\n\n```\nvar o = can.Control({\n    options : {\n        limit : 100,\n        offset: 0,\n        params : {\n            parentId: 5\n        }\n    }\n});\n\no.delegate('options.*', 'change', function() {\n    alert('1');\n});\no.delegate('options.**', 'change', function() {\n    alert('2');\n});\n\n// alerts 1\n// alerts 2\no.attr('options.offset', 100);\n\n// alerts 2\no.attr('options.params.parentId', 6);\n```\n\nUsing a single wildcard (<code>*</code>) matches single level\nproperties.  Using a double wildcard (<code>**</code>) matches\nany deep property.\n\n## Listening on multiple properties and values\n\nDelegate lets you listen on multiple values at once.  The following listens\nfor first and last name changes:\n\n```\nvar o = new can.Map({\n    name : { \n      first: 'Justin', \n      last: 'Meyer'\n    }\n});\n\no.bind('name.first, name.last',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n```\n\n## Listening when properties are a particular value\n\nDelegate lets you listen when a property is __set__ to a specific value:\n\n```\nvar o = new can.Map({\n    name : 'Justin'\n});\n\no.bind('name=Brian',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n```","params":[{"types":[{"type":"String"}],"name":"selector","description":"The attributes you want to listen for changes in.\n\nSelector should be the property or\nproperty names of the element you are searching.  Examples:\n\n- \"name\" - listens to the \"name\" property changing\n- \"name, address\" - listens to \"name\" or \"address\" changing\n- \"name address\" - listens to \"name\" or \"address\" changing\n- \"address.*\" - listens to property directly in address\n- \"address.**\" - listens to any property change in address\n- \"foo=bar\" - listens when foo is \"bar\""},{"types":[{"type":"String"}],"name":"event","description":"The event name.  One of (\"set\",\"add\",\"remove\",\"change\")"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"name":"ev"},{"name":"newVal"},{"name":"oldVal"},{"name":"prop"}]}],"name":"handler","description":"The callback handler\ncalled with:\n\n- newVal - the new value set on the observe\n- oldVal - the old value set on the observe\n- prop - the prop name that was changed"}],"returns":{"types":[{"type":"can.Map"}],"description":"the observe for chaining"}}],"forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
+		var docObject = {"type":"function","name":"can.Map.prototype.delegate","src":"map/delegate/doc/prototype.delegate.md","description":"","title":"delegate","parent":"can.Map.delegate","order":0,"plugin":"can/map/delegate","signatures":[{"code":"observe.delegate( selector, event, handler )","description":"`delegate( selector, event, handler(ev,newVal,oldVal,from) )` listen for changes\nin a child attribute from the parent. The child attribute\ndoes not have to exist.\n\n```\n// create an observable\nvar o = new can.Map({\n    foo : {\n        bar : 'Hello World'\n    }\n});\n\n//listen to changes on a property\no.delegate('foo.bar', 'change', function(ev, prop, how, newVal, oldVal) {\n    // foo.bar has been added, set, or removed\n    this //->\n});\n\n// change the property\no.attr('foo.bar', 'Goodbye Cruel World');\n```\n\n## Types of events\n\nDelegate lets you listen to add, set, remove, and change events on property.\n\n__add__\n\nAn add event is fired when a new property has been added.\n\n```\nvar o = new can.Control({});\n\no.delegate('name', 'add', function(ev, value) {\n    // called once\n    can.$('#name').show()\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n```\n\nListening to add events is useful for 'setup' functionality (in this case\nshowing the <code>#name</code> element.\n\n__set__\n\nSet events are fired when a property takes on a new value.  set events are\nalways fired after an add.\n\n```\no.delegate('name', 'set', function(ev, value) {\n    // called twice\n    can.$('#name').text(value)\n});\n\no.attr('name', 'Justin')\no.attr('name', 'Brian');\n```\n\n__remove__\n\nRemove events are fired after a property is removed.\n\n```\no.delegate('name', 'remove', function(ev) {\n    // called once\n    $('#name').text(value)\n});\n\no.attr('name', 'Justin');\no.removeAttr('name');\n```\n\n## Wildcards - matching multiple properties\n\nSometimes, you want to know when any property within some part\nof an observe has changed. Delegate lets you use wildcards to\nmatch any property name.  The following listens for any change\non an attribute of the params attribute:\n\n```\nvar o = can.Control({\n    options : {\n        limit : 100,\n        offset: 0,\n        params : {\n            parentId: 5\n        }\n    }\n});\n\no.delegate('options.*', 'change', function() {\n    alert('1');\n});\no.delegate('options.**', 'change', function() {\n    alert('2');\n});\n\n// alerts 1\n// alerts 2\no.attr('options.offset', 100);\n\n// alerts 2\no.attr('options.params.parentId', 6);\n```\n\nUsing a single wildcard (<code>*</code>) matches single level\nproperties.  Using a double wildcard (<code>**</code>) matches\nany deep property.\n\n## Listening on multiple properties and values\n\nDelegate lets you listen on multiple values at once.  The following listens\nfor first and last name changes:\n\n```\nvar o = new can.Map({\n    name : { \n      first: 'Justin', \n      last: 'Meyer'\n    }\n});\n\no.bind('name.first, name.last',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n```\n\n## Listening when properties are a particular value\n\nDelegate lets you listen when a property is __set__ to a specific value:\n\n```\nvar o = new can.Map({\n    name : 'Justin'\n});\n\no.bind('name=Brian',\n    'set',\n    function(ev, newVal, oldVal, from) {\n\n});\n```","params":[{"types":[{"type":"String"}],"name":"selector","description":"The attributes you want to listen for changes in.\n\nSelector should be the property or\nproperty names of the element you are searching.  Examples:\n\n- \"name\" - listens to the \"name\" property changing\n- \"name, address\" - listens to \"name\" or \"address\" changing\n- \"name address\" - listens to \"name\" or \"address\" changing\n- \"address.*\" - listens to property directly in address\n- \"address.**\" - listens to any property change in address\n- \"foo=bar\" - listens when foo is \"bar\""},{"types":[{"type":"String"}],"name":"event","description":"The event name.  One of (\"set\",\"add\",\"remove\",\"change\")"},{"types":[{"type":"function","returns":{"types":[{"type":"undefined"}]},"params":[{"name":"ev"},{"name":"newVal"},{"name":"oldVal"},{"name":"prop"}]}],"name":"handler","description":"The callback handler\ncalled with:\n\n- newVal - the new value set on the observe\n- oldVal - the old value set on the observe\n- prop - the prop name that was changed"}],"returns":{"types":[{"type":"can.Map"}],"description":"the observe for chaining"}}],"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.1/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.1","name":"canjs","source":"git://github.com/bitovi/canjs#664214f77031591bb2b59375cb31b4e7a5dd9fae"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -902,13 +898,13 @@ called with:</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

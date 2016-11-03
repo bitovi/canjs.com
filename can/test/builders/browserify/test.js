@@ -6,12 +6,12 @@ var assert = require("assert"),
 	connect = require("connect"),
 	path = require("path"),
 	rmdir = require("rimraf");
-	
+
 var browserify = require('browserify');
 var fs = require('fs'), path = require("path");
 
 
-// Helpers
+// Helper
 var find = function(browser, property, callback, done){
 	var start = new Date();
 	var check = function(){
@@ -28,7 +28,7 @@ var find = function(browser, property, callback, done){
 
 var open = function(url, callback, done){
 	var server = connect().use(connect.static(path.join(__dirname,"../../.."))).listen(8081);
-	var browser = Browser.create();
+	var browser = new Browser();
 	browser.visit("http://localhost:8081/"+url)
 		.then(function(){
 			callback(browser, function(err){
@@ -58,7 +58,23 @@ describe("browserify", function(){
 				}, close);
 			}, done);
 		});
-		
+
+	});
+
+	it("can use a compiled stache template", function(done){
+		this.timeout(10000);
+		var b = browserify();
+		b.add(path.join(__dirname, "compiled.js"));
+		var out = fs.createWriteStream(path.join(__dirname, "compiled-out.js"));
+		b.bundle().pipe(out);
+		out.on('finish', function(){
+			open("test/builders/browserify/compiled.html", function(browser, close) {
+				find(browser, "PAGE_READY", function(m){
+					var helloWorld = browser.document.getElementsByTagName("h1")[0];
+					assert.equal(helloWorld.innerHTML, "Hello World", "right text");
+					close();
+				}, close);
+			}, done);
+		});
 	});
 });
-

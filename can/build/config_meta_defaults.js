@@ -33,7 +33,7 @@ var reverseNormalize = function(name, load, baseName, baseLoad){
 	if(name === "dojo" || name === "dojo/dojo") {
 		return "dojo/main";
 	}
-	
+
 	if(name === "can") {
 		return name;
 	}
@@ -45,9 +45,9 @@ var reverseNormalize = function(name, load, baseName, baseLoad){
 	var parts = name.split("/");
 	if(parts.length > 1) {
 		parts.splice(parts.length-2,1);
-	} 
+	}
 	return "can/"+parts.join("/");
-	
+
 };
 var path = require("path");
 
@@ -85,6 +85,11 @@ module.exports = function(){
 				if(load.address.indexOf("node_modules") >= 0) {
 					return true;
 				}
+			}, function(moduleName) {
+					if(moduleName.indexOf('/system') !== -1 ||
+						moduleName.indexOf('/add_bundles') !== -1) {
+						return true;
+					}
 			}])
 		}
 	};

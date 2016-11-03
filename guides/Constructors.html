@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Constructors </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started Tutorial">
+				Getting Started Tutorial
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ApplicationDesign.html" 
+							data-search="Application Design">
+							Application Design
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="Constructors.html" 
+							data-search="Constructors">
+							Constructors
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="TheDefinePlugin.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="StacheTemplates.html" 
+							data-search="Stache Templates">
+							Stache Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="AppStateAndRouting.html" 
+							data-search="App State and Routing">
+							App State and Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ViewModels.html" 
+							data-search="View Models">
+							View Models
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="DataModelsAndFixtures.html" 
+							data-search="Data Models and Fixtures">
+							Data Models and Fixtures
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="LoadingStates.html" 
+							data-search="Loading States">
+							Loading States
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EventHandling.html" 
+							data-search="Event Handling">
+							Event Handling
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="WebServiceCommunication.html" 
+							data-search="Web Service Communication">
+							Web Service Communication
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Constructors</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">Constructors</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/guides/getting-started-tutorial/constructors.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<div class="getting-started">
+<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Constructors in CanJS</li>
+<li>The <code>extend</code> function</li>
+<li>The <code>init</code> function</li>
+</ul>
+<hr />
+<p>Before we work with any of the objects in CanJS, it will be helpful for us to
+understand <a href="../docs/can.Construct.html">can.Construct</a>. We won’t be working
+with <code>can.Construct</code> directly. However, many of the objects in CanJS are derived from
+<code>can.Construct</code>. Understanding it will make it easier for you to understand other
+concepts we’re going to cover.</p>
+<p><code>can.Construct</code> provides a way to easily use the power of prototypal
+inheritance without worrying about hooking up all the particulars
+yourself. Without going into exhaustive detail, <code>can.Construct</code> contains
+a few functions we’ll encounter frequently in other objects:</p>
+<ul>
+<li>Prototype
+<ul>
+<li>init</li>
+</ul></li>
+<li>Static
+<ul>
+<li>extend</li>
+</ul></li>
+</ul>
+<p>We’ll look at the extend function first.</p>
+<h2>The extend function</h2>
+<p><code>can.Construct</code>’s <code>extend</code> function is used to create
+“constructor functions” that inherit from the base constructor function.
+To create a constructor function of your own, call <strong>can.Construct</strong> with the:</p>
+<ul>
+<li><strong>staticProperties</strong> that are attached directly to the constructor, and</li>
+<li>instance <strong>prototypeProperties</strong>.</li>
+</ul>
+<p><strong>can.Construct</strong> sets up the prototype chain so subclasses can be further
+extended and sub-classed as far as you like:</p>
+<pre><code>var Order = can.Construct.extend({
+  init: function(){},
+
+  customer: function() { ... },
+  
+  needAddress: function( account ) {
+    return false;
+  }
+});
+
+var CarryOutOrder = Order.extend({
+  needAddress: function( account ) {
+    return account.hasAddress();
+  }
+});
+</code></pre>
+<p>If only one set of properties is passed to <strong>can.Construct</strong>, it's assumed to
+be the prototype properties.  If two sets of properties are passed, the
+first argument are static properties, the second argument are prototype
+properties.</p>
+<pre><code>can.Construct.extend({
+  // Static properties here
+}, {
+  // Blank object as second parameter
+});
+</code></pre>
+<p>This example is highlighted because calling a <code>can.Construct</code> with two parameters,
+the last of which is an empty object, is common. Also common is the mistake of
+ommitting the last parameter of the call, which can lead to unexpected behavior.</p>
+<h2>The init function</h2>
+<p>When a constructor is called with the <code>new</code> keyword, <strong>can.Construct</strong> creates the instance and
+calls <a href="../docs/can.Construct.prototype.init.html">init</a> with
+the arguments passed to <code>new Constructor(...)</code>. <code>init</code> is where initialization code
+should go. Inside of the <code>init</code> function, the <code>this</code> keyword will refer to the
+new object instance created by the constructor. Additionaly, <code>this</code> will contain
+the instance properties you pass to the constructor. A common thing to do in <code>init</code>
+is save the arguments passed into the constructor. An example is below:</p>
+<pre><code>var Order = can.Construct.extend({
+  init: function(price, item) {
+    this.price = price;
+    this.item = item;
+  }
+});
+
+var order = new Order(20, 'Green Eggs &amp; Ham');
+</code></pre>
+<hr />
+<p><span class="pull-left"><a href="ApplicationDesign.html">&lsaquo; Application Design</a></span>
+<span class="pull-right"><a href="Observables.html">Observables &rsaquo;</a></span></p>
+</div>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"Constructors","src":"guides/getting-started-tutorial/constructors.md","description":"","title":"Constructors","parent":"Tutorial","order":3,"disabletableofcontents":true,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,guides/**/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

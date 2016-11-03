@@ -3,7 +3,8 @@
 
 @body
 
-In this guide you'll learn how to build a plugin for CanJS. As is standard with programming tutorials, we'll build something that says "Hello World".
+In this guide you'll learn how to build a plugin for CanJS. As is standard with programming tutorials,
+we’ll build something that says "Hello World".
 
 ## Setup
 
@@ -71,7 +72,7 @@ It's highly recommended that you create documentation for your plugin. You can u
 
 ## Grunt work flow
 
-Now that you have developed a plugin, tests and examples, it's time to build the plugin using Grunt. The following commands are available:
+Now that you have developed a plugin, tests and examples, it’s time to build the plugin using Grunt. The following commands are available:
 
 Run jsbeautifier and JSHint:
 
@@ -119,4 +120,4 @@ Your plugin is now available via the [bower registry](http://bower.io/search)!
 
 That's all there is to it. In this guide you developed a CanJS plugin complete with tests and examples and learned how to distribute it via bower.
 
-If you've created a CanJS plugin we'd love to hear about it over on [BitHub](http://bithub.com) [IRC](http://webchat.freenode.net/?channels=canjs) or our [forums](http://forum.javascriptmvc.com).
+If you've created a CanJS plugin we'd love to hear about it over on [BitHub](http://bithub.com) [IRC](http://webchat.freenode.net/?channels=canjs) or our [forums](http://forums.donejs.com/c/canjs).

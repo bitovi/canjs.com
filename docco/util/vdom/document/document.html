@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>document.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>document.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>A document made with can/view/parser</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util/can.js"</span>, <span class="hljs-string">"can-simple-dom"</span>, <span class="hljs-string">"../build_fragment/make_parser"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, simpleDOM, makeParser</span>)</span>{
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">CanSimpleDocument</span>(<span class="hljs-params"></span>)</span>{
+		simpleDOM.Document.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+
+		<span class="hljs-keyword">var</span> serializer = <span class="hljs-keyword">new</span> simpleDOM.HTMLSerializer(simpleDOM.voidMap);
+		<span class="hljs-keyword">var</span> parser = makeParser(<span class="hljs-keyword">this</span>);
+		<span class="hljs-keyword">this</span>.__addSerializerAndParser(serializer, parser);
+	}
+
+	CanSimpleDocument.prototype = <span class="hljs-keyword">new</span> simpleDOM.Document();
+	CanSimpleDocument.prototype.constructor = CanSimpleDocument;
+
+	<span class="hljs-keyword">var</span> <span class="hljs-built_in">document</span> = <span class="hljs-keyword">new</span> CanSimpleDocument();
+	can.simpleDocument = <span class="hljs-built_in">document</span>;
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">document</span>;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

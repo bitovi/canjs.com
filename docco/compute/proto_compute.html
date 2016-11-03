@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>proto_compute.js</title>
+  <title>can/compute/proto_compute (aka can.Compute)</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -24,8 +24,8 @@
               </a>
             
               
-              <a class="source" href="compute_benchmark.html">
-                compute_benchmark.js
+              <a class="source" href="get_value_and_bind.html">
+                get_value_and_bind.js
               </a>
             
               
@@ -44,12 +44,6 @@
     
     <ul class="sections">
         
-          <li id="title">
-              <div class="annotation">
-                  <h1>proto_compute.js</h1>
-              </div>
-          </li>
-        
         
         
         <li id="section-1">
@@ -58,53 +52,42 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <h1 id="can-compute-proto_compute-aka-can-compute-">can/compute/proto_compute (aka can.Compute)</h1>
+<p>Allows the creation of observablue values. This
+is a prototype based version of <a href="compute.html">can.compute</a>.</p>
+<p>can.Computes come in different flavors:</p>
+<ul>
+<li><a href="#setup-getter-setter-functional-computes">Getter / Setter functional computes</a>.</li>
+<li><a href="#setup-property-computes">Property computes</a>.</li>
+<li><a href="#setup-setter-computes">Setter computes</a>.</li>
+<li><a href="#setup-async-computes">Async computes</a>.</li>
+<li><a href="#setup-settings-computes">Settings computes</a>.</li>
+<li><a href="#setup-simple-value-computes">Simple value computes</a>.</li>
+</ul>
+<p>can.Computes have public <code>.get</code>, <code>.set</code>, <code>.on</code>, and <code>.off</code> methods that call
+internal methods that are configured differently depending on what flavor of
+compute is being created.  Those methods are:</p>
+<ul>
+<li><p><code>_on(updater)</code> - Called the first time the compute is bound. This should bind to
+ any source observables.  When any of the source observables have changed, it should call
+ <code>updater(newVal, oldVal, batchNum)</code>.</p>
+</li>
+<li><p><code>_off(updater)</code> - Called when the compute has no more event handlers.  This should unbind to any source observables.</p>
+</li>
+<li><code>_get</code> - Called to get the current value of the compute.</li>
+<li><code>_set</code> - Called to set the value of the compute.</li>
+</ul>
+<p>Other internal flags and values:</p>
+<ul>
+<li><code>value</code> - the cached value</li>
+<li><code>_setUpdates</code> - if calling <code>_set</code> will have updated the cached value itself so <code>_get</code> does not need to be called.</li>
+<li><code>_canObserve</code> - if this compute can be observed.</li>
+<li><code>hasDependencies</code> - if this compute has source observable values.</li>
+</ul>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/bind'</span>, <span class="hljs-string">'can/compute/read.js'</span>,<span class="hljs-string">'can/util/batch'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, bind, read)</span> </span>{
-	<span class="hljs-keyword">var</span> stack = [];
-
-	can.__read = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, self)</span> </span>{
-		stack.push({});
-
-		<span class="hljs-keyword">var</span> value = func.call(self);
-
-		<span class="hljs-keyword">return</span> {
-			value: value,
-			observed: stack.pop()
-		};
-	};
-
-	can.__reading = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, event)</span> </span>{
-		<span class="hljs-keyword">if</span> (stack.length) {
-			stack[stack.length-<span class="hljs-number">1</span>][obj._cid + <span class="hljs-string">'|'</span> + event] = {
-				obj: obj,
-				event: event + <span class="hljs-string">""</span>
-			};
-		}
-	};
-
-	can.__clearReading = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">if</span> (stack.length) {
-			<span class="hljs-keyword">var</span> ret = stack[stack.length-<span class="hljs-number">1</span>];
-			stack[stack.length-<span class="hljs-number">1</span>] = {};
-			<span class="hljs-keyword">return</span> ret;
-		}
-	};
-
-	can.__setReading = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(o)</span> </span>{
-		<span class="hljs-keyword">if</span> (stack.length) {
-			stack[stack.length-<span class="hljs-number">1</span>] = o;
-		}
-	};
-
-	can.__addReading = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(o)</span></span>{
-		<span class="hljs-keyword">if</span> (stack.length) {
-			can.simpleExtend(stack[stack.length-<span class="hljs-number">1</span>], o);
-		}
-	};
-
-	<span class="hljs-keyword">var</span> getValueAndBind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func, context, oldObserved, onchanged)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/bind'</span>, <span class="hljs-string">'can/compute/read.js'</span>,<span class="hljs-string">'can/compute/get_value_and_bind.js'</span>,<span class="hljs-string">'can/util/batch'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, bind, read, ObservedInfo</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -115,11 +98,23 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Call the function, get the value as well as the observed objects and events</p>
+              <h2 id="can-compute">can.Compute</h2>
+<p>Checks the arguments and calls different setup methods.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> info = can.__read(func, context),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.Compute = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">getterSetter, context, eventName, bindOnce</span>) </span>{
+		can.cid(<span class="hljs-keyword">this</span>, <span class="hljs-string">'compute'</span>);
+
+		<span class="hljs-keyword">var</span> args = [];
+
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, arglen = <span class="hljs-built_in">arguments</span>.length; i &lt; arglen; i++) {
+			args[i] = <span class="hljs-built_in">arguments</span>[i];
+		}
+
+		<span class="hljs-keyword">var</span> contextType = <span class="hljs-keyword">typeof</span> args[<span class="hljs-number">1</span>];
+
+		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> args[<span class="hljs-number">0</span>] === <span class="hljs-string">'function'</span>) {</pre></div></div>
             
         </li>
         
@@ -130,11 +125,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>The objects-event pairs that must be bound to</p>
+              <p>Getter/Setter functional computes.
+<code>new can.Compute(function(){ ... })</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			newObserveSet = info.observed;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._setupGetterSetterFn(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>], args[<span class="hljs-number">3</span>]);
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (args[<span class="hljs-number">1</span>]) {
+			<span class="hljs-keyword">if</span> (contextType === <span class="hljs-string">'string'</span>) {</pre></div></div>
             
         </li>
         
@@ -145,12 +143,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Go through what needs to be observed.</p>
+              <p>Property computes.
+<code>new can.Compute(object, propertyName[, eventName])</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		bindNewSet(oldObserved, newObserveSet, onchanged);
-		unbindOldSet(oldObserved, onchanged);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._setupProperty(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>]);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(contextType === <span class="hljs-string">'function'</span>) {</pre></div></div>
             
         </li>
         
@@ -161,17 +160,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>set ready only after all events that might be caused by a change</p>
+              <p>Setter computes.
+<code>new can.Compute(initialValue, function(newValue){ ... })</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.bind.call(info,<span class="hljs-string">"ready"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-			info.ready = <span class="hljs-literal">true</span>;
-		});
-		can.batch.trigger(info,<span class="hljs-string">"ready"</span>);
-		
-		<span class="hljs-keyword">return</span> info;
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._setupSetter(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>]);
+			} <span class="hljs-keyword">else</span> {
+
+				<span class="hljs-keyword">if</span>(args[<span class="hljs-number">1</span>] &amp;&amp; args[<span class="hljs-number">1</span>].fn) {</pre></div></div>
             
         </li>
         
@@ -182,15 +179,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>This will not be optimized.</p>
+              <p>Async computes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bindNewSet = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oldObserved, newObserveSet, onchanged)</span></span>{
-		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> newObserveSet ) {
-			bindOrPreventUnbinding(oldObserved, newObserveSet, name, onchanged);
-		}
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>._setupAsyncCompute(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>]);
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -201,27 +195,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>This will be optimized.</p>
+              <p>Settings computes.
+<code>new can.Compute(initialValue, {on, off, get, set})</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bindOrPreventUnbinding = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oldObserved, newObserveSet, name, onchanged)</span></span>{
-		<span class="hljs-keyword">if</span>( oldObserved[name] ) {
-			<span class="hljs-keyword">delete</span> oldObserved[name];
-		} <span class="hljs-keyword">else</span> {
-			<span class="hljs-keyword">var</span> obEv = newObserveSet[name];
-			obEv.obj.bind(obEv.event, onchanged);
-		}
-	};
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>._setupSettings(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>]);
+				}
 
-	<span class="hljs-keyword">var</span> unbindOldSet = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(oldObserved, onchanged)</span></span>{
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> oldObserved) {
-			<span class="hljs-keyword">var</span> obEv = oldObserved[name];
-			obEv.obj.unbind(obEv.event, onchanged);
-		}
-	};
-
-	<span class="hljs-keyword">var</span> updateOnChange = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(compute, newValue, oldValue, batchNum)</span></span>{</pre></div></div>
+			}
+		} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -232,38 +215,25 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Only trigger event when value has changed</p>
+              <p>Simple value computes.
+<code>new can.Compute(initialValue)</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (newValue !== oldValue) {
-			can.batch.trigger(compute, batchNum ? {type: <span class="hljs-string">"change"</span>, batchNum: batchNum} : <span class="hljs-string">'change'</span>, [
-				newValue,
-				oldValue
-			]);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._setupSimpleValue(args[<span class="hljs-number">0</span>]);
 		}
+
+		<span class="hljs-keyword">this</span>._args = args;
+		<span class="hljs-keyword">this</span>._primaryDepth = <span class="hljs-number">0</span>;
+
+		<span class="hljs-keyword">this</span>.isComputed = <span class="hljs-literal">true</span>;
+
 	};
 
-	<span class="hljs-keyword">var</span> setupComputeHandlersOn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">this</span>.readInfo = getValueAndBind(<span class="hljs-keyword">this</span>._getterSetter, <span class="hljs-keyword">this</span>._context, {}, <span class="hljs-keyword">this</span>.onchanged);
-
-		<span class="hljs-keyword">this</span>.setCached(<span class="hljs-keyword">this</span>.readInfo.value);
-		<span class="hljs-keyword">this</span>.hasDependencies = !can.isEmptyObject(<span class="hljs-keyword">this</span>.readInfo.observed);
-	};
-
-	<span class="hljs-keyword">var</span> setupComputeHandlersOff = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.readInfo.observed) {
-			<span class="hljs-keyword">var</span> ob = <span class="hljs-keyword">this</span>.readInfo.observed[name];
-			ob.obj.unbind(ob.event, <span class="hljs-keyword">this</span>.onchanged);
-		}
-	};
-
-	<span class="hljs-keyword">var</span> setupComputeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(compute, func, context)</span> </span>{
-		<span class="hljs-keyword">var</span> readInfo,
-			onchanged,
-			batchNum;
-
-		<span class="hljs-keyword">return</span> {</pre></div></div>
+	can.simpleExtend(can.Compute.prototype, {
+		<span class="hljs-attr">setPrimaryDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">depth</span>) </span>{
+			<span class="hljs-keyword">this</span>._primaryDepth = depth;
+		},</pre></div></div>
             
         </li>
         
@@ -274,15 +244,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Set up handler for when the compute changes</p>
+              <h2 id="setup-getter-setter-functional-computes">Setup getter / setter functional computes</h2>
+<p>Uses the function as both a getter and setter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-				<span class="hljs-keyword">if</span>(!onchanged) {
-					onchanged = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
-						<span class="hljs-keyword">if</span> (readInfo.ready &amp;&amp; compute.bound &amp;&amp; (ev.batchNum === <span class="hljs-literal">undefined</span> || ev.batchNum !== batchNum) ) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_setupGetterSetterFn: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">getterSetter, context, eventName</span>) </span>{
+			<span class="hljs-keyword">this</span>._set = context ? can.proxy(getterSetter, context) : getterSetter;
+			<span class="hljs-keyword">this</span>._get = context ? can.proxy(getterSetter, context) : getterSetter;
+			<span class="hljs-keyword">this</span>._canObserve = eventName === <span class="hljs-literal">false</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -293,11 +263,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Keep the old value</p>
+              <p>The helper provides the on and off methods that use <code>getValueAndBind</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> oldValue = readInfo.value;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> handlers = setupComputeHandlers(<span class="hljs-keyword">this</span>, getterSetter, context || <span class="hljs-keyword">this</span>);
+
+			can.simpleExtend(<span class="hljs-keyword">this</span>, handlers);
+		},</pre></div></div>
             
         </li>
         
@@ -308,11 +281,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Get the new value</p>
+              <h2 id="setup-property-computes">Setup property computes</h2>
+<p>Listen to a property changing on an object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_setupProperty: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">target, propertyName, eventName</span>) </span>{
+			<span class="hljs-keyword">var</span> isObserve = can.isMapLike( target ),
+				self = <span class="hljs-keyword">this</span>,
+				handler;</pre></div></div>
             
         </li>
         
@@ -323,21 +300,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Call the updater with old and new values</p>
+              <p>If a <code>can.Map</code>, setup to read  and write to that property.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							self.updater(readInfo.value, oldValue, ev.batchNum);
-							batchNum = batchNum = ev.batchNum;
-						}
-					};
-				}
-
-				readInfo = getValueAndBind(func, context, {}, onchanged);
-
-				compute.setCached(readInfo.value);
-				compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-			},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(isObserve) {</pre></div></div>
             
         </li>
         
@@ -348,26 +315,21 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Remove handler for the compute</p>
+              <p>We should pass the batchNum if there is one.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			off: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(updater)</span></span>{
-				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> readInfo.observed) {
-					<span class="hljs-keyword">var</span> ob = readInfo.observed[name];
-					ob.obj.unbind(ob.event, onchanged);
-				}
-			}
-		};
-	};
-
-	<span class="hljs-keyword">var</span> setupSingleBindComputeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(compute, func, context)</span> </span>{
-		<span class="hljs-keyword">var</span> readInfo,
-			oldValue,
-			onchanged,
-			batchNum;
-		
-		<span class="hljs-keyword">return</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				handler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newVal,oldVal</span>) </span>{
+					self.updater(newVal, oldVal, ev.batchNum);
+				};
+				<span class="hljs-keyword">this</span>.hasDependencies = <span class="hljs-literal">true</span>;
+				<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">return</span> target.attr(propertyName);
+				};
+				<span class="hljs-keyword">this</span>._set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>) </span>{
+					target.attr(propertyName, val);
+				};
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -378,14 +340,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Set up handler for when the compute changes</p>
+              <p>This is objects that can be bound to with can.bind.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			on: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(updater)</span></span>{
-				<span class="hljs-keyword">if</span>(!onchanged) {
-					onchanged = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span></span>{
-						<span class="hljs-keyword">if</span> (readInfo.ready &amp;&amp; compute.bound &amp;&amp; (ev.batchNum === <span class="hljs-literal">undefined</span> || ev.batchNum !== batchNum) ) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				handler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+					self.updater(self._get(), self.value);
+				};
+				<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">return</span> can.getObject(propertyName, [target]);
+				};
+				<span class="hljs-keyword">this</span>._set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -396,13 +361,18 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Get the new value</p>
+              <p>allow setting properties n levels deep, if separated with dot syntax</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">var</span> reads = can.__clearReading();
-							<span class="hljs-keyword">var</span> newValue = func.call(context);
-							can.__setReading(reads);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> properties = propertyName.split(<span class="hljs-string">"."</span>),
+						leafPropertyName = properties.pop(),
+						targetProperty = can.getObject(properties.join(<span class="hljs-string">'.'</span>), [target]);
+					targetProperty[leafPropertyName] = value;
+				};
+			}
+			<span class="hljs-keyword">this</span>._on = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">update</span>) </span>{
+				can.bind.call(target, eventName || propertyName, handler);</pre></div></div>
             
         </li>
         
@@ -413,23 +383,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>Call the updater with old and new values</p>
+              <p>Set the cached value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							updater.call(compute, newValue, oldValue, ev.batchNum);
-							oldValue = newValue;
-							batchNum = batchNum = ev.batchNum;
-						}
-					};
-				}
-
-				readInfo = getValueAndBind(func, context, {}, onchanged);
-				oldValue = readInfo.value;
-
-				compute.setCached(readInfo.value);
-				compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-			},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.value = <span class="hljs-keyword">this</span>._get();
+			};
+			<span class="hljs-keyword">this</span>._off = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> can.unbind.call( target, eventName || propertyName, handler);
+			};
+		},</pre></div></div>
             
         </li>
         
@@ -440,18 +403,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>Remove handler for the compute</p>
+              <h2 id="setup-setter-computes">Setup Setter Computes</h2>
+<p>Only a setter function is specified.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			off: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(updater)</span></span>{
-				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> readInfo.observed) {
-					<span class="hljs-keyword">var</span> ob = readInfo.observed[name];
-					ob.obj.unbind(ob.event, onchanged);
-				}
-			}
-		};
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_setupSetter: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue, setter, eventName</span>) </span>{
+			<span class="hljs-keyword">this</span>.value = initialValue;
+			<span class="hljs-keyword">this</span>._set = setter;
+			can.simpleExtend(<span class="hljs-keyword">this</span>, eventName);
+		},</pre></div></div>
             
         </li>
         
@@ -462,51 +423,18 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>Instead of calculating whether anything is listening every time,
-use a function to do nothing (which may be overwritten)</p>
+              <h2 id="setup-settings-computes">Setup settings computes</h2>
+<p>Use whatever <code>on</code>, <code>off</code>, <code>get</code>, <code>set</code> the users provided
+as the internal methods.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> k = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};
+            <div class="content"><div class='highlight'><pre>		_setupSettings: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue, settings</span>) </span>{
 
-	<span class="hljs-keyword">var</span> updater = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal, oldVal, batchNum)</span> </span>{
-		<span class="hljs-keyword">this</span>.setCached(newVal);
-		updateOnChange(<span class="hljs-keyword">this</span>, newVal, oldVal, batchNum);
-	},
+			<span class="hljs-keyword">this</span>.value = initialValue;
 
-	createAsyncAltUpdater = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context, oldUpdater)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-			oldUpdater(context._get(), context.value);
-		};
-	},
-
-	asyncGet = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(fn, context, lastSetValue)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">return</span> fn.call(context, lastSetValue.get());
-		};
-	},
-
-	asyncUpdater = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context, oldUpdater)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{
-			<span class="hljs-keyword">if</span>(newVal !== <span class="hljs-literal">undefined</span>) {
-				oldUpdater(newVal, context.value);
-			}
-		};
-	};
-
-	can.Compute = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(getterSetter, context, eventName, bindOnce)</span> </span>{
-		<span class="hljs-keyword">var</span> args = [];
-
-		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, arglen = <span class="hljs-built_in">arguments</span>.length; i &lt; arglen; i++) {
-			args[i] = <span class="hljs-built_in">arguments</span>[i];
-		}
-
-		<span class="hljs-keyword">var</span> contextType = <span class="hljs-keyword">typeof</span> args[<span class="hljs-number">1</span>];
-
-		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> args[<span class="hljs-number">0</span>] === <span class="hljs-string">'function'</span>) {
-			<span class="hljs-keyword">this</span>._setupGetterSetterFn(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>], args[<span class="hljs-number">3</span>]);
-		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (args[<span class="hljs-number">1</span>]) {
-			<span class="hljs-keyword">if</span> (contextType === <span class="hljs-string">'string'</span>) {</pre></div></div>
+			<span class="hljs-keyword">this</span>._set = settings.set || <span class="hljs-keyword">this</span>._set;
+			<span class="hljs-keyword">this</span>._get = settings.get || <span class="hljs-keyword">this</span>._get;</pre></div></div>
             
         </li>
         
@@ -517,12 +445,23 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p><code>can.compute(object, propertyName[, eventName])</code></p>
+              <p>This allows updater to be called without any arguments.
+selfUpdater flag can be set by things that want to call updater themselves.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._setupContextString(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>]);
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(contextType === <span class="hljs-string">'function'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!settings.__selfUpdater) {
+				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
+					oldUpdater = <span class="hljs-keyword">this</span>.updater;
+				<span class="hljs-keyword">this</span>.updater = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					oldUpdater.call(self, self._get(), self.value);
+				};
+			}
+
+
+			<span class="hljs-keyword">this</span>._on = settings.on ? settings.on : <span class="hljs-keyword">this</span>._on;
+			<span class="hljs-keyword">this</span>._off = settings.off ? settings.off : <span class="hljs-keyword">this</span>._off;
+		},</pre></div></div>
             
         </li>
         
@@ -533,12 +472,15 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p><code>can.compute(initialValue, setter)</code></p>
+              <h2 id="setup-async-computes">Setup async computes</h2>
+<p>This is a special, non-documented form of a compute
+rhat can asynchronously update its value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._setupContextFunction(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>], args[<span class="hljs-number">2</span>]);
-			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_setupAsyncCompute: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue, settings</span>)</span>{
+			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+			<span class="hljs-keyword">this</span>.value = initialValue;</pre></div></div>
             
         </li>
         
@@ -549,18 +491,11 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p><code>new can.Compute(initialValue, {})</code></p>
+              <p>This compute will call update with the new value itself.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(args[<span class="hljs-number">1</span>] &amp;&amp; args[<span class="hljs-number">1</span>].fn) {
-					<span class="hljs-keyword">this</span>._setupAsyncCompute(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>]);
-				} <span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">this</span>._setupContextSettings(args[<span class="hljs-number">0</span>], args[<span class="hljs-number">1</span>]);
-				}
-
-			}
-		} <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._setUpdates = <span class="hljs-literal">true</span>;</pre></div></div>
             
         </li>
         
@@ -571,20 +506,15 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p><code>can.compute(initialValue)</code></p>
+              <p>An “async” compute has a <code>lastSetValue</code> that represents
+the last value <code>compute.set</code> was called with.
+The following creates <code>lastSetValue</code> as a can.Compute so when
+ <code>lastSetValue</code> is changed, the <code>getter</code> can see that change
+and automatically update itself.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._setupInitialValue(args[<span class="hljs-number">0</span>]);
-		}
-
-		<span class="hljs-keyword">this</span>._args = args;
-
-		<span class="hljs-keyword">this</span>.isComputed = <span class="hljs-literal">true</span>;
-		can.cid(<span class="hljs-keyword">this</span>, <span class="hljs-string">'compute'</span>);
-	};
-
-	can.simpleExtend(can.Compute.prototype, {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.lastSetValue = <span class="hljs-keyword">new</span> can.Compute(initialValue);</pre></div></div>
             
         </li>
         
@@ -595,12 +525,18 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>TODO: verify “this” is the instance of a compute</p>
+              <p>Wires up setting this compute to set <code>lastSetValue</code>.
+If the new value matches the last setValue, do nothing.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{
+				<span class="hljs-keyword">if</span>(newVal === self.lastSetValue.get()) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
+				}
+
+				<span class="hljs-keyword">return</span> self.lastSetValue.set(newVal);
+			};</pre></div></div>
             
         </li>
         
@@ -611,13 +547,13 @@ use a function to do nothing (which may be overwritten)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Set up live-binding
-While binding, this should not count as a read</p>
+              <p>Wire up the get to pass the lastNewValue</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> oldReading = can.__clearReading();
-			<span class="hljs-keyword">this</span>._on(<span class="hljs-keyword">this</span>.updater);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> getter.call(settings.context, self.lastSetValue.get() );
+			};</pre></div></div>
             
         </li>
         
@@ -628,35 +564,17 @@ While binding, this should not count as a read</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Restore “Observed” for reading</p>
+              <p>This is the async getter function.  Depending on how many arguments the function takes,
+we setup bindings differently.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.__setReading(oldReading);
-		},
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> getter = settings.fn,
+				bindings;
 
-		_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">this</span>._off(<span class="hljs-keyword">this</span>.updater);
-			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">false</span>;
-		},
 
-		bind: can.bindAndSetup,
-		unbind: can.unbindAndTeardown,
 
-		clone: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context)</span> </span>{
-			<span class="hljs-keyword">if</span>(context &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>._args[<span class="hljs-number">0</span>] === <span class="hljs-string">'function'</span>) {
-				<span class="hljs-keyword">this</span>._args[<span class="hljs-number">1</span>] = context;
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(context) {
-				<span class="hljs-keyword">this</span>._args[<span class="hljs-number">2</span>] = context;
-			}
-
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-keyword">this</span>._args[<span class="hljs-number">0</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">1</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">2</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">3</span>]);
-		},
-
-		_on: k,
-		_off: k,
-
-		get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+			<span class="hljs-keyword">if</span>(getter.length === <span class="hljs-number">0</span>) {</pre></div></div>
             
         </li>
         
@@ -667,11 +585,12 @@ While binding, this should not count as a read</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Another compute may bind to this <code>computed</code></p>
+              <p>If it takes no arguments, it should behave just like a Getter compute.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(stack.length &amp;&amp; <span class="hljs-keyword">this</span>._canReadForChangeEvent !== <span class="hljs-literal">false</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				bindings = setupComputeHandlers(<span class="hljs-keyword">this</span>, getter, settings.context);
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(getter.length === <span class="hljs-number">1</span>) {</pre></div></div>
             
         </li>
         
@@ -682,13 +601,15 @@ While binding, this should not count as a read</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Tell the compute to listen to change on this computed
-Use <code>can.__reading</code> to allow other compute to listen
-for a change on this <code>computed</code></p>
+              <p>If it has a single argument, pass it the last setValue.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.__reading(<span class="hljs-keyword">this</span>, <span class="hljs-string">'change'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				bindings = setupComputeHandlers(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">return</span> getter.call(settings.context, self.lastSetValue.get() );
+				}, settings);
+
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -699,8 +620,251 @@ for a change on this <code>computed</code></p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>We are going to bind on this compute.
-If we are not bound, we should bind so that
+              <p>If the function takes 2 arguments, the second argument is a function
+that should update the value of the compute (<code>setValue</code>). To make this we need
+the “normal” updater function because we are about to overwrite it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> oldUpdater = <span class="hljs-keyword">this</span>.updater,
+					setValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>) </span>{
+						oldUpdater.call(self, newVal, self.value);
+					};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Because <code>setupComputeHandlers</code> calls <code>updater</code> internally with its
+readInfo.value as <code>oldValue</code> and that might not be up to date,
+we overwrite updater to always use self.value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.updater = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>) </span>{
+					oldUpdater.call(self, newVal, self.value);
+				};
+
+
+				bindings = setupComputeHandlers(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Call getter, and get new value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> res = getter.call(settings.context, self.lastSetValue.get(), setValue);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>If undefined is returned, don’t update the value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> res !== <span class="hljs-literal">undefined</span> ? res : <span class="hljs-keyword">this</span>.value;
+				}, <span class="hljs-keyword">this</span>);
+			}
+
+			can.simpleExtend(<span class="hljs-keyword">this</span>, bindings);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <h2 id="setup-simple-value-computes">Setup simple value computes</h2>
+<p>Uses the default <code>_get</code>, <code>_set</code> behaviors.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		_setupSimpleValue: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue</span>) </span>{
+			<span class="hljs-keyword">this</span>.value = initialValue;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <h2 id="_bindsetup">_bindsetup</h2>
+<p>When a compute is first bound, call the internal <code>this._on</code> method.
+<code>can.__notObserve</code> makes sure if <code>_on</code> is listening to any observables,
+they will not be observed by any outer compute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		_bindsetup: can.__notObserve(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">true</span>;
+			<span class="hljs-keyword">this</span>._on(<span class="hljs-keyword">this</span>.updater);
+		}),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <h2 id="_bindteardown">_bindteardown</h2>
+<p>When a compute has no other bindings, call the internal <code>this._off</code> method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">this</span>._off(<span class="hljs-keyword">this</span>.updater);
+			<span class="hljs-keyword">this</span>.bound = <span class="hljs-literal">false</span>;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <h2 id="bind-and-unbind">bind and unbind</h2>
+<p>A bind and unbind that calls <code>_bindsetup</code> and <code>_bindteardown</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		bind: can.bindAndSetup,
+		<span class="hljs-attr">unbind</span>: can.unbindAndTeardown,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <h2 id="clone">clone</h2>
+<p>Copies this compute, but for a different context.
+This is mostly used for computes on a map’s prototype.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		clone: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+			<span class="hljs-keyword">if</span>(context &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>._args[<span class="hljs-number">0</span>] === <span class="hljs-string">'function'</span>) {
+				<span class="hljs-keyword">this</span>._args[<span class="hljs-number">1</span>] = context;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(context) {
+				<span class="hljs-keyword">this</span>._args[<span class="hljs-number">2</span>] = context;
+			}
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-keyword">this</span>._args[<span class="hljs-number">0</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">1</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">2</span>], <span class="hljs-keyword">this</span>._args[<span class="hljs-number">3</span>]);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <h2 id="_on-and-_off">_on and _off</h2>
+<p>Default _on and _off do nothing.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		_on: can.k,
+		<span class="hljs-attr">_off</span>: can.k,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <h2 id="get">get</h2>
+<p>Returns the cached value if <code>bound</code>, otherwise, returns
+the _get value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		get: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+			<span class="hljs-keyword">var</span> recordingObservation = can.__isRecordingObserves();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>If an external compute is tracking observables and
+this compute can be listened to by “function” based computes ….</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(recordingObservation &amp;&amp; <span class="hljs-keyword">this</span>._canObserve !== <span class="hljs-literal">false</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>… tell the tracking compute to listen to change on this computed.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.__observe(<span class="hljs-keyword">this</span>, <span class="hljs-string">'change'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>… if we are not bound, we should bind so that
 we don’t have to re-read to get the value of this compute.</p>
 
             </div>
@@ -713,52 +877,72 @@ we don’t have to re-read to get the value of this compute.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>If computed is bound, use the cached value</p>
+              <p>If computed is bound, use the cached value.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.bound) {
+				<span class="hljs-keyword">if</span>(recordingObservation &amp;&amp; <span class="hljs-keyword">this</span>.getDepth &amp;&amp; <span class="hljs-keyword">this</span>.getDepth() &gt;= recordingObservation.getDepth()) {
+					ObservedInfo.updateUntil(<span class="hljs-keyword">this</span>.getPrimaryDepth(), <span class="hljs-keyword">this</span>.getDepth());
+				}
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._get();
 			}
-		},
-
-		_get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
-		},
-
-		set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{</pre></div></div>
+		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-30">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>Save a reference to the old value</p>
+              <h2 id="_get">_get</h2>
+<p>Returns the cached value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> old = <span class="hljs-keyword">this</span>.value;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_get: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
+		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-31">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <h2 id="set">set</h2>
+<p>Sets the value of the compute.
+Depending on the type of the compute and what <code>_set</code> returns, it might need to call <code>_get</code> after
+<code>_set</code> to get the final value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		set: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>) </span>{
+
+			<span class="hljs-keyword">var</span> old = <span class="hljs-keyword">this</span>.value;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Setter may return the value if setter
 is for a value maintained exclusively by this compute.</p>
@@ -770,48 +954,46 @@ is for a value maintained exclusively by this compute.</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
-              <p>If the computed function has dependencies,
-return the current value</p>
+              <p>If the setter updated this.value, just return that.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hasDependencies) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._setUpdates) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
+			}</pre></div></div>
             
         </li>
         
         
-        <li id="section-33">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <p>If set can update the value,
-just return the updated value.</p>
+              <p>If the computed function has dependencies,
+we should call the getter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._setUpdates) {
-					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
-				}
-				
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.hasDependencies) {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._get();
 			}</pre></div></div>
             
         </li>
         
         
-        <li id="section-34">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>Setting may not fire a change event, in which case
 the value must be read</p>
@@ -827,11 +1009,11 @@ the value must be read</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Fire the change</p>
 
@@ -839,339 +1021,7 @@ the value must be read</p>
             
             <div class="content"><div class='highlight'><pre>			updateOnChange(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.value, old);
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
-		},
-
-		_set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value = newVal;
-		},
-
-		setCached: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{
-			<span class="hljs-keyword">this</span>.value = newVal;
-		},
-
-		updater: updater,
-
-		_computeFn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{
-			<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
-				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.set(newVal);
-			}
-
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get();
-		},
-
-		toFunction: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">return</span> can.proxy(<span class="hljs-keyword">this</span>._computeFn, <span class="hljs-keyword">this</span>);
-		},
-
-		_setupGetterSetterFn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(getterSetter, context, eventName, bindOnce)</span> </span>{
-			<span class="hljs-keyword">this</span>._set = can.proxy(getterSetter, context);
-			<span class="hljs-keyword">this</span>._get = can.proxy(getterSetter, context);
-			<span class="hljs-keyword">this</span>._canReadForChangeEvent = eventName === <span class="hljs-literal">false</span> ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;
-
-			<span class="hljs-keyword">this</span>._getterSetter = getterSetter;
-			<span class="hljs-keyword">this</span>._context = context;
-
-			<span class="hljs-keyword">var</span> handlers;
-			<span class="hljs-keyword">if</span>(bindOnce) {
-				handlers = setupSingleBindComputeHandlers(<span class="hljs-keyword">this</span>, getterSetter, context || <span class="hljs-keyword">this</span>);
-				<span class="hljs-keyword">this</span>._on = handlers.on;
-				<span class="hljs-keyword">this</span>._off = handlers.off;
-			}
-			<span class="hljs-keyword">else</span> {
-				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-				<span class="hljs-keyword">this</span>.onchanged = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev)</span> </span>{
-					<span class="hljs-keyword">if</span> (self.bound &amp;&amp; self.readInfo.ready &amp;&amp; (ev.batchNum === <span class="hljs-literal">undefined</span> || ev.batchNum !== self.batchNum)) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>Keep the old value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> oldValue = self.readInfo.value;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>Get the new value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p>Call the updater with old and new values</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						self.updater(self.readInfo.value, oldValue, ev.batchNum);
-						self.batchNum = ev.batchNum;
-					}
-				};
-				<span class="hljs-keyword">this</span>._on = setupComputeHandlersOn;
-				<span class="hljs-keyword">this</span>._off = setupComputeHandlersOff;
-			}
-		},
-
-		_setupContextString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(target, propertyName, eventName)</span> </span>{
-			<span class="hljs-keyword">var</span> isObserve = target <span class="hljs-keyword">instanceof</span> can.Map,
-			handler;
-			<span class="hljs-keyword">this</span>.updater = can.proxy(<span class="hljs-keyword">this</span>.updater, <span class="hljs-keyword">this</span>);
-
-			<span class="hljs-keyword">if</span>(isObserve) {
-				<span class="hljs-keyword">this</span>.hasDependencies = <span class="hljs-literal">true</span>;
-				<span class="hljs-keyword">this</span>._get = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-					<span class="hljs-keyword">return</span> target.attr(propertyName);
-				};
-				<span class="hljs-keyword">this</span>._set = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span> </span>{
-					target.attr(propertyName, val);
-				};
-				<span class="hljs-keyword">this</span>._on = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(update)</span> </span>{
-					handler = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ev, newVal,oldVal)</span> </span>{
-						update(newVal, oldVal, ev.batchNum);
-					};
-
-					target.bind(eventName || propertyName, handler);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>Set the cached value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.value = can.__read(<span class="hljs-keyword">this</span>._get).value;
-				};
-				<span class="hljs-keyword">this</span>._off = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-					<span class="hljs-keyword">return</span> target.unbind(eventName || propertyName, handler);
-				};
-			} <span class="hljs-keyword">else</span> {
-				<span class="hljs-keyword">this</span>._get = can.proxy(<span class="hljs-keyword">this</span>._get, target);
-				<span class="hljs-keyword">this</span>._set = can.proxy(<span class="hljs-keyword">this</span>._set, target);
-			}
-		},
-
-		_setupContextFunction: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue, setter, eventName)</span> </span>{
-			<span class="hljs-keyword">this</span>.value = initialValue;
-			<span class="hljs-keyword">this</span>._set = setter;
-			can.simpleExtend(<span class="hljs-keyword">this</span>, eventName);
-		},
-
-		_setupContextSettings: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue, settings)</span> </span>{
-			
-			<span class="hljs-keyword">this</span>.value = initialValue;
-			<span class="hljs-keyword">var</span> oldUpdater = can.proxy(<span class="hljs-keyword">this</span>.updater, <span class="hljs-keyword">this</span>);
-			
-			<span class="hljs-keyword">this</span>._set = settings.set ? can.proxy(settings.set, settings) : <span class="hljs-keyword">this</span>._set;
-			<span class="hljs-keyword">this</span>._get = settings.get ? can.proxy(settings.get, settings) : <span class="hljs-keyword">this</span>._get;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>This is a “hack” to allow async computes.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.updater = createAsyncAltUpdater(<span class="hljs-keyword">this</span>, oldUpdater);
-			
-			<span class="hljs-keyword">this</span>._on = settings.on ? settings.on : <span class="hljs-keyword">this</span>._on;
-			<span class="hljs-keyword">this</span>._off = settings.off ? settings.off : <span class="hljs-keyword">this</span>._off;
-		},
-		_setupAsyncCompute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue, settings)</span></span>{
-			
-			<span class="hljs-keyword">this</span>.value = initialValue;
-			
-			<span class="hljs-keyword">var</span> oldUpdater = can.proxy(<span class="hljs-keyword">this</span>.updater, <span class="hljs-keyword">this</span>),
-				self = <span class="hljs-keyword">this</span>,
-				fn = settings.fn,
-				data;
-			
-			<span class="hljs-keyword">this</span>.updater = oldUpdater;
-			
-			<span class="hljs-keyword">var</span> lastSetValue = <span class="hljs-keyword">new</span> can.Compute(initialValue);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>expose this compute so it can be read</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.lastSetValue = lastSetValue;
-			<span class="hljs-keyword">this</span>._setUpdates = <span class="hljs-literal">true</span>;
-			<span class="hljs-keyword">this</span>._set = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span></span>{
-				<span class="hljs-keyword">if</span>(newVal === lastSetValue.get()) {
-					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value;
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>this is the value passed to the fn</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				lastSetValue.set(newVal);
-			};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p>make sure get is called with the newVal, but not setter</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._get = asyncGet(fn, settings.context, lastSetValue);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>Check the number of arguments the 
-async function takes.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(fn.length === <span class="hljs-number">0</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
-              <p>if it takes no arguments, it is calculated from other things.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				data = setupComputeHandlers(<span class="hljs-keyword">this</span>, fn, settings.context);
-			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fn.length === <span class="hljs-number">1</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <p>If it has a single argument, pass it the current value
-or the value from define.set.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				data = setupComputeHandlers(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
-					<span class="hljs-keyword">return</span> fn.call(settings.context, lastSetValue.get() );
-				}, settings);
-			} <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>The updater function passed to on so that if called with
-a single, non undefined value, works.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.updater = asyncUpdater(<span class="hljs-keyword">this</span>, oldUpdater);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>Finally, pass the function so it can decide the final value.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				data = setupComputeHandlers(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              <p>Call fn, and get new value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> res = fn.call(settings.context, lastSetValue.get(), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newVal)</span> </span>{
-						oldUpdater(newVal, self.value);
-					});</pre></div></div>
+		},</pre></div></div>
             
         </li>
         
@@ -1182,21 +1032,14 @@ a single, non undefined value, works.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p>If undefined is returned, don’t update the value.</p>
+              <h2 id="_set">_set</h2>
+<p>Updates the cached value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> res !== <span class="hljs-literal">undefined</span> ? res : <span class="hljs-keyword">this</span>.value;
-				}, settings);
-			}
-
-			<span class="hljs-keyword">this</span>._on = data.on;
-			<span class="hljs-keyword">this</span>._off = data.off;
-		},
-		_setupInitialValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue)</span> </span>{
-			<span class="hljs-keyword">this</span>.value = initialValue;
-		}
-	});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		_set: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.value = newVal;
+		},</pre></div></div>
             
         </li>
         
@@ -1207,16 +1050,15 @@ a single, non undefined value, works.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
-              <p>A list of temporarily bound computes</p>
+              <h2 id="updater">updater</h2>
+<p>Updates the cached value and fires an event if the value has changed.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> computes, unbindComputes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = computes.length; i &lt; len; i++) {
-			computes[i].unbind(<span class="hljs-string">'change'</span>, k);
-		}
-		computes = <span class="hljs-literal">null</span>;
-	};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		updater: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal, oldVal, batchNum</span>) </span>{
+			<span class="hljs-keyword">this</span>.value = newVal;
+			updateOnChange(<span class="hljs-keyword">this</span>, newVal, oldVal, batchNum);
+		},</pre></div></div>
             
         </li>
         
@@ -1227,38 +1069,275 @@ a single, non undefined value, works.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
-              <p>Binds computes for a moment to retain their value and prevent caching</p>
+              <h2 id="tofunction">toFunction</h2>
+<p>Returns a proxy form of this compute.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.Compute.temporarilyBind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(compute)</span> </span>{
-		compute.bind(<span class="hljs-string">'change'</span>, k);
+            <div class="content"><div class='highlight'><pre>		toFunction: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">return</span> can.proxy(<span class="hljs-keyword">this</span>._computeFn, <span class="hljs-keyword">this</span>);
+		},
+		<span class="hljs-attr">_computeFn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>) </span>{
+			<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.set(newVal);
+			}
+
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get();
+		}
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <h2 id="helpers">Helpers</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <h2 id="updateonchange">updateOnChange</h2>
+<p>A helper to trigger an event when a value changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> updateOnChange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compute, newValue, oldValue, batchNum</span>)</span>{
+
+		<span class="hljs-keyword">var</span> valueChanged = newValue !== oldValue &amp;&amp; !(newValue !== newValue &amp;&amp; oldValue !== oldValue);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>Only trigger event when value has changed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (valueChanged) {
+			can.batch.trigger(compute, {<span class="hljs-attr">type</span>: <span class="hljs-string">"change"</span>, <span class="hljs-attr">batchNum</span>: batchNum}, [
+				newValue,
+				oldValue
+			]);
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <h3 id="setupcomputehandlers">setupComputeHandlers</h3>
+<p>A helper that creates an <code>_on</code> and <code>_off</code> function that
+will bind on source observables and update the value of the compute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setupComputeHandlers = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compute, func, context</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>The last observeInfo object returned by getValueAndBind.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> readInfo = <span class="hljs-keyword">new</span> ObservedInfo(func, context, compute);
+
+		<span class="hljs-keyword">return</span> {
+			<span class="hljs-attr">readInfo</span>: readInfo,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>Call <code>onchanged</code> when any source observables change.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			_on: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				readInfo.getValueAndBind();
+				compute.value = readInfo.value;
+				compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
+			},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>Unbind <code>onchanged</code> from all source observables.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			_off: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				readInfo.teardown();
+			},
+			<span class="hljs-attr">getDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> readInfo.getDepth();
+			},
+			<span class="hljs-attr">getPrimaryDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> readInfo.getPrimaryDepth();
+			}
+		};
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <h3 id="temporarilybind">temporarilyBind</h3>
+<p>Binds computes for a moment to cache their value and prevent re-calculating it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.Compute.temporarilyBind = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">compute</span>) </span>{
+		<span class="hljs-keyword">var</span> computeInstance = compute.computeInstance || compute;
+		computeInstance.bind(<span class="hljs-string">'change'</span>, can.k);
 		<span class="hljs-keyword">if</span> (!computes) {
 			computes = [];
 			setTimeout(unbindComputes, <span class="hljs-number">10</span>);
 		}
-		computes.push(compute);
-	};
+		computes.push(computeInstance);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>A list of temporarily bound computes</p>
 
-	can.Compute.async = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(initialValue, asyncComputer, context)</span></span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> computes,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>Unbinds all temporarily bound computes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		unbindComputes = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = computes.length; i &lt; len; i++) {
+				computes[i].unbind(<span class="hljs-string">'change'</span>, can.k);
+			}
+			computes = <span class="hljs-literal">null</span>;
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <h3 id="async">async</h3>
+<p>A simple helper that makes an async compute a bit easier.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.Compute.async = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">initialValue, asyncComputer, context</span>)</span>{
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.Compute(initialValue, {
-			fn: asyncComputer,
-			context: context
+			<span class="hljs-attr">fn</span>: asyncComputer,
+			<span class="hljs-attr">context</span>: context
 		});
-	};
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <h3 id="truthy">truthy</h3>
+<p>Wraps a compute with another compute that only changes when
+the wrapped compute’s <code>truthiness</code> changes.</p>
 
-	can.Compute.read = read;
-	can.Compute.set = read.write;
-	
-	can.Compute.truthy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(compute)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.Compute.truthy = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compute</span>) </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> res = compute.get();
 			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> res === <span class="hljs-string">'function'</span>) {
 				res = res.get();
 			}
 			<span class="hljs-keyword">return</span> !!res;
 		});
-	};
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <h3 id="compatability">compatability</h3>
+<p>Setting methods that should not be around in 3.0.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.Compute.read = read;
+	can.Compute.set = read.write;
 
 	<span class="hljs-keyword">return</span> can.Compute;
 });</pre></div></div>

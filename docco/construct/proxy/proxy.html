@@ -30,11 +30,11 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Construct)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/construct'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, Construct</span>) </span>{
 	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
 		isArray = can.isArray,
 		makeArray = can.makeArray,
-		proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcs)</span> </span>{</pre></div></div>
+		proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">funcs</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -114,7 +114,7 @@
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; funcs.length; i++) {
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> funcs[i] === <span class="hljs-string">"string"</span> &amp;&amp; !isFunction(<span class="hljs-keyword">this</span>[funcs[i]])) {
-					<span class="hljs-keyword">throw</span> (<span class="hljs-string">"class.js "</span> + (<span class="hljs-keyword">this</span>.fullName || <span class="hljs-keyword">this</span>.Class.fullName) + <span class="hljs-string">" does not have a "</span> + funcs[i] + <span class="hljs-string">"method!"</span>);
+					<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"class.js "</span> + (<span class="hljs-keyword">this</span>.fullName || <span class="hljs-keyword">this</span>.Class.fullName) + <span class="hljs-string">" does not have a "</span> + funcs[i] + <span class="hljs-string">"method!"</span>);
 				}
 			}</pre></div></div>
             
@@ -132,7 +132,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">class_cb</span><span class="hljs-params">()</span> </span>{</pre></div></div>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">class_cb</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         

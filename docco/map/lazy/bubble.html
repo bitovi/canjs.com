@@ -56,13 +56,13 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map/bubble.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map/bubble.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>) </span>{
 	<span class="hljs-keyword">var</span> bubble = can.bubble;
 
 	<span class="hljs-keyword">return</span> can.extend({}, bubble, {
-		childrenOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentMap, eventName)</span> </span>{
+		<span class="hljs-attr">childrenOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parentMap, eventName</span>) </span>{
 			<span class="hljs-keyword">if</span>(parentMap._nestedReference) {
-				parentMap._nestedReference.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child, ref)</span> </span>{
+				parentMap._nestedReference.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">child, ref</span>) </span>{
 					<span class="hljs-keyword">if</span> (child &amp;&amp; child.bind) {
 						bubble.toParent(child, parentMap, ref(), eventName);
 					}

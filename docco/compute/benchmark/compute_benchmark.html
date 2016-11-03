@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>compute_benchmark.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>compute_benchmark.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/compute'</span>,
+	<span class="hljs-string">'can/compute/proto_compute.js'</span>,
+	<span class="hljs-string">'steal-benchmark'</span>,
+	<span class="hljs-string">'can/map'</span>,
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, Compute, b</span>) </span>{
+	<span class="hljs-comment">/* jshint ignore:start */</span>
+	
+	
+	b.suite(<span class="hljs-string">"can/compute"</span>)
+	
+	.add(<span class="hljs-string">"compute that reads two props"</span>,
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			can.batch.start();
+			num++;
+			person.attr({
+				<span class="hljs-attr">first</span>: <span class="hljs-string">"Bob"</span>+num,
+				<span class="hljs-attr">last</span>: <span class="hljs-string">"Marley"</span>+num
+			});
+        	can.batch.stop();
+		},{
+			<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">var</span> person = <span class="hljs-keyword">new</span> can.Map({
+					<span class="hljs-attr">first</span>: <span class="hljs-string">'Bob'</span>,
+					<span class="hljs-attr">last</span>: <span class="hljs-string">'Marley'</span>
+				});
+				<span class="hljs-keyword">var</span> c = <span class="hljs-keyword">new</span> can.Compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">return</span> person.attr(<span class="hljs-string">'first'</span>) + person.attr(<span class="hljs-string">'last'</span>);
+				});
+				c.bind(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{});
+				<span class="hljs-keyword">var</span> num = <span class="hljs-number">0</span>;
+			}
+		});
+
+	<span class="hljs-comment">/*
+	module('can.compute');
+	test('create/bind/read', function() {
+		expect(0);
+
+		benchmarks.add(
+		"can.compute create/bind/read",
+		function () {},
+		function () {
+			var c = can.compute(0);
+			c.bind('change', function() {});
+			c(1);
+			c();
+		},
+		function () {});
+	});
+
+	test('create/bind/read with multiple attributes', function() {
+		expect(0);
+
+		benchmarks.add(
+		"can.compute create/bind/read with multiple attributes",
+		function () {
+			var person = new can.Map({
+				first: 'Bob',
+				last: 'Marley'
+			});
+		},
+		function () {
+			var c = can.compute(function() {
+				return person.attr('first') + person.attr('last');
+			});
+			c.bind('change', function() {});
+			c();
+		},
+		function () {});
+	});
+
+	module('can.Compute');
+	test('create/bind/read', function() {
+		expect(0);
+
+		benchmarks.add(
+		"can.Compute create/bind/read",
+		function () {},
+		function () {
+			var c = new can.Compute(0);
+			c.bind('change', function() {});
+
+			c.set(1);
+			c.get();
+		},
+		function () {});
+	});
+
+	test('create/bind/read with multiple attributes', function() {
+		expect(0);
+
+		benchmarks.add(
+		"can.Compute create/bind/read with multiple attributes",
+		function () {
+			var person = new can.Map({
+				first: 'Bob',
+				last: 'Marley'
+			});
+		},
+		function () {
+			var c = new can.Compute(function() {
+				return person.attr('first') + person.attr('last');
+			});
+			c.bind('change', function() {});
+			c.get();
+		},
+		function () {});
+	});*/</span>
+	<span class="hljs-comment">/* jshint ignore:end */</span>
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

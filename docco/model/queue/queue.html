@@ -30,8 +30,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/map/backup'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-	<span class="hljs-keyword">var</span> cleanAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(changedAttrs, attrs)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/model'</span>, <span class="hljs-string">'can/map/backup'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
+	<span class="hljs-keyword">var</span> cleanAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">changedAttrs, attrs</span>) </span>{
 		<span class="hljs-keyword">var</span> newAttrs = can.extend(<span class="hljs-literal">true</span>, {}, attrs),
 			current, path;
 		<span class="hljs-keyword">if</span> (changedAttrs) {</pre></div></div>
@@ -63,7 +63,7 @@ request batch</p>
 			}
 		}
 		<span class="hljs-keyword">return</span> newAttrs;
-	}, queueRequests = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error, method, callback)</span> </span>{
+	}, queueRequests = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">success, error, method, callback</span>) </span>{
 			<span class="hljs-keyword">this</span>._changedAttrs = <span class="hljs-keyword">this</span>._changedAttrs || [];
 			<span class="hljs-keyword">var</span> def = <span class="hljs-keyword">new</span> can.Deferred(),
 				self = <span class="hljs-keyword">this</span>,
@@ -71,7 +71,7 @@ request batch</p>
 				queue = <span class="hljs-keyword">this</span>._requestQueue,
 				changedAttrs = <span class="hljs-keyword">this</span>._changedAttrs,
 				reqFn, index;
-			reqFn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(self, type, success, error)</span> </span>{</pre></div></div>
+			reqFn = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">self, type, success, error</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -86,7 +86,7 @@ request batch</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -108,7 +108,7 @@ when request is ran</p>
 						attrs
 					], type || (self.isNew() ? <span class="hljs-string">'create'</span> : <span class="hljs-string">'update'</span>), success, error, callback);
 				};
-			}(<span class="hljs-keyword">this</span>, method, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+			}(<span class="hljs-keyword">this</span>, method, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -174,7 +174,7 @@ can access it’s <code>abort</code> function</p>
             
             <div class="content"><div class='highlight'><pre>					changedAttrs.splice(<span class="hljs-number">0</span>);
 				}
-			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -270,7 +270,7 @@ can access it’s <code>abort</code> function</p>
             
             <div class="content"><div class='highlight'><pre>				queue[<span class="hljs-number">0</span>] = queue[<span class="hljs-number">0</span>]();
 			}
-			def.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			def.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> abort;</pre></div></div>
             
         </li>
@@ -348,9 +348,9 @@ error functions</p>
 		<span class="hljs-string">'created'</span>,
 		<span class="hljs-string">'updated'</span>,
 		<span class="hljs-string">'destroyed'</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn)</span> </span>{
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fn</span>) </span>{
 		<span class="hljs-keyword">var</span> prototypeFn = can.Model.prototype[fn];
-		can.Model.prototype[fn] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{
+		can.Model.prototype[fn] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{
 			<span class="hljs-keyword">if</span> (attrs &amp;&amp; <span class="hljs-keyword">typeof</span> attrs === <span class="hljs-string">'object'</span>) {
 				attrs = attrs.attr ? attrs.attr() : attrs;</pre></div></div>
             
@@ -390,11 +390,11 @@ if API returns error</p>
 		};
 	});
 	can.extend(can.Model.prototype, {
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			setupFn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			<span class="hljs-keyword">this</span>._requestQueue = <span class="hljs-keyword">new</span> can.List();
 		},
-		_triggerChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, how, newVal, oldVal)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">_triggerChange</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, how, newVal, oldVal</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -414,13 +414,13 @@ if API returns error</p>
 			}
 			_triggerChange.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		hasQueuedRequests: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">hasQueuedRequests</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._requestQueue.attr(<span class="hljs-string">'length'</span>) &gt; <span class="hljs-number">1</span>;
 		},
-		save: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">save</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> queueRequests.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{
+		<span class="hljs-attr">destroy</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">success, error</span>) </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isNew()) {</pre></div></div>
             
         </li>

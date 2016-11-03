@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li class='active'><a href='index.html'>guides</a></li>
 		       <li><a href='../docs/index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -415,20 +412,70 @@ can.Map, but observables are useful on their own too.</p>
 <p>To create a Map, call <code>new can.Map(obj)</code>. This will give you a map
 with the same properties and values as <em>obj</em>. To create a List, call <code>new can.List(array)</code>. This will give you a List with the same elements as
 <em>array</em>.</p>
+<pre><code class="language-js">var pagination = new can.Map({page: 1, perPage: 25, count: 1388});
+pagination.attr('perPage'); // 25
+
+var hobbies = new can.List(['programming', 'bball', 'party rocking']);
+hobbies.attr(2); // 'partying'
+</code></pre>
 <h2>Manipulating properties</h2>
 <p>The <a href="../docs/can.Map.prototype.attr.html">attr</a> method is
 used to read and write a property or properties from a Map or List.</p>
+<pre><code class="language-js">pagination.attr('perPage');     // 25
+pagination.attr('perPage', 50);
+pagination.attr('perPage');     // 50
+
+pagination.attr({page: 10, lastVisited: 1});
+pagination.attr(); // {page: 10, perPage: 50, count: 1388, lastVisited: 1}
+</code></pre>
 <p>Properties can be removed from Observes with <code>removeAttr</code>, which is equivalent
 to the <code>delete</code> keyword:</p>
+<pre><code class="language-js">pagination.removeAttr('count');
+pagination.attr(); // {page: 10, perPage: 50, lastVisited: 1}
+</code></pre>
 <h2>Listening to events</h2>
 <p>When a property on a Map is changed with <code>attr</code>, the Map will emit two
 events: A <em>change</em> event and an event with the same name as the property that
 was changed. You can listen for these events by using
 <a href="../docs/can.Map.prototype.bind.html">bind</a>:</p>
+<pre><code class="language-js">paginate.bind('change', function(event, attr, how, newVal, oldVal) {
+    attr;   // 'perPage'
+    how;    // 'set'
+    newVal; // 30
+    oldVal; // 50
+});
+paginate.bind('perPage', function(event, newVal, oldVal) {
+    newVal; // 30
+    oldVal; // 50
+});
+
+paginate.attr('perPage', 30);
+</code></pre>
 <p>You can similarly stop listening to these events by using
 <a href="../docs/can.Map.prototype.unbind.html">unbind</a>:</p>
+<pre><code class="language-js">var timesChanged = 0,
+    changeHandler = function() { timesChanged++; },
+    obs = new can.Map({value: 10});
+
+obs.bind('change', changeHandler);
+obs.attr('value', 20);
+timesChanged; // 1
+
+obs.unbind('change', changeHandler);
+obs.attr('value', 30);
+timesChanged; // 1
+</code></pre>
 <h2>Iterating though a Map</h2>
 <p>If you want to iterate through the properties on a Map, use <code>each</code>:</p>
+<pre><code class="language-js">paginate.each(function(val, key) {
+    console.log(key + ': ' + val);
+});
+
+// The console shows:
+// page: 10
+// perPage: 30
+// lastVisited: 1
+</code></pre>
 <h2>Extending a Map</h2>
 <p>Extending a can.Map (or can.List) lets you create custom observable
 types. The following extends can.Map to create a Paginate type that
@@ -482,20 +529,84 @@ that can be read, set, and listened to just like a Map.</p>
 <h3>Static Computes</h3>
 <p>A simple static Compute contains a single value, and is created by calling
 <code>can.compute(value)</code>. This value can be read, set, and listened to:</p>
+<pre><code class="language-js">// create a Compute
+var age = can.compute(25),
+    previousAge = 0;
+
+// read the Compute's value
+age(); // 25
+
+// listen for changes in the Compute's value
+age.bind('change', function(ev, newVal, oldVal) {
+    previousAge = oldVal;
+});
+
+// set the Compute's value
+age(26);
+
+age();       // 26
+previousAge; // 25
+</code></pre>
 <h3>Composite Computes</h3>
 <p>Computes can also be used to generate a unique value based on values derived
 from other observable properties. This type of compute is created by calling
 <code>can.compute(getterFunction)</code>. When the observable properties that the compute is
 derived from change, the value of the compute changes:</p>
+<pre><code class="language-js">var name = new can.Map({
+    first: 'Alice',
+    last: 'Liddell'
+});
+var fullName = can.compute(function() {
+    // We use attr to read the values
+    // so the compute knows what to listen to.
+    return name.attr('first') + ' ' + name.attr('last');
+});
+var previousName = '';
+
+fullName();   // 'Alice Liddell'
+
+fullName.bind('change', function(ev, newVal, oldVal) {
+    previousName = oldVal;
+});
+
+name.attr({
+    first: 'Allison',
+    last: 'Wonderland'
+});
+
+fullname();   // 'Allison Wonderland'
+previousName; // 'Alice Liddell'
+</code></pre>
 <p>Since the value of the Compute is cached any time a derived value is
 changed, reading the value is fast.</p>
 <h3>Converted Computes</h3>
 <p>Computes are also useful for creating links to properties within Observes. One
 of the most frequent examples of this is when converting from one unit to
 another.</p>
+<pre><code class="language-js">// progress ranges from 0 to 1.
+var project = new can.Map({ progress: 0.3 });
+var progressPercentage = can.compute(function(newVal) {
+    if(newVal !== undefined) {
+        // set a value
+        project.attr('progress', newVal / 100);
+    } else {
+        // get the value
+        return project.attr('progress') * 100;
+    }
+});
+
+percentage();     // 30
+
+// Setting percentage...
+percentage(75);
+// ...updates project.progress!
+project.attr('progress'); // .75
+</code></pre>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -511,7 +622,7 @@ another.</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -522,11 +633,8 @@ another.</p>
 	            </li>
 		        <li class='active'><a href='index.html'>guides</a></li>
 		        <li><a href='../docs/index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -536,7 +644,7 @@ another.</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -544,19 +652,19 @@ another.</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Observables","src":"guides/observables.md","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
+		var docObject = {"type":"page","name":"Observables","src":"guides/observables.md","description":"","title":"Observables","parent":"Tutorial","order":1,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -565,13 +673,13 @@ another.</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

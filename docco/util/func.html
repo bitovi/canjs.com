@@ -69,11 +69,6 @@
               </a>
             
               
-              <a class="source" href="test.html">
-                test.js
-              </a>
-            
-              
               <a class="source" href="util.html">
                 util.js
               </a>
@@ -102,7 +97,41 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+@description Check if an object is a Promise.
+@function can.isPromise
+@parent can.util
+@signature `can.isPromise(subject)`
+@param {*} subject The object to check.
+@return {Boolean} Whether __subject__ is a Promise.
+
+@body
+`can.isPromise` returns if an object has the methods expected of a Promise object.
+
+## Example
+Convert any value to a Promise:
+
+	function convertPromise(prm) {
+		return can.isPromise(prm) 
+			? prm 
+			: new Promise(function(resolve) { resolve(prm) });
+	}
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
 @description Check if an object is a Deferred.
+@deprecated {2.3.16} This method has been replaced by [can.isPromise].
 @function can.isDeferred
 @parent can.util
 @signature `can.isDeferred(subject)`
@@ -123,11 +152,11 @@ Convert any value to a Deferred:
         </li>
         
         
-        <li id="section-2">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               
             </div>
@@ -151,11 +180,11 @@ of the string, then they will be persisted.
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               
             </div>
@@ -177,11 +206,11 @@ of the string, then they will be persisted.
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               
             </div>
@@ -195,7 +224,7 @@ of the string, then they will be persisted.
 @return {Boolean} Whether __obj__ is an Array.
 
 @body
-`can.isArray(object)` returns if the object is an explicitly an Array. If `can.isArray` 
+`can.isArray(object)` returns if the object is an explicitly an Array. If `can.isArray`
 is passed an array-like object, it will return `false`.
 
     can.isArray([]);    // true
@@ -209,11 +238,11 @@ is passed an array-like object, it will return `false`.
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               
             </div>
@@ -238,11 +267,11 @@ like [http://api.jquery.com/jQuery.each/ jQuery.each].
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>function called with
 index=0 value={prop: “val1”}
@@ -257,11 +286,11 @@ index=1 value={prop: “val2”}</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               
             </div>
@@ -270,7 +299,8 @@ index=1 value={prop: “val2”}</p>
 @description Merge objects together.
 @function can.extend
 @parent can.util
-@signature `can.extend(target, ...obj)`
+@signature `can.extend([deep], target, ...obj)`
+@param {Boolean} [deep] If true, the merge becomes recursive (aka. deep copy).
 @param {Object} target The object to merge properties into.
 @param {Object} obj Objects containing properties to merge.
 @return {Object} __target__, post-merge.
@@ -293,11 +323,11 @@ similarly to [http://api.jquery.com/jQuery.extend/ jQuery.extend].
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               
             </div>
@@ -320,11 +350,11 @@ like [http://api.jquery.com/jQuery.param/ jQuery.param].
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               
             </div>
@@ -352,11 +382,11 @@ can.depararm will take any string and convert it into an Object literal that rep
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               
             </div>
@@ -380,11 +410,11 @@ can.depararm will take any string and convert it into an Object literal that rep
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               
             </div>
@@ -413,11 +443,11 @@ called.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               
             </div>
@@ -441,11 +471,11 @@ called.  This works similar to [http://api.jquery.com/jQuery.proxy/ jQuery.proxy
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               
             </div>
@@ -495,11 +525,11 @@ __Binding to an HTMLElement__
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               
             </div>
@@ -523,7 +553,7 @@ and binds a callback handler on an object for a given event.  It works on:
 - Objects with bind / unbind methods
 
 The idea is that `can.on` can be used on anything that produces events
-and it will figure out the appropriate way to bind to it. 
+and it will figure out the appropriate way to bind to it.
 
 
 __Binding to an object__
@@ -546,11 +576,11 @@ __Binding to an HTMLElement__
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               
             </div>
@@ -604,11 +634,11 @@ __Binding/unbinding to an HTMLElement__
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               
             </div>
@@ -662,11 +692,11 @@ __Binding/unbinding to an HTMLElement__
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               
             </div>
@@ -701,11 +731,11 @@ __Delegate binding to an HTMLElement__
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Assuming an HTML body like the following:</p>
 <div id="parent">
@@ -724,11 +754,11 @@ __Delegate binding to an HTMLElement__
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               
             </div>
@@ -762,11 +792,11 @@ __Delegate/undelegate binding to an HTMLElement__
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Assuming an HTML body like the following:</p>
 <div id="parent">
@@ -787,11 +817,11 @@ __Delegate/undelegate binding to an HTMLElement__
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               
             </div>
@@ -823,11 +853,11 @@ for simulating events. Such as the following:
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               
             </div>
@@ -844,7 +874,7 @@ The list of configuration options is the same as for [jQuery.ajax](http://api.jq
 @body
 `can.ajax( settings )` is used to make an asynchronous HTTP (AJAX) request
 similar to [http://api.jquery.com/jQuery.ajax/jQuery.ajax]. The example below
-makes use of (can.frag)[http://canjs.com/docs/can.frag.html].
+makes use of [can.frag].
 
 	can.ajax({
 		url: 'http://canjs.com/docs/can.ajax.html',
@@ -858,11 +888,11 @@ makes use of (can.frag)[http://canjs.com/docs/can.frag.html].
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               
             </div>
@@ -893,11 +923,11 @@ The following lists how the NodeList is created by each library:
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               
             </div>
@@ -918,11 +948,11 @@ The following lists how the NodeList is created by each library:
         </li>
         
         
-        <li id="section-25">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               
             </div>
@@ -937,7 +967,7 @@ The following lists how the NodeList is created by each library:
 
 @body
 `can.append( wrappedNodeList, html )` inserts content to the end of each wrapped node list item(s) passed.
-This is a wrapper API for the underlying library being used. If you're using jQuery, this is a wrapper API 
+This is a wrapper API for the underlying library being used. If you're using jQuery, this is a wrapper API
 for [.append](http://api.jquery.com/append/).
 
 </span></pre></div></div>
@@ -945,11 +975,11 @@ for [.append](http://api.jquery.com/append/).
         </li>
         
         
-        <li id="section-26">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Before</p>
 
@@ -962,28 +992,27 @@ for [.append](http://api.jquery.com/append/).
         </li>
         
         
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>After</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"demo"</span>&gt;Demos are fun!<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-*/
-</span></pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>After</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    &lt;div id="demo"&gt;Demos are fun!&lt;/div&gt;
+*/</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               
             </div>
@@ -1005,11 +1034,11 @@ for [.append](http://api.jquery.com/append/).
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               
             </div>
@@ -1053,11 +1082,11 @@ the _data_ method cannot be used on `object` (unless it's a Flash plugin), `appl
         </li>
         
         
-        <li id="section-30">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               
             </div>
@@ -1080,37 +1109,19 @@ already defined.
         </li>
         
         
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>Before</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">"monkey"</span> /&gt;
-
-    can.addClass(can.$(<span class="hljs-string">"#foo"</span>),<span class="hljs-string">"bar"</span>)</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>After</p>
+              <p>Before</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">"monkey bar"</span> /&gt;
+            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"monkey"</span> /&gt;
 
-You can also pass multiple <span class="hljs-keyword">class</span>(es) and it will add them to the existing
-set also.</pre></div></div>
+    can.addClass(can.$(<span class="hljs-string">"#foo"</span>),<span class="hljs-string">"bar"</span>)</pre></div></div>
             
         </li>
         
@@ -1121,13 +1132,16 @@ set also.</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Before</p>
+              <p>After</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-keyword">class</span>=<span class="hljs-string">"monkey"</span> /&gt;
+            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"monkey bar"</span> /&gt;
 
-    can.addClass(can.$(<span class="hljs-string">"#foo"</span>),<span class="hljs-string">"bar man"</span>)</pre></div></div>
+You can also pass multiple <span class="hljs-class"><span class="hljs-keyword">class</span>(<span class="hljs-title">es</span>) <span class="hljs-title">and</span> <span class="hljs-title">it</span> <span class="hljs-title">will</span> <span class="hljs-title">add</span> <span class="hljs-title">them</span> <span class="hljs-title">to</span> <span class="hljs-title">the</span> <span class="hljs-title">existing</span>
+<span class="hljs-title">set</span> <span class="hljs-title">also</span>.
+
+</span></pre></div></div>
             
         </li>
         
@@ -1137,6 +1151,23 @@ set also.</pre></div></div>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Before</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    &lt;div id=<span class="hljs-string">"foo"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"monkey"</span> /&gt;
+
+    can.addClass(can.$(<span class="hljs-string">"#foo"</span>),<span class="hljs-string">"bar man"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>After</p>
 
@@ -1150,11 +1181,11 @@ This works similarly to [http://api.jquery.com/addClass/ jQuery.fn.addClass].
         </li>
         
         
-        <li id="section-35">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               
             </div>
@@ -1172,7 +1203,7 @@ otherwise a Deferred that resolves to __deferred__.
 `can.when(deferred)` provides the ability to execute callback function(s)
 typically based on a Deferred or AJAX object.
 
-This is a wrapper API for the underlying library being used. If you're using jQuery, this is a wrapper API 
+This is a wrapper API for the underlying library being used. If you're using jQuery, this is a wrapper API
 for [jQuery.when](http://api.jquery.com/jquery.when/);
 
     can.when( can.ajax('api/farm/animals') ).then(function(animals){
@@ -1180,18 +1211,18 @@ for [jQuery.when](http://api.jquery.com/jquery.when/);
     });
 
 You can also use this to wait for the results of multiple deferreds.
-    
+
     can.when( can.ajax('api/farm/animals'), can.ajax('api/farm/beacons') ).then(function(animals, beacons){
 </span></pre></div></div>
             
         </li>
         
         
-        <li id="section-36">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>perform some logic using both the animals and beacons data</p>
 
@@ -1209,11 +1240,11 @@ You can also use this for regular JavaScript objects.
         </li>
         
         
-        <li id="section-37">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               
             </div>
@@ -1221,6 +1252,7 @@ You can also use this for regular JavaScript objects.
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
 @constructor can.Deferred
 @parent can.util
+@group can.Deferred.prototype 0 Prototype
 
 @description `can.Deferred` is a object that allows users to assign and chain callback
 function(s) for the success or failure state of both asynchronous and synchronous function(s).
@@ -1232,11 +1264,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               
             </div>
@@ -1248,11 +1280,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               
             </div>
@@ -1282,11 +1314,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               
             </div>
@@ -1318,11 +1350,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               
             </div>
@@ -1354,11 +1386,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               
             </div>
@@ -1380,11 +1412,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-43">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <ul>
 <li>Deferred is done.</li>
@@ -1398,11 +1430,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-44">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               
             </div>
@@ -1424,11 +1456,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-45">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <ul>
 <li>Deferred got rejected.</li>
@@ -1442,11 +1474,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-46">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               
             </div>
@@ -1468,11 +1500,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-47">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <ul>
 <li>Called whether the handler fails or is success.</li>
@@ -1486,11 +1518,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-48">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               
             </div>
@@ -1519,11 +1551,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-49">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               
             </div>
@@ -1558,11 +1590,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-50">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               
             </div>
@@ -1579,20 +1611,20 @@ function(s) for the success or failure state of both asynchronous and synchronou
 
 	var def = can.Deferred();
 
-	def.done(function(reason) {
-	  console.log("Success! " + reason); //-&gt; Success! Woohoo!
+	def.fail(function(reason) {
+	  console.log("Failure! " + reason.foo); //-&gt; Oh, no!
 	});
-	def.resolve("Woohoo!");
+	def.reject({ foo: 'Oh, no!' });
 */</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-51">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               
             </div>
@@ -1614,11 +1646,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-52">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               
             </div>
@@ -1638,11 +1670,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-53">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               
             </div>
@@ -1662,11 +1694,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-54">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               
             </div>
@@ -1686,11 +1718,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-55">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               
             </div>
@@ -1719,11 +1751,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-56">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               
             </div>
@@ -1749,11 +1781,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-57">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               
             </div>
@@ -1776,11 +1808,11 @@ function(s) for the success or failure state of both asynchronous and synchronou
         </li>
         
         
-        <li id="section-58">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               
             </div>
@@ -1798,18 +1830,18 @@ Gets an object from a string.
 
 Gets an object from a string.  It can also modify objects on the 'object path' by removing or adding properties.
 
-    Foo = {Bar: {Zar: {"Ted"}}}
+    Foo = {Bar: {Zar: "Ted"}}
     can.getObject("Foo.Bar.Zar") //-&gt; "Ted"
 */</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-59">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               
             </div>
@@ -1860,11 +1892,11 @@ Gets an object from a string.  It can also modify objects on the 'object path' b
         </li>
         
         
-        <li id="section-60">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               
             </div>
@@ -1878,11 +1910,11 @@ Gets an object from a string.  It can also modify objects on the 'object path' b
         </li>
         
         
-        <li id="section-61">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               
             </div>

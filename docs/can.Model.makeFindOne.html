@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -646,7 +643,7 @@
 <ul class="links">
 	
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/model/doc/makeFindOne.md">source</a></li>
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/model/doc/makeFindOne.md">source</a></li>
 	
 	
 	
@@ -662,6 +659,13 @@
 		
 		
 
+		
+		<section class="description">
+			<p><code>makeFindOne</code> is a hook that lets you define special <code>findOne</code> behavior.
+It is a generator function that lets you return the function that will
+actually be called when <code>findOne</code> is called.</p>
+
+		</section>
 		
 
 		
@@ -681,9 +685,9 @@
 			<h4>findOneData
 				<code>{<a href="can.Model.findOneData.html" >findOneData</a>(params)}</code></h4>
 			<div class="description">
-				<p><a href="can.Model.findOne.html">findOne</a> is implemented with a <code>String</code>, [can.AjaxSettings ajax settings object], or
+				<p><a href="can.Model.findOne.html">findOne</a> is implemented with a <code>String</code>, <a href="can.ajax.html">ajax settings object</a>, or
 <a href="can.Model.findOneData.html">findOneData</a> function. If it is implemented as
-a <code>String</code> or [can.AjaxSettings ajax settings object], those values are used
+a <code>String</code> or <a href="can.ajax.html">ajax settings object</a>, those values are used
 to create a <a href="can.Model.findOneData.html">findOneData</a> function.</p>
 <p>The <a href="can.Model.findOneData.html">findOneData</a> function is passed to <code>makeFindOne</code>. <code>makeFindOne</code>
 should use <code>findOneData</code> internally to get the raw data for the request.</p>
@@ -725,8 +729,11 @@ should use <code>findOneData</code> internally to get the raw data for the reque
 		
 		<section class="comment">
 			<h2>Use</h2>
+<p>When a user calls <code>MyModel.findOne({})</code>, the function returned by
+<code>makeFindOne</code> will be called. Here you can specify what you want to happen
+before the real request for data is made. Call the function passed in <code>findOneData</code> with <code>params</code> to make the AJAX request, or whatever the external request for data normally does.</p>
 <p><code>makeFindOne</code> can be used to implement base models that perform special
-behavior. <code>makeFindOne</code> is passed a <a href="can.Model.findOneData.html">findOneData</a> function that retrieves raw
+behavior, like caching, or adding special parameters to the request object. <code>makeFindOne</code> is passed a <a href="can.Model.findOneData.html">findOneData</a> function that retrieves raw
 data. It should return a function that when called, uses
 the findOneData function to get the raw data and convert it to a model instance with
 <a href="can.Model.model.html">model</a>.</p>
@@ -774,6 +781,8 @@ Todo.findOne({id: 5})
 		
 
 		
+
+		
 	
 	
 	</article>
@@ -786,7 +795,7 @@ Todo.findOne({id: 5})
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -797,11 +806,8 @@ Todo.findOne({id: 5})
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../download.html">Download</a>
@@ -811,7 +817,7 @@ Todo.findOne({id: 5})
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -819,19 +825,19 @@ Todo.findOne({id: 5})
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"function","name":"can.Model.makeFindOne","src":"model/doc/makeFindOne.md","description":"","title":"","parent":"can.Model.static","signatures":[{"code":"can.Model.makeFindOne: function(findOneData) -> findOne","description":"Returns the external `findOne` method given the implemented [can.Model.findOneData findOneData] function.","params":[{"types":[{"type":"can.Model.findOneData"}],"name":"findOneData","description":"[can.Model.findOne] is implemented with a `String`, [can.AjaxSettings ajax settings object], or\n[can.Model.findOneData findOneData] function. If it is implemented as\na `String` or [can.AjaxSettings ajax settings object], those values are used\nto create a [can.Model.findOneData findOneData] function.\n\nThe [can.Model.findOneData findOneData] function is passed to `makeFindOne`. `makeFindOne`\nshould use `findOneData` internally to get the raw data for the request."}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"can.Deferred"}]},"params":[{"types":[{"type":"params"}]},{"types":[{"type":"success"}]},{"types":[{"type":"error"}]}]}],"description":"Returns function that implements the external API of `findOne`."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"function","name":"can.Model.makeFindOne","src":"model/doc/makeFindOne.md","description":"`makeFindOne` is a hook that lets you define special `findOne` behavior. \nIt is a generator function that lets you return the function that will \nactually be called when `findOne` is called.","title":"","parent":"can.Model.static","signatures":[{"code":"can.Model.makeFindOne: function(findOneData) -> findOne","description":"Returns the external `findOne` method given the implemented [can.Model.findOneData findOneData] function.","params":[{"types":[{"type":"can.Model.findOneData"}],"name":"findOneData","description":"[can.Model.findOne] is implemented with a `String`, [can.ajax ajax settings object], or\n[can.Model.findOneData findOneData] function. If it is implemented as\na `String` or [can.ajax ajax settings object], those values are used\nto create a [can.Model.findOneData findOneData] function.\n\nThe [can.Model.findOneData findOneData] function is passed to `makeFindOne`. `makeFindOne`\nshould use `findOneData` internally to get the raw data for the request."}],"returns":{"types":[{"type":"function","returns":{"types":[{"type":"can.Deferred"}]},"params":[{"types":[{"type":"params"}]},{"types":[{"type":"success"}]},{"types":[{"type":"error"}]}]}],"description":"Returns function that implements the external API of `findOne`."}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","guides/**/*.md","guides/*.js","guides/**/*.js","{node_modules,bower_components,dist}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -840,13 +846,13 @@ Todo.findOne({id: 5})
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

@@ -22,29 +22,26 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <h1 id="can-view-bindings-bindings-js">can/view/bindings/bindings.js</h1>
-<p>This file defines the <code>can-value</code> attribute for two-way bindings and the <code>can-EVENT</code> attribute 
-for in template event bindings. These are usable in any mustache template, but mainly and documented 
-for use within can.Component.</p>
+<p>This module provides CanJS’s default data and event bindings.
+It’s broken up into several parts:</p>
+<ul>
+<li>Behaviors - Binding behaviors that run given an attribute or element.</li>
+<li>Attribute Syntaxes - Hooks up custom attributes to their behaviors.</li>
+<li>getComputeFrom - Methods that return a compute cross bound to the scope, viewModel, or element.</li>
+<li>bind - Methods for setting up cross binding</li>
+<li>getBindingInfo - A helper that returns the details of a data binding given an attribute.</li>
+<li>makeDataBinding - A helper method for setting up a data binding.</li>
+<li>initializeValues - A helper that initializes a data binding.</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/stache/mustache_core.js"</span>, <span class="hljs-string">"can/view/callbacks"</span>, <span class="hljs-string">"can/control"</span>, <span class="hljs-string">"can/view/scope"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, mustacheCore)</span> </span>{
-	<span class="hljs-comment">/**
-	 * @function isContentEditable
-	 * @hide
-	 *
-	 * Determines if an element is contenteditable.
-	 *
-	 * An element is contenteditable if it contains the `contenteditable`
-	 * attribute set to either an empty string or "true".
-	 *
-	 * By default an element is also contenteditable if its immediate parent
-	 * has a truthy version of the attribute, unless the element is explicitly
-	 * set to "false".
-	 *
-	 * @param {HTMLElement} el
-	 * @return {Boolean} returns if the element is editable
-	 */</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,
+	<span class="hljs-string">"can/view/stache/expression.js"</span>,
+	<span class="hljs-string">"can/view/callbacks"</span>,
+	<span class="hljs-string">"can/view/live"</span>,
+	<span class="hljs-string">"can/view/scope"</span>,
+	<span class="hljs-string">"can/view/href"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, expression, viewCallbacks, live</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -55,11 +52,11 @@ for use within can.Component.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Function for determining of an element is contenteditable</p>
+              <h2 id="behaviors">Behaviors</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isContentEditable = (<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> behaviors = {</pre></div></div>
             
         </li>
         
@@ -69,6 +66,2182 @@ for use within can.Component.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="bindings-behaviors-viewmodel">bindings.behaviors.viewModel</h3>
+<p>Sets up all of an element’s data binding attributes to a “soon-to-be-created”
+<code>viewModel</code>. 
+This is primarily used by <code>can.Component</code> to ensure that its
+<code>viewModel</code> is initialized with values from the data bindings as quickly as possible.
+Component could look up the data binding values itself.  However, that lookup
+would have to be duplicated when the bindings are established.
+Instead, this uses the <code>makeDataBinding</code> helper, which allows creation of the <code>viewModel</code>
+after scope values have been looked up.</p>
+<ul>
+<li><code>makeViewModel(initialViewModelData)</code> - a function that returns the <code>viewModel</code>.</li>
+<li><code>initialViewModelData</code> any initial data that should already be added to the <code>viewModel</code>.</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li><code>function</code> - a function that tears all the bindings down. Component
+wants all the bindings active so cleanup can be done during a component being removed.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		viewModel: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, tagData, makeViewModel, initialViewModelData</span>)</span>{
+			initialViewModelData = initialViewModelData || {};
+			
+			<span class="hljs-keyword">var</span> bindingsSemaphore = {},
+				viewModel,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Stores callbacks for when the viewModel is created.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				onCompleteBindings = [],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Stores what needs to be called when the element is removed
+to prevent memory leaks.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				onTeardowns = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Track info about each binding, we need this for binding attributes correctly.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				bindingInfos = {},
+				attributeViewModelBindings = can.extend({}, initialViewModelData);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>For each attribute, we start the binding process,
+and save what’s returned to be used when the <code>viewModel</code> is created,
+the element is removed, or the attribute changes values.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each( can.makeArray(el.attributes), <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>)</span>{
+				
+				<span class="hljs-keyword">var</span> dataBinding = makeDataBinding(node, el, {
+					<span class="hljs-attr">templateType</span>: tagData.templateType,
+					<span class="hljs-attr">scope</span>: tagData.scope,
+					<span class="hljs-attr">semaphore</span>: bindingsSemaphore,
+					<span class="hljs-attr">getViewModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						<span class="hljs-keyword">return</span> viewModel;
+					},
+					<span class="hljs-attr">attributeViewModelBindings</span>: attributeViewModelBindings,
+					<span class="hljs-attr">alreadyUpdatedChild</span>: <span class="hljs-literal">true</span>,
+					<span class="hljs-attr">nodeList</span>: tagData.parentNodeList
+				});
+				<span class="hljs-keyword">if</span>(dataBinding) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>For bindings that change the viewModel,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(dataBinding.onCompleteBinding) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>save the initial value on the viewModel.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(dataBinding.bindingInfo.parentToChild &amp;&amp; dataBinding.value !== <span class="hljs-literal">undefined</span>) {
+							initialViewModelData[cleanVMName(dataBinding.bindingInfo.childName)] = dataBinding.value;
+						}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Save what needs to happen after the <code>viewModel</code> is created.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						onCompleteBindings.push(dataBinding.onCompleteBinding);
+					}
+					onTeardowns[node.name] = dataBinding.onTeardown;
+				}
+				
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Create the <code>viewModel</code> and call what needs to be happen after
+the <code>viewModel</code> is created.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			viewModel = makeViewModel(initialViewModelData);
+			
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = onCompleteBindings.length; i &lt; len; i++) {
+				onCompleteBindings[i]();
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Listen to attribute changes and re-initialize
+the bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.bind.call(el, <span class="hljs-string">"attributes"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev</span>) </span>{
+				
+				<span class="hljs-keyword">var</span> attrName = ev.attributeName,
+					value = el.getAttribute(attrName);
+				
+				<span class="hljs-keyword">if</span>( onTeardowns[attrName] ) {
+					onTeardowns[attrName]();
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Parent attribute bindings we always re-setup.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> parentBindingWasAttribute = bindingInfos[attrName] &amp;&amp; bindingInfos[attrName].parent === <span class="hljs-string">"attribute"</span>;
+				
+				<span class="hljs-keyword">if</span>(value !== <span class="hljs-literal">null</span> || parentBindingWasAttribute ) {
+					<span class="hljs-keyword">var</span> dataBinding = makeDataBinding({<span class="hljs-attr">name</span>: attrName, <span class="hljs-attr">value</span>: value}, el, {
+						<span class="hljs-attr">templateType</span>: tagData.templateType,
+						<span class="hljs-attr">scope</span>: tagData.scope,
+						<span class="hljs-attr">semaphore</span>: {},
+						<span class="hljs-attr">getViewModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+							<span class="hljs-keyword">return</span> viewModel;
+						},
+						<span class="hljs-attr">attributeViewModelBindings</span>: attributeViewModelBindings,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>always update the viewModel accordingly.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						initializeValues: <span class="hljs-literal">true</span>,
+						<span class="hljs-attr">nodeList</span>: tagData.parentNodeList
+					});
+					<span class="hljs-keyword">if</span>(dataBinding) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>The viewModel is created, so call callback immediately.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(dataBinding.onCompleteBinding) {
+							dataBinding.onCompleteBinding();
+						}
+						bindingInfos[attrName] = dataBinding.bindingInfo;
+						onTeardowns[attrName] = dataBinding.onTeardown;
+					}
+				}
+			});
+			
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> attrName <span class="hljs-keyword">in</span> onTeardowns) {
+					onTeardowns[attrName]();
+				}
+			};
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h3 id="bindings-behaviors-data">bindings.behaviors.data</h3>
+<p>This is called when an individual data binding attribute is placed on an element.
+For example <code>{^value}=&quot;name&quot;</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		data: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, attrData</span>)</span>{
+			<span class="hljs-keyword">if</span>(can.data(can.$(el),<span class="hljs-string">"preventDataBindings"</span>)){
+				<span class="hljs-keyword">return</span>;
+			}
+			<span class="hljs-keyword">var</span> viewModel = can.viewModel(el),
+				semaphore = {},
+				teardown;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Setup binding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> dataBinding = makeDataBinding({
+				<span class="hljs-attr">name</span>: attrData.attributeName,
+				<span class="hljs-attr">value</span>: el.getAttribute(attrData.attributeName),
+				<span class="hljs-attr">nodeList</span>: attrData.nodeList
+			}, el, {
+				<span class="hljs-attr">templateType</span>: attrData.templateType,
+				<span class="hljs-attr">scope</span>: attrData.scope,
+				<span class="hljs-attr">semaphore</span>: semaphore,
+				<span class="hljs-attr">getViewModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">return</span> viewModel;
+				}
+			});
+			
+			<span class="hljs-keyword">if</span>(dataBinding.onCompleteBinding) {
+				dataBinding.onCompleteBinding();
+			}
+			teardown = dataBinding.onTeardown;
+
+			can.one.call(el, <span class="hljs-string">'removed'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				teardown();
+			});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Listen for changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.bind.call(el, <span class="hljs-string">"attributes"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev</span>) </span>{
+				<span class="hljs-keyword">var</span> attrName = ev.attributeName,
+					value = el.getAttribute(attrName);
+					
+				<span class="hljs-keyword">if</span>( attrName === attrData.attributeName ) {
+					
+					<span class="hljs-keyword">if</span>( teardown ) {
+						teardown();
+					}
+					
+					<span class="hljs-keyword">if</span>(value !== <span class="hljs-literal">null</span>  ) {
+						
+						<span class="hljs-keyword">var</span> dataBinding = makeDataBinding({<span class="hljs-attr">name</span>: attrName, <span class="hljs-attr">value</span>: value}, el, {
+							<span class="hljs-attr">templateType</span>: attrData.templateType,
+							<span class="hljs-attr">scope</span>: attrData.scope,
+							<span class="hljs-attr">semaphore</span>: semaphore,
+							<span class="hljs-attr">getViewModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+								<span class="hljs-keyword">return</span> viewModel;
+							},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>always update the viewModel accordingly.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							initializeValues: <span class="hljs-literal">true</span>,
+							<span class="hljs-attr">nodeList</span>: attrData.nodeList
+						});
+						<span class="hljs-keyword">if</span>(dataBinding) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>The viewModel is created, so call callback immediately.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">if</span>(dataBinding.onCompleteBinding) {
+								dataBinding.onCompleteBinding();
+							}
+							teardown = dataBinding.onTeardown;
+						}
+					}
+					
+				}
+			});
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h3 id="bindings-behaviors-reference">bindings.behaviors.reference</h3>
+<p>Provides the shorthand <code>*ref</code> behavior that exports the <code>viewModel</code>.
+For example <code>{^value}=&quot;name&quot;</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		reference: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, attrData</span>) </span>{
+			<span class="hljs-keyword">if</span>(el.getAttribute(attrData.attributeName)) {
+				<span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"*reference attributes can only export the view model."</span>);
+			}
+	
+			<span class="hljs-keyword">var</span> name = can.camelize( attrData.attributeName.substr(<span class="hljs-number">1</span>).toLowerCase() );
+	
+			<span class="hljs-keyword">var</span> viewModel = can.viewModel(el);
+			<span class="hljs-keyword">var</span> refs = attrData.scope.getRefs();
+			refs._context.attr(<span class="hljs-string">"*"</span>+name, viewModel);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <h3 id="bindings-behaviors-event">bindings.behaviors.event</h3>
+<p>The following section contains code for implementing the can-EVENT attribute.
+This binds on a wildcard attribute name. Whenever a view is being processed
+and can-xxx (anything starting with can-), this callback will be run.  Inside, its setting up an event handler
+that calls a method identified by the value of this attribute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		event: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, data</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Get the <code>event</code> name and if we are listening to the element or viewModel.
+The attribute name is the name of the event.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> attributeName = data.attributeName,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>The old way of binding is can-X</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				legacyBinding = attributeName.indexOf(<span class="hljs-string">'can-'</span>) === <span class="hljs-number">0</span>,
+				event = attributeName.indexOf(<span class="hljs-string">'can-'</span>) === <span class="hljs-number">0</span> ?
+					attributeName.substr(<span class="hljs-string">"can-"</span>.length) :
+					can.camelize(removeBrackets(attributeName, <span class="hljs-string">'('</span>, <span class="hljs-string">')'</span>)),
+				onBindElement = legacyBinding;
+	
+			<span class="hljs-keyword">if</span>(event.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"$"</span>) {
+				event = event.substr(<span class="hljs-number">1</span>);
+				onBindElement = <span class="hljs-literal">true</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>This is the method that the event will initially trigger. It will look up the method by the string name
+passed in the attribute and call it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> handler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev</span>) </span>{
+					<span class="hljs-keyword">var</span> attrVal = el.getAttribute(attributeName);
+					<span class="hljs-keyword">if</span> (!attrVal) { <span class="hljs-keyword">return</span>; }
+	
+					<span class="hljs-keyword">var</span> $el = can.$(el),
+						viewModel = can.viewModel($el[<span class="hljs-number">0</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>expression.parse will read the attribute
+value and parse it identically to how mustache helpers
+get parsed.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> expr = expression.parse(removeBrackets(attrVal),{<span class="hljs-attr">lookupRule</span>: <span class="hljs-string">"method"</span>, <span class="hljs-attr">methodRule</span>: <span class="hljs-string">"call"</span>});
+	
+					<span class="hljs-keyword">if</span>(!(expr <span class="hljs-keyword">instanceof</span> expression.Call) &amp;&amp; !(expr <span class="hljs-keyword">instanceof</span> expression.Helper)) {
+						<span class="hljs-keyword">var</span> defaultArgs = can.map( [data.scope._context, $el].concat(can.makeArray(<span class="hljs-built_in">arguments</span>) ), <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+							<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> expression.Literal(data);
+						});
+						expr = <span class="hljs-keyword">new</span> expression.Call(expr, defaultArgs, {} );
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>make a scope with these things just under</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+					<span class="hljs-keyword">var</span> localScope = data.scope.add({
+						<span class="hljs-string">"@element"</span>: $el,
+						<span class="hljs-string">"@event"</span>: ev,
+						<span class="hljs-string">"@viewModel"</span>: viewModel,
+						<span class="hljs-string">"@scope"</span>: data.scope,
+						<span class="hljs-string">"@context"</span>: data.scope._context,
+	
+						<span class="hljs-string">"%element"</span>: <span class="hljs-keyword">this</span>,
+						<span class="hljs-string">"$element"</span>: $el,
+						<span class="hljs-string">"%event"</span>: ev,
+						<span class="hljs-string">"%viewModel"</span>: viewModel,
+						<span class="hljs-string">"%scope"</span>: data.scope,
+						<span class="hljs-string">"%context"</span>: data.scope._context
+					},{
+						<span class="hljs-attr">notContext</span>: <span class="hljs-literal">true</span>
+					});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>We grab the first item and treat it as a method that
+we’ll call.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> scopeData = localScope.read(expr.methodExpr.key, {
+						<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>
+					});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>We break out early if the first argument isn’t available
+anywhere.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+					<span class="hljs-keyword">if</span> (!scopeData.value) {
+						scopeData = localScope.read(expr.methodExpr.key, {
+							<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>
+						});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						can.dev.warn(<span class="hljs-string">"can/view/bindings: "</span> + attributeName + <span class="hljs-string">" couldn't find method named "</span> + expr.methodExpr.key, {
+							<span class="hljs-attr">element</span>: el,
+							<span class="hljs-attr">scope</span>: data.scope
+						});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+						<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+					}
+
+					<span class="hljs-keyword">var</span> args = expr.args(localScope, <span class="hljs-literal">null</span>)();
+					
+	
+					<span class="hljs-keyword">return</span> scopeData.value.apply(scopeData.parent, args);
+				};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>This code adds support for special event types, like can-enter=”foo”. special.enter (or any special[event]) is
+a function that returns an object containing an event and a handler. These are to be used for binding. For example,
+when a user adds a can-enter attribute, we’ll bind on the keyup event, and the handler performs special logic to
+determine on keyup if the enter key was pressed.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (special[event]) {
+				<span class="hljs-keyword">var</span> specialData = special[event](data, el, handler);
+				handler = specialData.handler;
+				event = specialData.event;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Bind the handler defined above to the element we’re currently processing and the event name provided in this
+attribute name (can-click=”foo”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.bind.call(onBindElement ? el : can.viewModel(el), event, handler);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Create a handler that will unbind itself and the event when the attribute is removed from the DOM</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> attributesHandler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>) </span>{
+				<span class="hljs-keyword">if</span>(ev.attributeName === attributeName &amp;&amp; !<span class="hljs-keyword">this</span>.getAttribute(attributeName)) {
+	
+					can.unbind.call(onBindElement ? el : can.viewModel(el), event, handler);
+					can.unbind.call(el, <span class="hljs-string">'attributes'</span>, attributesHandler);
+				}
+			};
+			can.bind.call(el, <span class="hljs-string">'attributes'</span>, attributesHandler);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <h3 id="bindings-behaviors-value">bindings.behaviors.value</h3>
+<p>Behavior for the deprecated can-value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, data</span>) </span>{
+			<span class="hljs-keyword">var</span> propName = <span class="hljs-string">"$value"</span>,
+				attrValue = can.trim(removeBrackets(el.getAttribute(<span class="hljs-string">"can-value"</span>))),
+				getterSetter;
+	
+			<span class="hljs-keyword">if</span> (el.nodeName.toLowerCase() === <span class="hljs-string">"input"</span> &amp;&amp; ( el.type === <span class="hljs-string">"checkbox"</span> || el.type === <span class="hljs-string">"radio"</span> ) ) {
+	
+				<span class="hljs-keyword">var</span> property = getComputeFrom.scope(el, data.scope, attrValue, {}, <span class="hljs-literal">true</span>);
+				<span class="hljs-keyword">if</span> (el.type === <span class="hljs-string">"checkbox"</span>) {
+	
+					<span class="hljs-keyword">var</span> trueValue = can.attr.has(el, <span class="hljs-string">"can-true-value"</span>) ? el.getAttribute(<span class="hljs-string">"can-true-value"</span>) : <span class="hljs-literal">true</span>,
+						falseValue = can.attr.has(el, <span class="hljs-string">"can-false-value"</span>) ? el.getAttribute(<span class="hljs-string">"can-false-value"</span>) : <span class="hljs-literal">false</span>;
+	
+					getterSetter = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newValue</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>jshint eqeqeq: false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
+							property(newValue ? trueValue : falseValue);
+						}
+						<span class="hljs-keyword">else</span> {
+							<span class="hljs-keyword">return</span> property() == trueValue;
+						}
+					});
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(el.type === <span class="hljs-string">"radio"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>radio is two-way bound to if the property value
+equals the element value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	
+					getterSetter = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newValue</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>jshint eqeqeq: false</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
+							<span class="hljs-keyword">if</span>( newValue ) {
+								property(el.value);
+							}
+						}
+						<span class="hljs-keyword">else</span> {
+							<span class="hljs-keyword">return</span> property() == el.value;
+						}
+					});
+	
+				}
+				propName = <span class="hljs-string">"$checked"</span>;
+				attrValue = <span class="hljs-string">"getterSetter"</span>;
+				data.scope = <span class="hljs-keyword">new</span> can.view.Scope({
+					<span class="hljs-attr">getterSetter</span>: getterSetter
+				});
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>For contenteditable elements, we instantiate a Content control.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isContentEditable(el)) {
+				propName = <span class="hljs-string">"$innerHTML"</span>;
+			}
+	
+			<span class="hljs-keyword">var</span> dataBinding = makeDataBinding({
+				<span class="hljs-attr">name</span>: <span class="hljs-string">"{("</span>+propName+<span class="hljs-string">"})"</span>,
+				<span class="hljs-attr">value</span>: attrValue
+			}, el, {
+				<span class="hljs-attr">templateType</span>: data.templateType,
+				<span class="hljs-attr">scope</span>: data.scope,
+				<span class="hljs-attr">semaphore</span>: {},
+				<span class="hljs-attr">initializeValues</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-attr">legacyBindings</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-attr">syncChildWithParent</span>: <span class="hljs-literal">true</span>
+			});
+			
+			can.one.call(el, <span class="hljs-string">'removed'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				dataBinding.onTeardown();
+			});
+	
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <h2 id="attribute-syntaxes">Attribute Syntaxes</h2>
+<p>The following sets up the bindings functions to be called 
+when called in a template.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p><code>{}=&quot;bar&quot;</code> data bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/^\{[^\}]+\}$/</span>, behaviors.data);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p><code>*ref-export</code> shorthand.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/\*[\w\.\-_]+/</span>, behaviors.reference);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p><code>(EVENT)</code> event bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/^\([\$?\w\.\-]+\)$/</span>, behaviors.event);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">syntaxWarning</span>(<span class="hljs-params">el, attrData</span>) </span>{
+		can.dev.warn(<span class="hljs-string">'can/view/bindings/bindings.js: mismatched binding syntax - '</span> + attrData.attributeName);
+	}
+	can.view.attr(<span class="hljs-regexp">/^\(.+\}$/</span>, syntaxWarning);
+	can.view.attr(<span class="hljs-regexp">/^\{.+\)$/</span>, syntaxWarning);
+	can.view.attr(<span class="hljs-regexp">/^\(\{.+\}\)$/</span>, syntaxWarning);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Legacy bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/can-[\w\.]+/</span>, behaviors.event);
+	can.view.attr(<span class="hljs-string">"can-value"</span>, behaviors.value);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <h2 id="getcomputefrom">getComputeFrom</h2>
+<p>An object of helper functions that make a getter/setter compute
+on different types of objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getComputeFrom = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <h3 id="getcomputefrom-scope">getComputeFrom.scope</h3>
+<p>Returns a compute from the scope.  This handles expressions like <code>someMethod(.,1)</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		scope: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, scope, scopeProp, bindingData, mustBeACompute, stickyCompute</span>)</span>{
+			<span class="hljs-keyword">if</span>(!scopeProp) {
+				<span class="hljs-keyword">return</span> can.compute();
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">if</span>(mustBeACompute) {
+					<span class="hljs-keyword">var</span> parentExpression = expression.parse(scopeProp,{<span class="hljs-attr">baseMethodType</span>: <span class="hljs-string">"Call"</span>});
+					<span class="hljs-keyword">return</span> parentExpression.value(scope, <span class="hljs-keyword">new</span> can.view.Options({}));
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{
+						scope.attr(cleanVMName(scopeProp), newVal);
+					};
+				}
+				
+			}
+			
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <h3 id="getcomputefrom-viewmodel">getComputeFrom.viewModel</h3>
+<p>Returns a compute that’s two-way bound to the <code>viewModel</code> returned by 
+<code>options.getViewModel()</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		viewModel: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, scope, vmName, bindingData, mustBeACompute, stickyCompute</span>) </span>{
+			<span class="hljs-keyword">var</span> setName = cleanVMName(vmName);
+			<span class="hljs-keyword">if</span>(mustBeACompute) {
+				<span class="hljs-keyword">return</span> can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{
+					<span class="hljs-keyword">var</span> viewModel = bindingData.getViewModel();
+					<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
+						viewModel.attr(setName,newVal);
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">return</span> vmName === <span class="hljs-string">"."</span> ? viewModel : can.compute.read(viewModel, can.compute.read.reads(vmName), {}).value;
+					}
+				});
+			} <span class="hljs-keyword">else</span> {
+
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{
+					<span class="hljs-keyword">var</span> childCompute;
+					<span class="hljs-keyword">var</span> viewModel = bindingData.getViewModel();
+
+					<span class="hljs-keyword">if</span>(stickyCompute) {
+						childCompute = viewModel._get(setName, { <span class="hljs-attr">readCompute</span>: <span class="hljs-literal">false</span> });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>childCompute is a compute at this point unless it was locally overwritten
+ in the child viewModel.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span>(!childCompute || !childCompute.isComputed) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>If it was locally overwritten, make a new compute for the property.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							childCompute = can.compute();
+							viewModel._set(setName, childCompute, { <span class="hljs-attr">readCompute</span>: <span class="hljs-literal">false</span> });
+						}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>Otherwise update the compute’s value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						childCompute(newVal);
+					} <span class="hljs-keyword">else</span> {
+						viewModel.attr(setName,newVal);
+					}
+				};
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <h3 id="getcomputefrom-attribute">getComputeFrom.attribute</h3>
+<p>Returns a compute that is two-way bound to an attribute or property on the element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		attribute: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, scope, prop, bindingData, mustBeACompute, stickyCompute, event</span>)</span>{
+			<span class="hljs-keyword">var</span> hasChildren = el.nodeName.toLowerCase() === <span class="hljs-string">"select"</span>,
+				isMultiselectValue = prop === <span class="hljs-string">"value"</span> &amp;&amp; hasChildren &amp;&amp; el.multiple,
+				isStringValue,
+				lastSet,
+				scheduledAsyncSet = <span class="hljs-literal">false</span>,
+				timer,
+				parentEvents,
+				originalValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>Determine the event or events we need to listen to 
+when this value changes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(!event) {
+				<span class="hljs-keyword">if</span>(prop === <span class="hljs-string">"innerHTML"</span>) {
+					event = [<span class="hljs-string">"blur"</span>,<span class="hljs-string">"change"</span>];
+				}
+				<span class="hljs-keyword">else</span> {
+					event = <span class="hljs-string">"change"</span>;
+				}
+			}
+			<span class="hljs-keyword">if</span>(!can.isArray(event)) {
+				event = [event];
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>Sets the element property or attribute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>Templates write parent’s out before children.  This should probably change.
+But it means we don’t do a set immediately.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(hasChildren &amp;&amp; !scheduledAsyncSet) {
+						clearTimeout(timer);
+						timer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+							set(newVal);
+						},<span class="hljs-number">1</span>);
+					}
+					
+					lastSet = newVal;
+					
+					<span class="hljs-keyword">if</span>(isMultiselectValue) {
+						<span class="hljs-keyword">if</span> (newVal &amp;&amp; <span class="hljs-keyword">typeof</span> newVal === <span class="hljs-string">'string'</span>) {
+							newVal = newVal.split(<span class="hljs-string">";"</span>);
+							isStringValue = <span class="hljs-literal">true</span>;
+						}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>When given something else, try to make it an array and deal with it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (newVal) {
+							newVal = can.makeArray(newVal);
+						} <span class="hljs-keyword">else</span> {
+							newVal = [];
+						}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>Make an object containing all the options passed in for convenient lookup</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> isSelected = {};
+						can.each(newVal, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
+							isSelected[val] = <span class="hljs-literal">true</span>;
+						});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>Go through each &lt;option/&gt; element, if it has a value property (its a valid option), then
+set its selected property if it was in the list of vals that were just set.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						can.each(el.childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">option</span>) </span>{
+							<span class="hljs-keyword">if</span> (option.value) {
+								option.selected = !! isSelected[option.value];
+							}
+						});
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">if</span>(!bindingData.legacyBindings &amp;&amp; hasChildren &amp;&amp; (<span class="hljs-string">"selectedIndex"</span> <span class="hljs-keyword">in</span> el) &amp;&amp; prop === <span class="hljs-string">"value"</span> ) {
+							can.attr.setSelectValue(el, newVal);
+						} <span class="hljs-keyword">else</span> {
+							can.attr.setAttrOrProp(el, prop, newVal == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : newVal);
+						}
+					}
+					
+					<span class="hljs-keyword">return</span> newVal;
+	
+				},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>Returns the value of the element property or attribute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				get = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">if</span>(isMultiselectValue) {
+	
+						<span class="hljs-keyword">var</span> values = [],
+							children = el.childNodes;
+	
+						can.each(children, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">child</span>) </span>{
+							<span class="hljs-keyword">if</span> (child.selected &amp;&amp; child.value) {
+								values.push(child.value);
+							}
+						});
+
+						<span class="hljs-keyword">return</span> isStringValue ? values.join(<span class="hljs-string">";"</span>): values;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(hasChildren &amp;&amp; (<span class="hljs-string">"selectedIndex"</span> <span class="hljs-keyword">in</span> el) &amp;&amp; el.selectedIndex === <span class="hljs-number">-1</span>) {
+						<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+					}
+
+					<span class="hljs-keyword">return</span> can.attr.get(el, prop);
+				};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>If the element has children like <code>&lt;select&gt;</code>, those
+elements are hydrated (by can.view.target) after the select and only then
+get their <code>value</code>s set. This make sure that when the value is set,
+it will happen after the children are setup.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(hasChildren) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>have to set later … probably only with mustache.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					scheduledAsyncSet = <span class="hljs-literal">true</span>;
+				},<span class="hljs-number">1</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>The following would allow a select’s value
+to be undefined.
+el.selectedIndex = -1;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>If the element is an input element in a form</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(el.tagName &amp;&amp; el.tagName.toLowerCase() === <span class="hljs-string">"input"</span> &amp;&amp; el.form){
+				parentEvents = [{
+					<span class="hljs-attr">el</span>: el.form,
+					<span class="hljs-attr">eventName</span>: <span class="hljs-string">"reset"</span>,
+					<span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						set(originalValue);
+					}
+				}];
+			}
+
+			<span class="hljs-keyword">var</span> observer;
+
+			originalValue = get();
+			
+			<span class="hljs-keyword">return</span> can.compute(originalValue,{
+				<span class="hljs-attr">on</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">updater</span>)</span>{
+					can.each(event, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">eventName</span>)</span>{
+						can.bind.call(el, eventName, updater);
+					});
+					can.each(parentEvents, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parentEvent</span>)</span>{
+						can.bind.call(parentEvent.el, parentEvent.eventName, parentEvent.handler);
+					});
+					<span class="hljs-keyword">if</span>(hasChildren) {
+						<span class="hljs-keyword">var</span> onMutation = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mutations</span>) </span>{
+							
+							<span class="hljs-keyword">if</span>(stickyCompute) {
+								set(stickyCompute());
+							}
+							
+							updater();
+						};
+						<span class="hljs-keyword">if</span>(can.attr.MutationObserver) {
+							observer = <span class="hljs-keyword">new</span> can.attr.MutationObserver(onMutation);
+							observer.observe(el, {
+								<span class="hljs-attr">childList</span>: <span class="hljs-literal">true</span>,
+								<span class="hljs-attr">subtree</span>: <span class="hljs-literal">true</span>
+							});
+						} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>TODO: Remove in 3.0. Can’t store a function b/c Zepto doesn’t support it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							can.data(can.$(el), <span class="hljs-string">"canBindingCallback"</span>, {<span class="hljs-attr">onMutation</span>: onMutation});
+						}
+					}
+					
+				},
+				<span class="hljs-attr">off</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">updater</span>)</span>{
+					can.each(event, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">eventName</span>)</span>{
+						can.unbind.call(el,eventName, updater);
+					});
+					can.each(parentEvents, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parentEvent</span>)</span>{
+						can.unbind.call(parentEvent.el, parentEvent.eventName, parentEvent.handler);
+					});
+					<span class="hljs-keyword">if</span>(hasChildren) {
+						<span class="hljs-keyword">if</span>(can.attr.MutationObserver) {
+							observer.disconnect();
+						} <span class="hljs-keyword">else</span> {
+							can.data(can.$(el), <span class="hljs-string">"canBindingCallback"</span>,<span class="hljs-literal">null</span>);
+						}
+					}
+				},
+				<span class="hljs-attr">get</span>: get,
+				<span class="hljs-attr">set</span>: set
+			});
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <h2 id="bind">bind</h2>
+<p>An object with helpers that perform bindings in a certain direction.<br>These use the semaphore to prevent cycles.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bind = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <h2 id="bind-childtoparent">bind.childToParent</h2>
+<p>Listens to the child and updates the parent when it changes.</p>
+<ul>
+<li><code>syncChild</code> - Makes sure the child is equal to the parent after the parent is set.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		childToParent: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, parentCompute, childCompute, bindingsSemaphore, attrName, syncChild</span>)</span>{
+			<span class="hljs-keyword">var</span> parentUpdateIsFunction = <span class="hljs-keyword">typeof</span> parentCompute === <span class="hljs-string">"function"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p>Updates the parent if </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> updateParent = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newVal</span>)</span>{
+				<span class="hljs-keyword">if</span> (!bindingsSemaphore[attrName]) {
+					<span class="hljs-keyword">if</span>(parentUpdateIsFunction) {
+						parentCompute(newVal);
+						
+						<span class="hljs-keyword">if</span>( syncChild ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>If, after setting the parent, it’s value is not the same as the child,
+update the child with the value of the parent.
+This is used by <code>can-value</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">if</span>(parentCompute() !== childCompute()) {
+								bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || <span class="hljs-number">0</span> )+<span class="hljs-number">1</span>;
+								can.batch.start();
+								childCompute(parentCompute());
+								can.batch.after(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+									--bindingsSemaphore[attrName];
+								});
+								can.batch.stop();
+							}
+						}
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>The parentCompute can sometimes be just an observable if the observable
+is on a plain JS object. This updates the observable to match whatever the
+new value is.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(parentCompute <span class="hljs-keyword">instanceof</span> can.Map) {
+						parentCompute.attr(newVal, <span class="hljs-literal">true</span>);
+					}
+				}
+			};
+	
+			<span class="hljs-keyword">if</span>(childCompute &amp;&amp; childCompute.isComputed) {
+				childCompute.bind(<span class="hljs-string">"change"</span>, updateParent);
+			}
+	
+			<span class="hljs-keyword">return</span> updateParent;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p>parent -&gt; child binding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		parentToChild: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, parentCompute, childUpdate, bindingsSemaphore, attrName</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>setup listening on parent and forwarding to viewModel</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> updateChild = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newValue</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>Save the viewModel property name so it is not updated multiple times.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				bindingsSemaphore[attrName] = (bindingsSemaphore[attrName] || <span class="hljs-number">0</span> )+<span class="hljs-number">1</span>;
+				can.batch.start();
+				childUpdate(newValue);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <p>only after the batch has finished, reduce the update counter</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.batch.after(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					--bindingsSemaphore[attrName];
+				});
+				can.batch.stop();
+			};
+	
+			<span class="hljs-keyword">if</span>(parentCompute &amp;&amp; parentCompute.isComputed) {
+				parentCompute.bind(<span class="hljs-string">"change"</span>, updateChild);
+			}
+	
+			<span class="hljs-keyword">return</span> updateChild;
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <h2 id="getbindinginfo">getBindingInfo</h2>
+<p>takes a node object like {name, value} and returns
+an object with information about that binding.
+Properties:</p>
+<ul>
+<li><code>parent</code> - where is the parentName read from: “scope”, “attribute”, “viewModel”.</li>
+<li><code>parentName</code> - what is the parent property that should be read.</li>
+<li><code>child</code> - where is the childName read from: “scope”, “attribute”, “viewModel”.<ul>
+<li><code>childName</code> - what is the child property that should be read.</li>
+</ul>
+</li>
+<li><code>parentToChild</code> - should changes in the parent update the child.</li>
+<li><code>childToParent</code> - should changes in the child update the parent.</li>
+<li><code>bindingAttributeName</code> - the attribute name that created this binding.</li>
+<li><code>initializeValues</code> - should parent and child be initialized to their counterpart.
+If undefined is return, there is no binding.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getBindingInfo = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node, attributeViewModelBindings, templateType, tagName</span>)</span>{
+		<span class="hljs-keyword">var</span> bindingInfo,
+			attributeName = node.name,
+			attributeValue = node.value || <span class="hljs-string">""</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <p>Does this match the new binding syntax?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> matches = attributeName.match(bindingsRegExp);
+		<span class="hljs-keyword">if</span>(!matches) {
+			<span class="hljs-keyword">var</span> ignoreAttribute = ignoreAttributesRegExp.test(attributeName);
+			<span class="hljs-keyword">var</span> vmName = can.camelize(attributeName);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <p>!steal-remove-start
+user tried to pass something like id=”{foo}”, so give them a good warning</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(ignoreAttribute) {
+				can.dev.warn(<span class="hljs-string">"can/component: looks like you're trying to pass "</span>+attributeName+<span class="hljs-string">" as an attribute into a component, "</span>+
+				<span class="hljs-string">"but it is not a supported attribute"</span>);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              <p>if this is handled by another binding or a attribute like <code>id</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( ignoreAttribute || viewCallbacks.attr(attributeName) ) {
+				<span class="hljs-keyword">return</span>;
+			}
+			<span class="hljs-keyword">var</span> syntaxRight = attributeValue[<span class="hljs-number">0</span>] === <span class="hljs-string">"{"</span> &amp;&amp; can.last(attributeValue) === <span class="hljs-string">"}"</span>;
+			<span class="hljs-keyword">var</span> isAttributeToChild = templateType === <span class="hljs-string">"legacy"</span> ? attributeViewModelBindings[vmName] : !syntaxRight;
+			<span class="hljs-keyword">var</span> scopeName = syntaxRight ? attributeValue.substr(<span class="hljs-number">1</span>, attributeValue.length - <span class="hljs-number">2</span> ) : attributeValue;
+			<span class="hljs-keyword">if</span>(isAttributeToChild) {
+				<span class="hljs-keyword">return</span> {
+					<span class="hljs-attr">bindingAttributeName</span>: attributeName,
+					<span class="hljs-attr">parent</span>: <span class="hljs-string">"attribute"</span>,
+					<span class="hljs-attr">parentName</span>: attributeName,
+					<span class="hljs-attr">child</span>: <span class="hljs-string">"viewModel"</span>,
+					<span class="hljs-attr">childName</span>: vmName,
+					<span class="hljs-attr">parentToChild</span>: <span class="hljs-literal">true</span>,
+					<span class="hljs-attr">childToParent</span>: <span class="hljs-literal">true</span>
+				};
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> {
+					<span class="hljs-attr">bindingAttributeName</span>: attributeName,
+					<span class="hljs-attr">parent</span>: <span class="hljs-string">"scope"</span>,
+					<span class="hljs-attr">parentName</span>: scopeName,
+					<span class="hljs-attr">child</span>: <span class="hljs-string">"viewModel"</span>,
+					<span class="hljs-attr">childName</span>: vmName,
+					<span class="hljs-attr">parentToChild</span>: <span class="hljs-literal">true</span>,
+					<span class="hljs-attr">childToParent</span>: <span class="hljs-literal">true</span>
+				};
+			}
+		}
+		
+		<span class="hljs-keyword">var</span> twoWay = !!matches[<span class="hljs-number">1</span>],
+			childToParent = twoWay || !!matches[<span class="hljs-number">2</span>],
+			parentToChild = twoWay || !childToParent;
+		
+		<span class="hljs-keyword">var</span> childName = matches[<span class="hljs-number">3</span>];
+		<span class="hljs-keyword">var</span> isDOM = childName.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"$"</span>;
+		<span class="hljs-keyword">if</span>(isDOM) {
+			bindingInfo = {
+				<span class="hljs-attr">parent</span>: <span class="hljs-string">"scope"</span>,
+				<span class="hljs-attr">child</span>: <span class="hljs-string">"attribute"</span>,
+				<span class="hljs-attr">childToParent</span>: childToParent,
+				<span class="hljs-attr">parentToChild</span>: parentToChild,
+				<span class="hljs-attr">bindingAttributeName</span>: attributeName,
+				<span class="hljs-attr">childName</span>: childName.substr(<span class="hljs-number">1</span>),
+				<span class="hljs-attr">parentName</span>: attributeValue,
+				<span class="hljs-attr">initializeValues</span>: <span class="hljs-literal">true</span>
+			};
+			<span class="hljs-keyword">if</span>(tagName === <span class="hljs-string">"select"</span>) {
+				bindingInfo.stickyParentToChild = <span class="hljs-literal">true</span>;
+			}
+			<span class="hljs-keyword">return</span> bindingInfo;
+		} <span class="hljs-keyword">else</span> {
+			bindingInfo = {
+				<span class="hljs-attr">parent</span>: <span class="hljs-string">"scope"</span>,
+				<span class="hljs-attr">child</span>: <span class="hljs-string">"viewModel"</span>,
+				<span class="hljs-attr">childToParent</span>: childToParent,
+				<span class="hljs-attr">parentToChild</span>: parentToChild,
+				<span class="hljs-attr">bindingAttributeName</span>: attributeName,
+				<span class="hljs-attr">childName</span>: can.camelize(childName),
+				<span class="hljs-attr">parentName</span>: attributeValue,
+				<span class="hljs-attr">initializeValues</span>: <span class="hljs-literal">true</span>
+			};
+			<span class="hljs-keyword">if</span>(attributeValue.trim().charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"~"</span>) {
+				bindingInfo.stickyParentToChild = <span class="hljs-literal">true</span>;
+			}
+			<span class="hljs-keyword">return</span> bindingInfo;
+		}
+
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <p>Regular expressions for getBindingInfo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> bindingsRegExp = <span class="hljs-regexp">/\{(\()?(\^)?([^\}\)]+)\)?\}/</span>,
+		ignoreAttributesRegExp = <span class="hljs-regexp">/^(data-view-id|class|id|\[[\w\.-]+\]|#[\w\.-])$/i</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <h2 id="makedatabinding">makeDataBinding</h2>
+<p>Makes a data binding for an attribute <code>node</code>.  Returns an object with information
+about the binding, including an <code>onTeardown</code> method that undoes the binding.<br>If the data binding involves a <code>viewModel</code>, an <code>onCompleteBinding</code> method is returned on
+the object.  This method must be called after the element has a <code>viewModel</code> with the
+<code>viewModel</code> to complete the binding.</p>
+<ul>
+<li><code>node</code> - an attribute node or an object with a <code>name</code> and <code>value</code> property.</li>
+<li><code>el</code> - the element this binding belongs on.</li>
+<li><code>bindingData</code> - an object with:<ul>
+<li><code>templateType</code> - the type of template. Ex: “legacy” for mustache.</li>
+<li><code>scope</code> - the <code>can.view.Scope</code>,</li>
+<li><code>semaphore</code> - an object that keeps track of changes in different properties to prevent cycles,</li>
+<li><code>getViewModel</code>  - a function that returns the <code>viewModel</code> when called.  This function can be passed around (not called) even if the 
+ <code>viewModel</code> doesn’t exist yet.</li>
+<li><code>attributeViewModelBindings</code> - properties already specified as being a viewModel&lt;-&gt;attribute (as opposed to viewModel&lt;-&gt;scope) binding.</li>
+</ul>
+</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li><code>undefined</code> - If this isn’t a data binding.</li>
+<li><code>object</code> - An object with information about the binding.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> makeDataBinding = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node, el, bindingData</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              <p>Get information about the binding.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> bindingInfo = getBindingInfo(node, bindingData.attributeViewModelBindings, bindingData.templateType, el.nodeName.toLowerCase());
+		<span class="hljs-keyword">if</span>(!bindingInfo) {
+			<span class="hljs-keyword">return</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              <p>assign some bindingData props to the bindingInfo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		bindingInfo.alreadyUpdatedChild = bindingData.alreadyUpdatedChild;
+		<span class="hljs-keyword">if</span>( bindingData.initializeValues) {
+			bindingInfo.initializeValues = <span class="hljs-literal">true</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-84">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-84">&#182;</a>
+              </div>
+              <p>Get computes for the parent and child binding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> parentCompute = getComputeFrom[bindingInfo.parent](el, bindingData.scope, bindingInfo.parentName, bindingData, bindingInfo.parentToChild),
+			childCompute = getComputeFrom[bindingInfo.child](el, bindingData.scope, bindingInfo.childName, bindingData, bindingInfo.childToParent, bindingInfo.stickyParentToChild &amp;&amp; parentCompute),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-85">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              <p>these are the functions bound to one compute that update the other.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			updateParent,
+			updateChild,
+			childLifecycle;
+		
+		<span class="hljs-keyword">if</span>(bindingData.nodeList) {
+			<span class="hljs-keyword">if</span>(parentCompute &amp;&amp; parentCompute.isComputed){
+				parentCompute.computeInstance.setPrimaryDepth(bindingData.nodeList.nesting+<span class="hljs-number">1</span>);
+			}
+			<span class="hljs-keyword">if</span>(childCompute &amp;&amp; childCompute.isComputed){
+				childCompute.computeInstance.setPrimaryDepth(bindingData.nodeList.nesting+<span class="hljs-number">1</span>);
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <p>Only bind to the parent if it will update the child.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(bindingInfo.parentToChild){
+			updateChild = bind.parentToChild(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-87">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
+              </div>
+              <p>This completes the binding.  We can’t call it right away because
+the <code>viewModel</code> might not have been created yet.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> completeBinding = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">if</span>(bindingInfo.childToParent){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-88">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-88">&#182;</a>
+              </div>
+              <p>setup listening on parent and forwarding to viewModel</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				updateParent = bind.childToParent(el, parentCompute, childCompute, bindingData.semaphore, bindingInfo.bindingAttributeName,
+					bindingData.syncChildWithParent);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-89">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              <p>the child needs to be bound even if</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(bindingInfo.stickyParentToChild) {
+				childCompute.bind(<span class="hljs-string">"change"</span>, childLifecycle = can.k);
+			}
+			
+			<span class="hljs-keyword">if</span>(bindingInfo.initializeValues) {
+				initializeValues(bindingInfo, childCompute, parentCompute, updateChild, updateParent);
+			}
+			
+			
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              <p>This tears down the binding.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> onTeardown = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+			unbindUpdate(parentCompute, updateChild);
+			unbindUpdate(childCompute, updateParent);
+			unbindUpdate(childCompute, childLifecycle);
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-91">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              <p>If this binding depends on the viewModel, which might not have been created,
+return the function to complete the binding as <code>onCompleteBinding</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(bindingInfo.child === <span class="hljs-string">"viewModel"</span>) {
+			<span class="hljs-keyword">return</span> {
+				<span class="hljs-attr">value</span>: getValue(parentCompute),
+				<span class="hljs-attr">onCompleteBinding</span>: completeBinding,
+				<span class="hljs-attr">bindingInfo</span>: bindingInfo,
+				<span class="hljs-attr">onTeardown</span>: onTeardown
+			};
+		} <span class="hljs-keyword">else</span> {
+			completeBinding();
+			<span class="hljs-keyword">return</span> {
+				<span class="hljs-attr">bindingInfo</span>: bindingInfo,
+				<span class="hljs-attr">onTeardown</span>: onTeardown
+			};
+			
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-92">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-92">&#182;</a>
+              </div>
+              <h2 id="initializevalues">initializeValues</h2>
+<p>Updates the parent or child value depending on the direction of the binding
+or if the child or parent is <code>undefined</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> initializeValues = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bindingInfo, childCompute, parentCompute, updateChild, updateParent</span>)</span>{
+		<span class="hljs-keyword">var</span> doUpdateParent = <span class="hljs-literal">false</span>;
+		<span class="hljs-keyword">if</span>(bindingInfo.parentToChild &amp;&amp; !bindingInfo.childToParent) {
+			<span class="hljs-keyword">if</span>(bindingInfo.stickyParentToChild) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-93">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-93">&#182;</a>
+              </div>
+              <p>call updateChild here to set up the compute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				updateChild({}, getValue(parentCompute));
+			}
+
+		}
+		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!bindingInfo.parentToChild &amp;&amp; bindingInfo.childToParent) {
+			doUpdateParent = <span class="hljs-literal">true</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-94">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-94">&#182;</a>
+              </div>
+              <p>Two way
+Update child or parent depending on who has a value.
+If both have a value, update the child.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( getValue(childCompute) === <span class="hljs-literal">undefined</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-95">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-95">&#182;</a>
+              </div>
+              <p>updateChild</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(getValue(parentCompute) === <span class="hljs-literal">undefined</span>) {
+			doUpdateParent = <span class="hljs-literal">true</span>;
+		}
+		
+		<span class="hljs-keyword">if</span>(doUpdateParent) {
+			updateParent({}, getValue(childCompute) );
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">if</span>(!bindingInfo.alreadyUpdatedChild) {
+				updateChild({}, getValue(parentCompute) );
+			}
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-96">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              <p>For “sticky” select values, we need to know when <code>&lt;option&gt;</code>s are
+added or removed to a <code>&lt;select&gt;</code>.  If we don’t have 
+MutationObserver, we need to setup can.view.live to
+callback when this happens.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span>( !can.attr.MutationObserver ) {
+		<span class="hljs-keyword">var</span> updateSelectValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{
+			<span class="hljs-keyword">var</span> bindingCallback = can.data(can.$(el),<span class="hljs-string">"canBindingCallback"</span>);
+			<span class="hljs-keyword">if</span>(bindingCallback) {
+				bindingCallback.onMutation(el);
+			}
+		};
+		live.registerChildMutationCallback(<span class="hljs-string">"select"</span>,updateSelectValue);
+		live.registerChildMutationCallback(<span class="hljs-string">"optgroup"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{
+			updateSelectValue(el.parentNode);
+		});
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-97">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              <h2 id="iscontenteditable">isContentEditable</h2>
+<p>Determines if an element is contenteditable.
+An element is contenteditable if it contains the <code>contenteditable</code>
+attribute set to either an empty string or “true”.
+By default an element is also contenteditable if its immediate parent
+has a truthy version of the attribute, unless the element is explicitly
+set to “false”.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> isContentEditable = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-98">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-98">&#182;</a>
               </div>
               <p>A contenteditable element has a value of an empty string or “true”</p>
 
@@ -83,26 +2256,26 @@ for use within can.Component.</p>
         </li>
         
         
-        <li id="section-4">
+        <li id="section-99">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-99">&#182;</a>
               </div>
               <p>Tests if an element has the appropriate contenteditable attribute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> editable = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> editable = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>)</span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-5">
+        <li id="section-100">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-100">&#182;</a>
               </div>
               <p>DocumentFragments do not have a getAttribute</p>
 
@@ -116,16 +2289,16 @@ for use within can.Component.</p>
 			<span class="hljs-keyword">return</span> values[attr];
 		};
 
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span></span>{</pre></div></div>
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el</span>)</span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-6">
+        <li id="section-101">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-101">&#182;</a>
               </div>
               <p>First check if the element is explicitly true or false</p>
 
@@ -139,11 +2312,11 @@ for use within can.Component.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-102">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-102">&#182;</a>
               </div>
               <p>Otherwise, check the parent</p>
 
@@ -153,218 +2326,45 @@ for use within can.Component.</p>
 			}
 		};
 	})(),
-		removeCurly = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
-			<span class="hljs-keyword">if</span>(value[<span class="hljs-number">0</span>] === <span class="hljs-string">"{"</span> &amp;&amp; value[value.length-<span class="hljs-number">1</span>] === <span class="hljs-string">"}"</span>) {
+		removeBrackets = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value, open, close</span>)</span>{
+			open = open || <span class="hljs-string">"{"</span>;
+			close = close || <span class="hljs-string">"}"</span>;
+
+			<span class="hljs-keyword">if</span>(value[<span class="hljs-number">0</span>] === open &amp;&amp; value[value.length<span class="hljs-number">-1</span>] === close) {
 				<span class="hljs-keyword">return</span> value.substr(<span class="hljs-number">1</span>, value.length - <span class="hljs-number">2</span>);
 			}
 			<span class="hljs-keyword">return</span> value;
+		},
+		getValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
+			<span class="hljs-keyword">return</span> value &amp;&amp; value.isComputed ? value() : value;
+		},
+		unbindUpdate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">compute, updateOther</span>)</span>{
+			<span class="hljs-keyword">if</span>(compute &amp;&amp; compute.isComputed &amp;&amp; <span class="hljs-keyword">typeof</span> updateOther === <span class="hljs-string">"function"</span>) {
+				compute.unbind(<span class="hljs-string">"change"</span>, updateOther);
+			}
+		},
+		cleanVMName = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
+			<span class="hljs-keyword">return</span> name.replace(<span class="hljs-regexp">/@/g</span>,<span class="hljs-string">""</span>);
 		};</pre></div></div>
             
         </li>
         
         
-        <li id="section-8">
+        <li id="section-103">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h2 id="can-value">can-value</h2>
-<p>Implement the <code>can-value</code> special attribute</p>
-<h3 id="usage">Usage</h3>
-<pre><code>    &lt;input can-value=<span class="hljs-string">"name"</span> /&gt;
-</code></pre><p>When a view engine finds this attribute, it will call this callback. The value of the attribute 
-should be a string representing some value in the current scope to cross-bind to.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-string">"can-value"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> </span>{
-
-		<span class="hljs-keyword">var</span> attr = can.trim(removeCurly(el.getAttribute(<span class="hljs-string">"can-value"</span>))),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Turn the attribute passed in into a compute.  If the user passed in can-value=”name” and the current 
-scope of the template is some object called data, the compute representing this can-value will be the 
-data.attr(‘name’) property.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			value = data.scope.computeData(attr, {
-				args: []
-			})
-				.compute,
-			trueValue,
-			falseValue;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Depending on the type of element, this attribute has different behavior. can.Controls are defined (further below 
-in this file) for each type of input. This block of code collects arguments and instantiates each can.Control. There 
-is one for checkboxes/radios, another for multiselect inputs, and another for everything else.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (el.nodeName.toLowerCase() === <span class="hljs-string">"input"</span>) {
-			<span class="hljs-keyword">if</span> (el.type === <span class="hljs-string">"checkbox"</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>If the element is a checkbox and has an attribute called “can-true-value”, 
-set up a compute that toggles the value of the checkbox to “true” based on another attribute. </p>
-<pre><code>    &lt;input type=<span class="hljs-string">'checkbox'</span> can-value=<span class="hljs-string">'sex'</span> can-<span class="hljs-literal">true</span>-value=<span class="hljs-string">'male'</span> can-<span class="hljs-literal">false</span>-value=<span class="hljs-string">'female'</span> /&gt;
-</code></pre>
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (can.attr.has(el, <span class="hljs-string">"can-true-value"</span>)) {
-					trueValue = el.getAttribute(<span class="hljs-string">"can-true-value"</span>);
-				} <span class="hljs-keyword">else</span> {
-					trueValue = <span class="hljs-literal">true</span>;
-				}
-				<span class="hljs-keyword">if</span> (can.attr.has(el, <span class="hljs-string">"can-false-value"</span>)) {
-					falseValue = el.getAttribute(<span class="hljs-string">"can-false-value"</span>);
-				} <span class="hljs-keyword">else</span> {
-					falseValue = <span class="hljs-literal">false</span>;
-				}
-			}
-
-			<span class="hljs-keyword">if</span> (el.type === <span class="hljs-string">"checkbox"</span> || el.type === <span class="hljs-string">"radio"</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>For checkboxes and radio buttons, create a Checked can.Control around the input.  Pass in 
-the compute representing the can-value and can-true-value and can-false-value properties (if 
-they were used).</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">new</span> Checked(el, {
-					value: value,
-					trueValue: trueValue,
-					falseValue: falseValue
-				});
-				<span class="hljs-keyword">return</span>;
-			}
-		}
-		<span class="hljs-keyword">if</span> (el.nodeName.toLowerCase() === <span class="hljs-string">"select"</span> &amp;&amp; el.multiple) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>For multiselect enabled select inputs, we instantiate a special control around that select element 
-called Multiselect</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">new</span> Multiselect(el, {
-				value: value
-			});
-			<span class="hljs-keyword">return</span>;
-		}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>For contenteditable elements, we instantiate a Content control.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (isContentEditable(el)) {
-			<span class="hljs-keyword">new</span> Content(el, {
-				value: value
-			});
-			<span class="hljs-keyword">return</span>;
-		}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>The default case. Instantiate the Value control around the element. Pass it the compute representing 
-the observable attribute property that was set.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">new</span> Value(el, {
-			value: value
-		});
-	});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-103">&#182;</a>
               </div>
               <h2 id="special-event-types-can-special-">Special Event Types (can-SPECIAL)</h2>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>A special object, similar to <a href="http://benalman.com/news/2010/03/jquery-special-events/">$.event.special</a>, 
-for adding hooks for special can-SPECIAL types (not native DOM events). Right now, only can-enter is 
+<p>A special object, similar to <a href="http://benalman.com/news/2010/03/jquery-special-events/">$.event.special</a>,
+for adding hooks for special can-SPECIAL types (not native DOM events). Right now, only can-enter is
 supported, but this object might be exported so that it can be added to easily.</p>
-<p>To implement a can-SPECIAL event type, add a property to the special object, whose value is a function 
-that returns the following: </p>
+<p>To implement a can-SPECIAL event type, add a property to the special object, whose value is a function
+that returns the following:</p>
 <pre><code><span class="hljs-comment">// the real event name to bind to</span>
 event: <span class="hljs-string">"event-name"</span>,
-handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
+<span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev</span>) </span>{
     <span class="hljs-comment">// some logic that figures out if the original handler should be called or not, and if so...</span>
     <span class="hljs-keyword">return</span> original.call(<span class="hljs-keyword">this</span>, ev);
 }
@@ -372,910 +2372,25 @@ handler: <span class="hljs-function"><span class="hljs-keyword">function</span> 
             </div>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> special = {
-		enter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, el, original)</span> </span>{
+		<span class="hljs-attr">enter</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, el, original</span>) </span>{
 			<span class="hljs-keyword">return</span> {
-				event: <span class="hljs-string">"keyup"</span>,
-				handler: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
+				<span class="hljs-attr">event</span>: <span class="hljs-string">"keyup"</span>,
+				<span class="hljs-attr">handler</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev</span>) </span>{
 					<span class="hljs-keyword">if</span> (ev.keyCode === <span class="hljs-number">13</span>) {
 						<span class="hljs-keyword">return</span> original.call(<span class="hljs-keyword">this</span>, ev);
 					}
 				}
 			};
 		}
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <h2 id="can-event">can-EVENT</h2>
-<p>The following section contains code for implementing the can-EVENT attribute. 
-This binds on a wildcard attribute name. Whenever a view is being processed 
-and can-xxx (anything starting with can-), this callback will be run.  Inside, its setting up an event handler 
-that calls a method identified by the value of this attribute.</p>
+	};
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	can.view.attr(<span class="hljs-regexp">/can-[\w\.]+/</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, data)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>the attribute name is the function to call</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> attributeName = data.attributeName,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>The event type to bind on is deteremined by whatever is after can-</p>
-<p>For example, can-submit binds on the submit event.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			event = attributeName.substr(<span class="hljs-string">"can-"</span>.length),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>This is the method that the event will initially trigger. It will look up the method by the string name
-passed in the attribute and call it.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			handler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev)</span> </span>{
-				<span class="hljs-keyword">var</span> attrVal = el.getAttribute(attributeName);
-				<span class="hljs-keyword">if</span> (!attrVal) { <span class="hljs-keyword">return</span>; }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>mustacheCore.expressionData will read the attribute
-value and parse it identically to how mustache helpers
-get parsed.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> attrInfo = mustacheCore.expressionData(removeCurly(attrVal));</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>We grab the first item and treat it as a method that
-we’ll call.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> scopeData = data.scope.read(attrInfo.name.get, {
-					returnObserveMethods: <span class="hljs-literal">true</span>,
-					isArgument: <span class="hljs-literal">true</span>,
-					executeAnonymousFunctions: <span class="hljs-literal">true</span>
-				});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>We break out early if the first argument isn’t available
-anywhere.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>!steal-remove-start</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!scopeData.value) {
-					can.dev.warn(<span class="hljs-string">"can/view/bindings: "</span> + attributeName + <span class="hljs-string">" couldn't find method named "</span> + attrInfo.name.get, {
-						element: el,
-						scope: data.scope
-					});
-					<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>!steal-remove-end</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-				<span class="hljs-keyword">var</span> args = [];
-				<span class="hljs-keyword">var</span> $el = can.$(<span class="hljs-keyword">this</span>);
-				<span class="hljs-keyword">var</span> viewModel = can.viewModel($el[<span class="hljs-number">0</span>]);
-				<span class="hljs-keyword">var</span> localScope = data.scope.add({
-					<span class="hljs-string">"@element"</span>: $el,
-					<span class="hljs-string">"@event"</span>: ev,
-					<span class="hljs-string">"@viewModel"</span>: viewModel,
-					<span class="hljs-string">"@scope"</span>: data.scope,
-					<span class="hljs-string">"@context"</span>: data.scope._context
-				});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>.expressionData() gives us a hash object representing
-any expressions inside the definition that look like
-foo=bar. If there’s no hash keys, we’ll omit this hash
-from our method arguments.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!can.isEmptyObject(attrInfo.hash)) {
-					<span class="hljs-keyword">var</span> hash = {};
-					can.each(attrInfo.hash, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val, key)</span> </span>{
-						<span class="hljs-keyword">if</span> (val &amp;&amp; val.hasOwnProperty(<span class="hljs-string">"get"</span>)) {
-							<span class="hljs-keyword">var</span> s = !val.get.indexOf(<span class="hljs-string">"@"</span>) ? localScope : data.scope;
-							hash[key] = s.read(val.get, {}).value;
-						} <span class="hljs-keyword">else</span> {
-							hash[key] = val;
-						}
-					});
-					args.unshift(hash);
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p>We go through each non-hash expression argument and
-prepend it to our argument list.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (attrInfo.args.length) {
-					<span class="hljs-keyword">var</span> arg;
-					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = attrInfo.args.length-<span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
-						arg = attrInfo.args[i];
-						<span class="hljs-keyword">if</span> (arg &amp;&amp; arg.hasOwnProperty(<span class="hljs-string">"get"</span>)) {
-							<span class="hljs-keyword">var</span> s = !arg.get.indexOf(<span class="hljs-string">"@"</span>) ? localScope : data.scope;
-							args.unshift(s.read(arg.get, {}).value);
-						} <span class="hljs-keyword">else</span> {
-							args.unshift(arg);
-						}
-					}
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p>If no arguments are provided, the method will simply
-receive the legacy arguments.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!args.length) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>The arguments array includes extra args passed in to
-the event.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					args = [data.scope._context, $el].concat(can.makeArray(<span class="hljs-built_in">arguments</span>));
-				}
-				<span class="hljs-keyword">return</span> scopeData.value.apply(scopeData.parent, args);
-			};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>This code adds support for special event types, like can-enter=”foo”. special.enter (or any special[event]) is
-a function that returns an object containing an event and a handler. These are to be used for binding. For example,
-when a user adds a can-enter attribute, we’ll bind on the keyup event, and the handler performs special logic to
-determine on keyup if the enter key was pressed.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (special[event]) {
-			<span class="hljs-keyword">var</span> specialData = special[event](data, el, handler);
-			handler = specialData.handler;
-			event = specialData.event;
-		}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>Bind the handler defined above to the element we’re currently processing and the event name provided in this
-attribute name (can-click=”foo”)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		can.bind.call(el, event, handler);
-	});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <h2 id="two-way-binding-can-controls">Two way binding can.Controls</h2>
-<p>Each type of input that is supported by view/bindings is wrapped with a special can.Control.  The control serves 
-two functions: </p>
-<ol>
-<li>Bind on the property changing (the compute we’re two-way binding to) and change the input value.</li>
-<li>Bind on the input changing and change the property (compute) we’re two-way binding to.
-There is one control per input type. There could easily be more for more advanced input types, like the HTML5 type=”date” input type.</li>
-</ol>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <h3 id="value">Value</h3>
-<p>A can.Control that manages the two-way bindings on most inputs.  When can-value is found as an attribute 
-on an input, the callback above instantiates this Value control on the input element.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Value = can.Control.extend({
-		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>Handle selects by calling <code>set</code> after this thread so the rest of the element can finish rendering.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].nodeName.toUpperCase() === <span class="hljs-string">"SELECT"</span>) {
-				setTimeout(can.proxy(<span class="hljs-keyword">this</span>.set, <span class="hljs-keyword">this</span>), <span class="hljs-number">1</span>);
-			} <span class="hljs-keyword">else</span> {
-				<span class="hljs-keyword">this</span>.set();
-			}
-
-		},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>If the live bound data changes, call set to reflect the change in the dom.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"set"</span>,
-		set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>This may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.element) {
-				<span class="hljs-keyword">return</span>;
-			}
-			<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p>Set the element’s value to match the attribute that was passed in</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].value = (val == <span class="hljs-literal">null</span> ? <span class="hljs-string">''</span> : val);
-		},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>If the input value changes, this will set the live bound data to reflect the change.
-If the input value changes, this will set the live bound data to reflect the change.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>This may happen in some edgecases, esp. with selects that are not in DOM after the timeout has fired</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.element) {
-				<span class="hljs-keyword">return</span>;
-			}
-			<span class="hljs-keyword">var</span> el = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>Set the value of the attribute passed in to reflect what the user typed</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.options.value(el.value);
-			<span class="hljs-keyword">var</span> newVal = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>If the newVal isn’t the same as the input, set it’s value</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(el.value !== newVal) {
-				el.value = newVal;
-			}
-		}
-	}),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <h3 id="checked">Checked</h3>
-<p>A can.Control that manages the two-way bindings on a checkbox element.  When can-value is found as an attribute 
-on a checkbox, the callback above instantiates this Checked control on the checkbox element.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		Checked = can.Control.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>If its not a checkbox, its a radio input</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.isCheckbox = (<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].type.toLowerCase() === <span class="hljs-string">"checkbox"</span>);
-				<span class="hljs-keyword">this</span>.check();
-			},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
-              <p><code>value</code> is the compute representing the can-value for this element.  For example can-value=”foo” and current 
-scope is someObj, value is the compute representing someObj.attr(‘foo’)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"check"</span>,
-			check: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <p>jshint eqeqeq: false</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isCheckbox) {
-					<span class="hljs-keyword">var</span> value = <span class="hljs-keyword">this</span>.options.value(),
-						trueValue = <span class="hljs-keyword">this</span>.options.trueValue || <span class="hljs-literal">true</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>If <code>can-true-value</code> attribute was set, check if the value is equal to that string value, and set 
-the checked property based on their equality.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].checked = (value == trueValue);
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>Its a radio input type</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">var</span> setOrRemove = <span class="hljs-keyword">this</span>.options.value() == <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].value ?
-						<span class="hljs-string">"set"</span> : <span class="hljs-string">"remove"</span>;
-
-					can.attr[setOrRemove](<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>], <span class="hljs-string">'checked'</span>, <span class="hljs-literal">true</span>);
-
-				}
-
-			},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              <p>This event is triggered by the DOM.  If a change event occurs, we must set the value of the compute (options.value).</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">"change"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-
-				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isCheckbox) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p>If the checkbox is checked and can-true-value was used, set value to the string value of can-true-value.  If 
-can-false-value was used and checked is false, set value to the string value of can-false-value.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">this</span>.options.value(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].checked ? <span class="hljs-keyword">this</span>.options.trueValue : <span class="hljs-keyword">this</span>.options.falseValue);
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
-              <p>Radio input type</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].checked) {
-						<span class="hljs-keyword">this</span>.options.value(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].value);
-					}
-				}
-
-			}
-		}),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-52">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
-              </div>
-              <h3 id="multiselect">Multiselect</h3>
-<p>A can.Control that handles select input with the “multiple” attribute (meaning more than one can be selected at once). </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		Multiselect = Value.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">this</span>.delimiter = <span class="hljs-string">";"</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-53">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p>Call <code>set</code> after this thread so the rest of the element can finish rendering.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				setTimeout(can.proxy(<span class="hljs-keyword">this</span>.set, <span class="hljs-keyword">this</span>), <span class="hljs-number">1</span>);
-			},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
-              </div>
-              <p>Since this control extends Value (above), the set method will be called when the value compute changes (and on init).</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-
-				<span class="hljs-keyword">var</span> newVal = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-55">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
-              </div>
-              <p>When given a string, try to extract all the options from it (i.e. “a;b;c;d”)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> newVal === <span class="hljs-string">'string'</span>) {
-					newVal = newVal.split(<span class="hljs-keyword">this</span>.delimiter);
-					<span class="hljs-keyword">this</span>.isString = <span class="hljs-literal">true</span>;
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <p>When given something else, try to make it an array and deal with it</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (newVal) {
-					newVal = can.makeArray(newVal);
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p>Make an object containing all the options passed in for convenient lookup</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> isSelected = {};
-				can.each(newVal, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
-					isSelected[val] = <span class="hljs-literal">true</span>;
-				});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p>Go through each &lt;option/&gt; element, if it has a value property (its a valid option), then 
-set its selected property if it was in the list of vals that were just set.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				can.each(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].childNodes, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(option)</span> </span>{
-					<span class="hljs-keyword">if</span> (option.value) {
-						option.selected = !! isSelected[option.value];
-					}
-
-				});
-
-			},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p>A helper function used by the ‘change’ handler below. Its purpose is to return an array of selected 
-values, like [“foo”, “bar”]</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">var</span> values = [],
-					children = <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].childNodes;
-
-				can.each(children, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(child)</span> </span>{
-					<span class="hljs-keyword">if</span> (child.selected &amp;&amp; child.value) {
-						values.push(child.value);
-					}
-				});
-
-				<span class="hljs-keyword">return</span> values;
-			},</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-60">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
-              <p>Called when the user changes this input in any way.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-61">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
-              </div>
-              <p>Get an array of the currently selected values</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> value = <span class="hljs-keyword">this</span>.get(),
-					currentValue = <span class="hljs-keyword">this</span>.options.value();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-62">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
-              </div>
-              <p>If the compute is a string, set its value to the joined version of the values array (i.e. “foo;bar”)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isString || <span class="hljs-keyword">typeof</span> currentValue === <span class="hljs-string">"string"</span>) {
-					<span class="hljs-keyword">this</span>.isString = <span class="hljs-literal">true</span>;
-					<span class="hljs-keyword">this</span>.options.value(value.join(<span class="hljs-keyword">this</span>.delimiter));
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-63">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
-              </div>
-              <p>If the compute is a can.List, replace its current contents with the new array of values</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (currentValue <span class="hljs-keyword">instanceof</span> can.List) {
-					currentValue.attr(value, <span class="hljs-literal">true</span>);
-				}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-64">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
-              </div>
-              <p>Otherwise set the value to the array of values selected in the input.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">this</span>.options.value(value);
-				}
-
-			}
-		}),
-		Content = can.Control.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">this</span>.set();
-				<span class="hljs-keyword">this</span>.on(<span class="hljs-string">"blur"</span>, <span class="hljs-string">"setValue"</span>);
-			},
-			<span class="hljs-string">"{value} change"</span>: <span class="hljs-string">"set"</span>,
-			set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.options.value();
-				<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].innerHTML = (<span class="hljs-keyword">typeof</span> val === <span class="hljs-string">'undefined'</span> ? <span class="hljs-string">''</span> : val);
-			},
-			setValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">this</span>.options.value(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].innerHTML);
-			}
-		});
-
+	can.bindings = {
+		<span class="hljs-attr">behaviors</span>: behaviors,
+		<span class="hljs-attr">getBindingInfo</span>: getBindingInfo,
+		<span class="hljs-attr">special</span>: special
+	};
+	<span class="hljs-keyword">return</span> can.bindings;
 });</pre></div></div>
             
         </li>

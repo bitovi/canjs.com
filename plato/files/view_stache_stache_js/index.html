@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/stache/stache.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">63.52</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">395</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">51.60</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.31</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/* jshint undef: false */
+steal(
+	&quot;can/util&quot;,
+	&quot;can/view/parser&quot;,
+	&quot;can/view/target&quot;,
+	&quot;./html_section.js&quot;,
+	&quot;./text_section.js&quot;,
+	&quot;./mustache_core.js&quot;,
+	&quot;./mustache_helpers.js&quot;,
+	&quot;./intermediate_and_imports.js&quot;,
+	&quot;can/view/callbacks&quot;,
+	&quot;can/view/bindings&quot;,
+	function(can, parser, target,  HTMLSectionBuilder, TextSectionBuilder, mustacheCore, mustacheHelpers, getIntermediateAndImports, viewCallbacks ){
+
+
+	// Make sure that we can also use our modules with Stache as a plugin
+	parser = parser || can.view.parser;
+	can.view.parser = parser;
+	viewCallbacks = viewCallbacks || can.view.callbacks;
+
+	var svgNamespace = &quot;http://www.w3.org/2000/svg&quot;;
+	var namespaces = {
+		&quot;svg&quot;: svgNamespace,
+		// this allows a partial to start with g.
+		&quot;g&quot;: svgNamespace
+	},
+		textContentOnlyTag = {style: true, script: true};
+
+	function stache(template){
+		
+		// Remove line breaks according to mustache&#039;s specs.
+		if(typeof template === &quot;string&quot;) {
+			template = mustacheCore.cleanLineEndings(template);
+		}
+		
+		// The HTML section that is the root section for the entire template.
+		var section = new HTMLSectionBuilder(),
+			// Tracks the state of the parser.
+			state = {
+				node: null,
+				attr: null,
+				// A stack of which node / section we are in.
+				// There is probably a better way of doing this.
+				sectionElementStack: [],
+				// If text should be inserted and HTML escaped
+				text: false,
+				// which namespace we are in
+				namespaceStack: [],
+				// for style and script tags
+				// we create a special TextSectionBuilder and add things to that
+				// when the element is done, we compile the text section and 
+				// add it as a callback to `section`.
+				textContentOnly: null
+				
+			},
+			// This function is a catch all for taking a section and figuring out
+			// how to create a &quot;renderer&quot; that handles the functionality for a 
+			// given section and modify the section to use that renderer.
+			// For example, if an HTMLSection is passed with mode `#` it knows to 
+			// create a liveBindingBranchRenderer and pass that to section.add.
+			makeRendererAndUpdateSection = function(section, mode, stache){
+				
+				if(mode === &quot;&gt;&quot;) {
+					// Partials use liveBindingPartialRenderers
+					section.add(mustacheCore.makeLiveBindingPartialRenderer(stache, copyState()));
+
+				} else if(mode === &quot;/&quot;) {
+					
+					section.endSection();
+					if(section instanceof HTMLSectionBuilder) {
+						state.sectionElementStack.pop();
+					}
+				} else if(mode === &quot;else&quot;) {
+					
+					section.inverse();
+					
+				} else {
+					
+					// If we are an HTMLSection, we will generate a 
+					// a LiveBindingBranchRenderer; otherwise, a StringBranchRenderer.
+					// A LiveBindingBranchRenderer function processes
+					// the mustache text, and sets up live binding if an observable is read.
+					// A StringBranchRenderer function processes the mustache text and returns a 
+					// text value.  
+					var makeRenderer = section instanceof HTMLSectionBuilder ?
+						
+						mustacheCore.makeLiveBindingBranchRenderer:
+						mustacheCore.makeStringBranchRenderer;
+						
+					
+					if(mode === &quot;{&quot; || mode === &quot;&amp;&quot;) {
+					
+						// Adds a renderer function that just reads a value or calls a helper.
+						section.add( makeRenderer(null,stache, copyState() ));
+					
+					} else if(mode === &quot;#&quot; || mode === &quot;^&quot;) {
+						// Adds a renderer function and starts a section.
+						section.startSection(makeRenderer(mode,stache, copyState()  ));
+						// If we are a directly nested section, count how many we are within
+						if(section instanceof HTMLSectionBuilder) {
+							state.sectionElementStack.push(&quot;section&quot;);
+						}
+					} else {
+						// Adds a renderer function that only updates text.
+						section.add( makeRenderer(null,stache, copyState({text: true}) ));
+					}
+					
+				}
+			},
+			// Copys the state object for use in renderers.
+			copyState = function(overwrites){
+				var lastElement = state.sectionElementStack[state.sectionElementStack.length - 1];
+				var cur = {
+					tag: state.node &amp;&amp; state.node.tag,
+					attr: state.attr &amp;&amp; state.attr.name,
+					// &lt;content&gt; elements should be considered direclty nested
+					directlyNested: state.sectionElementStack.length ?
+						lastElement === &quot;section&quot; || lastElement === &quot;custom&quot;: true,
+					textContentOnly: !!state.textContentOnly
+				};
+				return overwrites ? can.simpleExtend(cur, overwrites) : cur;
+			},
+			addAttributesCallback = function(node, callback){
+				if( !node.attributes ) {
+					node.attributes = [];
+				}
+				node.attributes.unshift(callback);
+			};
+		
+		parser(template,{
+			start: function(tagName, unary){
+				var matchedNamespace = namespaces[tagName];
+				
+				if (matchedNamespace &amp;&amp; !unary ) {
+					state.namespaceStack.push(matchedNamespace);
+				}
+				
+				state.node = {
+					tag: tagName,
+					children: [],
+					namespace: matchedNamespace || can.last(state.namespaceStack)
+				};
+			},
+			end: function(tagName, unary){
+				var isCustomTag =  viewCallbacks.tag(tagName);
+				
+				if(unary){
+					// If it&#039;s a custom tag with content, we need a section renderer.
+					section.add(state.node);
+					if(isCustomTag) {
+						addAttributesCallback(state.node, function(scope, options, parentNodeList){
+							viewCallbacks.tagHandler(this,tagName, {
+								scope: scope,
+								options: options,
+								subtemplate: null,
+								templateType: &quot;stache&quot;,
+								parentNodeList: parentNodeList
+							});
+						});
+					}
+				} else {
+					section.push(state.node);
+					
+					state.sectionElementStack.push( isCustomTag ? &#039;custom&#039;: tagName );
+					
+					// If it&#039;s a custom tag with content, we need a section renderer.
+					if( isCustomTag ) {
+						section.startSubSection();
+					} else if(textContentOnlyTag[tagName]) {
+						state.textContentOnly = new TextSectionBuilder();
+					}
+				}
+				
+				
+				state.node =null;
+				
+			},
+			close: function( tagName ) {
+				var matchedNamespace = namespaces[tagName];
+				
+				if (matchedNamespace  ) {
+					state.namespaceStack.pop();
+				}
+				
+				var isCustomTag = viewCallbacks.tag(tagName),
+					renderer;
+				
+				if( isCustomTag ) {
+					renderer = section.endSubSectionAndReturnRenderer();
+				}
+				if(textContentOnlyTag[tagName]) {
+					section.last().add(state.textContentOnly.compile(copyState()));
+					state.textContentOnly = null;
+				}
+				
+				var oldNode = section.pop();
+				if( isCustomTag ) {
+					addAttributesCallback(oldNode, function(scope, options, parentNodeList){
+						viewCallbacks.tagHandler(this,tagName, {
+							scope: scope,
+							options: options,
+							subtemplate: renderer,
+							templateType: &quot;stache&quot;,
+							parentNodeList: parentNodeList
+						});
+					});
+				}
+				state.sectionElementStack.pop();
+			},
+			attrStart: function(attrName){
+				if(state.node.section) {
+					state.node.section.add(attrName+&quot;=\&quot;&quot;);
+				} else {
+					state.attr = {
+						name: attrName,
+						value: &quot;&quot;
+					};
+				}
+				
+			},
+			attrEnd: function(attrName){
+				if(state.node.section) {
+					state.node.section.add(&quot;\&quot; &quot;);
+				} else {
+					if(!state.node.attrs) {
+						state.node.attrs = {};
+					}
+					
+					state.node.attrs[state.attr.name] =
+						state.attr.section ? state.attr.section.compile(copyState()) : state.attr.value;
+
+					var attrCallback = viewCallbacks.attr(attrName);
+					if(attrCallback) {
+						if( !state.node.attributes ) {
+							state.node.attributes = [];
+						}
+						state.node.attributes.push(function(scope, options, nodeList){
+							attrCallback(this,{
+								attributeName: attrName,
+								scope: scope,
+								options: options,
+								nodeList: nodeList
+							});
+						});
+					}
+					
+					
+					
+					state.attr = null;
+				}
+			},
+			attrValue: function(value){
+				var section = state.node.section || state.attr.section;
+				if(section){
+					section.add(value);
+				} else {
+					state.attr.value += value;
+				}
+			},
+			chars: function( text ) {
+				(state.textContentOnly || section).add(text);
+			},
+			special: function( text ){
+				
+				var firstAndText = mustacheCore.splitModeFromExpression(text, state),
+					mode = firstAndText.mode,
+					expression = firstAndText.expression;
+				
+				
+				if(expression === &quot;else&quot;) {
+					var inverseSection;
+					if(state.attr &amp;&amp; state.attr.section) {
+						inverseSection = state.attr.section;
+					} else if(state.node &amp;&amp; state.node.section ) {
+						inverseSection = state.node.section;
+					} else {
+						inverseSection = state.textContentOnly || section;
+					}
+					inverseSection.inverse();
+					return;
+				}
+				
+				if(mode === &quot;!&quot;) {
+					return;
+				}
+
+				if(state.node &amp;&amp; state.node.section) {
+					
+					makeRendererAndUpdateSection(state.node.section, mode, expression);
+					
+					if(state.node.section.subSectionDepth() === 0){
+						state.node.attributes.push( state.node.section.compile(copyState()) );
+						delete state.node.section;
+					}
+					
+				}
+				// `{{}}` in an attribute like `class=&quot;{{}}&quot;`
+				else if(state.attr) {
+
+					if(!state.attr.section) {
+						state.attr.section = new TextSectionBuilder();
+						if(state.attr.value) {
+							state.attr.section.add(state.attr.value);
+						}
+					}
+					makeRendererAndUpdateSection(state.attr.section, mode, expression );
+
+				}
+				// `{{}}` in a tag like `&lt;div {{}}&gt;`
+				else if(state.node) {
+					
+					if(!state.node.attributes) {
+						state.node.attributes = [];
+					}
+					if(!mode) {
+						state.node.attributes.push( mustacheCore.makeLiveBindingBranchRenderer( null,expression, copyState() ) );
+					} else if( mode === &quot;#&quot; || mode === &quot;^&quot; ) {
+						if(!state.node.section) {
+							state.node.section = new TextSectionBuilder();
+						}
+						makeRendererAndUpdateSection(state.node.section, mode, expression );
+					} else {
+						throw new Error(mode+&quot; is currently not supported within a tag.&quot;);
+					}
+				}
+				else {
+					makeRendererAndUpdateSection( state.textContentOnly || section, mode, expression );
+				}
+			},
+			comment: function( text ) {
+				// create comment node
+				section.add({
+					comment: text
+				});
+			},
+			done: function(){}
+		});
+
+		return section.compile();
+	}
+	var escMap = {
+		&#039;\n&#039;: &quot;\\n&quot;,
+		&#039;\r&#039;: &quot;\\r&quot;,
+		&#039;\u2028&#039;: &quot;\\u2028&quot;,
+		&#039;\u2029&#039;: &quot;\\u2029&quot;
+	};
+	var esc = function(string){
+		return (&#039;&#039; + string).replace(/[&quot;&#039;\\\n\r\u2028\u2029]/g, function (character) {
+			if(&quot;&#039;\&quot;\\&quot;.indexOf(character) &gt;= 0) {
+				return &quot;\\&quot;+character;
+			} else  {
+				return escMap[character];
+			}
+		});
+	};
+	
+	can.view.register({
+		suffix: &quot;stache&quot;,
+
+		contentType: &quot;x-stache-template&quot;,
+
+		// Returns a `function` that renders the view.
+		fragRenderer: function(id, text) {
+			return stache(text);
+		},
+		script: function (id, src) {
+			return &quot;can.stache(\&quot;&quot;+esc(src)+&quot;\&quot;)&quot;;
+		}
+	});
+	can.view.ext = &quot;.stache&quot;;
+	
+	// At this point, can.stache has been created
+	can.extend(can.stache, mustacheHelpers);
+	
+	// Copy helpers on raw stache function too so it can be used by stealing it.
+	can.extend(stache, mustacheHelpers);
+	
+	can.stache.safeString = stache.safeString = function(text){
+		return {
+				toString: function () {
+					return text;
+				}
+			};
+	};
+	can.stache.async = function(source){
+		var iAi = getIntermediateAndImports(source);
+		var importPromises = can.map( iAi.imports, function(moduleName){
+			return can[&quot;import&quot;](moduleName);
+		});
+		return can.when.apply(can, importPromises ).then(function(){
+			return stache(iAi.intermediate);
+		});
+	};
+
+	return stache;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

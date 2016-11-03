@@ -51,14 +51,14 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,<span class="hljs-string">'can/view/parser'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-string">'can/test'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, parser, benchmarks)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,<span class="hljs-string">'can/view/parser'</span>, <span class="hljs-string">'can/test/benchmarks.js'</span>, <span class="hljs-string">'can/test'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, parser, benchmarks</span>) </span>{
 	<span class="hljs-comment">/* jshint ignore:start */</span>
 
 	can.ajax({
-		async: <span class="hljs-literal">false</span>,
-		url: can.test.path(<span class="hljs-string">"view/parser/benchmark.stache"</span>),
-		dataType: <span class="hljs-string">'text'</span>,
-		success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">async</span>: <span class="hljs-literal">false</span>,
+		<span class="hljs-attr">url</span>: can.test.path(<span class="hljs-string">"view/parser/benchmark.stache"</span>),
+		<span class="hljs-attr">dataType</span>: <span class="hljs-string">'text'</span>,
+		<span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -77,41 +77,41 @@
 		}
 	});
 	<span class="hljs-keyword">var</span> handles = {
-		start:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{},
-		end:       <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{},
-		close:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName )</span></span>{},
-		attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{},
-		attrEnd:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{},
-		attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-		chars:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-		comment:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-		special:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-		done:      <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( )</span></span>{}
+		<span class="hljs-attr">start</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName, unary </span>)</span>{},
+		<span class="hljs-attr">end</span>:       <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName, unary </span>)</span>{},
+		<span class="hljs-attr">close</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName </span>)</span>{},
+		<span class="hljs-attr">attrStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{},
+		<span class="hljs-attr">attrEnd</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{},
+		<span class="hljs-attr">attrValue</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+		<span class="hljs-attr">chars</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+		<span class="hljs-attr">comment</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+		<span class="hljs-attr">special</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+		<span class="hljs-attr">done</span>:      <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> </span>)</span>{}
 	 };
 	
-	<span class="hljs-keyword">var</span> intermediate = can.view.parser(<span class="hljs-built_in">window</span>._ParserBenchmarkText,handles);
+	<span class="hljs-keyword">var</span> intermediate = parser(<span class="hljs-built_in">window</span>._ParserBenchmarkText,handles);
 	
 	benchmarks.add(
 		<span class="hljs-string">"can/view/stache/parser Updating elements"</span>,
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> handles = {
-				start:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{},
-				end:       <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{},
-				close:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName )</span></span>{},
-				attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{},
-				attrEnd:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{},
-				attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-				chars:     <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-				comment:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-				special:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{},
-				done:      <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( )</span></span>{}
+				<span class="hljs-attr">start</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName, unary </span>)</span>{},
+				<span class="hljs-attr">end</span>:       <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName, unary </span>)</span>{},
+				<span class="hljs-attr">close</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName </span>)</span>{},
+				<span class="hljs-attr">attrStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{},
+				<span class="hljs-attr">attrEnd</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{},
+				<span class="hljs-attr">attrValue</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+				<span class="hljs-attr">chars</span>:     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+				<span class="hljs-attr">comment</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+				<span class="hljs-attr">special</span>:   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{},
+				<span class="hljs-attr">done</span>:      <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> </span>)</span>{}
 			 };
 			
 		},
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			can.view.parser(intermediate,handles);
 		},
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			
 		});
 	<span class="hljs-comment">/* jshint ignore:end */</span>

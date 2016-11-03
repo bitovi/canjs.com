@@ -76,6 +76,11 @@ steal('can/util', "can/view",function (can) {
 			th: 'tr',
 			li: 'ul'
 		},
+		// tags that should be handled as self-closing and should not have content in them
+		// when generated as part of binding hookup
+		selfClosingTags: {
+			col: true
+		},
 		// Used to determine the parentNode if el is directly within a documentFragment
 		getParentNode: function (el, defaultParentNode) {
 			return defaultParentNode && el.parentNode.nodeType === 11 ? defaultParentNode : el.parentNode;
@@ -110,9 +115,9 @@ steal('can/util', "can/view",function (can) {
 			var last = oldElements[oldElements.length - 1];
 			// Insert it in the `document` or `documentFragment`
 			if (last.nextSibling) {
-				can.insertBefore(last.parentNode, newFrag, last.nextSibling);
+				can.insertBefore(last.parentNode, newFrag, last.nextSibling, can.document);
 			} else {
-				can.appendChild(last.parentNode, newFrag);
+				can.appendChild(last.parentNode, newFrag, can.document);
 			}
 		},
 		/**
@@ -125,6 +130,17 @@ steal('can/util', "can/view",function (can) {
 		 * @param {DocumentFragment} newFrag
 		 */
 		replace: function (oldElements, newFrag) {
+			// The following helps make sure that a selected <option> remains
+			// the same by removing `selected` from the currently selected option
+			// and adding selected to an option that has the same value.
+			var selectedValue,
+				parentNode = oldElements[0].parentNode;
+				
+			if(parentNode.nodeName.toUpperCase() === "SELECT" && parentNode.selectedIndex >= 0) {
+				selectedValue = parentNode.value;
+			}
+			
+			
 			elements.after(oldElements, newFrag);
 			if(can.remove(can.$(oldElements)).length < oldElements.length && !selectsCommentNodes) {
 				can.each(oldElements, function(el) {
@@ -132,6 +148,9 @@ steal('can/util', "can/view",function (can) {
 						el.parentNode.removeChild(el);
 					}
 				});
+			}
+			if(selectedValue !== undefined) {
+				parentNode.value = selectedValue;
 			}
 		}
 	};

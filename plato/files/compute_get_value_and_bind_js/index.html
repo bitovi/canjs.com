@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>compute/get_value_and_bind.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.35</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">328</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">74.64</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.53</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">// # can/compute/get_value_and_bind
+//
+// This module:
+//
+// Exports a function that calls an arbitrary function and binds to any observables that
+// function reads. When any of those observables change, a callback function is called.
+//
+// And ...
+//
+// Adds two main methods to can:
+//
+// - can.__observe - All other observes call this method to be visible to computed functions.
+// - can.__notObserve - Returns a function that can not be observed.
+steal(&quot;can/util&quot;, function(can){
+
+	function ObservedInfo(func, context, compute){
+		this.newObserved = {};
+		this.oldObserved = null;
+		this.func = func;
+		this.context = context;
+		this.compute = compute;
+		this.onDependencyChange = can.proxy(this.onDependencyChange, this);
+		this.depth = null;
+		this.childDepths = {};
+		this.ignore = 0;
+		this.inBatch = false;
+		this.ready = false;
+		compute.observedInfo = this;
+		this.setReady = can.proxy(this._setReady, this);
+	}
+
+	can.simpleExtend(ObservedInfo.prototype,{
+		getPrimaryDepth: function() {
+			return this.compute._primaryDepth;
+		},
+		_setReady: function(){
+			this.ready = true;
+		},
+		getDepth: function(){
+			if(this.depth !== null) {
+				return this.depth;
+			} else {
+				return (this.depth = this._getDepth());
+			}
+		},
+		_getDepth: function(){
+			var max = 0,
+				childDepths = this.childDepths;
+			for(var cid in childDepths) {
+				if(childDepths[cid] &gt; max) {
+					max = childDepths[cid];
+				}
+			}
+			return max + 1;
+		},
+		addEdge: function(objEv){
+			objEv.obj.bind(objEv.event, this.onDependencyChange);
+			if(objEv.obj.observedInfo) {
+				this.childDepths[objEv.obj._cid] = objEv.obj.observedInfo.getDepth();
+				this.depth = null;
+			}
+		},
+		removeEdge: function(objEv){
+			objEv.obj.unbind(objEv.event, this.onDependencyChange);
+			if(objEv.obj.observedInfo) {
+				delete this.childDepths[objEv.obj._cid];
+				this.depth = null;
+			}
+		},
+		dependencyChange: function(ev){
+			if(this.bound &amp;&amp; this.ready) {
+				if(ev.batchNum !== undefined) {
+					// Only need to register once per batchNum
+					if(ev.batchNum !== this.batchNum) {
+						ObservedInfo.registerUpdate(this);
+						this.batchNum = ev.batchNum;
+					}
+				} else {
+					this.updateCompute(ev.batchNum);
+				}
+			}
+		},
+		onDependencyChange: function(ev, newVal, oldVal){
+			this.dependencyChange(ev, newVal, oldVal);
+		},
+		updateCompute: function(batchNum){
+			// It&#039;s possible this became unbound since it was registered to update
+			// Only actually update if something didn&#039;t come in and unbind it. (#2188).
+			if(this.bound) {
+				// Keep the old value.
+				var oldValue = this.value;
+				// Get the new value and register this event handler to any new observables.
+				this.getValueAndBind();
+				// Update the compute with the new value.
+				this.compute.updater(this.value, oldValue, batchNum);
+			}
+		},
+		// ## getValueAndBind
+		// Calls `func` with &quot;this&quot; as `context` and binds to any observables that
+		// `func` reads. When any of those observables change, `onchanged` is called.
+		// `oldObservedInfo` is A map of observable / event pairs this function used to be listening to.
+		// Returns the `newInfo` set of listeners and the value `func` returned.
+		getValueAndBind: function() {
+			this.bound = true;
+			this.oldObserved = this.newObserved || {};
+			this.ignore = 0;
+			this.newObserved = {};
+			this.ready = false;
+
+			// Add this function call&#039;s observedInfo to the stack,
+			// runs the function, pops off the observedInfo, and returns it.
+
+			observedInfoStack.push(this);
+			this.value = this.func.call(this.context);
+			observedInfoStack.pop();
+			this.updateBindings();
+			can.batch.afterPreviousEvents(this.setReady);
+		},
+		// ### updateBindings
+		// Unbinds everything in `oldObserved`.
+		updateBindings: function(){
+			var newObserved = this.newObserved,
+				oldObserved = this.oldObserved,
+				name,
+				obEv;
+
+			for (name in newObserved) {
+				obEv = newObserved[name];
+				if(!oldObserved[name]) {
+					this.addEdge(obEv);
+				} else {
+					oldObserved[name] = null;
+				}
+			}
+			for (name in oldObserved) {
+				obEv = oldObserved[name];
+				if(obEv) {
+					this.removeEdge(obEv);
+				}
+			}
+		},
+		teardown: function(){
+			// track this because events can be in the queue.
+			this.bound = false;
+			for (var name in this.newObserved) {
+				var ob = this.newObserved[name];
+				this.removeEdge(ob);
+			}
+			this.newObserved = {};
+		}
+	});
+
+
+
+	var updateOrder = [],
+		curPrimaryDepth = Infinity,
+		maxPrimaryDepth = 0,
+		currentBatchNum;
+
+	// could get a registerUpdate from a 5 while a 1 is going on because the 5 listens to the 1
+	ObservedInfo.registerUpdate = function(observeInfo, batchNum){
+		var depth = observeInfo.getDepth()-1;
+		var primaryDepth = observeInfo.getPrimaryDepth();
+
+		curPrimaryDepth = Math.min(primaryDepth, curPrimaryDepth);
+		maxPrimaryDepth = Math.max(primaryDepth, maxPrimaryDepth);
+
+		var primary = updateOrder[primaryDepth] ||
+			(updateOrder[primaryDepth] = {
+				observeInfos: [],
+				current: Infinity,
+				max: 0
+			});
+		var objs = primary.observeInfos[depth] || (primary.observeInfos[depth] = []);
+
+		objs.push(observeInfo);
+
+		primary.current = Math.min(depth, primary.current);
+		primary.max = Math.max(depth, primary.max);
+	};
+
+	/*
+	 * update all computes to the specified place.
+	 */
+	ObservedInfo.updateUntil = function(primaryDepth, depth){
+		var cur;
+
+		while(true) {
+			if(curPrimaryDepth &lt;= maxPrimaryDepth &amp;&amp; curPrimaryDepth &lt;= primaryDepth) {
+				var primary = updateOrder[curPrimaryDepth];
+
+				if(primary &amp;&amp; primary.current &lt;= primary.max) {
+					if(primary.current &gt; depth) {
+						return;
+					}
+					
+					var last = primary.observeInfos[primary.current];
+					if(last &amp;&amp; (cur = last.pop())) {
+						cur.updateCompute(currentBatchNum);
+					} else {
+						primary.current++;
+					}
+				} else {
+					curPrimaryDepth++;
+				}
+			} else {
+				return;
+			}
+		}
+	};
+
+	ObservedInfo.batchEnd = function(batchNum){
+		var cur;
+		currentBatchNum = batchNum;
+		while(true) {
+			if(curPrimaryDepth &lt;= maxPrimaryDepth) {
+				var primary = updateOrder[curPrimaryDepth];
+
+				if(primary &amp;&amp; primary.current &lt;= primary.max) {
+					var last = primary.observeInfos[primary.current];
+					if(last &amp;&amp; (cur = last.pop())) {
+						cur.updateCompute(batchNum);
+					} else {
+						primary.current++;
+					}
+				} else {
+					curPrimaryDepth++;
+				}
+			} else {
+				updateOrder = [];
+				curPrimaryDepth = Infinity;
+				maxPrimaryDepth = 0;
+				return;
+			}
+		}
+	};
+
+
+
+	// ### observedInfoStack
+	//
+	// This is the stack of all `observedInfo` objects that are the result of
+	// recursive `getValueAndBind` calls.
+	// `getValueAndBind` can indirectly call itself anytime a compute reads another
+	// compute.
+	//
+	// An `observedInfo` entry looks like:
+	//
+	//     {
+	//       observed: {
+	//         &quot;map1|first&quot;: {obj: map, event: &quot;first&quot;},
+	//         &quot;map1|last&quot; : {obj: map, event: &quot;last&quot;}
+	//       },
+	//       names: &quot;map1|firstmap1|last&quot;
+	//     }
+	//
+	// Where:
+	// - `observed` is a map of `&quot;cid|event&quot;` to the observable and event.
+	//   We use keys like `&quot;cid|event&quot;` to quickly identify if we have already observed this observable.
+	// - `names` is all the keys so we can quickly tell if two observedInfo objects are the same.
+	var observedInfoStack = [];
+
+	// ## can.__observe
+	// Indicates that an observable is being read.
+	// Updates the top of the stack with the observable being read.
+	can.__observe = function (obj, event) {
+		var top = observedInfoStack[observedInfoStack.length-1];
+		if (top &amp;&amp; !top.ignore) {
+			var evStr = event + &quot;&quot;,
+				name = obj._cid + &#039;|&#039; + evStr;
+				
+			if(top.traps) {
+				top.traps.push({obj: obj, event: evStr, name: name});
+			}
+			else if(!top.newObserved[name]) {
+				top.newObserved[name] = {
+					obj: obj,
+					event: evStr
+				};
+			}
+		}
+	};
+
+	can.__reading = can.__observe;
+
+	can.__trapObserves = function(){
+		if (observedInfoStack.length) {
+			var top = observedInfoStack[observedInfoStack.length-1];
+			var traps = top.traps = [];
+			return function(){
+				top.traps = null;
+				return traps;
+			};
+		} else {
+			return function(){return [];};
+		}
+	};
+	can.__observes = function(observes){
+		// a bit more optimized so we don&#039;t have to repeat everything in can.__observe
+		var top = observedInfoStack[observedInfoStack.length-1];
+		if (top) {
+			for(var i =0, len = observes.length; i &lt; len; i++) {
+				var trap = observes[i],
+					name = trap.name;
+
+				if(!top.newObserved[name]) {
+					top.newObserved[name] = trap;
+				}
+			}
+		}
+	};
+
+	// ### can.__isRecordingObserves
+	// Returns if some function is in the process of recording observes.
+	can.__isRecordingObserves = function(){
+		var len = observedInfoStack.length,
+			last = observedInfoStack[len-1];
+		return len &amp;&amp; (last.ignore === 0) &amp;&amp; last;
+	};
+
+	// ### can.__notObserve
+	// Protects a function from being observed.
+	can.__notObserve = function(fn){
+		return function(){
+			if (observedInfoStack.length) {
+				var top = observedInfoStack[observedInfoStack.length-1];
+				top.ignore++;
+				var res = fn.apply(this, arguments);
+				top.ignore--;
+				return res;
+			} else {
+				return fn.apply(this, arguments);
+			}
+		};
+	};
+
+	can.batch._onDispatchedEvents = ObservedInfo.batchEnd;
+
+	return ObservedInfo;
+
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

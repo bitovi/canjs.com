@@ -1,8 +1,11 @@
 /* global global: false */
 steal(function () {
 	/* global GLOBALCAN */
-	var glbl = typeof window !== "undefined" ? window : global;
-	
+	/* global self */
+	/* global WorkerGlobalScope */
+	var glbl = typeof window !== "undefined" ? window :
+		(typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) ? self : global;
+
 	var can = {};
 	if (typeof GLOBALCAN === 'undefined' || GLOBALCAN !== false) {
 		glbl.can = can;
@@ -12,12 +15,21 @@ steal(function () {
 	// An empty function useful for where you need a dummy callback.
 	can.k = function(){};
 
-	can.isDeferred = can.isPromise = function (obj) {
-		// Returns `true` if something looks like a deferred.
+	
+	can.isDeferred = function(obj) {
+		if (!!can.dev) { // can.dev may not be defined yet
+			can.dev.warn('can.isDeferred: this function is deprecated and will be removed in a future release. can.isPromise replaces the functionality of can.isDeferred.');
+		}
 		return obj && typeof obj.then === "function" && typeof obj.pipe === "function";
 	};
+	can.isPromise = function(obj){
+		return !!obj && (
+			(window.Promise && (obj instanceof Promise)) ||
+			(can.isFunction(obj.then) && (can.List === undefined || !(obj instanceof can.List)))
+		);
+	};
 	can.isMapLike = function(obj){
-		return can.Map && (obj instanceof can.Map || obj && obj.__get);
+		return can.Map && (obj instanceof can.Map || obj && obj.___get);
 	};
 
 	var cid = 0;
@@ -36,16 +48,49 @@ steal(function () {
 		}
 		return d;
 	};
-	
+
 	can.last = function(arr){
 		return arr && arr[arr.length - 1];
 	};
 
 
-	can.frag = function(item){
+	can.isDOM = function(el) {
+		return (el.ownerDocument || el) === can.global.document;
+	};
+
+	can.childNodes = function(node) {
+		var childNodes = node.childNodes;
+		if("length" in childNodes) {
+			return childNodes;
+		} else {
+			var cur = node.firstChild;
+			var nodes = [];
+			while(cur) {
+				nodes.push(cur);
+				cur = cur.nextSibling;
+			}
+			return nodes;
+		}
+	};
+
+	var protoBind = Function.prototype.bind;
+	if(protoBind) {
+		can.proxy = function(fn, context){
+			return protoBind.call(fn, context);
+		};
+	} else {
+		can.proxy = function (fn, context) {
+			return function () {
+				return fn.apply(context, arguments);
+			};
+		};
+	}
+
+	can.frag = function(item, doc){
+		var document = doc || can.document || can.global.document;
 		var frag;
 		if(!item || typeof item === "string"){
-			frag = can.buildFragment(item == null ? "" : ""+item, document.body);
+			frag = can.buildFragment(item == null ? "" : ""+item, document);
 			// If we have an empty frag...
 			if (!frag.childNodes.length) {
 				frag.appendChild(document.createTextNode(''));
@@ -62,17 +107,20 @@ steal(function () {
 			can.each(item, function(item){
 				frag.appendChild( can.frag(item) );
 			});
+			if (!can.childNodes(frag).length) {
+				frag.appendChild(document.createTextNode(''));
+			}
 			return frag;
 		} else {
-			frag = can.buildFragment( ""+item, document.body);
+			frag = can.buildFragment( ""+item, document);
 			// If we have an empty frag...
-			if (!frag.childNodes.length) {
+			if (!can.childNodes(frag).length) {
 				frag.appendChild(document.createTextNode(''));
 			}
 			return frag;
 		}
 	};
-	
+
 	// Define the `can.scope` function that can be used to retrieve the `scope` from the element
 	can.scope = can.viewModel = function (el, attr, val) {
 		el = can.$(el);
@@ -93,37 +141,91 @@ steal(function () {
 				return el;
 		}
 	};
-	
-	can["import"] = function(moduleName) {
+
+
+	var parseURI = function(url){
+			var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
+				// authority = '//' + user + ':' + pass '@' + hostname + ':' port
+			return (m ? {
+				href     : m[0] || '',
+				protocol : m[1] || '',
+				authority: m[2] || '',
+				host     : m[3] || '',
+				hostname : m[4] || '',
+				port     : m[5] || '',
+				pathname : m[6] || '',
+				search   : m[7] || '',
+				hash     : m[8] || ''
+			} : null);
+		};
+
+	can.joinURIs = function(base, href) {
+		function removeDotSegments(input) {
+			var output = [];
+			input.replace(/^(\.\.?(\/|$))+/, '')
+				.replace(/\/(\.(\/|$))+/g, '/')
+				.replace(/\/\.\.$/, '/../')
+				.replace(/\/?[^\/]*/g, function (p) {
+					if (p === '/..') {
+						output.pop();
+					} else {
+						output.push(p);
+					}
+				});
+			return output.join('').replace(/^\//, input.charAt(0) === '/' ? '/' : '');
+		}
+
+		href = parseURI(href || '');
+		base = parseURI(base || '');
+
+		return !href || !base ? null : (href.protocol || base.protocol) +
+			(href.protocol || href.authority ? href.authority : base.authority) +
+			removeDotSegments(href.protocol || href.authority || href.pathname.charAt(0) === '/' ? href.pathname : (href.pathname ? ((base.authority && !base.pathname ? '/' : '') + base.pathname.slice(0, base.pathname.lastIndexOf('/') + 1) + href.pathname) : base.pathname)) +
+				(href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
+				href.hash;
+	};
+
+	can["import"] = function(moduleName, parentName) {
 		var deferred = new can.Deferred();
-		
+
 		if(typeof window.System === "object" && can.isFunction(window.System["import"])) {
-			window.System["import"](moduleName).then(can.proxy(deferred.resolve, deferred),
+			window.System["import"](moduleName, {
+				name: parentName
+			}).then(can.proxy(deferred.resolve, deferred),
 				can.proxy(deferred.reject, deferred));
 		} else if(window.define && window.define.amd){
-			
+
 			window.require([moduleName], function(value){
 				deferred.resolve(value);
 			});
-			
+
 		} else if(window.steal) {
-			
+
 			steal.steal(moduleName, function(value){
 				deferred.resolve(value);
 			});
-			
+
 		} else if(window.require){
 			deferred.resolve(window.require(moduleName));
 		} else {
 			// ideally this will use can.getObject
 			deferred.resolve();
 		}
-		
+
 		return deferred.promise();
 	};
-	
+
 	// this is here in case can.compute hasn't loaded
-	can.__reading = function () {};
+	can.__observe = function () {};
+
+	can.isNode = typeof process === "object" &&
+		{}.toString.call(process) === "[object process]";
+
+	can.isBrowserWindow = typeof window !== "undefined" &&
+		typeof document !== "undefined" && typeof SimpleDOM === "undefined";
+	can.isWebWorker = typeof WorkerGlobalScope !== "undefined" &&
+		(self instanceof WorkerGlobalScope);
+
 
 	//!steal-remove-start
 	can.dev = {
@@ -168,9 +270,9 @@ steal(function () {
 			}
 		},
 		_logger: function (type, arr) {
-			if (console.log.apply) {
+			try {
 				console[type].apply(console, arr);
-			} else {
+			} catch(e) {
 				console[type](arr);
 			}
 		}

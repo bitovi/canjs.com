@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -86,58 +96,92 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/view/stache/mustache_core.js"</span>, <span class="hljs-string">"can/view/parser"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(mustacheCore, parser)</span></span>{
-	
-	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source)</span></span>{
-		
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/view/stache/mustache_core.js"</span>, <span class="hljs-string">"can/view/parser"</span>,
+			<span class="hljs-string">"can/view/import"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mustacheCore, parser</span>)</span>{
+
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">source</span>)</span>{
+
 		<span class="hljs-keyword">var</span> template = mustacheCore.cleanLineEndings(source);
 		<span class="hljs-keyword">var</span> imports = [],
+			dynamicImports = [],
+			ases = {},
 			inImport = <span class="hljs-literal">false</span>,
-			inFrom = <span class="hljs-literal">false</span>;
-		
-		<span class="hljs-keyword">var</span> keepToken = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-			<span class="hljs-keyword">return</span> inImport ? <span class="hljs-literal">false</span> : <span class="hljs-literal">true</span>;
-		};
-		
+			inFrom = <span class="hljs-literal">false</span>,
+			inAs = <span class="hljs-literal">false</span>,
+			isUnary = <span class="hljs-literal">false</span>,
+			currentAs = <span class="hljs-string">""</span>,
+			currentFrom = <span class="hljs-string">""</span>;
+
 		<span class="hljs-keyword">var</span> intermediate = parser(template, {
-			start: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{
+			<span class="hljs-attr">start</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> tagName, unary </span>)</span>{
+				isUnary = unary;
 				<span class="hljs-keyword">if</span>(tagName === <span class="hljs-string">"can-import"</span>) {
 					inImport = <span class="hljs-literal">true</span>;
-				}
-				<span class="hljs-keyword">return</span> keepToken();
-			},
-			end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( tagName, unary )</span></span>{
-				<span class="hljs-keyword">if</span>(tagName === <span class="hljs-string">"can-import"</span>) {
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(inImport) {
 					inImport = <span class="hljs-literal">false</span>;
-					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 				}
-				<span class="hljs-keyword">return</span> keepToken();
 			},
-			attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{
+			<span class="hljs-attr">attrStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{
 				<span class="hljs-keyword">if</span>(attrName === <span class="hljs-string">"from"</span>) {
 					inFrom = <span class="hljs-literal">true</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(attrName === <span class="hljs-string">"as"</span> || attrName === <span class="hljs-string">"export-as"</span>) {
+					inAs = <span class="hljs-literal">true</span>;
 				}
-				<span class="hljs-keyword">return</span> keepToken();
 			},
-			attrEnd:   <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( attrName )</span></span>{
+			<span class="hljs-attr">attrEnd</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> attrName </span>)</span>{
 				<span class="hljs-keyword">if</span>(attrName === <span class="hljs-string">"from"</span>) {
 					inFrom = <span class="hljs-literal">false</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(attrName === <span class="hljs-string">"as"</span> || attrName === <span class="hljs-string">"export-as"</span>) {
+					inAs = <span class="hljs-literal">false</span>;
 				}
-				<span class="hljs-keyword">return</span> keepToken();
 			},
-			attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( value )</span></span>{
+			<span class="hljs-attr">attrValue</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> value </span>)</span>{
 				<span class="hljs-keyword">if</span>(inFrom &amp;&amp; inImport) {
 					imports.push(value);
+					<span class="hljs-keyword">if</span>(!isUnary) {
+						dynamicImports.push(value);
+					}
+					currentFrom = value;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(inAs &amp;&amp; inImport) {
+					currentAs = value;
 				}
-				<span class="hljs-keyword">return</span> keepToken();
 			},
-			chars: keepToken,
-			comment: keepToken,
-			special: keepToken,
-			done: keepToken
+			<span class="hljs-attr">end</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tagName</span>)</span>{
+				<span class="hljs-keyword">if</span>(tagName === <span class="hljs-string">"can-import"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Set the as value to the from</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(currentAs) {
+						ases[currentAs] = currentFrom;
+						currentAs = <span class="hljs-string">""</span>;
+					}
+				}
+			},
+			<span class="hljs-attr">close</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tagName</span>)</span>{
+				<span class="hljs-keyword">if</span>(tagName === <span class="hljs-string">"can-import"</span>) {
+					imports.pop();
+				}
+			}
 		}, <span class="hljs-literal">true</span>);
-	    
-		<span class="hljs-keyword">return</span> {intermediate: intermediate, imports: imports};
+
+		<span class="hljs-keyword">return</span> {
+			<span class="hljs-attr">intermediate</span>: intermediate,
+			<span class="hljs-attr">imports</span>: imports,
+			<span class="hljs-attr">dynamicImports</span>: dynamicImports,
+			<span class="hljs-attr">ases</span>: ases,
+			<span class="hljs-attr">exports</span>: ases
+		};
 	};
 
 });</pre></div></div>

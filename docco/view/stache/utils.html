@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -86,8 +96,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-	<span class="hljs-keyword">return</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/scope"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -98,13 +107,18 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Returns if something looks like an array.  This works for can.List</p>
+              <h2 id="can-view-options">can.view.Options</h2>
+<p>This contains the local helpers, partials, and tags available to a template.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isArrayLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
-			<span class="hljs-keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="hljs-keyword">typeof</span> obj.length === <span class="hljs-string">'number'</span>;
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-comment">/**
+		 * @hide
+		 * The Options scope.
+		 */</span>
+	<span class="hljs-keyword">var</span> Options = can.view.Options;
+	
+	<span class="hljs-keyword">return</span> {</pre></div></div>
             
         </li>
         
@@ -115,12 +129,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Returns if something is an observe.  This works for can.route</p>
+              <p>Returns if something looks like an array.  This works for can.List</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		isObserveLike: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
-			<span class="hljs-keyword">return</span> obj <span class="hljs-keyword">instanceof</span> can.Map || (obj &amp;&amp; !! obj._get);
+            <div class="content"><div class='highlight'><pre>		isArrayLike: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="hljs-keyword">typeof</span> obj.length === <span class="hljs-string">'number'</span>;
 		},</pre></div></div>
             
         </li>
@@ -132,11 +146,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>A generic empty function</p>
+              <p>Returns if something is an observe.  This works for can.route</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		emptyHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		isObserveLike: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+			<span class="hljs-keyword">return</span> obj <span class="hljs-keyword">instanceof</span> can.Map || (obj &amp;&amp; !! obj._get);
+		},</pre></div></div>
             
         </li>
         
@@ -147,12 +163,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Converts a string like “1” into 1. “null” into null, etc.
-This doesn’t have to do full JSON, so removing eval would be good.</p>
+              <p>A generic empty function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		jsonParse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		emptyHandler: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{},</pre></div></div>
             
         </li>
         
@@ -163,12 +178,28 @@ This doesn’t have to do full JSON, so removing eval would be good.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
+              <p>Converts a string like “1” into 1. “null” into null, etc.
+This doesn’t have to do full JSON, so removing eval would be good.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		jsonParse: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">str</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
               <p>if it starts with a quote, assume a string.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(str[<span class="hljs-number">0</span>] === <span class="hljs-string">"'"</span>) {
-				<span class="hljs-keyword">return</span> str.substr(<span class="hljs-number">1</span>, str.length -<span class="hljs-number">2</span>);
+				<span class="hljs-keyword">return</span> str.substr(<span class="hljs-number">1</span>, str.length <span class="hljs-number">-2</span>);
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(str === <span class="hljs-string">"undefined"</span>) {
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(can.global.JSON) {
@@ -177,17 +208,130 @@ This doesn’t have to do full JSON, so removing eval would be good.</p>
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(<span class="hljs-string">"("</span>+str+<span class="hljs-string">")"</span>);
 			}
 		},
-		mixins: {
-			last: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">mixins</span>: {
+			<span class="hljs-attr">last</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack[<span class="hljs-keyword">this</span>.stack.length - <span class="hljs-number">1</span>];
 			},
-			add: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chars)</span></span>{
+			<span class="hljs-attr">add</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">chars</span>)</span>{
 				<span class="hljs-keyword">this</span>.last().add(chars);
 			},
-			subSectionDepth: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+			<span class="hljs-attr">subSectionDepth</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack.length - <span class="hljs-number">1</span>;
 			}
-		}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Sets .fn and .inverse on a helperOptions object and makes sure
+they can reference the current scope and options.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		convertToScopes: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer, isStringOnly</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>overwrite fn and inverse to always convert to scopes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(truthyRenderer) {
+				helperOptions.fn = <span class="hljs-keyword">this</span>.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList, isStringOnly);
+			}
+			<span class="hljs-keyword">if</span>(falseyRenderer) {
+				helperOptions.inverse = <span class="hljs-keyword">this</span>.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList, isStringOnly);
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Returns a new renderer function that makes sure any data or helpers passed
+to it are converted to a can.view.Scope and a can.view.Options.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		makeRendererConvertScopes: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">renderer, parentScope, parentOptions, nodeList, observeObservables</span>) </span>{
+			<span class="hljs-keyword">var</span> rendererWithScope = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ctx, opts, parentNodeList</span>)</span>{
+				<span class="hljs-keyword">return</span> renderer(ctx || parentScope, opts, parentNodeList);
+			};
+			<span class="hljs-keyword">var</span> convertedRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newScope, newOptions, parentNodeList</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>prevent binding on fn.
+If a non-scope value is passed, add that to the parent scope.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (newScope !== <span class="hljs-literal">undefined</span> &amp;&amp; !(newScope <span class="hljs-keyword">instanceof</span> can.view.Scope)) {
+					newScope = parentScope.add(newScope);
+				}
+				<span class="hljs-keyword">if</span> (newOptions !== <span class="hljs-literal">undefined</span> &amp;&amp; !(newOptions <span class="hljs-keyword">instanceof</span> Options)) {
+					newOptions = parentOptions.add(newOptions);
+				}
+				<span class="hljs-keyword">var</span> result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList|| nodeList );
+				<span class="hljs-keyword">return</span> result;
+			};
+			<span class="hljs-keyword">return</span> observeObservables ? convertedRenderer : can.__notObserve(convertedRenderer);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>A helper for calling the truthy subsection for each item in a list and putting them in a document Fragment.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		getItemsFragContent: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">items, helperOptions, scope</span>)</span>{
+			<span class="hljs-keyword">var</span> isObserveList = <span class="hljs-keyword">this</span>.isObserveLike(items);
+			<span class="hljs-keyword">var</span> result = [],
+				len = isObserveList ? items.attr(<span class="hljs-string">'length'</span>) : items.length;
+
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+				<span class="hljs-keyword">var</span> aliases = {
+					<span class="hljs-string">"%index"</span>: i,
+					<span class="hljs-string">"@index"</span>: i
+				};
+				<span class="hljs-keyword">var</span> item = isObserveList ? items.attr(<span class="hljs-string">''</span> + i) : items[i];
+				result.push(helperOptions.fn(scope.add(aliases, {<span class="hljs-attr">notContext</span>: <span class="hljs-literal">true</span> }).add(item)));
+			}
+			<span class="hljs-keyword">return</span> result;
+		},
+		<span class="hljs-attr">Options</span>: Options
 	};
 });</pre></div></div>
             

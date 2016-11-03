@@ -1,8 +1,8 @@
-steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array/each.js', "can/util/inserted", function ($, can, attr, event) {
+steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", "can/util/fragment.js",'can/util/array/each.js', "can/util/inserted", function ($, can, attr, event) {
 	var isBindableElement = function (node) {
 		// In IE8 window.window !== window.window, so we allow == here.
 		/*jshint eqeqeq:false*/
-		return ( node.nodeName && (node.nodeType === 1 || node.nodeType === 9) )|| node == window;
+		return (node.nodeName && (node.nodeType === 1 || node.nodeType === 9)) || node == window || node.addEventListener;
 	};
 	$ = $ || window.jQuery;
 	// _jQuery node list._
@@ -35,17 +35,7 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 		event: can.event,
 		addEvent: can.addEvent,
 		removeEvent: can.removeEvent,
-		buildFragment: function (elems, context) {
-			// Check if this has any html nodes on our own.
-			var ret;
-			elems = [elems];
-			// Set context per 1.8 logic
-			context = context || document;
-			context = !context.nodeType && context[0] || context;
-			context = context.ownerDocument || context;
-			ret = $.buildFragment(elems, context);
-			return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
-		},
+		buildFragment: can.buildFragment,
 		$: $,
 		each: can.each,
 		bind: function (ev, cb) {
@@ -95,11 +85,7 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 			}
 			return this;
 		},
-		proxy: function (fn, context) {
-			return function () {
-				return fn.apply(context, arguments);
-			};
-		},
+		proxy: can.proxy,
 		attr: attr
 	});
 	// Wrap binding functions.
@@ -138,8 +124,12 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 		});
 		oldClean(elems);
 	};
+
+
+
 	var oldDomManip = $.fn.domManip,
 		cbIndex;
+
 	// feature detect which domManip we are using
 	$.fn.domManip = function (args, cb1, cb2) {
 		for (var i = 1; i < arguments.length; i++) {
@@ -153,34 +143,88 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 	$(document.createElement("div"))
 		.append(document.createElement("div"));
 
-	$.fn.domManip = (cbIndex === 2 ?
-		function (args, table, callback) {
-			return oldDomManip.call(this, args, table, function (elem) {
-				var elems;
-				if (elem.nodeType === 11) {
-					elems = can.makeArray(elem.childNodes);
-				}
-				var ret = callback.apply(this, arguments);
-				can.inserted(elems ? elems : [elem]);
-				return ret;
-			});
-		} :
-		function (args, callback) {
-			return oldDomManip.call(this, args, function (elem) {
-				var elems;
-				if (elem.nodeType === 11) {
-					elems = can.makeArray(elem.childNodes);
-				}
-				var ret = callback.apply(this, arguments);
-				can.inserted(elems ? elems : [elem]);
-				return ret;
-			});
-		});
+	var getChildNodes = function(node){
+		var childNodes = node.childNodes;
+		if("length" in childNodes) {
+			return can.makeArray(childNodes);
+		} else {
+			var cur = node.firstChild;
+			var nodes = [];
+			while(cur) {
+				nodes.push(cur);
+				cur = cur.nextSibling;
+			}
+			return nodes;
+		}
+	};
 
-	if (!can.attr.MutationObserver) {
-		// handle via calls to attr
-		var oldAttr = $.attr;
-		$.attr = function (el, attrName) {
+	if(cbIndex === undefined) {
+		$.fn.domManip = oldDomManip;
+		// we must manually overwrite
+		can.each(['after', 'prepend', 'before', 'append','replaceWith'], function (name) {
+			var original = $.fn[name];
+			$.fn[name] = function () {
+				var elems = [],
+					args = can.makeArray(arguments);
+
+				if (args[0] != null) {
+					// documentFragment
+					if (typeof args[0] === "string") {
+						args[0] = can.buildFragment(args[0]);
+					}
+					if (args[0].nodeType === 11) {
+						elems = getChildNodes(args[0]);
+					} else if( can.isArrayLike( args[0] ) ) {
+						elems = can.makeArray(args[0]);
+					} else {
+						elems = [args[0]];
+					}
+				}
+
+				var ret = original.apply(this, args);
+
+				can.inserted(elems);
+
+				return ret;
+			};
+		});
+	} else {
+		// Older jQuery that supports domManip
+		
+
+		$.fn.domManip = (cbIndex === 2 ?
+			function (args, table, callback) {
+				return oldDomManip.call(this, args, table, function (elem) {
+					var elems;
+					if (elem.nodeType === 11) {
+						elems = can.makeArray( can.childNodes(elem) );
+					}
+					var ret = callback.apply(this, arguments);
+					can.inserted(elems ? elems : [elem]);
+					return ret;
+				});
+			} :
+			function (args, callback) {
+				return oldDomManip.call(this, args, function (elem) {
+					var elems;
+					if (elem.nodeType === 11) {
+						elems = can.makeArray( can.childNodes(elem) );
+					}
+					var ret = callback.apply(this, arguments);
+					can.inserted(elems ? elems : [elem]);
+					return ret;
+				});
+			});
+	}
+	
+
+
+	// handle via calls to attr
+	var oldAttr = $.attr;
+	$.attr = function (el, attrName) {
+		if( can.isDOM(el) && can.attr.MutationObserver) {
+			return oldAttr.apply(this, arguments);
+		} else {
 			var oldValue, newValue;
 			if (arguments.length >= 3) {
 				oldValue = oldAttr.call(this, el, attrName);
@@ -193,9 +237,13 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 				can.attr.trigger(el, attrName, oldValue);
 			}
 			return res;
-		};
-		var oldRemove = $.removeAttr;
-		$.removeAttr = function (el, attrName) {
+		}
+	};
+	var oldRemove = $.removeAttr;
+	$.removeAttr = function (el, attrName) {
+		if( can.isDOM(el) && can.attr.MutationObserver) {
+			return oldRemove.apply(this, arguments);
+		} else {
 			var oldValue = oldAttr.call(this, el, attrName),
 				res = oldRemove.apply(this, arguments);
 
@@ -203,19 +251,11 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 				can.attr.trigger(el, attrName, oldValue);
 			}
 			return res;
-		};
-		$.event.special.attributes = {
-			setup: function () {
-				can.data(can.$(this), "canHasAttributesBindings", true);
-			},
-			teardown: function () {
-				$.removeData(this, "canHasAttributesBindings");
-			}
-		};
-	} else {
-		// setup a special events
-		$.event.special.attributes = {
-			setup: function () {
+		}
+	};
+	$.event.special.attributes = {
+		setup: function () {
+			if( can.isDOM(this) && can.attr.MutationObserver) {
 				var self = this;
 				var observer = new can.attr.MutationObserver(function (mutations) {
 					mutations.forEach(function (mutation) {
@@ -229,41 +269,21 @@ steal('jquery', 'can/util/can.js', 'can/util/attr', "can/event", 'can/util/array
 					attributeOldValue: true
 				});
 				can.data(can.$(this), "canAttributesObserver", observer);
-			},
-			teardown: function () {
-				can.data(can.$(this), "canAttributesObserver")
-					.disconnect();
-				$.removeData(this, "canAttributesObserver");
-
+			} else {
+				can.data(can.$(this), "canHasAttributesBindings", true);
 			}
-		};
-	}
-	
-	// ## Fix build fragment.
-	// In IE8, we can pass jQuery a fragment and it removes newlines.
-	// This checks for that and replaces can.buildFragment with something
-	// that if only a single text node is returned, returns a fragment with
-	// a text node that is set to the content.
-	(function(){
-		
-		var text = "<-\n>",
-			frag = can.buildFragment(text, document);
-		if(text !== frag.childNodes[0].nodeValue) {
-			
-			var oldBuildFragment  = can.buildFragment;
-			can.buildFragment = function(content, context){
-				var res = oldBuildFragment(content, context);
-				if(res.childNodes.length === 1 && res.childNodes[0].nodeType === 3) {
-					res.childNodes[0].nodeValue = content;
-				}
-				return res;
-			};
-			
+		},
+		teardown: function () {
+			if( can.isDOM(this) && can.attr.MutationObserver) {
+				can.data(can.$(this), "canAttributesObserver")
+				.disconnect();
+				$.removeData(this, "canAttributesObserver");
+			} else {
+				$.removeData(this, "canHasAttributesBindings");
+			}
+
 		}
-		
-		
-		
-	})();
+	};
 
 	$.event.special.inserted = {};
 	$.event.special.removed = {};

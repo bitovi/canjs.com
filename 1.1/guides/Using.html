@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li class='active'><a href='index.html'>guides</a></li>
 		       <li><a href='../docs/index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -223,41 +220,227 @@
 you to load any CanJS component and plugin using an AMD module loader like <a href="http://requirejs.org/">RequireJS</a>.
 jQuery will be the default library so make sure the <code>jquery</code> module id points to the jQuery source.
 Here is an example for jQuery and RequireJS:</p>
+<pre><code class="language-js">&lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+  require.config({
+    paths : {
+      &quot;jquery&quot; : &quot;http://code.jquery.com/jquery-1.8.2&quot;
+    }
+  });
+
+  require(['can/view/ejs', 'can/control'], function(can) {
+    // Use EJS and Control
+  });
+&lt;/script&gt;
+</code></pre>
 <p>The <code>can</code> module is a shortcut that loads CanJS's core plugins (Construct, Control, route, Model, view, and EJS)
 and returns the <code>can</code> namespace.</p>
+<pre><code class="language-js">require(['can'], function(can) {
+  // Use can.Control, can.view, can.Model etc.
+});
+</code></pre>
 <p>If you would like to use another library, map the <code>can/util/library</code> module to <code>can/util/dojo</code>, <code>can/util/zepto</code>,
 <code>can/util/yui</code> or <code>can/util/mootools</code>.</p>
 <p>With RequireJS and Zepto, it loks like this:</p>
+<pre><code class="language-js">require.config({
+  map : {
+    '*' : {
+          &quot;can/util/library&quot; : &quot;can/util/zepto&quot;
+    }
+  },
+  paths: {
+    &quot;zepto&quot; : &quot;http://cdnjs.cloudflare.com/ajax/libs/zepto/1.0rc1/zepto.min&quot;
+  }
+});
+</code></pre>
 <h2 id="jQuery">jQuery</h2>
 <p>CanJS supports jQuery 1.8+. Include a copy of jQuery along with CanJS to get started.</p>
+<pre><code class="language-js">&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js&quot;&gt;
+&lt;/script&gt;
+&lt;script src=&quot;can.jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  can.Model('Todo', {
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
 <p>CanJS supports binding to any jQuery objects (like jQuery UI widgets) that use standard
 jQuery events. The jQuery UI Datepicker doesn't have built-in support for standard
 jQuery events, so for those cases, a workaround should be applied:</p>
+<pre><code class="language-js">&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.js&quot;&gt;
+&lt;/script&gt;
+&lt;script src=&quot;jquery.ui.core.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;jquery.ui.datepicker.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;can.jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's datepickerselect event
+    '{calendar} datepickerselect': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = this.options.calendar.datepicker('getDate');
+      ...
+    }
+  });
+
+  // Initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: $('#calendar').hide().datepicker({
+        // Adding a workaround for date selection since the
+        // jQuery UI datepicker widget doesn't fire the
+        // &quot;datepickerselect&quot; event
+        onSelect: function(dateText, datepicker) {
+          $(this).trigger({
+            type: 'datepickerselect',
+            text: dateText,
+            target: datepicker
+          });
+        }
+      })
+    });
+  });
+&lt;/script&gt;
+</code></pre>
 <h2 id="Dojo">Dojo</h2>
 <p>CanJS supports Dojo 1.8+ using its new AMD loader in asynchronous or synchronous mode. Everything described in the <a href="#section_AMD">using CanJS and AMD</a> section applies to Dojo as well. An example configuration that uses the AMD files from the CanJS CDN can look like this:</p>
+<pre><code class="language-js">require({
+    aliases:[
+        ['can/util/library', 'can/util/dojo']
+    ],
+    baseUrl : 'http://canjs.com/release/latest/amd/can.js',
+});
+
+require(['can/control'], function(Control) {
+  // Use Control
+});
+</code></pre>
 <h2 id="Mootools">Mootools</h2>
 <p>CanJS supports Mootools 1.4+. Include a copy of Mootools Core along with CanJS to get started.</p>
 <p>Mootools Core has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
 Include Mootools More's Event.Pseudos module for <strong>focus</strong> and <strong>blur</strong> support.</p>
+<pre><code class="language-js">&lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/
+mootools.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Mootools More Event.Pseudos module --&gt;
+&lt;script src=&quot;mootools-more-event_pseudos-1.4.0.1.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;can.mootools.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  Todo = can.Model({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
 <h2 id="YUI">YUI</h2>
 <p>CanJS supports YUI 3.4+ with both dynamically or statically loaded modules.
 CanJS depends on the following YUI modules: <strong>node</strong>, <strong>io-base</strong>, <strong>querystring</strong>, <strong>event-focus</strong>, and <strong>array-extras</strong>. The <strong>selector-css2</strong> and <strong>selector-css3</strong> YUI modules are optional, but necessary for IE7 and other browsers that don't support <strong>querySelectorAll</strong>.</p>
 <p>To use with dynamically loaded modules, include the YUI loader along with CanJS.
 Add <code>'can'</code> to your normal list of modules with <code>YUI().use('can', ...)</code> wherever CanJS will be used.</p>
+<pre><code class="language-js">&lt;script src=&quot;http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;can.yui.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // CanJS with support for modern browsers
+  YUI().use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+
+  // CanJS with support for IE7 and other browsers without querySelectorAll
+  YUI({ loadOptional: true }).use('can', function(Y) {
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+  });
+&lt;/script&gt;
+</code></pre>
 <p>To use with statically loaded modules, include a static copy of YUI (with the
 previously mentioned YUI dependencies) along with CanJS. CanJS will automatically
 be included wherever <code>YUI().use('*')</code> is used.</p>
+<pre><code class="language-js">&lt;!-- YUI Configurator: http://yuilibrary.com/yui/configurator/ --&gt;
+&lt;script src=&quot;http://yui.yahooapis.com/combo?3.7.3/build/yui-base/yui-base-min.
+js&amp;3.7.3/build/oop/oop-min.js&amp;3.7.3/build/event-custom-base/event-custom-base-
+min.js&amp;3.7.3/build/features/features-min.js&amp;3.7.3/build/dom-core/dom-core-min.
+js&amp;3.7.3/build/dom-base/dom-base-min.js&amp;3.7.3/build/selector-native/selector-n
+ative-min.js&amp;3.7.3/build/selector/selector-min.js&amp;3.7.3/build/node-core/node-c
+ore-min.js&amp;3.7.3/build/node-base/node-base-min.js&amp;3.7.3/build/event-base/event
+-base-min.js&amp;3.7.3/build/event-delegate/event-delegate-min.js&amp;3.7.3/build/node
+-event-delegate/node-event-delegate-min.js&amp;3.7.3/build/pluginhost-base/pluginh
+ost-base-min.js&amp;3.7.3/build/pluginhost-config/pluginhost-config-min.js&amp;3.7.3/b
+uild/node-pluginhost/node-pluginhost-min.js&amp;3.7.3/build/dom-style/dom-style-mi
+n.js&amp;3.7.3/build/dom-screen/dom-screen-min.js&amp;3.7.3/build/node-screen/node-scr
+een-min.js&amp;3.7.3/build/node-style/node-style-min.js&amp;3.7.3/build/querystring-st
+ringify-simple/querystring-stringify-simple-min.js&amp;3.7.3/build/io-base/io-base
+-min.js&amp;3.7.3/build/array-extras/array-extras-min.js&amp;3.7.3/build/querystring-p
+arse/querystring-parse-min.js&amp;3.7.3/build/querystring-stringify/querystring-st
+ringify-min.js&amp;3.7.3/build/event-custom-complex/event-custom-complex-min.js&amp;3.
+4.1/build/event-synthetic/event-synthetic-min.js&amp;3.7.3/build/event-focus/event
+-focus-min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;can.yui.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    // start using CanJS
+    Todo = can.Model({
+      ...
+    });
+&lt;/script&gt;
+</code></pre>
 <p>CanJS can also bind to YUI widget events. The following example shows how to
 bind to the <strong>selectionChange</strong> event for a YUI Calendar widget:</p>
+<pre><code class="language-js">YUI().use('can', 'calendar', function(Y) {
+  // create models
+  Todo = can.Model({ ... });
+  Todo.List = can.Model.List({ ... });
+
+  // create control
+  Todos = can.Control({
+    // listen to the calendar widget's selectionChange event
+    '{calendar} selectionChange': function(calendar, ev){
+      // do something with the selected date
+      var selectedDate = ev.newSelection[0];
+      ...
+    }
+  });
+
+  // initialize the app
+  Todo.findAll({}, function(todos) {
+    new Todos('#todoapp', {
+      todos: todos,
+      calendar: new Y.Calendar({
+        contentBox: &quot;#calendar&quot;
+      }).render()
+    });
+  });
+});
+</code></pre>
 <h2 id="Zepto">Zepto</h2>
 <p>CanJS supports Zepto 0.8+. Include a copy of Zepto along with CanJS to get started.</p>
 <p>Zepto 0.8 has an issue where <strong>focus</strong> and <strong>blur</strong> events are not fired for delegate event listeners.
 There is a fix included for Zepto &gt; 0.8, but you can apply
 <a href="https://github.com/madrobby/zepto/commit/ab2a3ef0d18beaf768903f0943efd019a29803f0">this patch</a>
 to <strong>zepto.js</strong> when using Zepto 0.8.</p>
+<pre><code class="language-js">&lt;!-- Zepto 0.8 with focus/blur patch applied --&gt;
+&lt;script src=&quot;zepto.0.8-focusblur.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;can.zepto.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // start using CanJS
+  Todo = can.Model({
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -273,7 +456,7 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -284,11 +467,8 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 	            </li>
 		        <li class='active'><a href='index.html'>guides</a></li>
 		        <li><a href='../docs/index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -298,7 +478,7 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -306,19 +486,19 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"page","name":"Using","src":"guides/using.md","description":"CanJS can be used with [jQuery](#section_jQuery), [Dojo](#section_Dojo), [Mootools](#section_Mootools), [YUI](#section_YUI) and [Zepto](#section_Zepto). You can either include it as an inline script or load it as an [AMD](#section_AMD) module with any of these libraries.","title":"Using CanJS","parent":"guides","order":2,"forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/canjs.com/1.1/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
+		var docObject = {"type":"page","name":"Using","src":"guides/using.md","description":"CanJS can be used with [jQuery](#section_jQuery), [Dojo](#section_Dojo), [Mootools](#section_Mootools), [YUI](#section_YUI) and [Zepto](#section_Zepto). You can either include it as an inline script or load it as an [AMD](#section_AMD) module with any of these libraries.","title":"Using CanJS","parent":"guides","order":2,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/1.1/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/1.1/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"1.1","name":"canjs","source":"git://github.com/bitovi/canjs#1.1-legacy"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -327,13 +507,13 @@ to <strong>zepto.js</strong> when using Zepto 0.8.</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

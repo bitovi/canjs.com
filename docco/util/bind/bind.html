@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 	<span class="hljs-comment">/**
 	 * @typedef {{bind:function():*,unbind:function():*}} can.util.bind
 	 *
@@ -53,7 +53,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.bindAndSetup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.bindAndSetup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -84,7 +84,7 @@ call bindsetup if the function exists.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._init) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.__inSetup) {
 			<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._bindings) {
 				<span class="hljs-keyword">this</span>._bindings = <span class="hljs-number">1</span>;</pre></div></div>
             
@@ -110,7 +110,10 @@ call bindsetup if the function exists.</p>
 		}
 		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 	};
-	can.unbindAndTeardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event, handler)</span> </span>{
+	can.unbindAndTeardown = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event, handler</span>) </span>{
+		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.__bindEvents) {
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
 
 		<span class="hljs-keyword">var</span> handlers = <span class="hljs-keyword">this</span>.__bindEvents[event] || [];
 		<span class="hljs-keyword">var</span> handlerCount = handlers.length;</pre></div></div>

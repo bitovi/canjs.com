@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>vdom.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>vdom.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Everything CanJS+jquery app needs to run to pass
+if you are doing almost everything with the can.util layer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util/can.js"</span>, <span class="hljs-string">"./document/document"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, document</span>)</span>{
+	
+	<span class="hljs-keyword">var</span> global = can.global;
+	global.document = <span class="hljs-built_in">document</span>;
+	global.window = global;
+	global.addEventListener = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
+	global.removeEventListener = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
+	global.navigator = {
+		<span class="hljs-attr">userAgent</span>: <span class="hljs-string">""</span>,
+		<span class="hljs-attr">platform</span>: <span class="hljs-string">""</span>,
+		<span class="hljs-attr">language</span>: <span class="hljs-string">""</span>,
+		<span class="hljs-attr">languages</span>: [],
+		<span class="hljs-attr">plugins</span>: [],
+		<span class="hljs-attr">onLine</span>: <span class="hljs-literal">true</span>
+	};
+	global.location = {
+		<span class="hljs-attr">href</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">protocol</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">host</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">hostname</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">port</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">pathname</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">search</span>: <span class="hljs-string">''</span>,
+		<span class="hljs-attr">hash</span>: <span class="hljs-string">''</span>
+	};
+	global.history = {
+		<span class="hljs-attr">pushState</span>: can.k,
+		<span class="hljs-attr">replaceState</span>: can.k
+	};
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

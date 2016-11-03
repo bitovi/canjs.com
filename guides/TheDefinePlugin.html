@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - The Define Plugin </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started Tutorial">
+				Getting Started Tutorial
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ApplicationDesign.html" 
+							data-search="Application Design">
+							Application Design
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructors.html" 
+							data-search="Constructors">
+							Constructors
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="TheDefinePlugin.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="StacheTemplates.html" 
+							data-search="Stache Templates">
+							Stache Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="AppStateAndRouting.html" 
+							data-search="App State and Routing">
+							App State and Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ViewModels.html" 
+							data-search="View Models">
+							View Models
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="DataModelsAndFixtures.html" 
+							data-search="Data Models and Fixtures">
+							Data Models and Fixtures
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="LoadingStates.html" 
+							data-search="Loading States">
+							Loading States
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="EventHandling.html" 
+							data-search="Event Handling">
+							Event Handling
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="WebServiceCommunication.html" 
+							data-search="Web Service Communication">
+							Web Service Communication
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>The Define Plugin</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">TheDefinePlugin</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/guides/getting-started-tutorial/the-define-plugin.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<div class="getting-started">
+<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>The Define Plugin</li>
+</ul>
+<p><em>There is no code to download for this chapter</em></p>
+<hr />
+<p>The <code>define</code> plugin allows you to finely control the the behavior of the
+attributes on a <code>can.Map</code>. For any property you declare in the <code>define</code> plugin,
+you can control its:</p>
+<ul>
+<li><a href="#set">set</a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#type">type</a></li>
+<li><a href="#value">value</a></li>
+<li><a href="#remove">remove</a></li>
+<li><a href="#serialization">serialization</a></li>
+</ul>
+<p>Before we get into the properties of the define plugin, however, let’s look at how to set it up.
+Creating a define is as simple as adding a define property to the instance properties
+of the <code>can.Map</code>. This property is an object literal. Remember from our conversation on
+<a href="Constructors.html"><code>can.Construct</code></a> that passing in one argument to a <code>can.Construct</code> will set
+its instance properties. This is important to know should you create a <code>can.Map</code> that has both
+instance and static properties, and you want to use the define plugin. Below are two examples:</p>
+<pre><code>//can.Map with one argument
+var Person = can.Map.extend({
+    define: {
+        //define properties go here
+        myProperty: {
+           //property attributes
+        }
+    }
+});
+
+//can.Map with two arguments
+var Person = can.Map.extend(
+{
+   //static properties go here
+},
+{
+    define: {
+        //define properties go here
+        myProperty: {
+           //property attributes
+        }
+    }
+});
+</code></pre>
+<p><a name="set"></a></p>
+<h3>set</h3>
+<p>A <a href="../docs/can.Map.prototype.define.set.html">set</a> function defines what happens when a value is set on a <code>can.Map</code>.
+It is typically used to update other attributes on the <code>can.Map</code> as a side
+effect, or coerce the set value into specific format.</p>
+<p>The setter function can take two optional arguments:</p>
+<ul>
+<li><code>newVal</code>: The type function coerced value the user intends to set on the <code>can.Map</code></li>
+<li><code>setVal</code>: A callback that can set the value of the property asynchronously.</li>
+</ul>
+<p>When using a setter function, the final value of the attribute is determined
+by the value the setter function returns. If the function returns a value,
+that value is used as the value of the attribute. If <code>undefined</code> is
+returned, the behavior depends on the number of arguments the setter
+<em>declares</em>, as below:</p>
+<pre><code>// If the setter does not specify the newValue argument,
+// the attribute value is set to whatever was passed to attr.
+set: function() { ... }
+
+// If the setter specifies the newValue argument only,
+// the attribute value will be removed
+set: function(newValue) { ... }
+
+// If the setter specifies both newValue and setValue, the value of
+// the property will not be updated until setValue is called
+set: function(newValue, setValue) { ... }
+</code></pre>
+<p><a name="get"></a></p>
+<h3>get</h3>
+<p>A <a href="../docs/can.Map.prototype.define.get.html">get</a> function defines what happens when a value is read on a <code>can.Map</code>.
+It is typically used to provide properties that derive their value from other
+properties of the map, as below:</p>
+<pre><code>var Person = can.Map.extend({
+    define: {
+        fullName: {
+            get: function () {
+                return this.attr(&quot;first&quot;) + &quot; &quot; + this.attr(&quot;last&quot;);
+            }
+        }
+    }
+});
+</code></pre>
+<p><code>get</code> is passed two optional arguments: <code>lastSetValue</code> and <code>resolve</code>.</p>
+<p><code>lastSetValue</code> is the last value the property was set to.  This, among other uses,
+can be used to update a list in place instead of replacing it.  The following
+keeps <code>taskIds</code> updated with all of <code>tasks</code>' ids:</p>
+<pre><code>var Person = can.Map.extend({
+    define: {
+        taskIds: {
+            Value: can.List,
+            get: function(initialValue){
+                var ids = this.attr('tasks').map(function(task){
+                    return task.attr(&quot;id&quot;);
+                });
+                return initialValue.replace(ids);
+            }
+        }
+    }
+});
+</code></pre>
+<p><code>resolve</code> can asynchronously set the retrived value of a
+&quot;bound&quot; property.  The following makes <code>person</code> update when <code>personId</code> changes.
+<code>person</code> will be a <code>Person</code> instance retrieved from the server.</p>
+<pre><code>var AppViewModel = can.Map.extend({
+  define: {
+    person: {
+      get: function(lastSetValue, resolve){
+        Person.findOne({id: this.attr(&quot;personId&quot;)})
+            .then(resolve);
+      }
+    }
+  }
+});
+</code></pre>
+<p>Asynchronous getters must be bound to to behave correctly.  In most apps, this happens
+automatically because observables are &quot;bound&quot; by a template.  However,
+when testing, you'll need to remember to <a href="../docs/can.Map.prototype.bind.html">bind</a>
+on that property before reading it. Here's how one might test the previous <code>AppViewModel</code>:</p>
+<pre><code>var appVM = new AppViewModel({
+  personId: 5
+});
+
+appVM.bind(&quot;person&quot;, function(ev, newVal, oldVal){
+  // `person` will change from undefined to a
+  // Person instance.
+  ok(newVal instanceof Person)
+});
+
+// appVM is `undefined` here because 
+// `Person.findOne` hasn't returned yet
+appVM.attr(&quot;person&quot;) //-&gt; undefined
+</code></pre>
+<p><a name="type"></a></p>
+<h3>type</h3>
+<p>The <a href="/docs/can.Map.prototype.define.type.html">type</a> property converts a value passed to an <code>attr</code> setter function
+into a specific value type. The type can be specified as either a type
+function, or one of the following strings:</p>
+<ul>
+<li><code>string</code> - Converts the value to a string.</li>
+<li><code>date</code> - Converts the value to a date or <code>null</code> if the date can not be converted.</li>
+<li><code>number</code> - Passes the value through <code>parseFloat</code>.</li>
+<li><code>boolean</code> - Converts falsey values (such as <code>&quot;&quot;</code> or <code>0</code>) to <code>false</code> and everything else to <code>true</code>.</li>
+<li><code>*</code> - Prevents the default coercion of Objects to can.Maps and Arrays to can.Lists.</li>
+</ul>
+<p>There are two ways to define the <code>type</code> property:</p>
+<ul>
+<li><code>Type</code></li>
+<li><code>type</code></li>
+</ul>
+<p><code>Type</code>, uppercase, makes sure that the set value is an
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof">instanceof</a> the provided
+constructor function.  If not, the constructor function will be called with <code>new</code> and passed the set value as the first
+argument.</p>
+<p>In contrast, <code>type</code>, lowercase, is called no matter what and expected to return the value that should be set on the map.</p>
+<pre><code>define: {
+  items: {
+    type: function(newValue){
+      return typeof newValue === &quot;string&quot; ?  newValue.split(&quot;,&quot;) : newValue;
+    }
+  }
+}
+</code></pre>
+<p><a name="value"></a></p>
+<h3>value</h3>
+<p>Sets the default value for instances of the <code>can.Map</code>. If the default
+value should be an object of some type, it should be specified as the return
+value of a function, so that all instances of the map don't point to the same
+object. This is because JavaScript passes primitives by value, and all other
+values (objects, arrays, etc.) by reference.</p>
+<pre><code>define: {
+  prop: {
+    value: function(){ return []; }
+  }
+}
+</code></pre>
+<p>As with <code>type</code>, above, there are two ways to define the <code>value</code> property: <code>Value</code>,
+or <code>value</code>. <a href="../docs/can.Map.prototype.define.ValueConstructor.html">Value</a>, uppercase, provides a constructor function, ensuring that
+a new instance of <code>Value</code> is made for each map instance. If <a href="../docs/can.Map.prototype.define.value.html">value</a> is not an function,
+that value will be the default value of the attribute. If <code>value</code> is a function,
+that function's return value will be used as the default value of the attribute.</p>
+<p><a name="remove"></a></p>
+<h3>remove</h3>
+<p>The <a href="../docs/can.Map.prototype.define.remove.html">remove</a> property is called  when an attribute is removed. This is often used to remove other related properties.</p>
+<p><a name="serialization"></a></p>
+<h3>serialization</h3>
+<p>The last property we’ll talk about is <a href="https://en.wikipedia.org/wiki/Serialization">serialization</a>. The
+<a href="../docs/can.Map.prototype.define.serialize.html">serialize</a> property defines how the attribute will behave when the map is
+serialized. Managing this property can be useful when serializing complex types like dates,
+arrays, or objects into strings. You can also control whether or not a
+given property can be serialized. Returning <code>undefined</code> from a serialization
+function for any property means this property will not be part of the
+serialized object. Managing serialization is an important consideration in <a href="AppStateAndRouting.html">routing</a>.
+We’ll see how this works when we discuss routing in a later chapter.</p>
+<pre><code>define: {
+  locationIds: {
+    serialize: false
+  }
+}
+</code></pre>
+<hr />
+<p><span class="pull-left"><a href="Observables.html">&lsaquo; Observables</a></span>
+<span class="pull-right"><a href="StacheTemplates.html">Stache Templates &rsaquo;</a></span></p>
+</div>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"TheDefinePlugin","src":"guides/getting-started-tutorial/the-define-plugin.md","description":"","title":"The Define Plugin","parent":"Tutorial","order":4,"disabletableofcontents":true,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,guides/**/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

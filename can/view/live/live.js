@@ -1,4 +1,9 @@
-steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'can/view/parser',function (can, elements, view, nodeLists, parser) {
+steal('can/util',
+	'can/view/elements.js',
+	'can/view',
+	'can/view/node_lists',
+	'can/view/parser',
+	'can/util/array/diff.js', function (can, elements, view, nodeLists, parser, diff) {
 
 	elements = elements || can.view.elements;
 	nodeLists = nodeLists || can.view.NodeLists;
@@ -39,14 +44,28 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 		bind(data);
 		return data;
 	},
+		getChildNodes = function(node){
+			var childNodes = node.childNodes;
+			if("length" in childNodes) {
+				return childNodes;
+			} else {
+				var cur = node.firstChild;
+				var nodes = [];
+				while(cur) {
+					nodes.push(cur);
+					cur = cur.nextSibling;
+				}
+				return nodes;
+			}
+		},
 		// #### listen
 		// Calls setup, but presets bind and unbind to
 		// operate on a compute
 		listen = function (el, compute, change) {
 			return setup(el, function () {
-				compute.bind('change', change);
+				compute.computeInstance.bind('change', change);
 			}, function (data) {
-				compute.unbind('change', change);
+				compute.computeInstance.unbind('change', change);
 				if (data.nodeList) {
 					nodeLists.unregister(data.nodeList);
 				}
@@ -74,30 +93,86 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			return obj && obj.nodeType;
 		},
 		addTextNodeIfNoChildren = function(frag){
-			if(!frag.childNodes.length) {
-				frag.appendChild(document.createTextNode(""));
+			if(!frag.firstChild) {
+				frag.appendChild(frag.ownerDocument.createTextNode(""));
 			}
-		};
+		},
+		getLiveFragment = function(itemHTML){
+			var gotText = typeof itemHTML === "string",
+				// and convert it into elements.
+				itemFrag = can.frag(itemHTML);
+				// Add those elements to the mappings.
+			return gotText ? can.view.hookup(itemFrag) : itemFrag;
+		},
+		// a helper function that renders something and adds its nodeLists to newNodeLists
+		// in the right way for both stache and mustache.
+		renderAndAddToNodeLists = function(newNodeLists, parentNodeList, render, context, args){
+			var itemNodeList = [];
+
+			if(parentNodeList) {
+				// Pass in true so itemNodeList doesn't get added to the
+				// parentNodeList's replacements array. #2332.
+				nodeLists.register(itemNodeList,null, true, true);
+				itemNodeList.parentList = parentNodeList;
+				itemNodeList.expression = "#each SUBEXPRESSION";
+			}
+
+			var itemHTML = render.apply(context, args.concat([itemNodeList])),
+				itemFrag = getLiveFragment(itemHTML);
+
+			var childNodes = can.makeArray(getChildNodes(itemFrag));
+			if(parentNodeList) {
+				nodeLists.update(itemNodeList, childNodes);
+				newNodeLists.push(itemNodeList);
+			} else {
+				newNodeLists.push(nodeLists.register(childNodes));
+			}
+			return itemFrag;
+		},
+		removeFromNodeList = function(masterNodeList, index, length){
+			var removedMappings = masterNodeList.splice(index + 1, length),
+				itemsToRemove = [];
+			can.each(removedMappings, function (nodeList) {
+
+				// Unregister to free up event bindings.
+				var nodesToRemove = nodeLists.unregister(nodeList);
+
+				// add items that we will remove all at once
+				[].push.apply(itemsToRemove, nodesToRemove);
+			});
+			return itemsToRemove;
+		},
+		addFalseyIfEmpty = function(list, falseyRender, masterNodeList, nodeList){
+			if(falseyRender && list.length === 0){
+				// there are no items ... we should render the falsey template
+				var falseyNodeLists = [];
+				var falseyFrag = renderAndAddToNodeLists(falseyNodeLists, nodeList, falseyRender, list, [list]);
+
+				elements.after([masterNodeList[0]], falseyFrag);
+				masterNodeList.push(falseyNodeLists[0]);
+			}
+		},
+		childMutationCallbacks = {};
 	/**
 	 * @property {Object} can.view.live
 	 * @parent can.view.static
 	 * @release 2.0.4
 	 *
 	 * Setup live-binding between the DOM and a compute manually.
-	 * 
+	 *
 	 * @option {Object} An object with the live-binding methods:
-	 * [can.view.live.html], [can.view.live.list], [can.view.live.text], 
+	 * [can.view.live.html], [can.view.live.list], [can.view.live.text],
 	 * [can.view.live.attr] and [can.view.live.attrs].
-	 * 
+	 *
 	 * @body
 	 *
 	 * ## Use
 	 *
 	 * `can.view.live` is an object with utlitiy methods for setting up
-	 * live-binding in relation to different parts of the DOM and DOM elements.  For 
+	 * live-binding in relation to different parts of the DOM and DOM elements.  For
 	 * example, to make an `<h2>`'s text stay live with
 	 * a compute:
-	 * 
+	 *
 	 *     var text = can.compute("Hello World");
 	 *     var textNode = $("h2").text(" ")[0].childNodes[0];
 	 *     can.view.live.text(textNode, text);
@@ -105,6 +180,19 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 	 *
 	 */
 	var live = {
+		registerChildMutationCallback: function(tag, callback){
+			if(callback) {
+				childMutationCallbacks[tag] = callback;
+			} else {
+				return childMutationCallbacks[tag];
+			}
+		},
+		callChildMutationCallback: function(el) {
+			var callback = el && childMutationCallbacks[el.nodeName.toLowerCase()];
+			if(callback) {
+				callback(el);
+			}
+		},
 		/**
 		 * @function can.view.live.list
 		 * @parent can.view.live
@@ -147,7 +235,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 		 *       })
 		 *
 		 */
-		list: function (el, compute, render, context, parentNode, nodeList) {
+		list: function (el, compute, render, context, parentNode, nodeList, falseyRender) {
 			// A nodeList of all elements this live-list manages.
 			// This is here so that if this live list is within another section
 			// that section is able to remove the items in this list.
@@ -156,42 +244,27 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 				indexMap = [],
 				// True once all previous events have been fired
 				afterPreviousEvents = false,
+				// Indicates that we should not be responding to changes in the list.
+				// It's possible that the compute change causes this list behavior to be torn down.
+				// However that same "change" dispatch will eventually fire the updateList handler because
+				// the list of "change" handlers is copied when dispatching starts.
+				// A 'perfect' fix would be to use linked lists for event handlers.
+				isTornDown = false,
 				// Called when items are added to the list.
 				add = function (ev, items, index) {
+
 					if (!afterPreviousEvents) {
 						return;
 					}
 					// Collect new html and mappings
-					var frag = document.createDocumentFragment(),
+					var frag = text.ownerDocument.createDocumentFragment(),
 						newNodeLists = [],
 						newIndicies = [];
 					// For each new item,
 					can.each(items, function (item, key) {
-						var itemNodeList = [];
-
-						if(nodeList) {
-							nodeLists.register(itemNodeList,null, true);
-						}
-						
 						var itemIndex = can.compute(key + index),
-							// get its string content
-							itemHTML = render.call(context, item, itemIndex, itemNodeList),
-							gotText = typeof itemHTML === "string",
-							// and convert it into elements.
-							itemFrag = can.frag(itemHTML);
-						// Add those elements to the mappings.
-						
-						itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
-						
-						var childNodes = can.makeArray(itemFrag.childNodes);
-						if(nodeList) {
-							nodeLists.update(itemNodeList, childNodes);
-							newNodeLists.push(itemNodeList);
-						} else {
-							newNodeLists.push(nodeLists.register(childNodes));
-						}
-						
-						
+							itemFrag = renderAndAddToNodeLists(newNodeLists, nodeList, render, context, [item, itemIndex]);
+
 						// Hookup the fragment (which sets up child live-bindings) and
 						// add it to the collection of all added elements.
 						frag.appendChild(itemFrag);
@@ -200,8 +273,14 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					});
 					// The position of elements is always after the initial text placeholder node
 					var masterListIndex = index+1;
-					
-					
+
+					// remove falsey if there's something there
+					if(!indexMap.length) {
+						// remove all leftover things
+						var falseyItemsToRemove = removeFromNodeList(masterNodeList, 0, masterNodeList.length - 1);
+						can.remove(can.$(falseyItemsToRemove));
+					}
+
 					// Check if we are adding items at the end
 					if (!masterNodeList[masterListIndex]) {
 						elements.after(masterListIndex === 1 ? [text] : [nodeLists.last(masterNodeList[masterListIndex - 1])], frag);
@@ -214,19 +293,29 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 						masterListIndex,
 						0
 					].concat(newNodeLists));
-					
+
 					// update indices after insert point
 					splice.apply(indexMap, [
 						index,
 						0
 					].concat(newIndicies));
-					
+
 					for (var i = index + newIndicies.length, len = indexMap.length; i < len; i++) {
 						indexMap[i](i);
 					}
+					if(ev.callChildMutationCallback !== false) {
+						live.callChildMutationCallback(text.parentNode);
+					}
+
+				},
+				// Called when an item is set with .attr
+				set = function(ev, newVal, index) {
+					remove({}, { length: 1 }, index, true);
+					add({}, [newVal], index);
 				},
 				// Called when items are removed or when the bindings are torn down.
 				remove = function (ev, items, index, duringTeardown, fullTeardown) {
+
 					if (!afterPreviousEvents) {
 						return;
 					}
@@ -239,29 +328,25 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					if(index < 0) {
 						index = indexMap.length + index;
 					}
+					var itemsToRemove = removeFromNodeList(masterNodeList, index, items.length);
 
-					var removedMappings = masterNodeList.splice(index + 1, items.length),
-						itemsToRemove = [];
-					can.each(removedMappings, function (nodeList) {
-						
-						// Unregister to free up event bindings.
-						var nodesToRemove = nodeLists.unregister(nodeList);
-						
-						// add items that we will remove all at once
-						[].push.apply(itemsToRemove, nodesToRemove);
-					});
 					// update indices after remove point
 					indexMap.splice(index, items.length);
 					for (var i = index, len = indexMap.length; i < len; i++) {
 						indexMap[i](i);
 					}
+
 					// don't remove elements during teardown.  Something else will probably be doing that.
 					if(!fullTeardown) {
+						// adds the falsey section if the list is empty
+						addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
 						can.remove(can.$(itemsToRemove));
+						if(ev.callChildMutationCallback !== false) {
+							live.callChildMutationCallback(text.parentNode);
+						}
 					} else {
 						nodeLists.unregister(masterNodeList);
 					}
-
 				},
 				move = function (ev, item, newIndex, currentIndex) {
 					if (!afterPreviousEvents) {
@@ -275,7 +360,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					var referenceNodeList = masterNodeList[newIndex];
 					var movedElements = can.frag( nodeLists.flatten(masterNodeList[currentIndex]) );
 					var referenceElement;
-					
+
 					// If we're moving forward in the list, we want to be placed before
 					// the item AFTER the target index since removing the item from
 					// the currentIndex drops the referenceItem's index. If there is no
@@ -285,9 +370,8 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					} else {
 						referenceElement = nodeLists.first(referenceNodeList);
 					}
-					
-					var parentNode = masterNodeList[0].parentNode;
 
+					var parentNode = masterNodeList[0].parentNode;
 
 					// Move the DOM nodes into the proper location
 					parentNode.insertBefore(movedElements, referenceElement);
@@ -295,7 +379,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					// Now, do the same for the masterNodeList. We need to keep it
 					// in sync with the DOM.
 
-					// Save a reference to the "node" in that we're manually moving
+					// Save a reference to the "node" that we're manually moving
 					var temp = masterNodeList[currentIndex];
 
 					// Remove the movedItem from the masterNodeList
@@ -303,9 +387,32 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 
 					// Move the movedItem to the correct index in the masterNodeList
 					[].splice.apply(masterNodeList, [newIndex, 0, temp]);
+
+					// Convert back to a zero-based array index
+					newIndex = newIndex - 1;
+					currentIndex = currentIndex - 1;
+
+					// Grab the index compute from the `indexMap`
+					var indexCompute = indexMap[currentIndex];
+
+					// Remove the index compute from the `indexMap`
+					[].splice.apply(indexMap, [currentIndex, 1]);
+
+					// Move the index compute to the correct index in the `indexMap`
+					[].splice.apply(indexMap, [newIndex, 0, indexCompute]);
+
+					var i = Math.min(currentIndex, newIndex);
+					var len = indexMap.length;
+
+					for (i, len; i < len; i++) {
+						indexMap[i](i);
+					}
+					if(ev.callChildMutationCallback !== false) {
+						live.callChildMutationCallback(text.parentNode);
+					}
 				},
 				// A text node placeholder
-				text = document.createTextNode(''),
+				text = el.ownerDocument.createTextNode(''),
 				// The current list.
 				list,
 				// Called when the list is replaced with a new list or the binding is torn-down.
@@ -314,38 +421,72 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 					// array
 					if (list && list.unbind) {
 						list.unbind('add', add)
+							.unbind('set', set)
 							.unbind('remove', remove)
 							.unbind('move', move);
 					}
 					// use remove to clean stuff up for us
-					remove({}, {
+					remove({callChildMutationCallback: !!fullTeardown}, {
 						length: masterNodeList.length - 1
 					}, 0, true, fullTeardown);
 				},
 				// Called when the list is replaced or setup.
 				updateList = function (ev, newList, oldList) {
-					teardownList();
-					// make an empty list if the compute returns null or undefined
-					list = newList || [];
-					
+
+					if(isTornDown) {
+						return;
+					}
+
+					afterPreviousEvents = true;
+					if(newList && oldList) {
+						list = newList || [];
+						var patches = diff(oldList, newList);
+
+						if ( oldList.unbind ) {
+							oldList.unbind('add', add)
+								.unbind('set', set)
+								.unbind('remove', remove)
+								.unbind('move', move);
+						}
+						for(var i = 0, patchLen = patches.length; i < patchLen; i++) {
+							var patch = patches[i];
+							if(patch.deleteCount) {
+								remove({callChildMutationCallback: false}, {
+									length: patch.deleteCount
+								}, patch.index, true);
+							}
+							if(patch.insert.length) {
+								add({callChildMutationCallback: false}, patch.insert, patch.index);
+							}
+						}
+					} else {
+						if(oldList) {
+							teardownList();
+						}
+						list = newList || [];
+						add({callChildMutationCallback: false}, list, 0);
+						addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+					}
+					live.callChildMutationCallback(text.parentNode);
+
+					afterPreviousEvents = false;
 					// list might be a plain array
 					if (list.bind) {
 						list.bind('add', add)
+							.bind('set', set)
 							.bind('remove', remove)
 							.bind('move', move);
 					}
-					// temporarily allow add method.
-					afterPreviousEvents = true;
-					add({}, list, 0);
-					afterPreviousEvents = false;
-					
+
 					can.batch.afterPreviousEvents(function(){
 						afterPreviousEvents = true;
 					});
 				};
+
 			parentNode = elements.getParentNode(el, parentNode);
 			// Setup binding and teardown to add and remove events
 			var data = setup(parentNode, function () {
+				// TODO: for stache, binding on the compute is not necessary.
 				if (can.isFunction(compute)) {
 					compute.bind('change', updateList);
 				}
@@ -355,14 +496,18 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 				}
 				teardownList(true);
 			});
+
 			if(!nodeList) {
 				live.replace(masterNodeList, text, data.teardownCheck);
 			} else {
 				elements.replace(masterNodeList, text);
 				nodeLists.update(masterNodeList, [text]);
-				nodeList.unregistered = data.teardownCheck;
+				nodeList.unregistered = function(){
+					data.teardownCheck();
+					isTornDown = true;
+				};
 			}
-			
+
 			// run the list setup
 			updateList({}, can.isFunction(compute) ? compute() : compute);
 		},
@@ -400,14 +545,15 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			var data;
 			parentNode = elements.getParentNode(el, parentNode);
 			data = listen(parentNode, compute, function (ev, newVal, oldVal) {
-				
 				// TODO: remove teardownCheck in 2.1
 				var attached = nodeLists.first(nodes).parentNode;
 				// update the nodes in the DOM with the new rendered value
 				if (attached) {
 					makeAndPut(newVal);
 				}
-				data.teardownCheck(nodeLists.first(nodes).parentNode);
+				var pn = nodeLists.first(nodes).parentNode;
+				data.teardownCheck(pn);
+				live.callChildMutationCallback(pn);
 			});
 
 			var nodes = nodeList || [el],
@@ -416,25 +562,24 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 						aNode = isNode(val),
 						frag = can.frag(isFunction ? "" : val),
 						oldNodes = can.makeArray(nodes);
-					
+
 					// Add a placeholder textNode if necessary.
 					addTextNodeIfNoChildren(frag);
-					
+
 					if(!aNode && !isFunction){
 						frag = can.view.hookup(frag, parentNode);
 					}
-					
+
 					// We need to mark each node as belonging to the node list.
-					oldNodes = nodeLists.update(nodes, frag.childNodes);
+					oldNodes = nodeLists.update(nodes, getChildNodes(frag));
 					if(isFunction) {
-						val(frag.childNodes[0]);
+						val(frag.firstChild);
 					}
 					elements.replace(oldNodes, frag);
-					
 				};
-				
+
 			data.nodeList = nodes;
-			
+
 			// register the span so nodeLists knows the parentNodeList
 			if(!nodeList) {
 				nodeLists.register(nodes, data.teardownCheck);
@@ -461,14 +606,14 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 			var oldNodes = nodes.slice(0),
 				frag = can.frag(val);
 			nodeLists.register(nodes, teardown);
-			
-			
+
+
 			if (typeof val === 'string') {
 				// if it was a string, check for hookups
 				frag = can.view.hookup(frag, nodes[0].parentNode);
 			}
 			// We need to mark each node as belonging to the node list.
-			nodeLists.update(nodes, frag.childNodes);
+			nodeLists.update(nodes, getChildNodes(frag));
 			elements.replace(oldNodes, frag);
 			return nodes;
 		},
@@ -494,12 +639,12 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 				data.teardownCheck(node.parentNode);
 			});
 			// The text node that will be updated
-				
-			var node = document.createTextNode(can.view.toStr(compute()));
+
+			var node = el.ownerDocument.createTextNode(can.view.toStr(compute()));
 			if(nodeList) {
 				nodeList.unregistered = data.teardownCheck;
 				data.nodeList = nodeList;
-				
+
 				nodeLists.update(nodeList, [node]);
 				elements.replace([el], node);
 			} else {
@@ -507,7 +652,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 				// Add that node to nodeList so we can remove it when the parent element is removed from the page
 				data.nodeList = live.replace([el], node, data.teardownCheck);
 			}
-			
+
 		},
 		setAttributes: function(el, newVal) {
 			var attrs = getAttributeParts(newVal);
@@ -518,24 +663,24 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 		/**
 		 * @function can.view.live.attrs
 		 * @parent can.view.live
-		 * 
+		 *
 		 * Keep attributes live to a [can.compute].
-		 * 
+		 *
 		 * @param {HTMLElement} el The element whos attributes will be kept live.
 		 * @param {can.compute} compute The compute.
-		 * 
+		 *
 		 * @body
-		 * 
+		 *
 		 * ## Use
-		 * 
+		 *
 		 *     var div = document.createElement('div');
 		 *     var compute = can.compute("foo='bar' zed='ted'");
 		 *     can.view.live.attr(div,compute);
-		 * 
+		 *
 		 */
 		attributes: function (el, compute, currentValue) {
 			var oldAttrs = {};
-			
+
 			var setAttrs = function (newVal) {
 				var newAttrs = getAttributeParts(newVal),
 					name;
@@ -581,7 +726,8 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 				can.data(wrapped, 'hooks', hooks = {});
 			}
 			// Get the attribute value.
-			var attr = elements.getAttr(el, attributeName),
+			// Cast to String. String expected for rendering. Attr may return other types for some attributes.
+			var attr = String(elements.getAttr(el, attributeName)),
 				// Split the attribute value by the template.
 				// Only split out the first __!!__ so if we have multiple hookups in the same attribute,
 				// they will be put in the right spot on first render
@@ -625,17 +771,17 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 		/**
 		 * @function can.view.live.attr
 		 * @parent can.view.live
-		 * 
+		 *
 		 * Keep an attribute live to a [can.compute].
-		 * 
+		 *
 		 * @param {HTMLElement} el The element whos attribute will be kept live.
 		 * @param {String} attributeName The attribute name.
 		 * @param {can.compute} compute The compute.
-		 * 
+		 *
 		 * @body
-		 * 
+		 *
 		 * ## Use
-		 * 
+		 *
 		 *     var div = document.createElement('div');
 		 *     var compute = can.compute("foo bar");
 		 *     can.view.live.attr(div,"class", compute);
@@ -649,6 +795,7 @@ steal('can/util', 'can/view/elements.js', 'can/view', 'can/view/node_lists', 'ca
 	};
 	live.attr = live.simpleAttribute;
 	live.attrs = live.attributes;
+	live.getAttributeParts = getAttributeParts;
 	var newLine = /(\r|\n)+/g;
 	var getValue = function (val) {
 		var regexp = /^["'].*["']$/;

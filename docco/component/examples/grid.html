@@ -31,23 +31,23 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>can.Component.extend({
-	tag: <span class="hljs-string">'grid'</span>,
-	viewModel: {
-		items: []
+	<span class="hljs-attr">tag</span>: <span class="hljs-string">'grid'</span>,
+	<span class="hljs-attr">viewModel</span>: {
+		<span class="hljs-attr">items</span>: []
 	},
-	template: <span class="hljs-string">'&lt;table&gt;&lt;tbody&gt;&lt;content&gt;&lt;/content&gt;&lt;/tbody&gt;&lt;/table&gt;'</span>,
-	events: {
-		init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	<span class="hljs-attr">template</span>: <span class="hljs-string">'&lt;table&gt;&lt;tbody&gt;&lt;content&gt;&lt;/content&gt;&lt;/tbody&gt;&lt;/table&gt;'</span>,
+	<span class="hljs-attr">events</span>: {
+		<span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">this</span>.update();
 		},
 		<span class="hljs-string">'{deferreddata} change'</span>: <span class="hljs-string">'update'</span>,
-		update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">update</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">this</span>.viewModel.attr(<span class="hljs-string">'deferreddata'</span>),
 				viewModel = <span class="hljs-keyword">this</span>.viewModel;
-			<span class="hljs-keyword">if</span> (can.isDeferred(deferred)) {
+			<span class="hljs-keyword">if</span> (can.isPromise(deferred)) {
 				<span class="hljs-keyword">this</span>.element.find(<span class="hljs-string">'tbody'</span>)
 					.css(<span class="hljs-string">'opacity'</span>, <span class="hljs-number">0.5</span>);
-				deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items)</span> </span>{
+				deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items</span>) </span>{
 					viewModel.attr(<span class="hljs-string">'items'</span>)
 						.attr(items, <span class="hljs-literal">true</span>);
 				});
@@ -56,7 +56,7 @@
 					.attr(deferred, <span class="hljs-literal">true</span>);
 			}
 		},
-		<span class="hljs-string">'{items} change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-string">'{items} change'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">this</span>.element.find(<span class="hljs-string">'tbody'</span>)
 				.css(<span class="hljs-string">'opacity'</span>, <span class="hljs-number">1</span>);
 		}

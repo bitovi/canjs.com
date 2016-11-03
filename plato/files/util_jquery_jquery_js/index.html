@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>util/jquery/jquery.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">65.06</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">291</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">68.65</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.86</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;jquery&#039;, &#039;can/util/can.js&#039;, &#039;can/util/attr&#039;, &quot;can/event&quot;, &quot;can/util/fragment.js&quot;,&#039;can/util/array/each.js&#039;, &quot;can/util/inserted&quot;, function ($, can, attr, event) {
+	var isBindableElement = function (node) {
+		// In IE8 window.window !== window.window, so we allow == here.
+		/*jshint eqeqeq:false*/
+		return (node.nodeName &amp;&amp; (node.nodeType === 1 || node.nodeType === 9)) || node == window || node.addEventListener;
+	};
+	$ = $ || window.jQuery;
+	// _jQuery node list._
+	$.extend(can, $, {
+		trigger: function (obj, event, args, bubbles) {
+			if (isBindableElement( obj ) ) {
+				$.event.trigger(event, args, obj, !bubbles);
+			} else if (obj.trigger) {
+				obj.trigger(event, args);
+			} else {
+				if (typeof event === &#039;string&#039;) {
+					event = {
+						type: event
+					};
+				}
+				event.target = event.target || obj;
+				if(args){
+					if( args.length &amp;&amp; typeof args === &quot;string&quot;) {
+						args = [args];
+					} else if(! args.length ) {
+						args = [args];
+					}
+				}
+				if(!args){
+					args = [];
+				}
+				can.dispatch.call(obj, event, args);
+			}
+		},
+		event: can.event,
+		addEvent: can.addEvent,
+		removeEvent: can.removeEvent,
+		buildFragment: can.buildFragment,
+		$: $,
+		each: can.each,
+		bind: function (ev, cb) {
+			// If we can bind to it...
+			if (this.bind &amp;&amp; this.bind !== can.bind) {
+				this.bind(ev, cb);
+			} else if (isBindableElement(this)) {
+				$.event.add(this, ev, cb);
+			} else {
+				// Make it bind-able...
+				can.addEvent.call(this, ev, cb);
+			}
+			return this;
+		},
+		unbind: function (ev, cb) {
+			// If we can bind to it...
+			if (this.unbind &amp;&amp; this.unbind !== can.unbind) {
+				this.unbind(ev, cb);
+			} else if (isBindableElement(this)) {
+				$.event.remove(this, ev, cb);
+			} else {
+				// Make it bind-able...
+				can.removeEvent.call(this, ev, cb);
+			}
+			return this;
+		},
+		delegate: function (selector, ev, cb) {
+			if (this.delegate) {
+				this.delegate(selector, ev, cb);
+			} else if (isBindableElement(this)) {
+				$(this)
+					.delegate(selector, ev, cb);
+			} else {
+				// make it bind-able ...
+				can.bind.call(this, ev, cb);
+			}
+			return this;
+		},
+		undelegate: function (selector, ev, cb) {
+			if (this.undelegate) {
+				this.undelegate(selector, ev, cb);
+			} else if (isBindableElement(this)) {
+				$(this)
+					.undelegate(selector, ev, cb);
+			} else {
+				can.unbind.call(this, ev, cb);
+			}
+			return this;
+		},
+		proxy: can.proxy,
+		attr: attr
+	});
+	// Wrap binding functions.
+	/*$.each([&#039;bind&#039;,&#039;unbind&#039;,&#039;undelegate&#039;,&#039;delegate&#039;],function(i,func){
+		can[func] = function(){
+			var t = this[func] ? this : $([this]);
+			t[func].apply(t, arguments);
+			return this;
+		};
+	});*/
+	// Aliases
+	can.on = can.bind;
+	can.off = can.unbind;
+	// Wrap modifier functions.
+	$.each([
+		&#039;append&#039;,
+		&#039;filter&#039;,
+		&#039;addClass&#039;,
+		&#039;remove&#039;,
+		&#039;data&#039;,
+		&#039;get&#039;,
+		&#039;has&#039;
+	], function (i, name) {
+		can[name] = function (wrapped) {
+			return wrapped[name].apply(wrapped, can.makeArray(arguments)
+				.slice(1));
+		};
+	});
+	// Memory safe destruction.
+	var oldClean = $.cleanData;
+	$.cleanData = function (elems) {
+		$.each(elems, function (i, elem) {
+			if (elem) {
+				can.trigger(elem, &#039;removed&#039;, [], false);
+			}
+		});
+		oldClean(elems);
+	};
+
+
+
+	var oldDomManip = $.fn.domManip,
+		cbIndex;
+
+	// feature detect which domManip we are using
+	$.fn.domManip = function (args, cb1, cb2) {
+		for (var i = 1; i &lt; arguments.length; i++) {
+			if (typeof arguments[i] === &#039;function&#039;) {
+				cbIndex = i;
+				break;
+			}
+		}
+		return oldDomManip.apply(this, arguments);
+	};
+	$(document.createElement(&quot;div&quot;))
+		.append(document.createElement(&quot;div&quot;));
+
+	var getChildNodes = function(node){
+		var childNodes = node.childNodes;
+		if(&quot;length&quot; in childNodes) {
+			return can.makeArray(childNodes);
+		} else {
+			var cur = node.firstChild;
+			var nodes = [];
+			while(cur) {
+				nodes.push(cur);
+				cur = cur.nextSibling;
+			}
+			return nodes;
+		}
+	};
+
+	if(cbIndex === undefined) {
+		$.fn.domManip = oldDomManip;
+		// we must manually overwrite
+		can.each([&#039;after&#039;, &#039;prepend&#039;, &#039;before&#039;, &#039;append&#039;,&#039;replaceWith&#039;], function (name) {
+			var original = $.fn[name];
+			$.fn[name] = function () {
+				var elems = [],
+					args = can.makeArray(arguments);
+
+				if (args[0] != null) {
+					// documentFragment
+					if (typeof args[0] === &quot;string&quot;) {
+						args[0] = can.buildFragment(args[0]);
+					}
+					if (args[0].nodeType === 11) {
+						elems = getChildNodes(args[0]);
+					} else if( can.isArrayLike( args[0] ) ) {
+						elems = can.makeArray(args[0]);
+					} else {
+						elems = [args[0]];
+					}
+				}
+
+				var ret = original.apply(this, args);
+
+				can.inserted(elems);
+
+				return ret;
+			};
+		});
+	} else {
+		// Older jQuery that supports domManip
+		
+
+		$.fn.domManip = (cbIndex === 2 ?
+			function (args, table, callback) {
+				return oldDomManip.call(this, args, table, function (elem) {
+					var elems;
+					if (elem.nodeType === 11) {
+						elems = can.makeArray( can.childNodes(elem) );
+					}
+					var ret = callback.apply(this, arguments);
+					can.inserted(elems ? elems : [elem]);
+					return ret;
+				});
+			} :
+			function (args, callback) {
+				return oldDomManip.call(this, args, function (elem) {
+					var elems;
+					if (elem.nodeType === 11) {
+						elems = can.makeArray( can.childNodes(elem) );
+					}
+					var ret = callback.apply(this, arguments);
+					can.inserted(elems ? elems : [elem]);
+					return ret;
+				});
+			});
+	}
+	
+
+
+	// handle via calls to attr
+	var oldAttr = $.attr;
+	$.attr = function (el, attrName) {
+		if( can.isDOM(el) &amp;&amp; can.attr.MutationObserver) {
+			return oldAttr.apply(this, arguments);
+		} else {
+			var oldValue, newValue;
+			if (arguments.length &gt;= 3) {
+				oldValue = oldAttr.call(this, el, attrName);
+			}
+			var res = oldAttr.apply(this, arguments);
+			if (arguments.length &gt;= 3) {
+				newValue = oldAttr.call(this, el, attrName);
+			}
+			if (newValue !== oldValue) {
+				can.attr.trigger(el, attrName, oldValue);
+			}
+			return res;
+		}
+	};
+	var oldRemove = $.removeAttr;
+	$.removeAttr = function (el, attrName) {
+		if( can.isDOM(el) &amp;&amp; can.attr.MutationObserver) {
+			return oldRemove.apply(this, arguments);
+		} else {
+			var oldValue = oldAttr.call(this, el, attrName),
+				res = oldRemove.apply(this, arguments);
+
+			if (oldValue != null) {
+				can.attr.trigger(el, attrName, oldValue);
+			}
+			return res;
+		}
+	};
+	$.event.special.attributes = {
+		setup: function () {
+			if( can.isDOM(this) &amp;&amp; can.attr.MutationObserver) {
+				var self = this;
+				var observer = new can.attr.MutationObserver(function (mutations) {
+					mutations.forEach(function (mutation) {
+						var copy = can.simpleExtend({}, mutation);
+						can.trigger(self, copy, []);
+					});
+
+				});
+				observer.observe(this, {
+					attributes: true,
+					attributeOldValue: true
+				});
+				can.data(can.$(this), &quot;canAttributesObserver&quot;, observer);
+			} else {
+				can.data(can.$(this), &quot;canHasAttributesBindings&quot;, true);
+			}
+		},
+		teardown: function () {
+			if( can.isDOM(this) &amp;&amp; can.attr.MutationObserver) {
+				can.data(can.$(this), &quot;canAttributesObserver&quot;)
+				.disconnect();
+				$.removeData(this, &quot;canAttributesObserver&quot;);
+			} else {
+				$.removeData(this, &quot;canHasAttributesBindings&quot;);
+			}
+
+		}
+	};
+
+	$.event.special.inserted = {};
+	$.event.special.removed = {};
+	return can;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

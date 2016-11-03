@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -361,7 +358,7 @@
 		<li><a href="../docco/component.html">docco</a></li>
 	
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/component/component.js">source</a></li>
+		<li><a href="https://github.com/bitovi/canjs/tree/a6a933de0f0e0b0b53970a0c6961b59554b270ac/component/component.md">source</a></li>
 	
 	
 		<li><a href="https://bitbuilder.herokuapp.com/can.custom.js?plugins=can/component">download</a></li>
@@ -732,6 +729,8 @@ its sub-components:</p>
 		
 
 		
+
+		
 	
 	
 	</article>
@@ -744,7 +743,7 @@ its sub-components:</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -755,11 +754,8 @@ its sub-components:</p>
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../../download.html">Download</a>
@@ -769,7 +765,7 @@ its sub-components:</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -777,19 +773,19 @@ its sub-components:</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"constructor","name":"can.Component","src":"component/component.js","description":"Create widgets that use a template, a view-model  and custom tags.","title":"","download":"can/component","test":"can/component/test.html","parent":"canjs","links":[{"href":"../docco/component.html","title":"docco"}],"signatures":[{"code":"< TAG [ATTR-NAME=ATTR-VALUE] >","description":"Create an instance of a component on a particular \ntag. Currently, this only works within [can.Mustache] templates.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::scope scope]."},{"types":[{"type":"String"}],"name":"ATTR-VALUE","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::scope scope]. By default `ATTR-VALUE`\nvalues are looked up in the [can.view.Scope can.Mustache scope]. If the string value\nof the `ATTR-NAME` is desired, this can be specified like: \n\n    ATTR-NAME: \"@\""}]}],"comment":" ","forceBuild":true,"ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/canjs.com/2.0/can"},"dest":"/Users/daffl/Jupiter/sites/canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
+		var docObject = {"name":"can.Component","type":"constructor","description":"Create widgets that use a template, a view-model  and custom tags.","src":"component/component.md","download":"can/component","test":"can/component/test.html","parent":"canjs","links":[{"href":"../docco/component.html","title":"docco"}],"signatures":[{"code":"< TAG [ATTR-NAME=ATTR-VALUE] >","description":"Create an instance of a component on a particular \ntag. Currently, this only works within [can.Mustache] templates.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::scope scope]."},{"types":[{"type":"String"}],"name":"ATTR-VALUE","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::scope scope]. By default `ATTR-VALUE`\nvalues are looked up in the [can.view.Scope can.Mustache scope]. If the string value\nof the `ATTR-NAME` is desired, this can be specified like: \n\n    ATTR-NAME: \"@\""}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","lib/**/*"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.0/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.0","name":"canjs","source":"https://github.com/bitovi/canjs#a6a933de0f0e0b0b53970a0c6961b59554b270ac"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -798,13 +794,13 @@ its sub-components:</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

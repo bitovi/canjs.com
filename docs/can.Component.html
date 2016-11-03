@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -419,7 +416,7 @@
 		<li><a href="../docco/component/component.html">docco</a></li>
 	
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/component/component.js">source</a></li>
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/component/component.js">source</a></li>
 	
 	
 		<li><a href="https://bitbuilder.herokuapp.com/can.custom.js?plugins=can/component">download</a></li>
@@ -449,11 +446,11 @@
 		
 			
 				<section class="signature">
-					<h2 id="sig__lt_TAG_ATTR_NAME___34__KEY__ATTR_VALUE__34___gt_">&lt; TAG [ATTR-NAME=&#34;{KEY}|ATTR-VALUE&#34;] &gt;
-<span class="pull-right release">2.1</span></h2>
+					<h2 id="sig__lt_TAGBINDINGS____gt_">&lt; TAG BINDINGS... &gt;
+<span class="pull-right release">2.3</span></h2>
 <div class="signature-wrapper">
-<p>Create an instance of a component on a particular
-tag in a <a href="can.stache.html">can.stache</a> template.</p>
+<p>Create an instance of a component on a particular tag in a <a href="can.stache.html">can.stache</a> template.
+In 2.3, use the <a href="can.view.bindings.html">bindings</a> syntaxes to setup bindings.</p>
 
 
 	<h3>Parameters</h3>
@@ -474,45 +471,21 @@ property of the component.</p>
 		</li>
 		
 		<li class="parameter">
-			<h4>ATTR-NAME
-				<code>{String}</code></h4>
+			<h4>BINDINGS
+				<code>{<a href="can.view.bindings.html" >can.view.bindings</a>}</code></h4>
 			<div class="description">
-				<p>An HTML attribute name. Any attribute name is
-valid. Any attributes added to the element are added as properties to the
-component's <a href="can.Component.prototype.viewModel.html">viewModel</a>. In the DOM, attribute names
-are case insensitive.  To pass a camelCase attribute to the component's viewModel,
-hypenate the attribute name like:</p>
-<pre><code>&lt;tag attr-name=&quot;{key}&quot;&gt;&lt;/tag&gt;
+				<p>Use the following binding syntaxes
+to connect the component's <a href="can.Component.prototype.viewModel.html">can.Component.prototype.viewModel</a> to the template's <a href="can.view.Scope.html">scope</a>:</p>
+<ul>
+<li><a href="can.view.bindings.toChild.html">{to-child}</a>=<a href="can.stache.key.html">key</a> - one way binding to child</li>
+<li><a href="can.view.bindings.toParent.html">{^to-parent}</a>=<a href="can.stache.key.html">key</a> - one way binding to parent</li>
+<li><a href="can.view.bindings.twoWay.html">{(two-way)}</a>=<a href="can.stache.key.html">key</a> - two way binding child to parent</li>
+</ul>
+<p>Example:</p>
+<pre><code>&lt;my-tag {to-child}=&quot;key&quot; 
+        {^to-parent}=&quot;key&quot; 
+        {(two-way)}=&quot;key&quot;&gt;&lt;/my-tag&gt;
 </code></pre>
-<p>This will set <code>attrName</code> on the component's viewModel.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>KEY
-				<code>{<a href="can.stache.key.html" >key</a>}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>Specifies the value of a property passed to
-the component instance's <a href="can.Component.prototype.viewModel.html">viewModel</a> that will be looked
-up in the <a href="can.view.Scope.html">can.stache scope</a>.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>ATTR-VALUE
-				<code>{<a href="can.stache.key.html" >key</a>}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>If the attribute value is not
-wrapped with <code>{}</code>, the string value of the attribute will be
-set on the component's viewModel.</p>
 
 			</div>
 			
@@ -532,76 +505,33 @@ set on the component's viewModel.</p>
 				</section>
 			
 				<section class="signature">
+					<h2 id="sig__lt_TAG_ATTR_NAME___34__KEY__ATTR_VALUE__34___gt_">&lt; TAG [ATTR-NAME=&#34;{KEY}|ATTR-VALUE&#34;] &gt;
+<span class="pull-right release">2.1</span></h2>
+<div class="signature-wrapper">
+<p>Create an instance of a component on a particular
+tag in a <a href="can.stache.html">can.stache</a> template.  This form of two way bindings is deprecated as of 2.3. It looked like:</p>
+<pre><code>&lt;my-tag attr-name=&quot;{key}&quot;&gt;&lt;/my-tag&gt;
+</code></pre>
+<p>Please check earlier versions of the documentation for more information.</p>
+
+
+
+
+
+
+
+</div>
+
+				</section>
+			
+				<section class="signature">
 					<h2 id="sig__lt_TAG_ATTR_NAME_KEY_ATTR_VALUE__gt_">&lt; TAG [ATTR-NAME=KEY|ATTR-VALUE] &gt;
 </h2>
 <div class="signature-wrapper">
 <p>Create an instance of a component on a particular
-tag in a <a href="can.mustache.html">can.mustache</a> template.</p>
+tag in a <a href="can.mustache.html">can.mustache</a> template. Use of <a href="can.mustache.html">can.mustache</a> is deprecated as of
+2.3.  Please check earlier versions of the documentation for more information.</p>
 
-
-	<h3>Parameters</h3>
-
-	<ol class="parameters">
-		
-		<li class="parameter">
-			<h4>TAG
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>An HTML tag name that matches the <a href="can.Component.prototype.tag.html">tag</a>
-property of the component.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>ATTR-NAME
-				<code>{String}</code></h4>
-			<div class="description">
-				<p>An HTML attribute name. Any attribute name is
-valid. Any attributes added to the element are added as properties to the
-component's <a href="can.Component.prototype.viewModel.html">viewModel</a>.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>ATTR-VALUE
-				<code>{<a href="can.mustache.key.html" >key</a>}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>Specifies the value of a property passed to
-the component instance's <a href="can.Component.prototype.viewModel.html">viewModel</a>. By default <code>ATTR-VALUE</code>
-values are looked up in the [can.view.viewModel can.mustache viewModel]. If the string value
-of the <code>ATTR-NAME</code> is desired, this can be specified like:</p>
-<pre><code>ATTR-NAME: &quot;@&quot;
-</code></pre>
-
-			</div>
-			
-			
-			
-		</li>
-		
-		<li class="parameter">
-			<h4>KEY
-				<code>{<a href="can.mustache.key.html" >key</a>}</code><span class="pull-right optional">Optional</span></h4>
-			<div class="description">
-				<p>Specifies the value of a property passed to
-the component instance's <a href="can.Component.prototype.viewModel.html">viewModel</a> that will be looked
-up in the <a href="can.view.Scope.html">can.stache scope</a>.</p>
-
-			</div>
-			
-			
-			
-		</li>
-		
-	</ol>
 
 
 
@@ -624,7 +554,7 @@ up in the <a href="can.view.Scope.html">can.stache scope</a>.</p>
 with the methods and properties of how your component behaves:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;{{#if visible}}{{message}}{{else}}Click me{{/if}}&quot;,
+  template: can.stache(&quot;{{#if visible}}{{message}}{{else}}Click me{{/if}}&quot;),
   viewModel: {
     visible: false,
     message: &quot;Hello There!&quot;
@@ -640,7 +570,7 @@ with the methods and properties of how your component behaves:</p>
 says &quot;Hello There!&quot;.  To create a a instance of this component on the page,
 add <code>&lt;hello-world&gt;&lt;/hello-world&gt;</code> to a mustache template, render
 the template and insert the result in the page like:</p>
-<pre><code>var template = can.mustache(&quot;&lt;hello-world&gt;&lt;/hello-world&gt;&quot;);
+<pre><code>var template = can.stache(&quot;&lt;hello-world&gt;&lt;/hello-world&gt;&quot;);
 $(document.body).append( template() );
 </code></pre>
 <p>Check this out here:</p>
@@ -657,10 +587,14 @@ you'll render a template with many custom tags like:</p>
   &lt;/ui-panel&gt;
 &lt;/srchr-app&gt;
 </code></pre>
-<h3>Extending can.Component</h3>
+<h3>Creating a can.Component</h3>
 <p>Use <a href="can.Component.extend.html">can.Component.extend</a> to create a <code>can.Component</code> constructor function
 that will automatically get initialized whenever the component's tag is
 found.</p>
+<p>Note that inheriting from components works differently than other CanJS APIs. You
+can't call <code>.extend</code> on a particular component to create a &quot;subclass&quot; of that component.</p>
+<p>Instead, components work more like HTML elements. To reuse functionality from a base component, build on top of it with parent
+components that wrap other components in their template and pass any needed viewModel properties via attributes.</p>
 <h3>Tag</h3>
 <p>A component's <a href="can.Component.prototype.tag.html">tag</a> is the element node name that
 the component will be created on.</p>
@@ -675,7 +609,7 @@ the element's innerHTML.</p>
 <p>The following component:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;Hello World&lt;/h1&gt;&quot;
+  template: can.stache(&quot;&lt;h1&gt;Hello World&lt;/h1&gt;&quot;)
 });
 </code></pre>
 <p>Changes <code>&lt;hello-world&gt;&lt;/hello-world&gt;</code> elements into:</p>
@@ -685,7 +619,7 @@ the element's innerHTML.</p>
 <p>The following component:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;&lt;content/&gt;&lt;/h1&gt;&quot;
+  template: can.stache(&quot;&lt;h1&gt;&lt;content/&gt;&lt;/h1&gt;&quot;)
 });
 </code></pre>
 <p>Changes <code>&lt;hello-world&gt;Hi There&lt;/hello-world&gt;</code> into:</p>
@@ -694,17 +628,17 @@ the element's innerHTML.</p>
 <h3>viewModel</h3>
 <p>A component's <a href="can.Component.prototype.viewModel.html">viewModel</a> defines a can.Map that
 is used to render the component's template. The maps properties
-are typically set by attributes on the custom element's
-HTML. By default, every attribute's value is looked up in the parent viewModel
+are typically set by attribute <a href="can.view.bindings.html">bindings</a> on the custom element.
+By default, every attribute's value is looked up in the parent viewModel
 of the custom element and added to the viewModel object.</p>
 <p>The following component:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;
+  template: can.stache(&quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;)
 });
 </code></pre>
 <p>Changes the following rendered template:</p>
-<pre><code>var template = can.mustache(&quot;&lt;hello-world message='greeting'/&gt;&quot;);
+<pre><code>var template = can.stache(&quot;&lt;hello-world {message}='greeting'/&gt;&quot;);
 template({
   greeting: &quot;Salutations&quot;
 })
@@ -715,34 +649,26 @@ template({
 <p>Default values can be provided. The following component:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;,
+  template: can.stache(&quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;),
   viewModel: {
     message: &quot;Hi&quot;
   }
 });
 </code></pre>
 <p>Changes the following rendered template:</p>
-<pre><code>var template = can.mustache(&quot;&lt;hello-world message='greeting'/&gt;&quot;);
+<pre><code>var template = can.stache(&quot;&lt;hello-world/&gt;&quot;);
 template({})
 </code></pre>
 <p>Into:</p>
 <pre><code>&lt;hello-world&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;/hello-world&gt;
 </code></pre>
-<p>If you want to set the string value of the attribute on viewModel, give viewModel a
-default value of &quot;@&quot;.  The following component:</p>
-<pre><code>can.Component.extend({
-  tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;,
-  viewModel: {
-    message: &quot;@&quot;
-  }
-});
-</code></pre>
-<p>Changes the following rendered template:</p>
-<pre><code>var template = can.mustache(&quot;&lt;hello-world message='Howdy'/&gt;&quot;);
+<p>If you want to set the string value of the attribute on viewModel,
+set an attribute without any binding syntax.</p>
+<p>The following template, with the previous <code>&quot;hello-world&quot;</code> component:</p>
+<pre><code>var template = can.stache(&quot;&lt;hello-world message='Howdy'/&gt;&quot;);
 template({})
 </code></pre>
-<p>Into:</p>
+<p>Renders to:</p>
 <pre><code>&lt;hello-world&gt;&lt;h1&gt;Howdy&lt;/h1&gt;&lt;/hello-world&gt;
 </code></pre>
 <h3>Events</h3>
@@ -751,7 +677,7 @@ listened to with <a href="can.view.bindings.html">view bindings</a>). The follow
 adds &quot;!&quot; to the message every time <code>&lt;hello-world&gt;</code> is clicked:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;,
+  template: can.stache(&quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;),
   events: {
     &quot;click&quot; : function(){
       var currentMessage = this.viewModel.attr(&quot;message&quot;);
@@ -760,15 +686,17 @@ adds &quot;!&quot; to the message every time <code>&lt;hello-world&gt;</code> is
   }
 });
 </code></pre>
+<p>Components have the ability to bind to special <a href="can.events.inserted.html">inserted</a> and <a href="can.events.removed.html">removed</a> events
+that are called when a component's tag has been inserted into or removed from the page.</p>
 <h3>Helpers</h3>
 <p>A component's <a href="can.Component.prototype.helpers.html">helpers</a> object provides <a href="can.mustache.helper.html">mustache helper</a> functions
 that are available within the component's template.  The following component
 only renders friendly messages:</p>
 <pre><code>can.Component.extend({
   tag: &quot;hello-world&quot;,
-  template: &quot;{{#isFriendly message}}&quot;+
+  template: can.stache(&quot;{{#isFriendly message}}&quot;+
               &quot;&lt;h1&gt;{{message}}&lt;/h1&gt;&quot;+
-            &quot;{{/isFriendly}}&quot;,
+            &quot;{{/isFriendly}}&quot;),
   helpers: {
     isFriendly: function(message, options){
       if( /hi|hello|howdy/.test(message) ) {
@@ -795,18 +723,18 @@ var frag = template({
 
 frag //-&gt; &lt;my-tag greeting='message'&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;/my-tag&gt;
 </code></pre>
-<p>With <a href="can.stache.html">can.stache</a>, you wrap the key with <code>{}</code>. For example:</p>
+<p>With <a href="can.stache.html">can.stache</a>, you wrap the attribute name with <code>{}</code> for parent to child binding. For example:</p>
 <pre><code>can.Component.extend({
   tag: &quot;my-tag&quot;,
-  template: &quot;&lt;h1&gt;{{greeting}}&lt;/h1&gt;&quot;
+  template: can.stache(&quot;&lt;h1&gt;{{greeting}}&lt;/h1&gt;&quot;)
 });
-var template = can.stache(&quot;&lt;my-tag greeting='{message}'&gt;&lt;/my-tag&gt;&quot;);
+var template = can.stache(&quot;&lt;my-tag {greeting}='message'&gt;&lt;/my-tag&gt;&quot;);
 
 var frag = template({
   message: &quot;Hi&quot;
 });
 
-frag //-&gt; &lt;my-tag greeting='{message}'&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;/my-tag&gt;
+frag //-&gt; &lt;my-tag {greeting}='message'&gt;&lt;h1&gt;Hi&lt;/h1&gt;&lt;/my-tag&gt;
 </code></pre>
 <p>If the key was not wrapped, the template would render:</p>
 <pre><code>frag //-&gt; &lt;my-tag greeting='message'&gt;&lt;h1&gt;message&lt;/h1&gt;&lt;/my-tag&gt;
@@ -860,7 +788,7 @@ selectableItems: function(){
 </code></pre>
 <p>When the &quot;+&quot; icon is clicked next to each item, the viewModel's <code>showChildren</code> method is called, which
 adds that item to the breadcrumb like:</p>
-<pre><code>showChildren: function( item, el, ev ) {
+<pre><code>showChildren: function( item, ev ) {
   ev.stopPropagation();
   this.attr('breadcrumb').push(item)
 },
@@ -875,52 +803,69 @@ it shows an application component that puts them all together.</p>
 ...
 });
 </code></pre>
-<p>The <code>app</code> component creates an instance of the <code>Paginate</code> model
-and a <code>websitesDeferred</code> that represents a request for the Websites
+<p>The <code>app</code> component, using the [can.Map.define define plugin], creates an instance of the <code>Paginate</code> model
+and a <code>websitesPromise</code> that represents a request for the Websites
 that should be displayed.</p>
-<pre><code>viewModel: function () {
-  return {
-    paginate: new Paginate({
-      limit: 5
-    }),
-    websitesDeferred: can.compute(function () {
-      var params = {
-        limit: this.attr('paginate.limit'),
-        offset: this.attr('paginate.offset')
-      },
-        websitesDeferred = Website.findAll(params),
-        self = this;
+<pre><code>viewModel: {
+  define: {
+    paginate: {
+      value: function() {
+        return new Paginate({
+          limit: 5
+        });
+      }
+    },
+    websitesPromise: {
+      get: function() {
+        var params = {
+              limit: this.attr('paginate.limit'),
+              offset: this.attr('paginate.offset')
+          },
+          websitesPromise = Website.findAll(params),
+          self = this;
 
-      websitesDeferred.then(function (websites) {
-        self.attr('paginate.count', websites.count)
-      });
+        websitesPromise.then(function(websites) {
+          self.attr('paginate.count', websites.count);
+        });
 
-      return websitesDeferred;
-    })
+        return websitesPromise;
+      }
+    }
   }
 }
 </code></pre>
-<p>The <code>app</code> control passes paginate, paginate's values, and websitesDeferreds to
+<p>The <code>app</code> control passes paginate, paginate's values, and websitesPromise to
 its sub-components:</p>
-<pre><code>&lt;grid deferredData='websitesDeferred'&gt;
-  {{#each items}}
-    &lt;tr&gt;
-      &lt;td width='40%'&gt;{{name}}&lt;/td&gt;
-      &lt;td width='70%'&gt;{{url}}&lt;/td&gt;
-    &lt;/tr&gt;
-  {{/each}}
-&lt;/grid&gt;
-&lt;next-prev paginate='paginate'/&gt;
-&lt;page-count page='paginate.page' count='paginate.pageCount'/&gt;
+<pre><code>&lt;app&gt;
+  &lt;grid {promise-data}='websitesPromise'&gt;
+    {{#each items}}
+      &lt;tr&gt;
+        &lt;td width='40%'&gt;{{name}}&lt;/td&gt;
+        &lt;td width='70%'&gt;{{url}}&lt;/td&gt;
+      &lt;/tr&gt;
+    {{/each}}
+  &lt;/grid&gt;
+  &lt;next-prev {paginate}='paginate'&gt;&lt;/next-prev&gt;
+  &lt;page-count {page}='paginate.page' {count}='paginate.pageCount'/&gt;
+&lt;/app&gt;
 </code></pre>
 <h2>IE 8 Support</h2>
 <p>While CanJS does support Internet Explorer 8 out of the box, if you decide
 to use <code>can.Component</code> then you will need to include <a href="https://github.com/aFarkas/html5shiv">HTML5 Shiv</a>
 in order for your custom tags to work properly.</p>
-<p>For namespaced tag names (e.g. <code>&lt;can:example&gt;</code>) and hyphenated tag names (e.g. <code>&lt;can-example&gt;</code>) to work properly, you will need to use version 3.7.2 or later.</p>
+<p>For namespaced tag names (e.g. <code>&lt;can:example&gt;</code>) and hyphenated tag names (e.g. <code>&lt;can-example&gt;</code>) to work properly, you will
+need to use version 3.7.2 or later.</p>
+<h2>Videos</h2>
+<p>Watch this video for an overview of can.Component, why you should use it, and a hello world example:</p>
+<iframe width="662" height="372" src="https://www.youtube.com/embed/BM1Jc3lVUrk" frameborder="0" allowfullscreen></iframe>
+<p>This video provides a more in depth overview of the API and goes over several examples of can.Components:</p>
+<iframe width="662" height="372" src="https://www.youtube.com/embed/ogX765S4iuc" frameborder="0" allowfullscreen></iframe>
+<p>Note: the videos above reference the <code>scope</code> property, which was replaced by the <a href="can.Component.prototype.viewModel.html">viewModel</a> property in 2.2.</p>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -936,7 +881,7 @@ in order for your custom tags to work properly.</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -947,11 +892,8 @@ in order for your custom tags to work properly.</p>
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../download.html">Download</a>
@@ -961,7 +903,7 @@ in order for your custom tags to work properly.</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -969,19 +911,19 @@ in order for your custom tags to work properly.</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"constructor","name":"can.Component","src":"component/component.js","description":"Create widgets that use a template, a view-model  and custom tags.","title":"","download":"can/component","test":"can/component/test.html","parent":"canjs","release":"2.0","links":[{"href":"../docco/component/component.html","title":"docco"}],"signatures":[{"code":"< TAG [ATTR-NAME=\"{KEY}|ATTR-VALUE\"] >","description":"Create an instance of a component on a particular \ntag in a [can.stache] template.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::viewModel viewModel]. In the DOM, attribute names\nare case insensitive.  To pass a camelCase attribute to the component's viewModel,\nhypenate the attribute name like:\n\n    <tag attr-name=\"{key}\"></tag>\n\nThis will set `attrName` on the component's viewModel."},{"types":[{"type":"can.stache.key"}],"optional":true,"name":"KEY","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::viewModel viewModel] that will be looked\nup in the [can.view.Scope can.stache scope]."},{"types":[{"type":"can.stache.key"}],"optional":true,"name":"ATTR-VALUE","description":"If the attribute value is not\nwrapped with `{}`, the string value of the attribute will be\nset on the component's viewModel."}],"release":"2.1"},{"code":"< TAG [ATTR-NAME=KEY|ATTR-VALUE] >","description":"Create an instance of a component on a particular \ntag in a [can.mustache] template.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"String"}],"name":"ATTR-NAME","description":"An HTML attribute name. Any attribute name is\nvalid. Any attributes added to the element are added as properties to the\ncomponent's [can.Component::viewModel viewModel]."},{"types":[{"type":"can.mustache.key"}],"optional":true,"name":"ATTR-VALUE","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::viewModel viewModel]. By default `ATTR-VALUE`\nvalues are looked up in the [can.view.viewModel can.mustache viewModel]. If the string value\nof the `ATTR-NAME` is desired, this can be specified like: \n\n    ATTR-NAME: \"@\""},{"types":[{"type":"can.mustache.key"}],"optional":true,"name":"KEY","description":"Specifies the value of a property passed to\nthe component instance's [can.Component::viewModel viewModel] that will be looked\nup in the [can.view.Scope can.stache scope]."}]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"constructor","name":"can.Component","src":"component/component.js","description":"Create widgets that use a template, a view-model  and custom tags.","title":"","download":"can/component","test":"can/component/test.html","parent":"canjs","release":"2.0","links":[{"href":"../docco/component/component.html","title":"docco"}],"signatures":[{"code":"< TAG BINDINGS... >","description":"Create an instance of a component on a particular tag in a [can.stache] template.\n  In 2.3, use the [can.view.bindings bindings] syntaxes to setup bindings.","params":[{"types":[{"type":"String"}],"name":"TAG","description":"An HTML tag name that matches the [can.Component::tag tag]\nproperty of the component."},{"types":[{"type":"can.view.bindings"}],"name":"BINDINGS","description":"Use the following binding syntaxes\nto connect the component's [can.Component::viewModel] to the template's [can.view.Scope scope]:\n\n - [can.view.bindings.toChild]=[can.stache.key] - one way binding to child\n - [can.view.bindings.toParent]=[can.stache.key] - one way binding to parent\n - [can.view.bindings.twoWay]=[can.stache.key] - two way binding child to parent\n \nExample:\n\n```\n<my-tag {to-child}=\"key\" \n        {^to-parent}=\"key\" \n        {(two-way)}=\"key\"></my-tag>\n```"}],"release":"2.3"},{"code":"< TAG [ATTR-NAME=\"{KEY}|ATTR-VALUE\"] >","description":"Create an instance of a component on a particular \n  tag in a [can.stache] template.  This form of two way bindings is deprecated as of 2.3. It looked like:\n\n  ```\n  <my-tag attr-name=\"{key}\"></my-tag>\n  ```  \n\n  \n   Please check earlier versions of the documentation for more information.","params":[],"release":"2.1"},{"code":"< TAG [ATTR-NAME=KEY|ATTR-VALUE] >","description":"Create an instance of a component on a particular \n  tag in a [can.mustache] template. Use of [can.mustache] is deprecated as of \n  2.3.  Please check earlier versions of the documentation for more information.","params":[]}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","guides/**/*.md","guides/*.js","guides/**/*.js","{node_modules,bower_components,dist}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -990,13 +932,13 @@ in order for your custom tags to work properly.</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

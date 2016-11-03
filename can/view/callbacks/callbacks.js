@@ -35,7 +35,10 @@ steal("can/util", "can/view",function(can){
 		if(tagHandler) {
 			//!steal-remove-start
 			if (typeof tags[tagName.toLowerCase()] !== 'undefined') {
-				can.dev.warn("Custom tag: " + tagName.toLowerCase() + "is already defined");
+				can.dev.warn("Custom tag: " + tagName.toLowerCase() + " is already defined");
+			}
+			if (!automaticCustomElementCharacters.test(tagName) && tagName !== "content") {
+				can.dev.warn("Custom tag: " + tagName.toLowerCase() + " is missing a hyphen");
 			}
 			//!steal-remove-end
 			// if we have html5shive ... re-generate
@@ -65,7 +68,7 @@ steal("can/util", "can/view",function(can){
 		attr: attr,
 		// handles calling back a tag callback
 		tagHandler: function(el, tagName, tagData){
-			var helperTagCallback = tagData.options.attr('tags.' + tagName),
+			var helperTagCallback = tagData.options.get('tags.' + tagName,{proxyMethods: false}),
 				tagCallback = helperTagCallback || tags[tagName];
 	
 			// If this was an element like <foo-bar> that doesn't have a component, just render its content
@@ -73,9 +76,7 @@ steal("can/util", "can/view",function(can){
 				res;
 				
 			if(tagCallback) {
-				var reads = can.__clearReading();
-				res = tagCallback(el, tagData);
-				can.__setReading(reads);
+				res = can.__notObserve(tagCallback)(el, tagData);
 			} else {
 				res = scope;
 			}

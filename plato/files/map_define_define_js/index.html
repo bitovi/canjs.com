@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>map/define/define.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">63.63</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">366</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">67.97</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.00</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&#039;can/util&#039;,&#039;can/map/map_helpers.js&#039;, &#039;can/map&#039;, &#039;can/compute&#039;, function (can, mapHelpers) {
+	if(!can.define) {
+		var define = can.define = {};
+
+		var getPropDefineBehavior = function(behavior, attr, define) {
+			var prop, defaultProp;
+
+			if(define) {
+				prop = define[attr];
+				defaultProp = define[&#039;*&#039;];
+
+				if(prop &amp;&amp; prop[behavior] !== undefined) {
+					return prop[behavior];
+				}
+				else if(defaultProp &amp;&amp; defaultProp[behavior] !== undefined) {
+					return defaultProp[behavior];
+				}
+			}
+		};
+
+		// This is called when the Map is defined
+		mapHelpers.define = function (Map, baseDefine) {
+			var definitions = Map.prototype.define;
+			
+			if (baseDefine) {
+				var defines = can.simpleExtend({}, baseDefine);
+				mapHelpers.twoLevelDeepExtend(defines, definitions);
+				can.simpleExtend(definitions, defines);
+			}
+			//!steal-remove-start
+			if(Map.define){
+				can.dev.warn(&quot;The define property should be on the map&#039;s prototype properties, &quot;+
+					&quot;not the static properties.&quot;);
+			}
+			//!steal-remove-end
+			Map.defaultGenerators = {};
+			for (var prop in definitions) {
+				var type = definitions[prop].type;
+				if( typeof type === &quot;string&quot; ) {
+					if(typeof define.types[type] === &quot;object&quot;) {
+						delete definitions[prop].type;
+						can.extend(definitions[prop], define.types[type]);
+					}
+				}
+				if (&quot;value&quot; in definitions[prop]) {
+					if (typeof definitions[prop].value === &quot;function&quot;) {
+						Map.defaultGenerators[prop] = definitions[prop].value;
+					} else {
+						Map.defaults[prop] = definitions[prop].value;
+					}
+				}
+				if (typeof definitions[prop].Value === &quot;function&quot;) {
+					(function (Constructor) {
+						Map.defaultGenerators[prop] = function () {
+							return new Constructor();
+						};
+					})(definitions[prop].Value);
+				}
+			}
+		};
+
+
+		var oldSetupDefaults = can.Map.prototype._setupDefaults;
+		can.Map.prototype._setupDefaults = function (obj) {
+			var defaults = oldSetupDefaults.call(this),
+				propsCommittedToAttr = {},
+				Map = this.constructor,
+				originalGet = this._get;
+
+			// Overwrite this._get with a version that commits defaults to
+			// this.attr() as needed. Because calling this.attr() for each
+			// individual default would be expensive.
+			this._get = function (originalProp) {
+				// If a this.attr() was called using dot syntax (e.g number.0),
+				// disregard everything after the &quot;.&quot; until we call the
+				// original this._get().
+				var prop = (originalProp.indexOf(&#039;.&#039;) !== -1 ?
+					originalProp.substr(0, originalProp.indexOf(&#039;.&#039;)) :
+					originalProp);
+
+				// If this property has a default and we haven&#039;t yet committed it to
+				// this.attr()
+				if ((prop in defaults) &amp;&amp; ! (prop in propsCommittedToAttr)) {
+
+					// Commit the property&#039;s default so that it can be read in
+					// other defaultGenerators.
+					this.attr(prop, defaults[prop]);
+
+					// Make not so that we don&#039;t commit this property again.
+					propsCommittedToAttr[prop] = true;
+				}
+
+				return originalGet.apply(this, arguments);
+			};
+
+			for (var prop in Map.defaultGenerators) {
+				// Only call the prop&#039;s value method if the property wasn&#039;t provided
+				// during instantiation.
+				if (! obj || ! (prop in obj)) {
+					defaults[prop] = Map.defaultGenerators[prop].call(this);
+				}
+			}
+
+			// delete this._get which will default to the one on the prototype.
+			delete this._get;
+
+			return defaults;
+		};
+
+
+		var proto = can.Map.prototype,
+			oldSet = proto.__set;
+		proto.__set = function (prop, value, current, success, error) {
+			//!steal-remove-start
+			var asyncTimer;
+			//!steal-remove-end
+
+			// check if there&#039;s a setter
+			var errorCallback = function (errors) {
+					//!steal-remove-start
+					clearTimeout(asyncTimer);
+					//!steal-remove-end
+
+					var stub = error &amp;&amp; error.call(self, errors);
+					// if &#039;validations&#039; is on the page it will trigger
+					// the error itself and we dont want to trigger
+					// the event twice. :)
+					if (stub !== false) {
+						can.trigger(self, &#039;error&#039;, [
+							prop,
+							errors
+						], true);
+					}
+					return false;
+				},
+				self = this,
+				setter = getPropDefineBehavior(&quot;set&quot;, prop, this.define),
+				getter = getPropDefineBehavior(&quot;get&quot;, prop, this.define);
+
+
+			// if we have a setter
+			if (setter) {
+				// call the setter, if returned value is undefined,
+				// this means the setter is async so we
+				// do not call update property and return right away
+				can.batch.start();
+				var setterCalled = false,
+
+					setValue = setter.call(this, value, function (value) {
+						if(getter) {
+							self[prop](value);
+						} else {
+							oldSet.call(self, prop, value, current, success, errorCallback);
+						}
+
+						setterCalled = true;
+						//!steal-remove-start
+						clearTimeout(asyncTimer);
+						//!steal-remove-end
+					}, errorCallback, getter ? this._computedAttrs[prop].compute.computeInstance.lastSetValue.get() : current);
+				if (getter) {
+					// if there&#039;s a getter we don&#039;t call old set
+					// instead we call the getter&#039;s compute with the new value
+					if(setValue !== undefined &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= 1) {
+						this._computedAttrs[prop].compute(setValue);
+					}
+
+					can.batch.stop();
+					return;
+				}
+				// if it took a setter and returned nothing, don&#039;t set the value
+				else if (setValue === undefined &amp;&amp; !setterCalled &amp;&amp; setter.length &gt;= 1) {
+					//!steal-remove-start
+					asyncTimer = setTimeout(function () {
+						can.dev.warn(&#039;can/map/setter.js: Setter &quot;&#039; + prop + &#039;&quot; did not return a value or call the setter callback.&#039;);
+					}, can.dev.warnTimeout);
+					//!steal-remove-end
+					can.batch.stop();
+					return;
+				} else {
+					if (!setterCalled) {
+						oldSet.call(self, prop,
+							// if no arguments, we are side-effects only
+							setter.length === 0 &amp;&amp; setValue === undefined ? value : setValue,
+							current,
+							success,
+							errorCallback);
+					}
+					can.batch.stop();
+					return this;
+				}
+
+			} else {
+				oldSet.call(self, prop, value, current, success, errorCallback);
+			}
+
+			return this;
+		};
+
+		define.types = {
+			&#039;date&#039;: function (str) {
+				var type = typeof str;
+				if (type === &#039;string&#039;) {
+					str = Date.parse(str);
+					return isNaN(str) ? null : new Date(str);
+				} else if (type === &#039;number&#039;) {
+					return new Date(str);
+				} else {
+					return str;
+				}
+			},
+			&#039;number&#039;: function (val) {
+				if(val == null) {
+					return val;
+				}
+				return +(val);
+			},
+			&#039;boolean&#039;: function (val) {
+				if (val === &#039;false&#039; || val === &#039;0&#039; || !val) {
+					return false;
+				}
+				return true;
+			},
+			/**
+			 * Implements HTML-style boolean logic for attribute strings, where
+			 * any string, including &quot;&quot;, is truthy.
+			 */
+			&#039;htmlbool&#039;: function(val) {
+				return typeof val === &quot;string&quot; || !!val;
+			},
+			&#039;*&#039;: function (val) {
+				return val;
+			},
+			&#039;string&#039;: function (val) {
+				if(val == null) {
+					return val;
+				}
+				return &#039;&#039; + val;
+			},
+			&#039;compute&#039;: {
+				set: function(newValue, setVal, setErr, oldValue) {
+					if(newValue &amp;&amp; newValue.isComputed) {
+						return newValue;
+					}
+					if(oldValue &amp;&amp; oldValue.isComputed) {
+						oldValue(newValue);
+						return oldValue;
+					}
+					return newValue;
+				},
+				get: function(value){
+					return value &amp;&amp; value.isComputed ? value() : value;
+				}
+			}
+		};
+
+		// the old type sets up bubbling
+		var oldType = proto.__type;
+		proto.__type = function (value, prop) {
+			var type = getPropDefineBehavior(&quot;type&quot;, prop, this.define),
+				Type = getPropDefineBehavior(&quot;Type&quot;, prop, this.define),
+				newValue = value;
+
+			if (typeof type === &quot;string&quot;) {
+				type = define.types[type];
+			}
+
+			if (type || Type) {
+				// If there&#039;s a type, convert it.
+				if (type) {
+					newValue = type.call(this, newValue, prop);
+				}
+				// If there&#039;s a Type create a new instance of it
+				if (Type &amp;&amp; !(newValue instanceof Type)) {
+					newValue = new Type(newValue);
+				}
+				// If the newValue is a Map, we need to hook it up
+				return newValue;
+
+			}
+			// If we pass in a object with define
+			else if(can.isPlainObject(newValue) &amp;&amp; newValue.define) {
+				newValue = can.Map.extend(newValue);
+				newValue = new newValue();
+			}
+			return oldType.call(this, newValue, prop);
+		};
+
+		var oldRemove = proto.__remove;
+		proto.__remove = function (prop, current) {
+			var remove = getPropDefineBehavior(&quot;remove&quot;, prop, this.define),
+				res;
+			if (remove) {
+				can.batch.start();
+				res = remove.call(this, current);
+
+				if (res === false) {
+					can.batch.stop();
+					return;
+				} else {
+
+					res = oldRemove.call(this, prop, current);
+					can.batch.stop();
+					return res;
+				}
+			}
+			return oldRemove.call(this, prop, current);
+		};
+
+		var oldSetupComputes = proto._setupComputedProperties;
+		proto._setupComputedProperties = function () {
+			oldSetupComputes.apply(this, arguments);
+			for (var attr in this.define) {
+				var def = this.define[attr],
+					get = def.get;
+				if (get) {
+					mapHelpers.addComputedAttr(this, attr, can.compute.async(undefined, get, this));
+				}
+			}
+		};
+		// Overwrite the invidual property serializer b/c we will overwrite it.
+		var oldSingleSerialize = proto.___serialize;
+		proto.___serialize = function(name, val){
+			return serializeProp(this, name, val);
+		};
+		// If the map has a define serializer for the given attr, run it.
+		var serializeProp = function(map, attr, val) {
+			var serializer = attr === &quot;*&quot; ? false : getPropDefineBehavior(&quot;serialize&quot;, attr, map.define);
+			if(serializer === undefined) {
+				return oldSingleSerialize.call(map, attr, val);
+			} else if(serializer !== false){
+				return typeof serializer === &quot;function&quot; ? serializer.call(map, val, attr): oldSingleSerialize.call(map, attr, val);
+			}
+		};
+
+		// Overwrite serialize to add in any missing define serialized properties.
+		var oldSerialize = proto.serialize;
+		proto.serialize = function (property) {
+			var serialized = oldSerialize.apply(this, arguments);
+			if(property){
+				return serialized;
+			}
+			// add in properties not already serialized
+
+			var serializer,
+				val;
+			// Go through each property.
+			for(var attr in this.define){
+				// if it&#039;s not already defined
+				if(!(attr in serialized)) {
+					// check there is a serializer so we aren&#039;t doing extra work on serializer:false
+					serializer = this.define &amp;&amp; this.define[attr] &amp;&amp; this.define[attr].serialize;
+					if(serializer) {
+						val = serializeProp(this, attr, this.attr(attr));
+						if(val !== undefined) {
+							serialized[attr] = val;
+						}
+					}
+				}
+			}
+			return serialized;
+		};
+
+		return can.define;
+	}
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

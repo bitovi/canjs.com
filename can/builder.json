@@ -66,6 +66,18 @@
 			"description": "High performance Mustache templates",
 			"type": "plugin"
 		},
+		"can/view/stache/mustache_core": {
+			"name": "can.stache.mustache.core",
+			"type": "plugin",
+			"hidden": true,
+			"hasTest": false
+		},
+		"can/view/href/href": {
+			"name": "can.view.href",
+			"type": "core",
+			"description": "Make flexible route links",
+			"isDefault": true
+		},
 		"can/control/control": {
 			"name": "can.Control",
 			"description": "Declarative event bindings",
@@ -129,6 +141,7 @@
 			"name": "can.Map.attributes",
 			"type": "plugin",
 			"deprecated": true,
+			"hasTest": false,
 			"description": "Define Observe attributes"
 		},
 		"can/map/validations/validations": {
@@ -174,11 +187,6 @@
 				"jquery-2"
 			]
 		},
-		"can/util/object/object": {
-			"name": "can.Object",
-			"type": "plugin",
-			"description": "Helper methods for object comparison"
-		},
 		"can/util/fixture/fixture": {
 			"name": "can.fixture",
 			"type": "plugin",
@@ -202,16 +210,19 @@
 			"isDefault": true,
 			"hidden": true
 		},
-		"can/util/string/string": {
-			"name": "can.util.string",
-			"type": "core",
-			"isDefault": true,
+		"can/util/tests/tests": {
+			"name": "can.util.tests",
+			"type": "plugin",
 			"hidden": true
 		},
-		"can/util/attr/attr": {
-			"name": "can.util.attr",
-			"type": "core",
-			"isDefault": true,
+		"can/util/object/object": {
+			"name": "can.Object",
+			"type": "plugin",
+			"description": "Helper methods for object comparison"
+		},
+		"can/util/function/function": {
+			"name": "can.util.function",
+			"type": "plugin",
 			"hidden": true
 		},
 		"can/view/autorender/autorender": {
@@ -254,6 +265,21 @@
 			"type": "plugin",
 			"hidden": true,
 			"hasTest": false
+		},
+		"can/util/vdom/build_fragment/build_fragment": {
+			"name": "can.util.vdom.buildFragment",
+			"type": "plugin",
+			"hidden": true
+		},
+		"can/util/vdom/document/document": {
+			"name": "can.util.vdom.document",
+			"type": "plugin",
+			"hidden": true
+		},
+		"can/view/import/import": {
+			"name": "can.view.import",
+			"type": "plugin",
+			"hidden": true
 		}
 	},
 	"types": {
@@ -267,7 +293,7 @@
 			"library": "node_modules/jquery/dist/jquery.js",
 			"steal": {
 				"paths": {
-					
+
 				}
 			}
 		},
@@ -286,7 +312,7 @@
 			"library": "bower_components/zepto/zepto.js",
 			"steal": {
 				"map": {
-					"util/util": "util/zepto/zepto"
+					"can/util/util": "can/util/zepto/zepto"
 				}
 			}
 		},
@@ -295,7 +321,7 @@
 			"library": "bower_components/mootools/dist/mootools-core.js",
 			"steal": {
 				"map": {
-					"util/util": "util/mootools/mootools"
+					"can/util/util": "can/util/mootools/mootools"
 				}
 			}
 		},
@@ -304,7 +330,7 @@
 			"library": "util/yui/yui-3.7.3.js",
 			"steal": {
 				"map": {
-					"util/util": "util/yui/yui"
+					"can/util/util": "can/util/yui/yui"
 				}
 			}
 		},
@@ -313,7 +339,7 @@
 			"library": "util/dojo/dojo-1.8.1.js",
 			"steal": {
 				"map": {
-					"util/util": "util/dojo/dojo"
+					"can/util/util": "can/util/dojo/dojo"
 				}
 			}
 		}

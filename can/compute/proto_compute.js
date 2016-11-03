@@ -1,219 +1,44 @@
-steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', function (can, bind, read) {
-	var stack = [];
+// # can/compute/proto_compute (aka can.Compute)
+//
+// Allows the creation of observablue values. This
+// is a prototype based version of [can.compute](compute.html).
+//
+// can.Computes come in different flavors:
+//
+// - [Getter / Setter functional computes](#setup-getter-setter-functional-computes).
+// - [Property computes](#setup-property-computes).
+// - [Setter computes](#setup-setter-computes).
+// - [Async computes](#setup-async-computes).
+// - [Settings computes](#setup-settings-computes).
+// - [Simple value computes](#setup-simple-value-computes).
+//
+//
+// can.Computes have public `.get`, `.set`, `.on`, and `.off` methods that call
+// internal methods that are configured differently depending on what flavor of
+// compute is being created.  Those methods are:
+//
+// - `_on(updater)` - Called the first time the compute is bound. This should bind to
+//    any source observables.  When any of the source observables have changed, it should call
+//    `updater(newVal, oldVal, batchNum)`.
+//
+// - `_off(updater)` - Called when the compute has no more event handlers.  This should unbind to any source observables.
+// - `_get` - Called to get the current value of the compute.
+// - `_set` - Called to set the value of the compute.
+//
+//
+//
+// Other internal flags and values:
+// - `value` - the cached value
+// - `_setUpdates` - if calling `_set` will have updated the cached value itself so `_get` does not need to be called.
+// - `_canObserve` - if this compute can be observed.
+// - `hasDependencies` - if this compute has source observable values.
+steal('can/util', 'can/util/bind', 'can/compute/read.js','can/compute/get_value_and_bind.js','can/util/batch', function (can, bind, read, ObservedInfo) {
 
-	can.__read = function (func, self) {
-		stack.push({});
-
-		var value = func.call(self);
-
-		return {
-			value: value,
-			observed: stack.pop()
-		};
-	};
-
-	can.__reading = function (obj, event) {
-		if (stack.length) {
-			stack[stack.length-1][obj._cid + '|' + event] = {
-				obj: obj,
-				event: event + ""
-			};
-		}
-	};
-
-	can.__clearReading = function () {
-		if (stack.length) {
-			var ret = stack[stack.length-1];
-			stack[stack.length-1] = {};
-			return ret;
-		}
-	};
-
-	can.__setReading = function (o) {
-		if (stack.length) {
-			stack[stack.length-1] = o;
-		}
-	};
-
-	can.__addReading = function(o){
-		if (stack.length) {
-			can.simpleExtend(stack[stack.length-1], o);
-		}
-	};
-
-	var getValueAndBind = function (func, context, oldObserved, onchanged) {
-		// Call the function, get the value as well as the observed objects and events
-		var info = can.__read(func, context),
-			// The objects-event pairs that must be bound to
-			newObserveSet = info.observed;
-		// Go through what needs to be observed.
-		bindNewSet(oldObserved, newObserveSet, onchanged);
-		unbindOldSet(oldObserved, onchanged);
-		// set ready after all previous events have fired
-		can.batch.afterPreviousEvents(function(){
-			info.ready = true;
-		});
-		
-		return info;
-	};
-
-	// This will not be optimized.
-	var bindNewSet = function(oldObserved, newObserveSet, onchanged){
-		for(var name in newObserveSet ) {
-			bindOrPreventUnbinding(oldObserved, newObserveSet, name, onchanged);
-		}
-	};
-
-	// This will be optimized.
-	var bindOrPreventUnbinding = function(oldObserved, newObserveSet, name, onchanged){
-		if( oldObserved[name] ) {
-			delete oldObserved[name];
-		} else {
-			var obEv = newObserveSet[name];
-			obEv.obj.bind(obEv.event, onchanged);
-		}
-	};
-
-	var unbindOldSet = function(oldObserved, onchanged){
-		for (var name in oldObserved) {
-			var obEv = oldObserved[name];
-			obEv.obj.unbind(obEv.event, onchanged);
-		}
-	};
-
-	var updateOnChange = function(compute, newValue, oldValue, batchNum){
-		// Only trigger event when value has changed
-		if (newValue !== oldValue) {
-			can.batch.trigger(compute, batchNum ? {type: "change", batchNum: batchNum} : 'change', [
-				newValue,
-				oldValue
-			]);
-		}
-	};
-
-	var setupComputeHandlersOn = function() {
-		this.readInfo = getValueAndBind(this._getterSetter, this._context, {}, this.onchanged);
-
-		this.setCached(this.readInfo.value);
-		this.hasDependencies = !can.isEmptyObject(this.readInfo.observed);
-	};
-
-	var setupComputeHandlersOff = function() {
-		for (var name in this.readInfo.observed) {
-			var ob = this.readInfo.observed[name];
-			ob.obj.unbind(ob.event, this.onchanged);
-		}
-	};
-
-	var setupComputeHandlers = function(compute, func, context) {
-		var readInfo,
-			onchanged,
-			batchNum;
-
-		return {
-			// Set up handler for when the compute changes
-			on: function(){
-				var self = this;
-				if(!onchanged) {
-					onchanged = function(ev){
-						if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum) ) {
-							// Keep the old value
-							var oldValue = readInfo.value;
-							// Get the new value
-							readInfo = getValueAndBind(func, context, readInfo.observed, onchanged);
-							// Call the updater with old and new values
-							self.updater(readInfo.value, oldValue, ev.batchNum);
-							batchNum = batchNum = ev.batchNum;
-						}
-					};
-				}
-
-				readInfo = getValueAndBind(func, context, {}, onchanged);
-
-				compute.setCached(readInfo.value);
-				compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-			},
-			// Remove handler for the compute
-			off: function(updater){
-				for (var name in readInfo.observed) {
-					var ob = readInfo.observed[name];
-					ob.obj.unbind(ob.event, onchanged);
-				}
-			}
-		};
-	};
-
-	var setupSingleBindComputeHandlers = function(compute, func, context) {
-		var readInfo,
-			oldValue,
-			onchanged,
-			batchNum;
-		
-		return {
-			// Set up handler for when the compute changes
-			on: function(updater){
-				if(!onchanged) {
-					onchanged = function(ev){
-						if (readInfo.ready && compute.bound && (ev.batchNum === undefined || ev.batchNum !== batchNum) ) {
-							// Get the new value
-							var reads = can.__clearReading();
-							var newValue = func.call(context);
-							can.__setReading(reads);
-							// Call the updater with old and new values
-							updater.call(compute, newValue, oldValue, ev.batchNum);
-							oldValue = newValue;
-							batchNum = batchNum = ev.batchNum;
-						}
-					};
-				}
-
-				readInfo = getValueAndBind(func, context, {}, onchanged);
-				oldValue = readInfo.value;
-
-				compute.setCached(readInfo.value);
-				compute.hasDependencies = !can.isEmptyObject(readInfo.observed);
-			},
-			// Remove handler for the compute
-			off: function(updater){
-				for (var name in readInfo.observed) {
-					var ob = readInfo.observed[name];
-					ob.obj.unbind(ob.event, onchanged);
-				}
-			}
-		};
-	};
-
-
-	// Instead of calculating whether anything is listening every time,
-	// use a function to do nothing (which may be overwritten)
-	var k = function () {};
-
-	var updater = function(newVal, oldVal, batchNum) {
-		this.setCached(newVal);
-		updateOnChange(this, newVal, oldVal, batchNum);
-	},
-
-	createAsyncAltUpdater = function(context, oldUpdater) {
-		return function() {
-			oldUpdater(context._get(), context.value);
-		};
-	},
-
-	asyncGet = function(fn, context, lastSetValue) {
-		return function() {
-			return fn.call(context, lastSetValue.get());
-		};
-	},
-
-	asyncUpdater = function(context, oldUpdater) {
-		return function(newVal) {
-			if(newVal !== undefined) {
-				oldUpdater(newVal, context.value);
-			}
-		};
-	};
-
+	// ## can.Compute
+	// Checks the arguments and calls different setup methods.
 	can.Compute = function(getterSetter, context, eventName, bindOnce) {
+		can.cid(this, 'compute');
+
 		var args = [];
 
 		for(var i = 0, arglen = arguments.length; i < arglen; i++) {
@@ -223,54 +48,237 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 		var contextType = typeof args[1];
 
 		if (typeof args[0] === 'function') {
+			// Getter/Setter functional computes.
+			// `new can.Compute(function(){ ... })`
 			this._setupGetterSetterFn(args[0], args[1], args[2], args[3]);
 		} else if (args[1]) {
 			if (contextType === 'string') {
-				// `can.compute(object, propertyName[, eventName])`
-				this._setupContextString(args[0], args[1], args[2]);
+				// Property computes.
+				// `new can.Compute(object, propertyName[, eventName])`
+				this._setupProperty(args[0], args[1], args[2]);
 			} else if(contextType === 'function') {
-				// `can.compute(initialValue, setter)`
-				this._setupContextFunction(args[0], args[1], args[2]);
+				// Setter computes.
+				// `new can.Compute(initialValue, function(newValue){ ... })`
+				this._setupSetter(args[0], args[1], args[2]);
 			} else {
-				//`new can.Compute(initialValue, {})`
+
 				if(args[1] && args[1].fn) {
+					// Async computes.
 					this._setupAsyncCompute(args[0], args[1]);
 				} else {
-					this._setupContextSettings(args[0], args[1]);
+					// Settings computes.
+					//`new can.Compute(initialValue, {on, off, get, set})`
+					this._setupSettings(args[0], args[1]);
 				}
 
 			}
 		} else {
-			// `can.compute(initialValue)`
-			this._setupInitialValue(args[0]);
+			// Simple value computes.
+			// `new can.Compute(initialValue)`
+			this._setupSimpleValue(args[0]);
 		}
 
 		this._args = args;
+		this._primaryDepth = 0;
 
 		this.isComputed = true;
-		can.cid(this, 'compute');
+
 	};
 
 	can.simpleExtend(can.Compute.prototype, {
-		//TODO: verify "this" is the instance of a compute
-		_bindsetup: function () {
-			this.bound = true;
-			// Set up live-binding
-			// While binding, this should not count as a read
-			var oldReading = can.__clearReading();
-			this._on(this.updater);
-			// Restore "Observed" for reading
-			can.__setReading(oldReading);
+		setPrimaryDepth: function(depth) {
+			this._primaryDepth = depth;
 		},
 
+		// ## Setup getter / setter functional computes
+		// Uses the function as both a getter and setter.
+		_setupGetterSetterFn: function(getterSetter, context, eventName) {
+			this._set = context ? can.proxy(getterSetter, context) : getterSetter;
+			this._get = context ? can.proxy(getterSetter, context) : getterSetter;
+			this._canObserve = eventName === false ? false : true;
+			// The helper provides the on and off methods that use `getValueAndBind`.
+			var handlers = setupComputeHandlers(this, getterSetter, context || this);
+
+			can.simpleExtend(this, handlers);
+		},
+		// ## Setup property computes
+		// Listen to a property changing on an object.
+		_setupProperty: function(target, propertyName, eventName) {
+			var isObserve = can.isMapLike( target ),
+				self = this,
+				handler;
+
+			// If a `can.Map`, setup to read  and write to that property.
+			if(isObserve) {
+				// We should pass the batchNum if there is one.
+				handler = function(ev, newVal,oldVal) {
+					self.updater(newVal, oldVal, ev.batchNum);
+				};
+				this.hasDependencies = true;
+				this._get = function() {
+					return target.attr(propertyName);
+				};
+				this._set = function(val) {
+					target.attr(propertyName, val);
+				};
+			} else {
+				// This is objects that can be bound to with can.bind.
+				handler = function () {
+					self.updater(self._get(), self.value);
+				};
+				this._get = function() {
+					return can.getObject(propertyName, [target]);
+				};
+				this._set = function(value) {
+					// allow setting properties n levels deep, if separated with dot syntax
+					var properties = propertyName.split("."),
+						leafPropertyName = properties.pop(),
+						targetProperty = can.getObject(properties.join('.'), [target]);
+					targetProperty[leafPropertyName] = value;
+				};
+			}
+			this._on = function(update) {
+				can.bind.call(target, eventName || propertyName, handler);
+				// Set the cached value
+				this.value = this._get();
+			};
+			this._off = function() {
+				return can.unbind.call( target, eventName || propertyName, handler);
+			};
+		},
+		// ## Setup Setter Computes
+		// Only a setter function is specified.
+		_setupSetter: function(initialValue, setter, eventName) {
+			this.value = initialValue;
+			this._set = setter;
+			can.simpleExtend(this, eventName);
+		},
+		// ## Setup settings computes
+		// Use whatever `on`, `off`, `get`, `set` the users provided
+		// as the internal methods.
+		_setupSettings: function(initialValue, settings) {
+
+			this.value = initialValue;
+
+			this._set = settings.set || this._set;
+			this._get = settings.get || this._get;
+
+			// This allows updater to be called without any arguments.
+			// selfUpdater flag can be set by things that want to call updater themselves.
+			if(!settings.__selfUpdater) {
+				var self = this,
+					oldUpdater = this.updater;
+				this.updater = function() {
+					oldUpdater.call(self, self._get(), self.value);
+				};
+			}
+
+
+			this._on = settings.on ? settings.on : this._on;
+			this._off = settings.off ? settings.off : this._off;
+		},
+		// ## Setup async computes
+		// This is a special, non-documented form of a compute
+		// rhat can asynchronously update its value.
+		_setupAsyncCompute: function(initialValue, settings){
+			var self = this;
+			this.value = initialValue;
+
+			// This compute will call update with the new value itself.
+			this._setUpdates = true;
+
+			// An "async" compute has a `lastSetValue` that represents
+			// the last value `compute.set` was called with.
+			// The following creates `lastSetValue` as a can.Compute so when
+			//  `lastSetValue` is changed, the `getter` can see that change
+			// and automatically update itself.
+			this.lastSetValue = new can.Compute(initialValue);
+
+			// Wires up setting this compute to set `lastSetValue`.
+			// If the new value matches the last setValue, do nothing.
+			this._set = function(newVal){
+				if(newVal === self.lastSetValue.get()) {
+					return this.value;
+				}
+
+				return self.lastSetValue.set(newVal);
+			};
+
+			// Wire up the get to pass the lastNewValue
+			this._get = function() {
+				return getter.call(settings.context, self.lastSetValue.get() );
+			};
+
+			// This is the async getter function.  Depending on how many arguments the function takes,
+			// we setup bindings differently.
+			var getter = settings.fn,
+				bindings;
+
+
+
+			if(getter.length === 0) {
+				// If it takes no arguments, it should behave just like a Getter compute.
+				bindings = setupComputeHandlers(this, getter, settings.context);
+			} else if(getter.length === 1) {
+				// If it has a single argument, pass it the last setValue.
+				bindings = setupComputeHandlers(this, function() {
+					return getter.call(settings.context, self.lastSetValue.get() );
+				}, settings);
+
+			} else {
+				// If the function takes 2 arguments, the second argument is a function
+				// that should update the value of the compute (`setValue`). To make this we need
+				// the "normal" updater function because we are about to overwrite it.
+				var oldUpdater = this.updater,
+					setValue = function(newVal) {
+						oldUpdater.call(self, newVal, self.value);
+					};
+
+				// Because `setupComputeHandlers` calls `updater` internally with its
+				// readInfo.value as `oldValue` and that might not be up to date,
+				// we overwrite updater to always use self.value.
+				this.updater = function(newVal) {
+					oldUpdater.call(self, newVal, self.value);
+				};
+
+
+				bindings = setupComputeHandlers(this, function() {
+					// Call getter, and get new value
+					var res = getter.call(settings.context, self.lastSetValue.get(), setValue);
+					// If undefined is returned, don't update the value.
+					return res !== undefined ? res : this.value;
+				}, this);
+			}
+
+			can.simpleExtend(this, bindings);
+		},
+		// ## Setup simple value computes
+		// Uses the default `_get`, `_set` behaviors.
+		_setupSimpleValue: function(initialValue) {
+			this.value = initialValue;
+		},
+		// ## _bindsetup
+		// When a compute is first bound, call the internal `this._on` method.
+		// `can.__notObserve` makes sure if `_on` is listening to any observables,
+		// they will not be observed by any outer compute.
+		_bindsetup: can.__notObserve(function () {
+			this.bound = true;
+			this._on(this.updater);
+		}),
+		// ## _bindteardown
+		// When a compute has no other bindings, call the internal `this._off` method.
 		_bindteardown: function () {
 			this._off(this.updater);
 			this.bound = false;
 		},
-
+		// ## bind and unbind
+		// A bind and unbind that calls `_bindsetup` and `_bindteardown`.
 		bind: can.bindAndSetup,
 		unbind: can.unbindAndTeardown,
 
+		// ## clone
+		// Copies this compute, but for a different context.
+		// This is mostly used for computes on a map's prototype.
 		clone: function(context) {
 			if(context && typeof this._args[0] === 'function') {
 				this._args[1] = context;
@@ -280,57 +288,67 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 
 			return new can.Compute(this._args[0], this._args[1], this._args[2], this._args[3]);
 		},
-
-		_on: k,
-		_off: k,
-
+		// ## _on and _off
+		// Default _on and _off do nothing.
+		_on: can.k,
+		_off: can.k,
+		// ## get
+		// Returns the cached value if `bound`, otherwise, returns
+		// the _get value.
 		get: function() {
-			// Another compute may bind to this `computed`
-			if(stack.length && this._canReadForChangeEvent !== false) {
 
-				// Tell the compute to listen to change on this computed
-				// Use `can.__reading` to allow other compute to listen
-				// for a change on this `computed`
-				can.__reading(this, 'change');
-				// We are going to bind on this compute.
-				// If we are not bound, we should bind so that
+			var recordingObservation = can.__isRecordingObserves();
+
+			// If an external compute is tracking observables and
+			// this compute can be listened to by "function" based computes ....
+			if(recordingObservation && this._canObserve !== false) {
+
+				// ... tell the tracking compute to listen to change on this computed.
+				can.__observe(this, 'change');
+				// ... if we are not bound, we should bind so that
 				// we don't have to re-read to get the value of this compute.
 				if (!this.bound) {
 					can.Compute.temporarilyBind(this);
 				}
 			}
-			// If computed is bound, use the cached value
+			// If computed is bound, use the cached value.
 			if (this.bound) {
+				if(recordingObservation && this.getDepth && this.getDepth() >= recordingObservation.getDepth()) {
+					ObservedInfo.updateUntil(this.getPrimaryDepth(), this.getDepth());
+				}
 				return this.value;
 			} else {
 				return this._get();
 			}
 		},
-
+		// ## _get
+		// Returns the cached value.
 		_get: function() {
 			return this.value;
 		},
-
+		// ## set
+		// Sets the value of the compute.
+		// Depending on the type of the compute and what `_set` returns, it might need to call `_get` after
+		// `_set` to get the final value.
 		set: function(newVal) {
-			// Save a reference to the old value
+
 			var old = this.value;
+
 			// Setter may return the value if setter
 			// is for a value maintained exclusively by this compute.
 			var setVal = this._set(newVal, old);
-			
 
-			
+			// If the setter updated this.value, just return that.
+			if(this._setUpdates) {
+				return this.value;
+			}
+
 			// If the computed function has dependencies,
-			// return the current value
+			// we should call the getter.
 			if (this.hasDependencies) {
-				// If set can update the value,
-				// just return the updated value.
-				if(this._setUpdates) {
-					return this.value;
-				}
-				
 				return this._get();
 			}
+
 			// Setting may not fire a change event, in which case
 			// the value must be read
 			if (setVal === undefined) {
@@ -342,191 +360,102 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 			updateOnChange(this, this.value, old);
 			return this.value;
 		},
-
+		// ## _set
+		// Updates the cached value.
 		_set: function(newVal) {
 			return this.value = newVal;
 		},
-
-		setCached: function(newVal) {
+		// ## updater
+		// Updates the cached value and fires an event if the value has changed.
+		updater: function(newVal, oldVal, batchNum) {
 			this.value = newVal;
+			updateOnChange(this, newVal, oldVal, batchNum);
 		},
-
-		updater: updater,
-
+		// ## toFunction
+		// Returns a proxy form of this compute.
+		toFunction: function() {
+			return can.proxy(this._computeFn, this);
+		},
 		_computeFn: function(newVal) {
 			if(arguments.length) {
 				return this.set(newVal);
 			}
 
 			return this.get();
-		},
-
-		toFunction: function() {
-			return can.proxy(this._computeFn, this);
-		},
-
-		_setupGetterSetterFn: function(getterSetter, context, eventName, bindOnce) {
-			this._set = can.proxy(getterSetter, context);
-			this._get = can.proxy(getterSetter, context);
-			this._canReadForChangeEvent = eventName === false ? false : true;
-
-			this._getterSetter = getterSetter;
-			this._context = context;
-
-			var handlers;
-			if(bindOnce) {
-				handlers = setupSingleBindComputeHandlers(this, getterSetter, context || this);
-				this._on = handlers.on;
-				this._off = handlers.off;
-			}
-			else {
-				var self = this;
-				this.onchanged = function(ev) {
-					if (self.bound && self.readInfo.ready && (ev.batchNum === undefined || ev.batchNum !== self.batchNum)) {
-						// Keep the old value
-						var oldValue = self.readInfo.value;
-						// Get the new value
-						self.readInfo = getValueAndBind(getterSetter, context, self.readInfo.observed, self.onchanged);
-						// Call the updater with old and new values
-						self.updater(self.readInfo.value, oldValue, ev.batchNum);
-						self.batchNum = ev.batchNum;
-					}
-				};
-				this._on = setupComputeHandlersOn;
-				this._off = setupComputeHandlersOff;
-			}
-		},
-
-		_setupContextString: function(target, propertyName, eventName) {
-			var isObserve = target instanceof can.Map,
-			handler;
-			this.updater = can.proxy(this.updater, this);
-
-			if(isObserve) {
-				this.hasDependencies = true;
-				this._get = function() {
-					return target.attr(propertyName);
-				};
-				this._set = function(val) {
-					target.attr(propertyName, val);
-				};
-				this._on = function(update) {
-					handler = function(ev, newVal,oldVal) {
-						update(newVal, oldVal, ev.batchNum);
-					};
-
-					target.bind(eventName || propertyName, handler);
-					// Set the cached value
-					this.value = can.__read(this._get).value;
-				};
-				this._off = function() {
-					return target.unbind(eventName || propertyName, handler);
-				};
-			} else {
-				this._get = can.proxy(this._get, target);
-				this._set = can.proxy(this._set, target);
-			}
-		},
-
-		_setupContextFunction: function(initialValue, setter, eventName) {
-			this.value = initialValue;
-			this._set = setter;
-			can.simpleExtend(this, eventName);
-		},
-
-		_setupContextSettings: function(initialValue, settings) {
-			
-			this.value = initialValue;
-			var oldUpdater = can.proxy(this.updater, this);
-			
-			this._set = settings.set ? can.proxy(settings.set, settings) : this._set;
-			this._get = settings.get ? can.proxy(settings.get, settings) : this._get;
-
-			// This is a "hack" to allow async computes.
-			this.updater = createAsyncAltUpdater(this, oldUpdater);
-			
-			this._on = settings.on ? settings.on : this._on;
-			this._off = settings.off ? settings.off : this._off;
-		},
-		_setupAsyncCompute: function(initialValue, settings){
-			
-			this.value = initialValue;
-			
-			var oldUpdater = can.proxy(this.updater, this),
-				self = this,
-				fn = settings.fn,
-				data;
-			
-			this.updater = oldUpdater;
-			
-			var lastSetValue = new can.Compute(initialValue);
-			// expose this compute so it can be read
-			this.lastSetValue = lastSetValue;
-			this._setUpdates = true;
-			this._set = function(newVal){
-				if(newVal === lastSetValue.get()) {
-					return this.value;
-				}
-
-				// this is the value passed to the fn
-				lastSetValue.set(newVal);
-			};
-
-			// make sure get is called with the newVal, but not setter
-			this._get = asyncGet(fn, settings.context, lastSetValue);
-			// Check the number of arguments the 
-			// async function takes.
-			if(fn.length === 0) {
-				// if it takes no arguments, it is calculated from other things.
-				data = setupComputeHandlers(this, fn, settings.context);
-			} else if(fn.length === 1) {
-				// If it has a single argument, pass it the current value
-				// or the value from define.set.
-				data = setupComputeHandlers(this, function() {
-					return fn.call(settings.context, lastSetValue.get() );
-				}, settings);
-			} else {
-				// The updater function passed to on so that if called with
-				// a single, non undefined value, works.
-				this.updater = asyncUpdater(this, oldUpdater);
-				
-				// Finally, pass the function so it can decide the final value.
-				data = setupComputeHandlers(this, function() {
-					// Call fn, and get new value
-					var res = fn.call(settings.context, lastSetValue.get(), function(newVal) {
-						oldUpdater(newVal, self.value);
-					});
-					// If undefined is returned, don't update the value.
-					return res !== undefined ? res : this.value;
-				}, settings);
-			}
-
-			this._on = data.on;
-			this._off = data.off;
-		},
-		_setupInitialValue: function(initialValue) {
-			this.value = initialValue;
 		}
 	});
 
-	// A list of temporarily bound computes
-	var computes, unbindComputes = function () {
-		for (var i = 0, len = computes.length; i < len; i++) {
-			computes[i].unbind('change', k);
+	// ## Helpers
+
+	// ## updateOnChange
+	// A helper to trigger an event when a value changes
+	var updateOnChange = function(compute, newValue, oldValue, batchNum){
+
+		var valueChanged = newValue !== oldValue && !(newValue !== newValue && oldValue !== oldValue);
+
+		// Only trigger event when value has changed
+		if (valueChanged) {
+			can.batch.trigger(compute, {type: "change", batchNum: batchNum}, [
+				newValue,
+				oldValue
+			]);
 		}
-		computes = null;
 	};
 
-	// Binds computes for a moment to retain their value and prevent caching
+	// ### setupComputeHandlers
+	// A helper that creates an `_on` and `_off` function that
+	// will bind on source observables and update the value of the compute.
+	var setupComputeHandlers = function(compute, func, context) {
+
+		// The last observeInfo object returned by getValueAndBind.
+		var readInfo = new ObservedInfo(func, context, compute);
+
+		return {
+			readInfo: readInfo,
+			// Call `onchanged` when any source observables change.
+			_on: function() {
+				readInfo.getValueAndBind();
+				compute.value = readInfo.value;
+				compute.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
+			},
+			// Unbind `onchanged` from all source observables.
+			_off: function() {
+				readInfo.teardown();
+			},
+			getDepth: function() {
+				return readInfo.getDepth();
+			},
+			getPrimaryDepth: function() {
+				return readInfo.getPrimaryDepth();
+			}
+		};
+	};
+
+
+	// ### temporarilyBind
+	// Binds computes for a moment to cache their value and prevent re-calculating it.
 	can.Compute.temporarilyBind = function (compute) {
-		compute.bind('change', k);
+		var computeInstance = compute.computeInstance || compute;
+		computeInstance.bind('change', can.k);
 		if (!computes) {
 			computes = [];
 			setTimeout(unbindComputes, 10);
 		}
-		computes.push(compute);
+		computes.push(computeInstance);
 	};
 
+	// A list of temporarily bound computes
+	var computes,
+		// Unbinds all temporarily bound computes.
+		unbindComputes = function () {
+			for (var i = 0, len = computes.length; i < len; i++) {
+				computes[i].unbind('change', can.k);
+			}
+			computes = null;
+		};
+
+	// ### async
+	// A simple helper that makes an async compute a bit easier.
 	can.Compute.async = function(initialValue, asyncComputer, context){
 		return new can.Compute(initialValue, {
 			fn: asyncComputer,
@@ -534,9 +463,10 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 		});
 	};
 
-	can.Compute.read = read;
-	can.Compute.set = read.write;
-	
+
+	// ### truthy
+	// Wraps a compute with another compute that only changes when
+	// the wrapped compute's `truthiness` changes.
 	can.Compute.truthy = function(compute) {
 		return new can.Compute(function() {
 			var res = compute.get();
@@ -546,6 +476,11 @@ steal('can/util', 'can/util/bind', 'can/compute/read.js','can/util/batch', funct
 			return !!res;
 		});
 	};
+
+	// ### compatability
+	// Setting methods that should not be around in 3.0.
+	can.Compute.read = read;
+	can.Compute.set = read.write;
 
 	return can.Compute;
 });

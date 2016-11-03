@@ -31,10 +31,13 @@ and window’s pathname.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-comment">/*jshint maxdepth:6*/</span>
+<span class="hljs-comment">/*jshint maxdepth:6, scripturl:true*/</span>
 
-steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-<span class="hljs-pi">	"use strict"</span>;</pre></div></div>
+steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/route'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
+<span class="hljs-meta">	"use strict"</span>;
+
+	<span class="hljs-keyword">var</span> hasPushstate = <span class="hljs-built_in">window</span>.history &amp;&amp; <span class="hljs-built_in">window</span>.history.pushState;
+	<span class="hljs-keyword">var</span> isFileProtocol = <span class="hljs-built_in">window</span>.location &amp;&amp; <span class="hljs-built_in">window</span>.location.protocol === <span class="hljs-string">'file:'</span>;</pre></div></div>
             
         </li>
         
@@ -49,7 +52,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.history &amp;&amp; history.pushState) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!isFileProtocol &amp;&amp; hasPushstate) {</pre></div></div>
             
         </li>
         
@@ -130,8 +133,8 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
             </div>
             
             <div class="content"><div class='highlight'><pre>			matchSlashes: <span class="hljs-literal">false</span>,
-			paramsMatcher: <span class="hljs-regexp">/^\?(?:[^=]+=[^&amp;]*&amp;)*[^=]+=[^&amp;]*/</span>,
-			querySeparator: <span class="hljs-string">'?'</span>,</pre></div></div>
+			<span class="hljs-attr">paramsMatcher</span>: <span class="hljs-regexp">/^\?(?:[^=]+=[^&amp;]*&amp;)*[^=]+=[^&amp;]*/</span>,
+			<span class="hljs-attr">querySeparator</span>: <span class="hljs-string">'?'</span>,</pre></div></div>
             
         </li>
         
@@ -159,7 +162,10 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			bind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			bind: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">if</span>(can.isNode) {
+					<span class="hljs-keyword">return</span>;
+				}</pre></div></div>
             
         </li>
         
@@ -189,9 +195,9 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method</span>) </span>{
 					originalMethods[method] = <span class="hljs-built_in">window</span>.history[method];
-					<span class="hljs-built_in">window</span>.history[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(state, title, url)</span> </span>{</pre></div></div>
+					<span class="hljs-built_in">window</span>.history[method] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">state, title, url</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -271,10 +277,10 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>			unbind: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				can.undelegate.call(can.$(<span class="hljs-built_in">document</span>.documentElement), <span class="hljs-string">'click'</span>, <span class="hljs-string">'a'</span>, anchorClickHandler);
 
-				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method)</span> </span>{
+				can.each(methodsToOverwrite, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method</span>) </span>{
 					<span class="hljs-built_in">window</span>.history[method] = originalMethods[method];
 				});
 				can.unbind.call(<span class="hljs-built_in">window</span>, <span class="hljs-string">'popstate'</span>, can.route.setState);
@@ -306,7 +312,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>			matchingPartOfURL: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> root = cleanRoot(),
 					loc = (location.pathname + location.search),
 					index = loc.indexOf(root);
@@ -340,7 +346,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(path, changed)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			setURL: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">path, changed</span>) </span>{
 				<span class="hljs-keyword">var</span> method = <span class="hljs-string">"pushState"</span>;</pre></div></div>
             
         </li>
@@ -356,16 +362,16 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (includeHash &amp;&amp; path.indexOf(<span class="hljs-string">"#"</span>) === -<span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">window</span>.location.hash) {
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (includeHash &amp;&amp; path.indexOf(<span class="hljs-string">"#"</span>) === <span class="hljs-number">-1</span> &amp;&amp; <span class="hljs-built_in">window</span>.location.hash) {
 					path += <span class="hljs-built_in">window</span>.location.hash;
 				}
 				<span class="hljs-keyword">if</span>(replaceStateAttrs.length &gt; <span class="hljs-number">0</span>) {
 					<span class="hljs-keyword">var</span> toRemove = [];
 					<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = changed.length; i &lt; l; i++) {
-						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs) !== -<span class="hljs-number">1</span>) {
+						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs) !== <span class="hljs-number">-1</span>) {
 							method = <span class="hljs-string">"replaceState"</span>;
 						}
-						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs.once) !== -<span class="hljs-number">1</span>) {
+						<span class="hljs-keyword">if</span>(can.inArray(changed[i], replaceStateAttrs.once) !== <span class="hljs-number">-1</span>) {
 							toRemove.push(changed[i]);
 						}
 					}
@@ -404,7 +410,7 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> anchorClickHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> anchorClickHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
 			<span class="hljs-keyword">if</span> (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === <span class="hljs-literal">true</span>)) {</pre></div></div>
             
         </li>
@@ -435,7 +441,11 @@ steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'ca
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> linksHost = node.host || <span class="hljs-built_in">window</span>.location.host;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> linksHost = node.host || <span class="hljs-built_in">window</span>.location.host;
+
+				<span class="hljs-keyword">if</span>(node.href === <span class="hljs-string">"javascript://"</span>) {
+					<span class="hljs-keyword">return</span>;
+				}</pre></div></div>
             
         </li>
         
@@ -551,7 +561,7 @@ freezes phantom.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			cleanRoot = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>			cleanRoot = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> domain = location.protocol + <span class="hljs-string">"//"</span> + location.host,
 					root = can.route._call(<span class="hljs-string">"root"</span>),
 					index = root.indexOf(domain);
@@ -560,10 +570,10 @@ freezes phantom.</p>
 				}
 				<span class="hljs-keyword">return</span> root;
 			},
-			removeAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(arr, attrs)</span> </span>{
+			removeAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr, attrs</span>) </span>{
 				<span class="hljs-keyword">var</span> index;
 				<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = attrs.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
-					<span class="hljs-keyword">if</span>( (index = can.inArray(attrs[i], arr)) !== -<span class="hljs-number">1</span>) {
+					<span class="hljs-keyword">if</span>( (index = can.inArray(attrs[i], arr)) !== <span class="hljs-number">-1</span>) {
 						arr.splice(index, <span class="hljs-number">1</span>);
 					}
 				}
@@ -645,18 +655,18 @@ freezes phantom.</p>
             <div class="content"><div class='highlight'><pre>		can.route.defaultBinding = <span class="hljs-string">"pushstate"</span>;
 
 		can.extend(can.route, {
-			replaceStateOn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-attr">replaceStateOn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
 				<span class="hljs-built_in">Array</span>.prototype.push.apply(replaceStateAttrs, attrs);
 			},
-			replaceStateOnce: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-attr">replaceStateOnce</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
 				replaceStateAttrs.once = can.makeArray(replaceStateAttrs.once);
 
 				<span class="hljs-built_in">Array</span>.prototype.push.apply(replaceStateAttrs.once, attrs);
 				can.route.replaceStateOn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},
-			replaceStateOff: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-attr">replaceStateOff</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> attrs = can.makeArray(<span class="hljs-built_in">arguments</span>);
 				removeAttrs(replaceStateAttrs, attrs);
 			}

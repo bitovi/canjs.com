@@ -31,8 +31,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
-	<span class="hljs-keyword">var</span> flatProps = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, cur)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/util/object'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
+	<span class="hljs-keyword">var</span> flatProps = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, cur</span>) </span>{
 		<span class="hljs-keyword">var</span> obj = {};
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> a) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> a[prop] !== <span class="hljs-string">'object'</span> || a[prop] === <span class="hljs-literal">null</span> || a[prop] <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
@@ -47,19 +47,19 @@
 	<span class="hljs-keyword">var</span> oldSetup = can.Map.prototype.setup;
 
 	can.extend(can.Map.prototype, {
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">this</span>._backupStore = can.compute();
 			<span class="hljs-keyword">return</span> oldSetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
 
-		backup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">backup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">this</span>._backupStore(<span class="hljs-keyword">this</span>.attr());
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		isDirty: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(checkAssociations)</span> </span>{
+		<span class="hljs-attr">isDirty</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">checkAssociations</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._backupStore() &amp;&amp; !can.Object.same(<span class="hljs-keyword">this</span>.attr(), <span class="hljs-keyword">this</span>._backupStore(), <span class="hljs-literal">undefined</span>, <span class="hljs-literal">undefined</span>, <span class="hljs-literal">undefined</span>, !! checkAssociations);
 		},
-		restore: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(restoreAssociations)</span> </span>{
+		<span class="hljs-attr">restore</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">restoreAssociations</span>) </span>{
 			<span class="hljs-keyword">var</span> props = restoreAssociations ? <span class="hljs-keyword">this</span>._backupStore() : flatProps(<span class="hljs-keyword">this</span>._backupStore(), <span class="hljs-keyword">this</span>);
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.isDirty(restoreAssociations)) {
 				<span class="hljs-keyword">this</span>.attr(props, <span class="hljs-literal">true</span>);

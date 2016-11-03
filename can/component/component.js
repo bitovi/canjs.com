@@ -1,60 +1,59 @@
 // # can/component/component.js
-// 
-// This implements the `can.Component` which allows you to create widgets 
+//
+// This implements the `can.Component` which allows you to create widgets
 // that use a template, a view-model and custom tags.
-// 
+//
 // `can.Component` implements most of it's functionality in the `can.Component.setup`
 // and the `can.Component.prototype.setup` functions.
-// 
-// `can.Component.setup` prepares everything needed by the `can.Component.prototype.setup` 
+//
+// `can.Component.setup` prepares everything needed by the `can.Component.prototype.setup`
 // to hookup the component.
 
-steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/mustache", "can/view/bindings", function (can, viewCallbacks) {
+steal("can/util", "can/view/callbacks","can/view/elements.js","can/view/bindings","can/control", "can/observe", "can/view/mustache", "can/util/view_model", function (can, viewCallbacks, elements, bindings) {
 	// ## Helpers
 	// Attribute names to ignore for setting viewModel values.
-	var ignoreAttributesRegExp = /^(dataViewId|class|id)$/i,
-		paramReplacer = /\{([^\}]+)\}/g;
+	var paramReplacer = /\{([^\}]+)\}/g;
 
 	/**
 	 * @add can.Component
 	 */
 	var Component = can.Component = can.Construct.extend(
-		
+
 		// ## Static
 		/**
 		 * @static
 		 */
-		
+
 		{
 			// ### setup
-			// 
+			//
 			// When a component is extended, this sets up the component's internal constructor
 			// functions and templates for later fast initialization.
 			setup: function () {
 				can.Construct.setup.apply(this, arguments);
 
-				// When `can.Component.setup` function is ran for the first time, `can.Component` doesn't exist yet 
-				// which ensures that the following code is ran only in constructors that extend `can.Component`. 
+				// When `can.Component.setup` function is ran for the first time, `can.Component` doesn't exist yet
+				// which ensures that the following code is ran only in constructors that extend `can.Component`.
 				if (can.Component) {
 					var self = this,
-						scope = this.prototype.scope || this.prototype.viewModel;
-					
+						protoViewModel = this.prototype.scope || this.prototype.viewModel;
+
 					// Define a control using the `events` prototype property.
 					this.Control = ComponentControl.extend( this.prototype.events );
-					
-					// Look to convert `scope` to a Map constructor function.
-					if (!scope || (typeof scope === "object" && ! (scope instanceof can.Map)  ) ) {
-						// If scope is an object, use that object as the prototype of an extended 
+
+					// Look to convert `protoViewModel` to a Map constructor function.
+					if (!protoViewModel || (typeof protoViewModel === "object" && ! (protoViewModel instanceof can.Map)  ) ) {
+						// If protoViewModel is an object, use that object as the prototype of an extended
 						// Map constructor function.
 						// A new instance of that Map constructor function will be created and
 						// set a the constructor instance's viewModel.
-						this.Map = can.Map.extend(scope || {});
+						this.Map = can.Map.extend(protoViewModel || {});
 					}
-					else if (scope.prototype instanceof can.Map) {
+					else if (protoViewModel.prototype instanceof can.Map) {
 						// If viewModel is a can.Map constructor function, just use that.
-						this.Map = scope;
+						this.Map = protoViewModel;
 					}
-					
+
 					// Look for default `@` values. If a `@` is found, these
 					// attributes string values will be set and 2-way bound on the
 					// component instance's viewModel.
@@ -94,167 +93,107 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 			 */
 			// ### setup
 			// When a new component instance is created, setup bindings, render the template, etc.
-			setup: function (el, hookupOptions) {
+			setup: function (el, componentTagData) {
+
 				// Setup values passed to component
-				var initialScopeData = {},
+				var initialViewModelData = {},
 					component = this,
 					// If a template is not provided, we fall back to
 					// dynamic scoping regardless of settings.
 					lexicalContent = ((typeof this.leakScope === "undefined" ?
 									   false :
 									   !this.leakScope) &&
-									  this.template),
-					twoWayBindings = {},
-					scope = this.scope || this.viewModel,
-					// tracks which viewModel property is currently updating
-					viewModelPropertyUpdates = {},
-					// the object added to the viewModel
-					componentScope,
+									  !!this.template),
+					
+				// the object added to the scope
+					viewModel,
 					frag,
-					// an array of teardown stuff that should happen when the element is removed
+				// an array of teardown stuff that should happen when the element is removed
 					teardownFunctions = [],
 					callTeardownFunctions = function(){
 						for(var i = 0, len = teardownFunctions.length ; i < len; i++) {
 							teardownFunctions[i]();
 						}
-					};
+					},
+					$el = can.$(el),
+					setupBindings = !can.data($el,"preventDataBindings");
 
 				// ## Scope
 
-				// Add viewModel prototype properties marked with an "@" to the `initialScopeData` object
+				// Add viewModel prototype properties marked with an "@" to the `initialViewModelData` object
 				can.each(this.constructor.attributeScopeMappings, function (val, prop) {
-					initialScopeData[prop] = el.getAttribute(can.hyphenate(val));
+					initialViewModelData[prop] = el.getAttribute(can.hyphenate(val));
 				});
 				
-				// Get the value in the viewModel for each attribute
-				// the hookup should probably happen after?
-				can.each(can.makeArray(el.attributes), function (node, index) {
-					var name = can.camelize(node.nodeName.toLowerCase()),
-						value = node.value;
-
-					//!steal-remove-start
-					// user tried to pass something like id="{foo}", so give them a good warning
-					if(ignoreAttributesRegExp.test(name) && value[0] === "{" && value[value.length-1] === "}") {
-						can.dev.warn("can/component: looks like you're trying to pass "+name+" as an attribute into a component, "+
-							"but it is not a supported attribute");
-					}
-					//!steal-remove-end
-
-					// Ignore attributes already present in the ScopeMappings.
-					if (component.constructor.attributeScopeMappings[name] || ignoreAttributesRegExp.test(name) || viewCallbacks.attr(node.nodeName)) {
-						return;
-					}
-					// Only setup bindings if attribute looks like `foo="{bar}"`
-					if(value[0] === "{" && value[value.length-1] === "}") {
-						value = value.substr(1, value.length - 2 );
-					} else {
-						// Legacy template types will crossbind "foo=bar"
-						if(hookupOptions.templateType !== "legacy") {
-							initialScopeData[name] = value;
-							return;
-						}
-					}
-					// Cross-bind the value in the scope to this
-					// component's viewModel
-					var computeData = hookupOptions.scope.computeData(value, {
-						args: []
-					}),
-						compute = computeData.compute;
-
-					// bind on this, check it's value, if it has dependencies
-					var handler = function (ev, newVal) {
-						// setup counter to prevent updating the scope with viewModel changes caused by scope updates.
-						viewModelPropertyUpdates[name] = (viewModelPropertyUpdates[name] || 0 )+1;
+				if(setupBindings) {
+					teardownFunctions.push(bindings.behaviors.viewModel(el, componentTagData, function(initialViewModelData){
 						
-						componentScope.attr(name, newVal);
-						can.batch.afterPreviousEvents(function(){
-							--viewModelPropertyUpdates[name];
-						});
-					};
+						// Make %root available on the viewModel.
+						initialViewModelData["%root"] = componentTagData.scope.attr("%root");
 
-					// Compute only returned if bindable
-					compute.bind("change", handler);
+						// Create the component's viewModel.
+						var protoViewModel = component.scope || component.viewModel;
+						if (component.constructor.Map) {
+							// If `Map` property is set on the constructor use it to wrap the `initialViewModelData`
+							viewModel = new component.constructor.Map(initialViewModelData);
+						} else if (protoViewModel instanceof can.Map) {
+							// If `component.viewModel` is instance of `can.Map` assign it to the `viewModel`
+							viewModel = protoViewModel;
+						} else if (can.isFunction(protoViewModel)) {
+							// If `component.viewModel` is a function, call the function and
+							var scopeResult = protoViewModel.call(component, initialViewModelData, componentTagData.scope, el);
+		
+							if (scopeResult instanceof can.Map) {
+								// If the function returns a can.Map, use that as the viewModel
+								viewModel = scopeResult;
+							} else if (scopeResult.prototype instanceof can.Map) {
+								// If `scopeResult` is of a `can.Map` type, use it to wrap the `initialViewModelData`
+								viewModel = new scopeResult(initialViewModelData);
+							} else {
+								// Otherwise extend `can.Map` with the `scopeResult` and initialize it with the `initialViewModelData`
+								viewModel = new(can.Map.extend(scopeResult))(initialViewModelData);
+							}
+						}
 
-					// Set the value to be added to the viewModel
-					initialScopeData[name] = compute();
-					
-					// We don't need to listen to the compute `change` if it doesn't have any dependencies
-					if (!compute.computeInstance.hasDependencies) {
-						compute.unbind("change", handler);
-					} else {
-						// Make sure we unbind (there's faster ways of doing this)
-						teardownFunctions.push(function () {
-							compute.unbind("change", handler);
-						});
-						// Setup the two-way binding
-						twoWayBindings[name] = computeData;
-					}
-
-				});
-				if (this.constructor.Map) {
-					// If `Map` property is set on the constructor use it to wrap the `initialScopeData`
-					componentScope = new this.constructor.Map(initialScopeData);
-				} else if (scope instanceof can.Map) {
-					// If `this.scope` is instance of `can.Map` assign it to the `componentScope`
-					componentScope = scope;
-				} else if (can.isFunction(scope)) {
-					// If `this.viewModel` is a function, call the function and
-					var scopeResult = scope.call(this, initialScopeData, hookupOptions.scope, el);
-
-					if (scopeResult instanceof can.Map) {
-						// If the function returns a can.Map, use that as the viewModel
-						componentScope = scopeResult;
-					} else if (scopeResult.prototype instanceof can.Map) {
-						// If `scopeResult` is of a `can.Map` type, use it to wrap the `initialScopeData`
-						componentScope = new scopeResult(initialScopeData);
-					} else {
-						// Otherwise extend `can.Map` with the `scopeResult` and initialize it with the `initialScopeData`
-						componentScope = new(can.Map.extend(scopeResult))(initialScopeData);
-					}
-
+						var oldSerialize = viewModel.serialize;
+						viewModel.serialize = function () {
+							var result = oldSerialize.apply(this, arguments);
+							delete result["%root"];
+							return result;
+						};
+						
+						return viewModel;
+					}, initialViewModelData));
 				}
 
-				// ## Two way bindings
-
-				// Object to hold the bind handlers so we can tear them down
-				var handlers = {};
-				// Setup reverse bindings
-				can.each(twoWayBindings, function (computeData, prop) {
-					handlers[prop] = function (ev, newVal) {
-						// Check that this property is not being changed because
-						// it's scope value just changed
-						if (!viewModelPropertyUpdates[prop]) {
-							//console.log("updating view.scope ",prop,"from",  componentScope._cid);
-							computeData.compute(newVal);
-						}
-					};
-					componentScope.bind(prop, handlers[prop]);
-				});
-				// Setup the attributes bindings
-				if (!can.isEmptyObject(this.constructor.attributeScopeMappings) || hookupOptions.templateType !== "legacy") {
-					// Bind on the `attributes` event and update the viewModel.
-					can.bind.call(el, "attributes", function (ev) {
-						// Convert attribute name from the `attribute-name` to the `attributeName` format.
-						var camelized = can.camelize(ev.attributeName);
-						if (!twoWayBindings[camelized] && !ignoreAttributesRegExp.test(camelized) ) {
-							// If there is a mapping for this attribute, update the `componentScope` attribute
-							componentScope.attr(camelized, el.getAttribute(ev.attributeName));
-						}
-					});
-
-				}
-
-				// Set `componentScope` to `this.viewModel` and set it to the element's `data` object as a `viewModel` property
-				this.scope = this.viewModel = componentScope;
-				can.data(can.$(el), "scope", this.scope);
-				can.data(can.$(el), "viewModel", this.scope);
+				// Set `viewModel` to `this.viewModel` and set it to the element's `data` object as a `viewModel` property
+				this.scope = this.viewModel = viewModel;
+				can.data($el, "scope", this.viewModel);
+				can.data($el, "viewModel", this.viewModel);
+				can.data($el,"preventDataBindings", true);
 
 				// Create a real Scope object out of the viewModel property
-				var renderedScope = lexicalContent ?
-						this.scope :
-						hookupOptions.scope.add(this.scope),
-					options = {
+				// The scope used to render the component's template.
+				// However, if there is no template, the "light" dom is rendered with this anyway.
+				var shadowScope;
+				if(lexicalContent) {
+					shadowScope = can.view.Scope.refsScope().add(this.viewModel,{viewModel: true});
+				} else {
+					// if this component has a template,
+					// render the template with it's own Refs scope
+					// otherwise, just add this component's viewModel.
+					shadowScope = ( this.constructor.renderer ?
+						componentTagData.scope.add( new can.view.Scope.Refs() ) :
+						componentTagData.scope  )
+							.add(this.viewModel,{viewModel: true});
+				}
+				var options = {
 						helpers: {}
+					},
+					addHelper = function(name, fn) {
+						options.helpers[name] = function() {
+							return fn.apply(viewModel, arguments);
+						};
 					};
 
 				// ## Helpers
@@ -262,18 +201,21 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 				// Setup helpers to callback with `this` as the component
 				can.each(this.helpers || {}, function (val, prop) {
 					if (can.isFunction(val)) {
-						options.helpers[prop] = function () {
-							return val.apply(componentScope, arguments);
-						};
+						addHelper(prop, val);
 					}
 				});
-				
-				
-				// Teardown reverse bindings when the element is removed
-				teardownFunctions.push(function(){
-					can.each(handlers, function (handler, prop) {
-						componentScope.unbind(prop, handlers[prop]);
-					});
+
+				// Setup simple helpers
+				can.each(this.simpleHelpers || {}, function(val, prop) {
+					//!steal-remove-start
+					if(options.helpers[prop]) {
+						can.dev.warn('Component ' + component.tag +
+						' already has a helper called ' + prop);
+					}
+					//!steal-remove-end
+
+					// Convert the helper
+					addHelper(prop, can.view.simpleHelper(val));
 				});
 
 				// ## `events` control
@@ -281,28 +223,16 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 				// Create a control to listen to events
 				this._control = new this.constructor.Control(el, {
 					// Pass the viewModel to the control so we can listen to it's changes from the controller.
-					scope: this.scope,
-					viewModel: this.scope
+					scope: this.viewModel,
+					viewModel: this.viewModel,
+					destroy: callTeardownFunctions
 				});
-
-				// If control has a 'destroy' event, unbind the properties after its called #1415
-				if(this._control && this._control.destroy){
-					var oldDestroy = this._control.destroy;
-					this._control.destroy = function(){
-						oldDestroy.apply(this, arguments);
-						callTeardownFunctions();
-					};
-					this._control.on();
-				} else {
-					can.bind.call(el, "removed", function () {
-						callTeardownFunctions();
-					});
-				}
 
 				// ## Rendering
 
 				// Keep a nodeList so we can kill any directly nested nodeLists within this component
-				var nodeList = can.view.nodeLists.register([], undefined, true);
+				var nodeList = can.view.nodeLists.register([], undefined, componentTagData.parentNodeList || true, false);
+				nodeList.expression = "<"+this.tag+">";
 				teardownFunctions.push(function(){
 					can.view.nodeLists.unregister(nodeList);
 				});
@@ -315,16 +245,18 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 					}
 
 					// We need be alerted to when a <content> element is rendered so we can put the original contents of the widget in its place
-					options.tags.content = function contentHookup(el, rendererOptions) {
+					options.tags.content = function contentHookup(el, contentTagData) {
 						// First check if there was content within the custom tag
-						// otherwise, render what was within <content>, the default code
-						var subtemplate = hookupOptions.subtemplate || rendererOptions.subtemplate;
+						// otherwise, render what was within <content>, the default code.
+						// `componentTagData.subtemplate` is the content inside this component
+						var subtemplate = componentTagData.subtemplate || contentTagData.subtemplate,
+							renderingLightContent = subtemplate === componentTagData.subtemplate;
 
 						if (subtemplate) {
 
-							// `rendererOptions.options` is a viewModel of helpers where `<content>` was found, so
+							// `contentTagData.options` is a viewModel of helpers where `<content>` was found, so
 							// the right helpers should already be available.
-							// However, `_tags.content` is going to point to this current content callback.  We need to 
+							// However, `_tags.content` is going to point to this current content callback.  We need to
 							// remove that so it will walk up the chain
 
 							delete options.tags.content;
@@ -334,148 +266,182 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 							// bindings inside the "light dom" content of
 							// the component will have access to the
 							// internal viewModel. This can be overridden to be
-							// lexical with the lexicalContent
-							// option,
-							var opts = !lexicalContent ||
-									subtemplate !== hookupOptions.subtemplate ?
-									rendererOptions :
-									hookupOptions;
+							// lexical with the leakScope option.
+							var lightTemplateData;
+							if( renderingLightContent ) {
+								if(lexicalContent) {
+									// render with the same scope the component was found within.
+									lightTemplateData = componentTagData;
+								} else {
+									// render with the component's viewModel mixed in, however
+									// we still want the outer refs to be used, NOT the component's refs
+									// <component> {{some value }} </component>
+									// To fix this, we
+									// walk down the scope to the component's ref, clone scopes from that point up
+									// use that as the new scope.
+									lightTemplateData = {
+										scope: contentTagData.scope.cloneFromRef(),
+										options: contentTagData.options
+									};
+								}
 
-							can.view.live.replace([el], subtemplate(
-								opts.scope, opts.options));
+							} else {
+								// we are rendering default content so this content should
+								// use the same scope as the <content> tag was found within.
+								lightTemplateData = contentTagData;
+							}
+							
+							if(contentTagData.parentNodeList) {
+								var frag = subtemplate( lightTemplateData.scope, lightTemplateData.options, contentTagData.parentNodeList );
+								elements.replace([el], frag);
+							} else {
+								can.view.live.replace([el], subtemplate( lightTemplateData.scope, lightTemplateData.options ));
+							}
 
 							// Restore the content tag so it could potentially be used again (as in lists)
 							options.tags.content = contentHookup;
 						}
 					};
 					// Render the component's template
-					frag = this.constructor.renderer(renderedScope, hookupOptions.options.add(options), nodeList);
+					frag = this.constructor.renderer(shadowScope, componentTagData.options.add(options), nodeList);
 				} else {
-					// Otherwise render the contents between the 
-					if(hookupOptions.templateType === "legacy") {
-						frag = can.view.frag(hookupOptions.subtemplate ? hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options)) : "");
+					// Otherwise render the contents between the element
+					if(componentTagData.templateType === "legacy") {
+						frag = can.view.frag(componentTagData.subtemplate ? componentTagData.subtemplate(shadowScope, componentTagData.options.add(options)) : "");
 					} else {
-						// we need to be the parent ... or we need to 
-						frag = hookupOptions.subtemplate ?
-							hookupOptions.subtemplate(renderedScope, hookupOptions.options.add(options), nodeList) :
+						// we need to be the parent ... or we need to
+						frag = componentTagData.subtemplate ?
+							componentTagData.subtemplate(shadowScope, componentTagData.options.add(options), nodeList) :
 							document.createDocumentFragment();
 					}
-					
+
 				}
 				// Append the resulting document fragment to the element
-				can.appendChild(el, frag);
-				
+				can.appendChild(el, frag, can.document);
+
 				// update the nodeList with the new children so the mapping gets applied
-				can.view.nodeLists.update(nodeList, el.childNodes);
+				can.view.nodeLists.update(nodeList, can.childNodes(el));
 			}
 		});
+	
 
 	var ComponentControl = can.Control.extend({
-		// Change lookup to first look in the viewModel.
-		_lookup: function (options) {
-			return [options.scope, options, window];
-		},
-		_action: function (methodName, options, controlInstance ) {
-			var hasObjectLookup, readyCompute;
+			// Change lookup to first look in the viewModel.
+			_lookup: function (options) {
+				return [options.scope, options, window];
+			},
+			_action: function (methodName, options, controlInstance ) {
+				var hasObjectLookup, readyCompute;
 
-			paramReplacer.lastIndex = 0;
+				paramReplacer.lastIndex = 0;
 
-			hasObjectLookup = paramReplacer.test(methodName);
+				hasObjectLookup = paramReplacer.test(methodName);
 
-			// If we don't have options (a `control` instance), we'll run this 
-			// later.
-			if( !controlInstance && hasObjectLookup) {
-				return;
-			} else if( !hasObjectLookup ) {
-				return can.Control._action.apply(this, arguments);
-			} else {
-				// We have `hasObjectLookup` and `controlInstance`.
+				// If we don't have options (a `control` instance), we'll run this
+				// later.
+				if( !controlInstance && hasObjectLookup) {
+					return;
+				} else if( !hasObjectLookup ) {
+					return can.Control._action.apply(this, arguments);
+				} else {
+					// We have `hasObjectLookup` and `controlInstance`.
 
-				readyCompute = can.compute(function(){
-					var delegate;
-					
-					// Set the delegate target and get the name of the event we're listening to.
-					var name = methodName.replace(paramReplacer, function(matched, key){
-						var value;
+					readyCompute = can.compute(function(){
+						var delegate;
 
-						// If we are listening directly on the `viewModel` set it as a delegate target.
-						if(key === "scope" || key === "viewModel") {
-							delegate = options.scope;
-							return "";
-						}
-						
-						// Remove `scope.` from the start of the key and read the value from the `viewModel`.
-						key = key.replace(/^(scope|^viewModel)\./,"");
-						value = can.compute.read(options.scope, key.split("."), {isArgument: true}).value;
+						// Set the delegate target and get the name of the event we're listening to.
+						var name = methodName.replace(paramReplacer, function(matched, key){
+							var value;
 
-						// If `value` is undefined use `can.getObject` to get the value.
-						if(value === undefined) {
-							value = can.getObject(key);
-						}
+							// If we are listening directly on the `viewModel` set it as a delegate target.
+							if(key === "scope" || key === "viewModel") {
+								delegate = options.viewModel;
+								return "";
+							}
 
-						// If `value` is a string we just return it, otherwise we set it as a delegate target.
-						if(typeof value === "string") {
-							return value;
-						} else {
-							delegate = value;
-							return "";
-						}
-	
-					});
-					
-					// Get the name of the `event` we're listening to.
-					var parts = name.split(/\s+/g),
-						event = parts.pop();
+							// Remove `viewModel.` from the start of the key and read the value from the `viewModel`.
+							key = key.replace(/^(scope|^viewModel)\./,"");
+							value = can.compute.read(options.viewModel, can.compute.read.reads(key), {
+								// if we find a compute, we should bind on that and not read it
+								readCompute: false
+							}).value;
 
-					// Return everything needed to handle the event we're listening to.
-					return {
-						processor: this.processors[event] || this.processors.click,
-						parts: [name, parts.join(" "), event],
-						delegate: delegate || undefined
+							// If `value` is undefined use `can.getObject` to get the value.
+							if(value === undefined) {
+								value = can.getObject(key);
+							}
+
+							// If `value` is a string we just return it, otherwise we set it as a delegate target.
+							if(typeof value === "string") {
+								return value;
+							} else {
+								delegate = value;
+								return "";
+							}
+
+						});
+
+						// Get the name of the `event` we're listening to.
+						var parts = name.split(/\s+/g),
+							event = parts.pop();
+
+						// Return everything needed to handle the event we're listening to.
+						return {
+							processor: this.processors[event] || this.processors.click,
+							parts: [name, parts.join(" "), event],
+							delegate: delegate || undefined
+						};
+
+					}, this);
+
+					// Create a handler function that we'll use to handle the `change` event on the `readyCompute`.
+					var handler = function(ev, ready){
+						// unbinds the old binding
+						controlInstance._bindings.control[methodName](controlInstance.element);
+						// binds the new
+						controlInstance._bindings.control[methodName] = ready.processor(
+							ready.delegate || controlInstance.element,
+							ready.parts[2], ready.parts[1], methodName, controlInstance);
 					};
-					
-				}, this);
 
-				// Create a handler function that we'll use to handle the `change` event on the `readyCompute`.
-				var handler = function(ev, ready){
-					controlInstance._bindings.control[methodName](controlInstance.element);
-					controlInstance._bindings.control[methodName] = ready.processor(
-									ready.delegate || controlInstance.element,
-									ready.parts[2], ready.parts[1], methodName, controlInstance);
-				};
+					readyCompute.bind("change", handler);
 
-				readyCompute.bind("change", handler);
-				
-				controlInstance._bindings.readyComputes[methodName] = {
-					compute: readyCompute,
-					handler: handler
-				};
+					controlInstance._bindings.readyComputes[methodName] = {
+						compute: readyCompute,
+						handler: handler
+					};
 
-				return readyCompute();
+					return readyCompute();
+				}
 			}
-		}
-	},
-	// Extend `events` with a setup method that listens to changes in `viewModel` and
-	// rebinds all templated event handlers.
-	{
-		setup: function (el, options) {
-			this.scope = options.scope;
-			this.viewModel = options.viewModel;
-			return can.Control.prototype.setup.call(this, el, options);
 		},
-		off: function(){
-			// If `this._bindings` exists we need to go through it's `readyComputes` and manually
-			// unbind `change` event listeners set by the controller.
-			if( this._bindings ) {
-				can.each(this._bindings.readyComputes || {}, function (value) {
-					value.compute.unbind("change", value.handler);
-				});
+		// Extend `events` with a setup method that listens to changes in `viewModel` and
+		// rebinds all templated event handlers.
+		{
+			setup: function (el, options) {
+				this.scope = options.scope;
+				this.viewModel = options.viewModel;
+				return can.Control.prototype.setup.call(this, el, options);
+			},
+			off: function(){
+				// If `this._bindings` exists we need to go through it's `readyComputes` and manually
+				// unbind `change` event listeners set by the controller.
+				if( this._bindings ) {
+					can.each(this._bindings.readyComputes || {}, function (value) {
+						value.compute.unbind("change", value.handler);
+					});
+				}
+				// Call `can.Control.prototype.off` function on this instance to cleanup the bindings.
+				can.Control.prototype.off.apply(this, arguments);
+				this._bindings.readyComputes = {};
+			},
+			destroy: function() {
+				can.Control.prototype.destroy.apply( this, arguments );
+				if(typeof this.options.destroy === 'function') {
+					this.options.destroy.apply(this, arguments);
+				}
 			}
-			// Call `can.Control.prototype.off` function on this instance to cleanup the bindings.
-			can.Control.prototype.off.apply(this, arguments);
-			this._bindings.readyComputes = {};
-		}
-	});
+		});
 
 	/**
 	 * @description Read and write a component element's viewModel.
@@ -505,9 +471,9 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 	 * `$("my-element").viewModel("name", "Whatnot");`
 	 *
 	 */
-		// Define the `can.viewModel` function that can be used to retrieve the
-		// `viewModel` from the element
-	
+	// Define the `can.viewModel` function that can be used to retrieve the
+	// `viewModel` from the element
+
 
 	var $ = can.$;
 
@@ -520,6 +486,6 @@ steal("can/util", "can/view/callbacks","can/control", "can/observe", "can/view/m
 			return can.viewModel.apply(can, [this].concat(can.makeArray(arguments)));
 		};
 	}
-	
+
 	return Component;
 });

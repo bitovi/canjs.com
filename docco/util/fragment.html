@@ -69,11 +69,6 @@
               </a>
             
               
-              <a class="source" href="test.html">
-                test.js
-              </a>
-            
-              
               <a class="source" href="util.html">
                 util.js
               </a>
@@ -101,7 +96,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -131,7 +126,7 @@
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> fragmentRE = <span class="hljs-regexp">/^\s*&lt;(\w+)[^&gt;]*&gt;/</span>,
 		toString = {}.toString,
-		fragment = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(html, name)</span> </span>{
+		fragment = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">html, name, doc</span>) </span>{
 			<span class="hljs-keyword">if</span> (name === <span class="hljs-literal">undefined</span>) {
 				name = fragmentRE.test(html) &amp;&amp; <span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>;
 			}
@@ -152,8 +147,8 @@
             
             <div class="content"><div class='highlight'><pre>				html = html.replace(<span class="hljs-regexp">/&lt;(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^&gt;]*)\/&gt;/gi</span>, <span class="hljs-string">'&lt;$1&gt;&lt;/$2&gt;'</span>);
 			}
-			<span class="hljs-keyword">var</span> container = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>),
-				temp = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);</pre></div></div>
+			<span class="hljs-keyword">var</span> container = doc.createElement(<span class="hljs-string">'div'</span>),
+				temp = doc.createElement(<span class="hljs-string">'div'</span>);</pre></div></div>
             
         </li>
         
@@ -172,9 +167,12 @@ Then the container is the <code>firstChild</code> of the <code>tbody</code>.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (name === <span class="hljs-string">'tbody'</span> || name === <span class="hljs-string">'tfoot'</span> || name === <span class="hljs-string">'thead'</span>) {
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (name === <span class="hljs-string">'tbody'</span> || name === <span class="hljs-string">'tfoot'</span> || name === <span class="hljs-string">'thead'</span> || name === <span class="hljs-string">'colgroup'</span>) {
 				temp.innerHTML = <span class="hljs-string">'&lt;table&gt;'</span> + html + <span class="hljs-string">'&lt;/table&gt;'</span>;
 				container = temp.firstChild.nodeType === <span class="hljs-number">3</span> ? temp.lastChild : temp.firstChild;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (name === <span class="hljs-string">'col'</span>) {
+				temp.innerHTML = <span class="hljs-string">'&lt;table&gt;&lt;colgroup&gt;'</span> + html + <span class="hljs-string">'&lt;/colgroup&gt;&lt;/table&gt;'</span>;
+				container = temp.firstChild.nodeType === <span class="hljs-number">3</span> ? temp.lastChild : temp.firstChild.firstChild;
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (name === <span class="hljs-string">'tr'</span>) {
 				temp.innerHTML = <span class="hljs-string">'&lt;table&gt;&lt;tbody&gt;'</span> + html + <span class="hljs-string">'&lt;/tbody&gt;&lt;/table&gt;'</span>;
 				container = temp.firstChild.nodeType === <span class="hljs-number">3</span> ? temp.lastChild : temp.firstChild.firstChild;
@@ -201,19 +199,26 @@ Then the container is the <code>firstChild</code> of the <code>tbody</code>.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> tmp = {}, children = container.childNodes;
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> tmp = {},
+				children = can.childNodes( container );
 			tmp.length = children.length;
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; children.length; i++) {
 				tmp[i] = children[i];
 			}
 			<span class="hljs-keyword">return</span> [].slice.call(tmp);
 		};
-	can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(html, nodes)</span> </span>{
+	can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">html, doc</span>) </span>{
 		<span class="hljs-keyword">if</span>(html &amp;&amp; html.nodeType === <span class="hljs-number">11</span>) {
 			<span class="hljs-keyword">return</span> html;
 		}
-		<span class="hljs-keyword">var</span> parts = fragment(html),
-			frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
+		<span class="hljs-keyword">if</span>(!doc) {
+			doc = <span class="hljs-built_in">document</span>;
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(doc.length) {
+			doc = doc[<span class="hljs-number">0</span>];
+		}
+		
+		<span class="hljs-keyword">var</span> parts = fragment(html, <span class="hljs-literal">undefined</span>, doc),
+			frag = (doc || <span class="hljs-built_in">document</span>).createDocumentFragment();
 		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, length = parts.length; i &lt; length; i++) {
 			frag.appendChild(parts[i]);
 		}
@@ -237,12 +242,12 @@ a text node that is set to the content.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 		<span class="hljs-keyword">var</span> text = <span class="hljs-string">"&lt;-\n&gt;"</span>,
 			frag = can.buildFragment(text, <span class="hljs-built_in">document</span>);
-		<span class="hljs-keyword">if</span>(text !== frag.childNodes[<span class="hljs-number">0</span>].nodeValue) {
+		<span class="hljs-keyword">if</span>(text !== frag.firstChild.nodeValue) {
 			<span class="hljs-keyword">var</span> oldBuildFragment = can.buildFragment;
-			can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(html, nodes)</span></span>{
+			can.buildFragment = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">html, nodes</span>)</span>{
 				<span class="hljs-keyword">var</span> res = oldBuildFragment(html, nodes);
 				<span class="hljs-keyword">if</span>(res.childNodes.length === <span class="hljs-number">1</span> &amp;&amp; res.childNodes[<span class="hljs-number">0</span>].nodeType === <span class="hljs-number">3</span>) {
 					res.childNodes[<span class="hljs-number">0</span>].nodeValue = html;

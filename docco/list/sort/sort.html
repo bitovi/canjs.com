@@ -11,6 +11,27 @@
   <div id="container">
     <div id="background"></div>
     
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="sort.html">
+                sort.js
+              </a>
+            
+              
+              <a class="source" href="sort_benchmark.html">
+                sort_benchmark.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
     <ul class="sections">
         
           <li id="title">
@@ -30,7 +51,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -41,24 +62,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Change bubble rule to bubble on change if their is a comparator</p>
+              <p>BUBBLE RULE</p>
+<ol>
+<li>list.bind(“change”) -&gt; bubbling
+list.unbind(“change”) -&gt; no bubbling</li>
+</ol>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldBubbleRule = can.List._bubbleRule;
-	can.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> </span>{
-		<span class="hljs-keyword">var</span> oldBubble = oldBubbleRule.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-
-		<span class="hljs-keyword">if</span> (list.comparator &amp;&amp; can.inArray(<span class="hljs-string">'change'</span>, oldBubble) === -<span class="hljs-number">1</span>) {
-			oldBubble.push(<span class="hljs-string">'change'</span>);
-		}
-
-		<span class="hljs-keyword">return</span> oldBubble;
-	};
-
-	<span class="hljs-keyword">var</span> proto = can.List.prototype,
-		_changes = proto._changes,
-		setup = proto.setup;</pre></div></div>
             
         </li>
         
@@ -69,7 +79,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Add <code>move</code> as an event that lazy-bubbles</p>
+              <ol>
+<li>list.attr(“comparator”,”id”) -&gt; nothing
+list.bind(“length”) -&gt; bubbling
+list.removeAttr(“comparator”) -&gt; nothing</li>
+</ol>
 
             </div>
             
@@ -82,16 +96,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>extend the list for sorting support</p>
+              <ol>
+<li>list.bind(“change”) -&gt; bubbling
+list.attr(“comparator”,”id”) -&gt; bubbling
+list.unbind(“change”) -&gt; no bubbling</li>
+</ol>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>
-	can.extend(proto, {
-		comparator: <span class="hljs-literal">undefined</span>,
-
-		_comparator: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
-			<span class="hljs-keyword">var</span> comparator = <span class="hljs-keyword">this</span>.comparator;</pre></div></div>
             
         </li>
         
@@ -102,27 +113,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>If the user has defined a comparator, use it</p>
+              <ol>
+<li>list.bind(“length”) -&gt; nothing
+list.attr(“comparator”,”id”) -&gt; bubbling
+list.removeAttr(“comparator”) -&gt; nothing</li>
+</ol>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (comparator &amp;&amp; <span class="hljs-keyword">typeof</span> comparator === <span class="hljs-string">'function'</span>) {
-				<span class="hljs-keyword">return</span> comparator(a, b);
-			}
-
-			<span class="hljs-keyword">return</span> a === b ? <span class="hljs-number">0</span> : a &lt; b ? -<span class="hljs-number">1</span> : <span class="hljs-number">1</span>;
-		},
-
-		<span class="hljs-comment">/**
-		 * @hide
-		 */</span>
-		_getInsertIndex: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, currentIndex)</span> </span>{
-			<span class="hljs-keyword">var</span> a = <span class="hljs-keyword">this</span>._getComparatorValue(item),
-				b,
-				offset = <span class="hljs-number">0</span>;
-
-			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.length; i++) {
-				b = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>[i]);</pre></div></div>
             
         </li>
         
@@ -133,18 +130,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>If we’ve reached the index that the item currently
-resides in and still haven’t found an ideal insert index,
-offset the returned index by -1 to account for the fact
-that this item would be moved if placed at the
-suggested index.</p>
+              <ol>
+<li>list.bind(“length”) -&gt; nothing
+list.attr(“comparator”,”id”) -&gt; bubbling
+list.unbind(“length”) -&gt; nothing</li>
+</ol>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> currentIndex !== <span class="hljs-string">'undefined'</span> &amp;&amp; i === currentIndex) {
-					offset = -<span class="hljs-number">1</span>;
-					<span class="hljs-keyword">continue</span>;
-				}</pre></div></div>
             
         </li>
         
@@ -155,15 +147,65 @@ suggested index.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>If we’ve found an item ranked greater than or the same as this
-item, consider this a good “insert” index.</p>
+              <p>Change bubble rule to bubble on change if there is a comparator.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._comparator(a, b) &lt; <span class="hljs-number">0</span>) {
-					<span class="hljs-keyword">return</span> i + offset;
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> oldBubbleRule = can.List._bubbleRule;
+	can.List._bubbleRule = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">eventName, list</span>) </span>{
+		<span class="hljs-keyword">var</span> oldBubble = oldBubbleRule.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+
+		<span class="hljs-keyword">if</span> (list.comparator &amp;&amp; can.inArray(<span class="hljs-string">'change'</span>, oldBubble) === <span class="hljs-number">-1</span>) {
+			oldBubble.push(<span class="hljs-string">'change'</span>);
+		}
+
+		<span class="hljs-keyword">return</span> oldBubble;
+	};
+
+	<span class="hljs-keyword">var</span> proto = can.List.prototype,
+		_changes = proto._changes || <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{},
+		setup = proto.setup,
+		unbind = proto.unbind;
+
+	can.extend(proto, {
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">instances, options</span>) </span>{
+			setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'change'</span>, can.proxy(<span class="hljs-keyword">this</span>._changes, <span class="hljs-keyword">this</span>));
+			<span class="hljs-keyword">this</span>._comparatorBound = <span class="hljs-literal">false</span>;
+
+			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'comparator'</span>, can.proxy(<span class="hljs-keyword">this</span>._comparatorUpdated, <span class="hljs-keyword">this</span>));
+			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._init;
+			
+			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator) {
+				<span class="hljs-keyword">this</span>.sort();
+			}
+		},
+		<span class="hljs-attr">_comparatorUpdated</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newValue</span>)</span>{
+			<span class="hljs-keyword">if</span>( newValue || newValue === <span class="hljs-number">0</span> ) {
+				<span class="hljs-keyword">this</span>.sort();
+
+				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._bindings &gt; <span class="hljs-number">0</span> &amp;&amp; ! <span class="hljs-keyword">this</span>._comparatorBound) {
+					<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>._comparatorBound = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{});
 				}
-			}</pre></div></div>
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._comparatorBound){
+				unbind.call(<span class="hljs-keyword">this</span>, <span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>._comparatorBound);
+				<span class="hljs-keyword">this</span>._comparatorBound = <span class="hljs-literal">false</span>;
+
+			}
+		},
+		<span class="hljs-attr">unbind</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, handler</span>)</span>{
+			<span class="hljs-keyword">var</span> res = unbind.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._comparatorBound &amp;&amp; <span class="hljs-keyword">this</span>._bindings === <span class="hljs-number">1</span>) {
+				unbind.call(<span class="hljs-keyword">this</span>,<span class="hljs-string">"change"</span>, <span class="hljs-keyword">this</span>._comparatorBound);
+				<span class="hljs-keyword">this</span>._comparatorBound = <span class="hljs-literal">false</span>;
+			}
+
+			<span class="hljs-keyword">return</span> res;
+		},
+		<span class="hljs-attr">_comparator</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, b</span>) </span>{
+
+			<span class="hljs-keyword">var</span> comparator = <span class="hljs-keyword">this</span>.comparator;</pre></div></div>
             
         </li>
         
@@ -174,14 +216,13 @@ item, consider this a good “insert” index.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>The index of the last item in the list</p>
+              <p>If the user has defined a comparator, use it</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> i + offset;
-		},
-
-		_getComparatorValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, overwrittenComparator)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (comparator &amp;&amp; <span class="hljs-keyword">typeof</span> comparator === <span class="hljs-string">'function'</span>) {
+				<span class="hljs-keyword">return</span> comparator(a, b);
+			}</pre></div></div>
             
         </li>
         
@@ -192,14 +233,19 @@ item, consider this a good “insert” index.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Use the value passed to .sort() as the comparator value
-if it is a string</p>
+              <p>Compare strings correctly in all languages</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> comparator = <span class="hljs-keyword">typeof</span> overwrittenComparator === <span class="hljs-string">'string'</span> ?
-				overwrittenComparator :
-				<span class="hljs-keyword">this</span>.comparator;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> a === <span class="hljs-string">'string'</span> &amp;&amp; <span class="hljs-keyword">typeof</span> b === <span class="hljs-string">'string'</span> &amp;&amp;
+					<span class="hljs-string">''</span>.localeCompare) {
+				<span class="hljs-keyword">return</span> a.localeCompare(b);
+			}
+
+			<span class="hljs-keyword">return</span> (a === b) ? <span class="hljs-number">0</span> : (a &lt; b) ? <span class="hljs-number">-1</span> : <span class="hljs-number">1</span>;
+		},
+		<span class="hljs-attr">_changes</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, attr, how, newVal, oldVal</span>) </span>{
+			<span class="hljs-keyword">var</span> dotIndex = (<span class="hljs-string">""</span> + attr).indexOf(<span class="hljs-string">'.'</span>);</pre></div></div>
             
         </li>
         
@@ -210,9 +256,207 @@ if it is a string</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>If the comparator is a string use that value to get
-property on the item. If the comparator is a method,
-it’ll be used elsewhere.</p>
+              <p>If a comparator is defined and the change was to a
+list item, consider moving the item.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator &amp;&amp; dotIndex !== <span class="hljs-number">-1</span>) {
+				<span class="hljs-keyword">if</span> (ev.batchNum) {
+					<span class="hljs-keyword">if</span> (ev.batchNum === <span class="hljs-keyword">this</span>._lastProcessedBatchNum) {
+						<span class="hljs-keyword">return</span>;
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">this</span>.sort();
+						<span class="hljs-keyword">this</span>._lastProcessedBatchNum = ev.batchNum;
+						<span class="hljs-keyword">return</span>;
+					}
+				}
+
+				<span class="hljs-keyword">var</span> currentIndex = +attr.substr(<span class="hljs-number">0</span>, dotIndex);
+				<span class="hljs-keyword">var</span> item = <span class="hljs-keyword">this</span>[currentIndex];
+				<span class="hljs-keyword">var</span> changedAttr = attr.substr(dotIndex + <span class="hljs-number">1</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Don’t waste time evaluating items in ways that aren’t
+relevant or have changed in ways that aren’t relevant.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> item !== <span class="hljs-string">'undefined'</span> &amp;&amp;
+					(<span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.comparator !== <span class="hljs-string">'string'</span> ||
+						<span class="hljs-keyword">this</span>.comparator.indexOf(changedAttr) === <span class="hljs-number">0</span>)) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Determine where this item should reside as a result
+of the change</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> newIndex =
+						<span class="hljs-keyword">this</span>._getRelativeInsertIndex(item, currentIndex);
+
+					<span class="hljs-keyword">if</span> (newIndex !== currentIndex) {
+						<span class="hljs-keyword">this</span>._swapItems(currentIndex, newIndex);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Trigger length change so that {{#block}} helper
+can re-render</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						can.batch.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'length'</span>, [
+							<span class="hljs-keyword">this</span>.length
+						]);
+					}
+
+				}
+			}
+			_changes.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+		},
+
+		<span class="hljs-attr">_getInsertIndex</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, lowerBound, upperBound</span>) </span>{
+
+			<span class="hljs-keyword">var</span> insertIndex = <span class="hljs-number">0</span>;
+			<span class="hljs-keyword">var</span> a = <span class="hljs-keyword">this</span>._getComparatorValue(item);
+			<span class="hljs-keyword">var</span> b, dir, comparedItem, testIndex;
+
+			lowerBound = (<span class="hljs-keyword">typeof</span> lowerBound === <span class="hljs-string">'number'</span> ?
+				lowerBound : <span class="hljs-number">0</span>);
+			upperBound = (<span class="hljs-keyword">typeof</span> upperBound === <span class="hljs-string">'number'</span> ?
+				upperBound : <span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>);
+
+			<span class="hljs-keyword">while</span> (lowerBound &lt;= upperBound) {
+				testIndex = (lowerBound + upperBound) / <span class="hljs-number">2</span> | <span class="hljs-number">0</span>;
+				comparedItem = <span class="hljs-keyword">this</span>[testIndex];
+				b = <span class="hljs-keyword">this</span>._getComparatorValue(comparedItem);
+				dir = <span class="hljs-keyword">this</span>._comparator(a, b); <span class="hljs-comment">// -1 === a &lt; b; 1 === a &gt; b</span>
+
+
+				<span class="hljs-keyword">if</span> (dir &lt; <span class="hljs-number">0</span>) { <span class="hljs-comment">// Compared item &gt; our item</span>
+					upperBound = testIndex - <span class="hljs-number">1</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dir &gt;= <span class="hljs-number">0</span>) { <span class="hljs-comment">// Compared item &lt;= our item</span>
+					lowerBound = testIndex + <span class="hljs-number">1</span>;
+					insertIndex = lowerBound;
+				}
+			}
+
+			<span class="hljs-keyword">return</span> insertIndex;
+		},
+
+		<span class="hljs-attr">_getRelativeInsertIndex</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, currentIndex</span>) </span>{
+			<span class="hljs-keyword">var</span> naiveInsertIndex = <span class="hljs-keyword">this</span>._getInsertIndex(item);
+			<span class="hljs-keyword">var</span> nextItemIndex = currentIndex + <span class="hljs-number">1</span>;
+			<span class="hljs-keyword">var</span> a = <span class="hljs-keyword">this</span>._getComparatorValue(item);
+			<span class="hljs-keyword">var</span> b;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Don’t count the item being moved itself - which would
+cause something like this:
+  [1(a, b), 2, 3] // i = 0; a === b; Don’t swap;
+  [1(a), 2(b), 3] // i = 1; a &lt; b; Do swap (a) from 0 to 1;
+  .splice(0, 1) // [2, 3]
+  .splice(1, 0, a) // [2, 1, 3]</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (naiveInsertIndex &gt;= currentIndex) {
+				naiveInsertIndex -= <span class="hljs-number">1</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>If a forward swap is suggested by _getInsertIndex, inspect
+the next item for the same value. Otherwise, we may be
+needlessly leapfroging over same value items to be naively
+positioned before an item with a greater value. Otherwise,
+the naiveInsertIndex is totally valid.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (currentIndex &lt; naiveInsertIndex &amp;&amp; nextItemIndex &lt; <span class="hljs-keyword">this</span>.length) {
+				b = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>[nextItemIndex]);
+
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._comparator(a, b) === <span class="hljs-number">0</span>) {
+					<span class="hljs-keyword">return</span> currentIndex;
+				}
+			}
+
+			<span class="hljs-keyword">return</span> naiveInsertIndex;
+		},
+
+		<span class="hljs-comment">/**
+		 * @returns {number} The value that should be passed to the comparator
+		 **/</span>
+		_getComparatorValue: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, singleUseComparator</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Use the value passed to .sort() as the comparator value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> comparator = singleUseComparator || <span class="hljs-keyword">this</span>.comparator;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>If the comparator is a string, use it to get the value of that
+property on the item. Example:
+  list.comparator = ‘prop’; // -&gt; item.attr(‘prop’);
+  list.comparator = ‘method’; // -&gt; item<a href="">‘method’</a>;
+If the comparator is a method, don’t do anything.</p>
 
             </div>
             
@@ -225,40 +469,37 @@ it’ll be used elsewhere.</p>
 			<span class="hljs-keyword">return</span> item;
 		},
 
-		_getComparatorValues: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">_getComparatorValues</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
 			<span class="hljs-keyword">var</span> a = [];
-			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, index)</span> </span>{
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, index</span>) </span>{
 				a.push(self._getComparatorValue(item));
 			});
 			<span class="hljs-keyword">return</span> a;
 		},
 
-		<span class="hljs-comment">/**
-		 * @hide
-		 */</span>
-		sort: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(comparator, silent)</span> </span>{
+		<span class="hljs-attr">sort</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">singleUseComparator</span>) </span>{
 			<span class="hljs-keyword">var</span> a, b, c, isSorted;</pre></div></div>
             
         </li>
         
         
-        <li id="section-11">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Use the value passed to .sort() as the comparator function
 if it is a function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> comparatorFn = can.isFunction(comparator) ?
-				comparator :
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> comparatorFn = can.isFunction(singleUseComparator) ?
+				singleUseComparator :
 				<span class="hljs-keyword">this</span>._comparator;
 
-			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i, iMin, j = <span class="hljs-number">0</span>, n = <span class="hljs-keyword">this</span>.length; j &lt; n-<span class="hljs-number">1</span>; j++) {
+			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i, iMin, j = <span class="hljs-number">0</span>, n = <span class="hljs-keyword">this</span>.length; j &lt; n<span class="hljs-number">-1</span>; j++) {
 				iMin = j;
 
 				isSorted = <span class="hljs-literal">true</span>;
@@ -266,23 +507,23 @@ if it is a function</p>
 
 				<span class="hljs-keyword">for</span> (i = j+<span class="hljs-number">1</span>; i &lt; n; i++) {
 
-					a = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>.attr(i), comparator);
-					b = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>.attr(iMin), comparator);</pre></div></div>
+					a = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>.attr(i), singleUseComparator);
+					b = <span class="hljs-keyword">this</span>._getComparatorValue(<span class="hljs-keyword">this</span>.attr(iMin), singleUseComparator);</pre></div></div>
             
         </li>
         
         
-        <li id="section-12">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>[1, 2, 3, 4(b), 9, 6, 3(a)]</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (comparatorFn.call(<span class="hljs-keyword">this</span>, a, b) === -<span class="hljs-number">1</span>) {
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (comparatorFn.call(<span class="hljs-keyword">this</span>, a, b) &lt; <span class="hljs-number">0</span>) {
 						isSorted = <span class="hljs-literal">false</span>;
 						iMin = i;
 					}</pre></div></div>
@@ -290,11 +531,11 @@ if it is a function</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>[1, 2, 3, 4, 8(b), 12, 49, 9(c), 6(a), 3]
 While iterating over the unprocessed items in search
@@ -305,7 +546,7 @@ sort agortithm</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (c &amp;&amp; comparatorFn.call(<span class="hljs-keyword">this</span>, a, c) === -<span class="hljs-number">1</span>) {
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (c &amp;&amp; comparatorFn.call(<span class="hljs-keyword">this</span>, a, c) &lt; <span class="hljs-number">0</span>) {
 						isSorted = <span class="hljs-literal">false</span>;
 					}
 
@@ -317,47 +558,40 @@ sort agortithm</p>
 				}
 
 				<span class="hljs-keyword">if</span> (iMin !== j) {
-					<span class="hljs-keyword">this</span>._swapItems(iMin, j, silent);
+					<span class="hljs-keyword">this</span>._swapItems(iMin, j);
 				}
-			}
-
-
-			<span class="hljs-keyword">if</span> (! silent) {</pre></div></div>
+			}</pre></div></div>
             
         </li>
         
         
-        <li id="section-14">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Trigger length change so that {{#block}} helper can re-render</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'length'</span>, [<span class="hljs-keyword">this</span>.length]);
-			}
+            <div class="content"><div class='highlight'><pre>			can.batch.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'length'</span>, [<span class="hljs-keyword">this</span>.length]);
 
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
 
-		<span class="hljs-comment">/**
-		 * @hide
-		 */</span>
-		_swapItems: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldIndex, newIndex, silent)</span> </span>{
+		<span class="hljs-attr">_swapItems</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">oldIndex, newIndex</span>) </span>{
 
 			<span class="hljs-keyword">var</span> temporaryItemReference = <span class="hljs-keyword">this</span>[oldIndex];</pre></div></div>
             
         </li>
         
         
-        <li id="section-15">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Remove the item from the list</p>
 
@@ -368,60 +602,40 @@ sort agortithm</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Place the item at the correct index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			[].splice.call(<span class="hljs-keyword">this</span>, newIndex, <span class="hljs-number">0</span>, temporaryItemReference);
-
-			<span class="hljs-keyword">if</span> (! silent) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			[].splice.call(<span class="hljs-keyword">this</span>, newIndex, <span class="hljs-number">0</span>, temporaryItemReference);</pre></div></div>
             
         </li>
         
         
-        <li id="section-17">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Update the DOM via can.view.live.list</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'move'</span>, [
-					temporaryItemReference,
-					newIndex,
-					oldIndex
-				]);
-			}
+            <div class="content"><div class='highlight'><pre>			can.batch.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'move'</span>, [
+				temporaryItemReference,
+				newIndex,
+				oldIndex
+			]);
 		}
 
-	});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>create push, unshift
-converts to an array of arguments</p>
+	});
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
-		<span class="hljs-keyword">return</span> args[<span class="hljs-number">0</span>] &amp;&amp; can.isArray(args[<span class="hljs-number">0</span>]) ? args[<span class="hljs-number">0</span>] : can.makeArray(args);
-	};
 	can.each({
 			<span class="hljs-comment">/**
 			 * @function push
@@ -464,11 +678,11 @@ converts to an array of arguments</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>adds a method where
 @param where items in the array should be added
@@ -476,67 +690,139 @@ converts to an array of arguments</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(where, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">where, name</span>) </span>{
 			<span class="hljs-keyword">var</span> proto = can.List.prototype,
 				old = proto[name];
-			proto[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			proto[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator &amp;&amp; <span class="hljs-built_in">arguments</span>.length) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-20">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>get the items being added</p>
+              <p>Get the items being added</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> args = getArgs(<span class="hljs-built_in">arguments</span>);
-					<span class="hljs-keyword">var</span> i = args.length;
-
-					<span class="hljs-keyword">while</span> (i--) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
+					<span class="hljs-keyword">var</span> length = args.length;
+					<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+					<span class="hljs-keyword">var</span> newIndex, val;</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Go through and convert anything to an <code>map</code> that needs
-to be converted.</p>
+              <p>Increment, don’t decrement in order to minimize the
+number of items after each subsequent .splice();</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> val = can.bubble.set(<span class="hljs-keyword">this</span>, i, <span class="hljs-keyword">this</span>.__type(args[i], i) );</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">while</span> (i &lt; length) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-22">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>Insert this item at the correct index</p>
+              <p>Convert anything to a <code>map</code> that needs to be converted.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> newIndex = <span class="hljs-keyword">this</span>._getInsertIndex(val);
-						<span class="hljs-built_in">Array</span>.prototype.splice.apply(<span class="hljs-keyword">this</span>, [newIndex, <span class="hljs-number">0</span>, val]);
+            <div class="content"><div class='highlight'><pre>						val = can.bubble.set(<span class="hljs-keyword">this</span>, i, <span class="hljs-keyword">this</span>.__type(args[i], i) );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Get the sorted index</p>
 
-						<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">''</span> + newIndex, <span class="hljs-string">'add'</span>, [val], <span class="hljs-literal">undefined</span>);
-					}
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						newIndex = <span class="hljs-keyword">this</span>._getInsertIndex(val);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Insert this item at the correct index
+NOTE: On ultra-big lists, this will be the slowest
+part of an “add” because <code>.splice()</code> is O(n)</p>
 
-					can.batch.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'reset'</span>, [args]);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-built_in">Array</span>.prototype.splice.apply(<span class="hljs-keyword">this</span>, [newIndex, <span class="hljs-number">0</span>, val]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Render, etc</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">''</span> + newIndex, <span class="hljs-string">'add'</span>, [val], <span class="hljs-literal">undefined</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Next</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						i++;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Render, etc</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.batch.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'reset'</span>, [args]);
 
 					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 				} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -544,32 +830,29 @@ to be converted.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>call the original method</p>
+              <p>Call the original method</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">return</span> old.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 				}
-
-
-
 			};
 		});</pre></div></div>
             
         </li>
         
         
-        <li id="section-24">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Overwrite .splice so that items added to the list (no matter what the
 defined index) are inserted at the correct index, while preserving the
@@ -577,24 +860,22 @@ ability to remove items from a list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>	(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">var</span> proto = can.List.prototype;
 		<span class="hljs-keyword">var</span> oldSplice = proto.splice;
 
-		proto.splice = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index, howMany)</span> </span>{
+		proto.splice = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, howMany</span>) </span>{
 
-			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
-				newElements =[],
-				i, len;</pre></div></div>
+			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);</pre></div></div>
             
         </li>
         
         
-        <li id="section-25">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Don’t use this “sort” oriented splice unless this list has a
 comparator</p>
@@ -608,29 +889,11 @@ comparator</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>Get the list of new items intended to be added to the list</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>, len = args.length; i &lt; len; i++) {
-				args[i] = <span class="hljs-keyword">this</span>.__type(args[i], i);
-				newElements.push(args[i]);
-			}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Remove items using the original splice method</p>
 
@@ -641,155 +904,40 @@ comparator</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Remove the 1st and 2nd args so that the newly added
+items can be processed directly, rather than <code>.slice()</code>
+which creates a copy, or <code>for (...) { added.push(args[i]); }</code>
+which iterates needlessly</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			args.splice(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Add items by way of push so that they’re sorted into
 the correct position</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			proto.push.apply(<span class="hljs-keyword">this</span>, newElements);
+            <div class="content"><div class='highlight'><pre>			proto.push.apply(<span class="hljs-keyword">this</span>, args);
 		};
-	})();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <ul>
-<li>override changes for sorting</li>
-</ul>
+	})();
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	proto._changes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr, how, newVal, oldVal)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>If a comparator is defined and the change was to a
-list item, consider moving the item.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator &amp;&amp; <span class="hljs-regexp">/^\d+/</span>.test(attr)) {
-
-			<span class="hljs-keyword">if</span> (ev.batchNum &amp;&amp; ev.batchNum !== <span class="hljs-keyword">this</span>._lastBatchNum) {
-				<span class="hljs-keyword">this</span>.sort();
-				<span class="hljs-keyword">this</span>._lastBatchNum = ev.batchNum;
-				<span class="hljs-keyword">return</span>;
-			}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>get the index</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> currentIndex = +<span class="hljs-regexp">/^\d+/</span>.exec(attr)[<span class="hljs-number">0</span>],</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>and item</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				item = <span class="hljs-keyword">this</span>[currentIndex];
-
-			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> item !== <span class="hljs-string">'undefined'</span>) {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p>Determine where this item should reside as a result
-of the change</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> newIndex = <span class="hljs-keyword">this</span>._getInsertIndex(item, currentIndex);
-
-				<span class="hljs-keyword">if</span> (newIndex !== currentIndex) {
-					<span class="hljs-keyword">this</span>._swapItems(currentIndex, newIndex);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>Trigger length change so that {{#block}} helper can re-render</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					can.trigger(<span class="hljs-keyword">this</span>, <span class="hljs-string">'length'</span>, [
-						<span class="hljs-keyword">this</span>.length
-					]);
-				}
-
-			}
-		}
-		_changes.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <ul>
-<li>override setup for sorting</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	proto.setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instances, options)</span> </span>{
-		setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.comparator) {
-			<span class="hljs-keyword">this</span>.sort();
-		}
-	};
 	<span class="hljs-keyword">return</span> can.Map;
 });</pre></div></div>
             

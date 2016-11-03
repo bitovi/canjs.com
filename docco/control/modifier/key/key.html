@@ -47,7 +47,7 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
  * @documentjs-ignore
  */</span>
-steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Control)</span> </span>{</pre></div></div>
+steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">Control</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
 	 * @copyright Copyright © 2011, Keith Cirkel
 	 *
 	 */</span>
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">realTypeOf</span><span class="hljs-params">(v, s)</span> </span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">realTypeOf</span>(<span class="hljs-params">v, s</span>) </span>{
 		<span class="hljs-keyword">return</span> v === <span class="hljs-literal">null</span> ? s === <span class="hljs-string">'null'</span> : v === <span class="hljs-literal">undefined</span> ? s === <span class="hljs-string">'undefined'</span> : v.is &amp;&amp; v <span class="hljs-keyword">instanceof</span> $ ? s === <span class="hljs-string">'element'</span> : <span class="hljs-built_in">Object</span>.prototype.toString.call(v)
 			.toLowerCase()
 			.indexOf(s) &gt; <span class="hljs-number">7</span>;
@@ -164,7 +164,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⇧'</span>: <span class="hljs-number">16</span>,
-			shift: <span class="hljs-number">16</span>,</pre></div></div>
+			<span class="hljs-attr">shift</span>: <span class="hljs-number">16</span>,</pre></div></div>
             
         </li>
         
@@ -180,7 +180,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⌃'</span>: <span class="hljs-number">17</span>,
-			ctrl: <span class="hljs-number">17</span>,</pre></div></div>
+			<span class="hljs-attr">ctrl</span>: <span class="hljs-number">17</span>,</pre></div></div>
             
         </li>
         
@@ -196,8 +196,8 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⌥'</span>: <span class="hljs-number">18</span>,
-			alt: <span class="hljs-number">18</span>,
-			option: <span class="hljs-number">18</span>,</pre></div></div>
+			<span class="hljs-attr">alt</span>: <span class="hljs-number">18</span>,
+			<span class="hljs-attr">option</span>: <span class="hljs-number">18</span>,</pre></div></div>
             
         </li>
         
@@ -213,10 +213,10 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⌘'</span>: <span class="hljs-number">91</span>,
-			meta: <span class="hljs-number">91</span>,
-			cmd: <span class="hljs-number">91</span>,
+			<span class="hljs-attr">meta</span>: <span class="hljs-number">91</span>,
+			<span class="hljs-attr">cmd</span>: <span class="hljs-number">91</span>,
 			<span class="hljs-string">'super'</span>: <span class="hljs-number">91</span>,
-			win: <span class="hljs-number">91</span>
+			<span class="hljs-attr">win</span>: <span class="hljs-number">91</span>
 		},</pre></div></div>
             
         </li>
@@ -248,7 +248,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⌫'</span>: <span class="hljs-number">8</span>,
-			backspace: <span class="hljs-number">8</span>,</pre></div></div>
+			<span class="hljs-attr">backspace</span>: <span class="hljs-number">8</span>,</pre></div></div>
             
         </li>
         
@@ -265,7 +265,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⇥'</span>: <span class="hljs-number">9</span>,
 			<span class="hljs-string">'⇆'</span>: <span class="hljs-number">9</span>,
-			tab: <span class="hljs-number">9</span>,</pre></div></div>
+			<span class="hljs-attr">tab</span>: <span class="hljs-number">9</span>,</pre></div></div>
             
         </li>
         
@@ -282,7 +282,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'↩'</span>: <span class="hljs-number">13</span>,
 			<span class="hljs-string">'return'</span>: <span class="hljs-number">13</span>,
-			enter: <span class="hljs-number">13</span>,
+			<span class="hljs-attr">enter</span>: <span class="hljs-number">13</span>,
 			<span class="hljs-string">'⌅'</span>: <span class="hljs-number">13</span>,</pre></div></div>
             
         </li>
@@ -315,7 +315,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⇪'</span>: <span class="hljs-number">20</span>,
-			caps: <span class="hljs-number">20</span>,
+			<span class="hljs-attr">caps</span>: <span class="hljs-number">20</span>,
 			<span class="hljs-string">'caps-lock'</span>: <span class="hljs-number">20</span>,</pre></div></div>
             
         </li>
@@ -332,8 +332,8 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⎋'</span>: <span class="hljs-number">27</span>,
-			<span class="hljs-built_in">escape</span>: <span class="hljs-number">27</span>,
-			esc: <span class="hljs-number">27</span>,</pre></div></div>
+			<span class="hljs-attr">escape</span>: <span class="hljs-number">27</span>,
+			<span class="hljs-attr">esc</span>: <span class="hljs-number">27</span>,</pre></div></div>
             
         </li>
         
@@ -364,7 +364,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'↖'</span>: <span class="hljs-number">33</span>,
-			pgup: <span class="hljs-number">33</span>,
+			<span class="hljs-attr">pgup</span>: <span class="hljs-number">33</span>,
 			<span class="hljs-string">'page-up'</span>: <span class="hljs-number">33</span>,</pre></div></div>
             
         </li>
@@ -381,7 +381,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'↘'</span>: <span class="hljs-number">34</span>,
-			pgdown: <span class="hljs-number">34</span>,
+			<span class="hljs-attr">pgdown</span>: <span class="hljs-number">34</span>,
 			<span class="hljs-string">'page-down'</span>: <span class="hljs-number">34</span>,</pre></div></div>
             
         </li>
@@ -398,7 +398,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⇟'</span>: <span class="hljs-number">35</span>,
-			end: <span class="hljs-number">35</span>,</pre></div></div>
+			<span class="hljs-attr">end</span>: <span class="hljs-number">35</span>,</pre></div></div>
             
         </li>
         
@@ -414,7 +414,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'⇞'</span>: <span class="hljs-number">36</span>,
-			home: <span class="hljs-number">36</span>,</pre></div></div>
+			<span class="hljs-attr">home</span>: <span class="hljs-number">36</span>,</pre></div></div>
             
         </li>
         
@@ -430,7 +430,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			ins: <span class="hljs-number">45</span>,
-			insert: <span class="hljs-number">45</span>,</pre></div></div>
+			<span class="hljs-attr">insert</span>: <span class="hljs-number">45</span>,</pre></div></div>
             
         </li>
         
@@ -462,7 +462,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'←'</span>: <span class="hljs-number">37</span>,
-			left: <span class="hljs-number">37</span>,
+			<span class="hljs-attr">left</span>: <span class="hljs-number">37</span>,
 			<span class="hljs-string">'arrow-left'</span>: <span class="hljs-number">37</span>,</pre></div></div>
             
         </li>
@@ -479,7 +479,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'↑'</span>: <span class="hljs-number">38</span>,
-			up: <span class="hljs-number">38</span>,
+			<span class="hljs-attr">up</span>: <span class="hljs-number">38</span>,
 			<span class="hljs-string">'arrow-up'</span>: <span class="hljs-number">38</span>,</pre></div></div>
             
         </li>
@@ -496,7 +496,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'→'</span>: <span class="hljs-number">39</span>,
-			right: <span class="hljs-number">39</span>,
+			<span class="hljs-attr">right</span>: <span class="hljs-number">39</span>,
 			<span class="hljs-string">'arrow-right'</span>: <span class="hljs-number">39</span>,</pre></div></div>
             
         </li>
@@ -513,7 +513,7 @@ steal(<span class="hljs-string">'can/control/modifier'</span>, <span class="hljs
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'↓'</span>: <span class="hljs-number">40</span>,
-			down: <span class="hljs-number">40</span>,
+			<span class="hljs-attr">down</span>: <span class="hljs-number">40</span>,
 			<span class="hljs-string">'arrow-down'</span>: <span class="hljs-number">40</span>,</pre></div></div>
             
         </li>
@@ -531,9 +531,9 @@ Num-Multiply, or *</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'*'</span>: <span class="hljs-number">106</span>,
-			star: <span class="hljs-number">106</span>,
-			asterisk: <span class="hljs-number">106</span>,
-			multiply: <span class="hljs-number">106</span>,</pre></div></div>
+			<span class="hljs-attr">star</span>: <span class="hljs-number">106</span>,
+			<span class="hljs-attr">asterisk</span>: <span class="hljs-number">106</span>,
+			<span class="hljs-attr">multiply</span>: <span class="hljs-number">106</span>,</pre></div></div>
             
         </li>
         
@@ -565,7 +565,7 @@ Num-Multiply, or *</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'-'</span>: <span class="hljs-number">109</span>,
-			subtract: <span class="hljs-number">109</span>,</pre></div></div>
+			<span class="hljs-attr">subtract</span>: <span class="hljs-number">109</span>,</pre></div></div>
             
         </li>
         
@@ -581,7 +581,7 @@ Num-Multiply, or *</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">';'</span>: <span class="hljs-number">186</span>,
-			semicolon: <span class="hljs-number">186</span>,</pre></div></div>
+			<span class="hljs-attr">semicolon</span>: <span class="hljs-number">186</span>,</pre></div></div>
             
         </li>
         
@@ -613,7 +613,7 @@ Num-Multiply, or *</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">','</span>: <span class="hljs-number">188</span>,
-			comma: <span class="hljs-number">188</span>,</pre></div></div>
+			<span class="hljs-attr">comma</span>: <span class="hljs-number">188</span>,</pre></div></div>
             
         </li>
         
@@ -630,7 +630,7 @@ Period, or ., or full-stop</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'.'</span>: <span class="hljs-number">190</span>,
-			period: <span class="hljs-number">190</span>,
+			<span class="hljs-attr">period</span>: <span class="hljs-number">190</span>,
 			<span class="hljs-string">'full-stop'</span>: <span class="hljs-number">190</span>,</pre></div></div>
             
         </li>
@@ -647,7 +647,7 @@ Period, or ., or full-stop</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'/'</span>: <span class="hljs-number">191</span>,
-			slash: <span class="hljs-number">191</span>,
+			<span class="hljs-attr">slash</span>: <span class="hljs-number">191</span>,
 			<span class="hljs-string">'forward-slash'</span>: <span class="hljs-number">191</span>,</pre></div></div>
             
         </li>
@@ -664,7 +664,7 @@ Period, or ., or full-stop</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'`'</span>: <span class="hljs-number">192</span>,
-			tick: <span class="hljs-number">192</span>,
+			<span class="hljs-attr">tick</span>: <span class="hljs-number">192</span>,
 			<span class="hljs-string">'back-quote'</span>: <span class="hljs-number">192</span>,</pre></div></div>
             
         </li>
@@ -729,8 +729,8 @@ Period, or ., or full-stop</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-string">'\''</span>: <span class="hljs-number">222</span>,
-			quote: <span class="hljs-number">222</span>,
-			apostraphe: <span class="hljs-number">222</span>
+			<span class="hljs-attr">quote</span>: <span class="hljs-number">222</span>,
+			<span class="hljs-attr">apostraphe</span>: <span class="hljs-number">222</span>
 		}
 
 	}, i, n;</pre></div></div>
@@ -814,7 +814,7 @@ Period, or ., or full-stop</p>
 			.toLowerCase()] = i;
 	}
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">JwertyCode</span><span class="hljs-params">(jwertyCode)</span> </span>{
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">JwertyCode</span>(<span class="hljs-params">jwertyCode</span>) </span>{
 		<span class="hljs-keyword">var</span> i, c, n, z, keyCombo, optionals, jwertyCodeFragment, rangeMatches, rangeI;</pre></div></div>
             
         </li>
@@ -920,11 +920,11 @@ cast as a string and split into an array.</p>
             
             <div class="content"><div class='highlight'><pre>				jwertyCodeFragment = jwertyCode[i][n];
 				keyCombo = {
-					jwertyCombo: <span class="hljs-built_in">String</span>(jwertyCodeFragment),
-					shiftKey: <span class="hljs-literal">false</span>,
-					ctrlKey: <span class="hljs-literal">false</span>,
-					altKey: <span class="hljs-literal">false</span>,
-					metaKey: <span class="hljs-literal">false</span>
+					<span class="hljs-attr">jwertyCombo</span>: <span class="hljs-built_in">String</span>(jwertyCodeFragment),
+					<span class="hljs-attr">shiftKey</span>: <span class="hljs-literal">false</span>,
+					<span class="hljs-attr">ctrlKey</span>: <span class="hljs-literal">false</span>,
+					<span class="hljs-attr">altKey</span>: <span class="hljs-literal">false</span>,
+					<span class="hljs-attr">metaKey</span>: <span class="hljs-literal">false</span>
 				};</pre></div></div>
             
         </li>
@@ -1021,12 +1021,12 @@ and split it into one.</p>
             
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">for</span> (rangeI = rangeMatches[<span class="hljs-number">1</span>]; rangeI &lt; rangeMatches[<span class="hljs-number">2</span>]; ++rangeI) {
 							optionals.push({
-								altKey: keyCombo.altKey,
-								shiftKey: keyCombo.shiftKey,
-								metaKey: keyCombo.metaKey,
-								ctrlKey: keyCombo.ctrlKey,
-								keyCode: rangeI,
-								jwertyCombo: <span class="hljs-built_in">String</span>(jwertyCodeFragment)
+								<span class="hljs-attr">altKey</span>: keyCombo.altKey,
+								<span class="hljs-attr">shiftKey</span>: keyCombo.shiftKey,
+								<span class="hljs-attr">metaKey</span>: keyCombo.metaKey,
+								<span class="hljs-attr">ctrlKey</span>: keyCombo.ctrlKey,
+								<span class="hljs-attr">keyCode</span>: rangeI,
+								<span class="hljs-attr">jwertyCombo</span>: <span class="hljs-built_in">String</span>(jwertyCodeFragment)
 							});
 						}
 						keyCombo.keyCode = rangeI; <span class="hljs-comment">// Inject either keyCode or ctrl/meta/shift/altKey into keyCombo</span>
@@ -1066,7 +1066,7 @@ and split it into one.</p>
 		 *      `callback` with (i.e this)
 		 *
 		 */</span>
-		event: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, callbackFunction, callbackContext <span class="hljs-comment">/*? this */</span> )</span> </span>{</pre></div></div>
+		event: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jwertyCode, callbackFunction, callbackContext <span class="hljs-regexp">/*? this */</span> </span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1083,7 +1083,7 @@ and split it into one.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (realTypeOf(callbackFunction, <span class="hljs-string">'boolean'</span>)) {
 				<span class="hljs-keyword">var</span> bool = callbackFunction;
-				callbackFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				callbackFunction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> bool;
 				};
 			}
@@ -1119,7 +1119,7 @@ and split it into one.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(event)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>{
 				jwertyCodeIs = jwerty.is(jwertyCode, event, i);</pre></div></div>
             
         </li>
@@ -1245,7 +1245,7 @@ in which case we should reset i to 1.</p>
 		 *      sequence
 		 *
 		 */</span>
-		is: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jwertyCode, event, i <span class="hljs-comment">/*? 0*/</span> )</span> </span>{
+		is: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jwertyCode, event, i <span class="hljs-regexp">/*? 0*/</span> </span>) </span>{
 			jwertyCode = <span class="hljs-keyword">new</span> JwertyCode(jwertyCode);</pre></div></div>
             
         </li>
@@ -1378,7 +1378,7 @@ because it does annoything stuff to <code>metaKey</code></p>
 			}
 			<span class="hljs-keyword">return</span> returnValue;
 		},
-		KEYS: _keys
+		<span class="hljs-attr">KEYS</span>: _keys
 	};
 	<span class="hljs-comment">/**
 	 * @page can.control.key
@@ -1422,7 +1422,7 @@ because it does annoything stuff to <code>metaKey</code></p>
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.extend(can.Control, {
-		_shifter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, name)</span> </span>{
+		<span class="hljs-attr">_shifter</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context, name</span>) </span>{
 			<span class="hljs-keyword">var</span> fn = originalShifter.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>),
 				parts = name.split(<span class="hljs-string">':'</span>);
 			<span class="hljs-keyword">if</span> (parts.length &gt; <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-regexp">/key/</span>.test(parts[<span class="hljs-number">0</span>])) {

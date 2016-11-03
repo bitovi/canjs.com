@@ -4,7 +4,7 @@
 
 <head>
     <title>CanJS Mootools tests</title>
-    <script type="text/javascript" src="../bower_components/html5shiv/dist/html5shiv.js"></script>
+    <script type="text/javascript" src="../bower_components/modernizr/modernizr.js"></script>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
         System['import']("package.json!npm").then(function() {
             var config = window.CONFIGURATION = {
                 "map": {
-                    "util/util": "util/mootools/mootools"
+                    "can/util/util": "can/util/mootools/mootools"
                 }
             };
             steal.config(config);
@@ -29,6 +29,7 @@
                 "can/view/view_test.js",
                 "can/view/ejs/ejs_test.js",
                 "can/view/stache/stache_test.js",
+                "can/view/href/href_test.js",
                 "can/control/control_test.js",
                 "can/route/route_test.js",
                 "can/control/route/route_test.js",
@@ -40,20 +41,22 @@
                 "can/map/lazy/lazy_test.js",
                 "can/map/delegate/delegate_test.js",
                 "can/map/setter/setter_test.js",
-                "can/map/attributes/attributes_test.js",
                 "can/map/validations/validations_test.js",
                 "can/map/backup/backup_test.js",
                 "can/map/list/list_test.js",
                 "can/map/define/define_test.js",
                 "can/list/sort/sort_test.js",
-                "can/util/object/object_test.js",
                 "can/util/fixture/fixture_test.js",
                 "can/view/bindings/bindings_test.js",
                 "can/view/live/live_test.js",
                 "can/view/scope/scope_test.js",
-                "can/util/string/string_test.js",
-                "can/util/attr/attr_test.js",
+                "can/util/tests/tests_test.js",
+                "can/util/object/object_test.js",
+                "can/util/function/function_test.js",
                 "can/view/autorender/autorender_test.js",
+                "can/util/vdom/build_fragment/build_fragment_test.js",
+                "can/util/vdom/document/document_test.js",
+                "can/view/import/import_test.js",
                 function() {
                     can.dev.logLevel = 3;
                 });

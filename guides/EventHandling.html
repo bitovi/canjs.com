@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - Event Handling </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../index.html">Home</a>
+                </li>
+		       <li class='active'><a href='index.html'>guides</a></li>
+		       <li><a href='../docs/index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="Why.html" data-search="Why CanJS?">
+				Why CanJS?
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Using.html" data-search="Setting up CanJS">
+				Setting up CanJS
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="Tutorial.html" data-search="Getting Started Tutorial">
+				Getting Started Tutorial
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Setup.html" 
+							data-search="Setup">
+							Setup
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ApplicationDesign.html" 
+							data-search="Application Design">
+							Application Design
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Constructors.html" 
+							data-search="Constructors">
+							Constructors
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Observables.html" 
+							data-search="Observables">
+							Observables
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="TheDefinePlugin.html" 
+							data-search="The Define Plugin">
+							The Define Plugin
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="StacheTemplates.html" 
+							data-search="Stache Templates">
+							Stache Templates
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="AppStateAndRouting.html" 
+							data-search="App State and Routing">
+							App State and Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Components.html" 
+							data-search="Components">
+							Components
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="ViewModels.html" 
+							data-search="View Models">
+							View Models
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="DataModelsAndFixtures.html" 
+							data-search="Data Models and Fixtures">
+							Data Models and Fixtures
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Routing.html" 
+							data-search="Routing">
+							Routing
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="LoadingStates.html" 
+							data-search="Loading States">
+							Loading States
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container active  expanded">
+						<a 	class="page" 
+							href="EventHandling.html" 
+							data-search="Event Handling">
+							Event Handling
+						</a>
+						
+							
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="WebServiceCommunication.html" 
+							data-search="Web Service Communication">
+							Web Service Communication
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="page" 
+							href="Recap.html" 
+							data-search="Recap">
+							Recap
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="Recipes.html" data-search="Recipes">
+				Recipes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="contributing.html" data-search="How to Contribute">
+				How to Contribute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="changelog.html" data-search="Changelog">
+				Changelog
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="license.html" data-search="License">
+				License
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="migrating.html" data-search="Migrating to 2.0">
+				Migrating to 2.0
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="roadmap.html" data-search="Roadmap">
+				Roadmap
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>Event Handling</h1>
+	<ul class="tags">
+		<li>page</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">EventHandling</span>
+	
+	
+	
+	<span class="inherits">&nbsp;</span>
+</div>
+
+<ul class="links">
+	
+	
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/guides/getting-started-tutorial/event-handling.md">source</a></li>
+	
+	
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+
+		
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<div class="getting-started">
+<hr />
+<p><strong>In this Chapter</strong></p>
+<ul>
+<li>Event Handling</li>
+</ul>
+<p>Get the code for: <a href="/guides/examples/PlaceMyOrder/ch-8_canjs-getting-started.zip">chapter: event handling</a></p>
+<hr />
+<p>CanJS makes it easy to handle any
+<a href="https://developer.mozilla.org/en-US/docs/Web/Events">any standard DOM event</a>,
+such as a <code>change</code> event, in your component. To add an event handler, we
+have to make changes in two places:</p>
+<ol>
+<li>The view template</li>
+<li>The <code>can.Component</code> view model</li>
+</ol>
+<p>Before we can work with an example, let’s get the restaurant details page
+working. When you go to the Restaurants page in your browser, then select
+a state and city, then click the “Place My Order” button next to a restaurant,
+the page will have a <code>pmo-restaurant-details</code> element without any content.</p>
+<p><img src="../can/guides/images/event-handling/EmptyRestaurantDetails.png" alt="Empty pmo-restaurant-details element" /></p>
+<p>As we’ve discussed earlier, you need to include the component’s script
+file to register the component with CanJS. While we’re at it, we’re going to
+include the scripts for the rest of the components that we’re going to use.
+Let’s edit the <code>index.html</code> file by replacing these lines:</p>
+<pre><code class="language-html">    &lt;!-- Replace with order component script --&gt;
+    &lt;!-- Replace with order details component script --&gt;
+    &lt;!-- Replace with order history component script --&gt;
+    &lt;!-- Replace with order list component script --&gt;
+    &lt;!-- Replace with order phone component script --&gt;
+</code></pre>
+<p>with these lines:</p>
+<pre><code class="language-html">    &lt;script src=&quot;components/order/order.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;components/order_details/order_details.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;components/order_list/order_list.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;components/order_history/order_history.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;components/order_phone/order_phone.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>We have just one more file we need to include before we move on. This
+section is going to introduce orders from a restaurant, and
+we’ll want to have an <code>Order</code> model. Find this line:</p>
+<pre><code>    &lt;!-- Replace with order model script --&gt;
+</code></pre>
+<p>and replace it with this line:</p>
+<pre><code>    &lt;script src=&quot;models/order.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Now, if you refresh the page, you’ll see the details for Spago.</p>
+<p><img src="../can/guides/images/application-design/RestaurantDetails.png" alt="Restaurant details page" /></p>
+<p>If you click the “Order from Spago” button, you’ll find yourself with a menu, a
+name field, and an address field; however, we’re missing one important piece of
+customer information: a phone number. Let’s build a <code>phone-validator</code>
+component to collect this information, and add some event handling to
+validate the field as the user types.</p>
+<p>There are two ways you can add event handling to an element:</p>
+<ul>
+<li>by adding an attribute with the event name prefixed by <code>can-</code>.</li>
+<li>by adding an attribute with the event name surrounded in parenthesis, e.g., <code>(click)</code>.</li>
+</ul>
+<pre><code class="language-html">&lt;!--Example using can- syntax--&gt;
+&lt;input name=&quot;phone&quot; type=&quot;text&quot; can-keyup=&quot;{setPhoneValue @element.val}&quot;&gt;
+   
+&lt;!--Example using () syntax--&gt;
+&lt;input name=&quot;phone&quot; type=&quot;text&quot; ($keyup)=&quot;setPhoneValue(@element.val)&quot;&gt;
+</code></pre>
+<p>Of these, the preferred method is to use parenthesis to surround the event name.
+Again, <a href="https://developer.mozilla.org/en-US/docs/Web/Events">any standard DOM event</a> is supported.
+More information about <code>can.stache's</code> event and two-way binding syntaxes can be found at <a href="http://localhost:8080/docs/can.view.bindings.html">can.view.bindings</a>.</p>
+<p>In addition to defining an event, you can pass certain predefined parameters
+to the method that handles the event. These parameters include:</p>
+<ul>
+<li>@element - The can.$ wrapped element where the event occurred.</li>
+<li>@event - The event object&mdash;or properties off of that object.</li>
+<li>@viewModel - If the element is a can.Component, the component's viewModel.</li>
+<li>@context - The current context.</li>
+</ul>
+<p>You are not limited to these parameters. Any valid value can be passed in to the
+handler method. Separate method parameters with a space, e.g. <code>{{myMethod arg1 arg2}}</code></p>
+<p>Let’s open the <code>components/order_phone/order_phone.stache</code> file and add the
+following:</p>
+<pre><code class="language-html">&lt;div class=&quot;form-group{{#if error}} has-error{{/if}}&quot;&gt;
+  &lt;label&gt;Phone:&lt;/label&gt;
+  &lt;input name=&quot;phone&quot; type=&quot;text&quot; ($keyup)=&quot;setPhoneValue(@element.val)&quot;&gt;
+  {{#if error}}
+    {{#eq order.phone '911'}}
+      &lt;p&gt;That's not your real number :-(&lt;/p&gt;
+    {{else}}
+      &lt;p&gt;Please enter a phone number in the format 555-555-5555&lt;/p&gt;
+    {{/eq}}
+  {{/if}}
+&lt;/div&gt;
+</code></pre>
+<p>Notice the <code>&lt;input /&gt;</code> element with a <code>($keyup)</code> event handler. Whenever there
+is a <code>keyup</code> event in the <code>input</code>, the code in the value will be executed. We’re
+also passing <code>@element.val</code> to the <code>setPhoneValue</code> helper. Let’s
+add the component’s JavaScript to the <code>components/order_phone/order_phone.js</code>
+file:</p>
+<pre><code>var PhoneViewModel = can.Map.extend({
+  error: function(){
+    var phone = this.attr(&quot;order&quot;).attr(&quot;phone&quot;);
+    return phone &amp;&amp; (!/^(\d|-)*$/.test(phone) || phone === &quot;911&quot;);
+  },
+
+  setPhoneValue: function(val){
+    this.attr('order').attr('phone', val);
+  }
+});
+
+can.Component.extend({
+  tag: 'phone-validator',
+  viewModel: PhoneViewModel,
+  template: can.view('components/order_phone/order_phone.stache')
+});
+</code></pre>
+<p>Here you can see the <code>setPhoneValue</code> helper function, which takes the <code>val</code>
+passed to it by the template and sets the <code>phone</code> property of the
+component’s <code>order</code> property to <code>val</code>.</p>
+<p>But how do errors show up? The template is using the <code>error</code> property on the
+component, which looks like this:</p>
+<pre><code>  error: function(){
+    var phone = this.attr(&quot;order&quot;).attr(&quot;phone&quot;);
+    return phone &amp;&amp; (!/^(\d|-)*$/.test(phone) || phone === &quot;911&quot;);
+  },
+</code></pre>
+<p>Notice that the <code>error</code> property uses <code>this.attr(&quot;order&quot;).attr(&quot;phone&quot;)</code> in
+its getter. Because of CanJS’s <a href="Observables.html">observables</a>, CanJS is
+aware of us setting that value in our <code>setPhoneValue</code> helper, and thus only
+runs the getter again (called “recomputing the value”) when
+the value has changed. When the <code>setPhoneValue</code> helper sets the value, CanJS
+recomputes the <code>error</code> property’s value, which will return an error if you
+type “911” or anything that doesn’t look like a phone number.</p>
+<p><img src="../can/guides/images/event-handling/RestaurantOrderError911.png" alt="Restaurant order error when you type 911 as your phone number" /></p>
+<p>Note that you can place as many event handlers as you need on an element. Adding event
+handlers in this way directly binds the events to the element. This can impact
+performance in situations where you have many elements to bind events to. For
+more performant event binding, you can use the <code>can.Component</code>’s <a href="../docs/can.Component.prototype.events.html">events
+property</a>. Discussing this is beyond
+the scope of this introduction. See the API for more details.</p>
+<hr />
+<p><span class="pull-left"><a href="LoadingStates.html">&lsaquo; Loading States</a></span>
+<span class="pull-right"><a href="WebServiceCommunication.html">Web Service Communication &rsaquo;</a></span></p>
+</div>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../index.html">Home</a>
+	            </li>
+		        <li class='active'><a href='index.html'>guides</a></li>
+		        <li><a href='../docs/index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"page","name":"EventHandling","src":"guides/getting-started-tutorial/event-handling.md","description":"","title":"Event Handling","parent":"Tutorial","order":11,"disabletableofcontents":true,"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"pattern":"{guides/*.md,guides/**/*.md,*.md}","ignore":"{node_modules,bower_components}/**/*","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/guides","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

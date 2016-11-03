@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/map"</span>, <span class="hljs-string">"can/map/bubble.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, Map, bubble)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/map"</span>, <span class="hljs-string">"can/map/bubble.js"</span>,<span class="hljs-string">"can/map/map_helpers.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, Map, bubble, mapHelpers</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -60,7 +60,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		spliceRemovesProps = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		spliceRemovesProps = (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -77,7 +77,7 @@
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> obj = {
 				<span class="hljs-number">0</span>: <span class="hljs-string">"a"</span>,
-				length: <span class="hljs-number">1</span>
+				<span class="hljs-attr">length</span>: <span class="hljs-number">1</span>
 			};
 			splice.call(obj, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
 			<span class="hljs-keyword">return</span> !obj[<span class="hljs-number">0</span>];
@@ -86,7 +86,7 @@
 	<span class="hljs-comment">/**
 	 * @add can.List
 	 */</span>
-	<span class="hljs-keyword">var</span> list = Map.extend(
+	<span class="hljs-keyword">var</span> list = <span class="hljs-built_in">Map</span>.extend(
 		<span class="hljs-comment">/**
 		 * @static
 		 */</span>
@@ -127,7 +127,7 @@
 			 *
 			 *
 			 */</span>
-			Map: Map
+			<span class="hljs-built_in">Map</span>: <span class="hljs-built_in">Map</span>
 			<span class="hljs-comment">/**
 			 * @function can.Map.extend
 			 *
@@ -154,19 +154,17 @@
 		 * @prototype
 		 */</span>
 		{
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instances, options)</span> </span>{
+			<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">instances, options</span>) </span>{
 				<span class="hljs-keyword">this</span>.length = <span class="hljs-number">0</span>;
 				can.cid(<span class="hljs-keyword">this</span>, <span class="hljs-string">".map"</span>);
-				<span class="hljs-keyword">this</span>._init = <span class="hljs-number">1</span>;
-				<span class="hljs-keyword">this</span>._computedBindings = {};
-				<span class="hljs-keyword">this</span>._setupComputes();
+				<span class="hljs-keyword">this</span>._setupComputedProperties();
 				instances = instances || [];
 				<span class="hljs-keyword">var</span> teardownMapping;
 
-				<span class="hljs-keyword">if</span> (can.isDeferred(instances)) {
+				<span class="hljs-keyword">if</span> (can.isPromise(instances)) {
 					<span class="hljs-keyword">this</span>.replace(instances);
 				} <span class="hljs-keyword">else</span> {
-					teardownMapping = instances.length &amp;&amp; can.Map.helpers.addToMap(instances, <span class="hljs-keyword">this</span>);
+					teardownMapping = instances.length &amp;&amp; mapHelpers.addToMap(instances, <span class="hljs-keyword">this</span>);
 					<span class="hljs-keyword">this</span>.push.apply(<span class="hljs-keyword">this</span>, can.makeArray(instances || []));
 				}
 
@@ -187,13 +185,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'change'</span>, can.proxy(<span class="hljs-keyword">this</span>._changes, <span class="hljs-keyword">this</span>));
-				can.simpleExtend(<span class="hljs-keyword">this</span>, options);
-				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._init;
+            <div class="content"><div class='highlight'><pre>				can.simpleExtend(<span class="hljs-keyword">this</span>, options);
 			},
-			_triggerChange: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, how, newVal, oldVal)</span> </span>{
+			<span class="hljs-attr">_triggerChange</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, how, newVal, oldVal</span>) </span>{
 
-				Map.prototype._triggerChange.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);</pre></div></div>
+				<span class="hljs-built_in">Map</span>.prototype._triggerChange.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);</pre></div></div>
             
         </li>
         
@@ -238,18 +234,10 @@
 				}
 
 			},
-			__get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{
+			<span class="hljs-attr">___get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr</span>) </span>{
 				<span class="hljs-keyword">if</span> (attr) {
-					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>[attr] &amp;&amp; <span class="hljs-keyword">this</span>[attr].isComputed &amp;&amp; can.isFunction(<span class="hljs-keyword">this</span>.constructor.prototype[attr])) {
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[attr]();
-					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[attr];
-					}
-				} <span class="hljs-keyword">else</span> {
-					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-				}
-			},
-			__set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current)</span> </span>{</pre></div></div>
+					<span class="hljs-keyword">var</span> computedAttr = <span class="hljs-keyword">this</span>._computedAttrs[attr];
+					<span class="hljs-keyword">if</span> (computedAttr &amp;&amp; computedAttr.compute) {</pre></div></div>
             
         </li>
         
@@ -259,6 +247,29 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>return computedAttr.compute();</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">return</span> computedAttr.compute();
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[attr];
+					}
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+				}
+			},
+			<span class="hljs-attr">__set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, value, current</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>We want change events to notify using integers if we’re
 setting an integer index. Note that <float> % 1 !== 0;</p>
@@ -270,11 +281,11 @@ setting an integer index. Note that <float> % 1 !== 0;</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Check to see if we’re doing a .attr() on an out of
 bounds index property.</p>
@@ -284,29 +295,29 @@ bounds index property.</p>
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> prop === <span class="hljs-string">"number"</span> &amp;&amp;
 					prop &gt; <span class="hljs-keyword">this</span>.length - <span class="hljs-number">1</span>) {
 					<span class="hljs-keyword">var</span> newArr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>((prop + <span class="hljs-number">1</span>) - <span class="hljs-keyword">this</span>.length);
-					newArr[newArr.length-<span class="hljs-number">1</span>] = value;
+					newArr[newArr.length<span class="hljs-number">-1</span>] = value;
 					<span class="hljs-keyword">this</span>.push.apply(<span class="hljs-keyword">this</span>, newArr);
 					<span class="hljs-keyword">return</span> newArr;
 				}
 
 				<span class="hljs-keyword">return</span> can.Map.prototype.__set.call(<span class="hljs-keyword">this</span>, <span class="hljs-string">""</span>+prop, value, current);
 			},
-			___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, val)</span> </span>{
+			<span class="hljs-attr">___set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, val</span>) </span>{
 				<span class="hljs-keyword">this</span>[attr] = val;
 				<span class="hljs-keyword">if</span> (+attr &gt;= <span class="hljs-keyword">this</span>.length) {
 					<span class="hljs-keyword">this</span>.length = (+attr + <span class="hljs-number">1</span>);
 				}
 			},
-			_remove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(prop, current)</span> </span>{</pre></div></div>
+			<span class="hljs-attr">__remove</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">prop, current</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>if removing an expando property</p>
 
@@ -319,8 +330,8 @@ bounds index property.</p>
 					<span class="hljs-keyword">this</span>.splice(prop, <span class="hljs-number">1</span>);
 				}
 			},
-			_each: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> </span>{
-				<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.__get();
+			<span class="hljs-attr">_each</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
+				<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">this</span>.___get();
 				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; data.length; i++) {
 					callback(data[i], i);
 				}
@@ -329,11 +340,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Returns the serialized form of this list.</p>
 
@@ -343,8 +354,8 @@ bounds index property.</p>
 			 * @hide
 			 * Returns the serialized form of this list.
 			 */</span>
-			serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">return</span> Map.helpers.serialize(<span class="hljs-keyword">this</span>, <span class="hljs-string">'serialize'</span>, []);
+			serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> mapHelpers.serialize(<span class="hljs-keyword">this</span>, <span class="hljs-string">'serialize'</span>, []);
 			},
 			<span class="hljs-comment">/**
 			 * @function can.List.prototype.each each
@@ -362,7 +373,7 @@ bounds index property.</p>
 			 * @return {can.List} this List, for chaining
 			 *
 			 * @body
-			 * @codestart
+			 * ```
 			 * var i = 0;
 			 * new can.Map([1, 10, 100]).each(function(element, index) {
 			 *     i += element;
@@ -379,17 +390,17 @@ bounds index property.</p>
 			 * });
 			 *
 			 * i; // 11
-			 * @codeend
+			 * ```
 			 */</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               
             </div>
@@ -412,13 +423,13 @@ bounds index property.</p>
 			 *
 			 * This example demonstrates how to do surgery on a list of numbers:
 			 *
-			 * @codestart
+			 * ```
 			 * var list = new can.List([0, 1, 2, 3]);
 			 *
 			 * // starting at index 2, remove one element and insert 'Alice' and 'Bob':
 			 * list.splice(2, 1, 'Alice', 'Bob');
 			 * list.attr(); // [0, 1, 'Alice', 'Bob', 3]
-			 * @codeend
+			 * ```
 			 *
 			 * ## Events
 			 *
@@ -432,7 +443,7 @@ bounds index property.</p>
 			 * This slightly-modified version of the above example should help
 			 * make it clear how `splice` causes events to be emitted:
 			 *
-			 * @codestart
+			 * ```
 			 * var list = new can.List(['a', 'b', 'c', 'd']);
 			 * list.bind('change', function(ev, attr, how, newVals, oldVals) {
 			 *     console.log('change: ' + attr + ', ' + how + ', ' + newVals + ', ' + oldVals);
@@ -454,11 +465,11 @@ bounds index property.</p>
 			 *                                    // change: 2, 'add', ['Alice', 'Bob'], ['c']
 			 *                                    // add: ['Alice', 'Bob'], 2
 			 *                                    // length: 5, ['a', 'b', 'Alice', 'Bob', 'd']
-			 * @codeend
+			 * ```
 			 *
 			 * More information about binding to these events can be found under [can.List.attr attr].
 			 */</span>
-			splice: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(index, howMany)</span> </span>{
+			splice: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, howMany</span>) </span>{
 				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 					added =[],
 					i, len, listIndex,
@@ -469,17 +480,17 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>converting the arguments to the right type</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = args.length-<span class="hljs-number">2</span>; i &lt; len; i++) {
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = args.length<span class="hljs-number">-2</span>; i &lt; len; i++) {
 					listIndex = i + <span class="hljs-number">2</span>;
 					args[listIndex] = <span class="hljs-keyword">this</span>.__type(args[listIndex], listIndex);
 					added.push(args[listIndex]);</pre></div></div>
@@ -487,11 +498,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Now lets check if anything will change</p>
 
@@ -505,28 +516,28 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>if nothing has changed, then return</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(allSame) {
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(allSame &amp;&amp; <span class="hljs-keyword">this</span>.length &lt;= added.length) {
 					<span class="hljs-keyword">return</span> added;
 				}</pre></div></div>
             
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>default howMany if not provided</p>
 
@@ -541,11 +552,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>delete properties for browsers who’s splice sucks (old ie)</p>
 
@@ -563,11 +574,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>tears down bubbling</p>
 
@@ -581,291 +592,35 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>make added items bubble to this list</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, len = added.length; i &lt; len; i++) {
-						bubble.set(<span class="hljs-keyword">this</span>, i, added[i]);
-					}
-					<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">""</span> + index, <span class="hljs-string">"add"</span>, added, removed);
-				}
-				can.batch.stop();
-				<span class="hljs-keyword">return</span> removed;
-			},
-			<span class="hljs-comment">/**
-			 * @description Get or set elements in a List.
-			 * @function can.List.prototype.attr attr
-			 *
-			 * @signature `list.attr()`
-			 *
-			 * Gets an array of all the elements in this `can.List`.
-			 *
-			 * @return {Array} An array with all the elements in this List.
-			 *
-			 * @signature `list.attr(index)`
-			 *
-			 * Reads an element from this `can.List`.
-			 *
-			 * @param {Number} index The element to read.
-			 * @return {*} The value at _index_.
-			 *
-			 * @signature `list.attr(index, value)`
-			 *
-			 * Assigns _value_ to the index _index_ on this `can.List`, expanding the list if necessary.
-			 *
-			 * @param {Number} index The element to set.
-			 * @param {*} value The value to assign at _index_.
-			 * @return {can.List} This list, for chaining.
-			 *
-			 * @signature `list.attr(elements[, replaceCompletely])`
-			 *
-			 * Merges the members of _elements_ into this List, replacing each from the beginning in order. If
-			 * _elements_ is longer than the current List, the current List will be expanded. If _elements_
-			 * is shorter than the current List, the extra existing members are not affected (unless
-			 * _replaceCompletely_ is `true`). To remove elements without replacing them, use `[can.Map::removeAttr removeAttr]`.
-			 *
-			 * @param {Array} elements An array of elements to merge in.
-			 *
-			 * @param {bool} [replaceCompletely=false] whether to completely replace the elements of List
-			 * If _replaceCompletely_ is `true` and _elements_ is shorter than the List, the existing
-			 * extra members of the List will be removed.
-			 *
-			 * @return {can.List} This list, for chaining.
-			 *
-			 * @body
-			 *
-			 *
-			 * ## Use
-			 *
-			 * `attr` gets or sets elements on the `can.List` it's called on. Here's a tour through
-			 * how all of its forms work:
-			 *
-			 *     var people = new can.List(['Alex', 'Bill']);
-			 *
-			 *     // set an element:
-			 *     people.attr(0, 'Adam');
-			 *
-			 *     // get an element:
-			 *     people.attr(0); // 'Adam'
-			 *     people[0]; // 'Adam'
-			 *
-			 *     // get all elements:
-			 *     people.attr(); // ['Adam', 'Bill']
-			 *
-			 *     // extend the array:
-			 *     people.attr(4, 'Charlie');
-			 *     people.attr(); // ['Adam', 'Bill', undefined, undefined, 'Charlie']
-			 *
-			 *     // merge the elements:
-			 *     people.attr(['Alice', 'Bob', 'Eve']);
-			 *     people.attr(); // ['Alice', 'Bob', 'Eve', undefined, 'Charlie']
-			 *
-			 * ## Deep properties
-			 *
-			 * `attr` can also set and read deep properties. All you have to do is specify
-			 * the property name as you normally would if you weren't using `attr`.
-			 *
-			 * @codestart
-			 * var people = new can.List([{name: 'Alex'}, {name: 'Bob'}]);
-			 *
-			 * // set a property:
-			 * people.attr('0.name', 'Alice');
-			 *
-			 * // get a property:
-			 * people.attr('0.name');  // 'Alice'
-			 * people[0].attr('name'); // 'Alice'
-			 *
-			 * // get all properties:
-			 * people.attr(); // [{name: 'Alice'}, {name: 'Bob'}]
-			 * @codeend
-			 *
-			 * The discussion of deep properties under `[can.Map.prototype.attr]` may also
-			 * be enlightening.
-			 *
-			 * ## Events
-			 *
-			 * `can.List`s emit five types of events in response to changes. They are:
-			 *
-			 * - the _change_ event fires on every change to a List.
-			 * - the _set_ event is fired when an element is set.
-			 * - the _add_ event is fired when an element is added to the List.
-			 * - the _remove_ event is fired when an element is removed from the List.
-			 * - the _length_ event is fired when the length of the List changes.
-			 *
-			 * ### The _change_ event
-			 *
-			 * The first event that is fired is the _change_ event. The _change_ event is useful
-			 * if you want to react to all changes on an List.
-			 *
-			 * @codestart
-			 * var list = new can.List([]);
-			 * list.bind('change', function(ev, index, how, newVal, oldVal) {
-			 *     console.log('Something changed.');
-			 * });
-			 * @codeend
-			 *
-			 * The parameters of the event handler for the _change_ event are:
-			 *
-			 * - _ev_ The event object.
-			 * - _index_ Where the change took place.
-			 * - _how_ Whether elements were added, removed, or set.
-			 * Possible values are `'add'`, `'remove'`, or `'set'`.
-			 * - _newVal_ The elements affected after the change
-			 *  _newVal_ will be a single value when an index is set, an Array when elements
-			 * were added, and `undefined` if elements were removed.
-			 * - _oldVal_ The elements affected before the change.
-			 * _newVal_ will be a single value when an index is set, an Array when elements
-			 * were removed, and `undefined` if elements were added.
-			 *
-			 * Here is a concrete tour through the _change_ event handler's arguments:
-			 *
-			 * @codestart
-			 * var list = new can.List();
-			 * list.bind('change', function(ev, index, how, newVal, oldVal) {
-			 *     console.log(ev + ', ' + index + ', ' + how + ', ' + newVal + ', ' + oldVal);
-			 * });
-			 *
-			 * list.attr(['Alexis', 'Bill']); // [object Object], 0, add, ['Alexis', 'Bill'], undefined
-			 * list.attr(2, 'Eve');           // [object Object], 2, add, Eve, undefined
-			 * list.attr(0, 'Adam');          // [object Object], 0, set, Adam, Alexis
-			 * list.attr(['Alice', 'Bob']);   // [object Object], 0, set, Alice, Adam
-			 *                                // [object Object], 1, set, Bob, Bill
-			 * list.removeAttr(1);            // [object Object], 1, remove, undefined, Bob
-			 * @codeend
-			 *
-			 * ### The _set_ event
-			 *
-			 * _set_ events are fired when an element at an index that already exists in the List is
-			 * modified. Actions can cause _set_ events to fire never also cause _length_ events
-			 * to fire (although some functions, such as `[can.List.prototype.splice splice]`
-			 * may cause unrelated sets of events to fire after being batched).
-			 *
-			 * The parameters of the event handler for the _set_ event are:
-			 *
-			 * - _ev_ The event object.
-			 * - _newVal_ The new value of the element.
-			 * - _index_ where the set took place.
-			 *
-			 * Here is a concrete tour through the _set_ event handler's arguments:
-			 *
-			 * @codestart
-			 * var list = new can.List();
-			 * list.bind('set', function(ev, newVal, index) {
-			 *     console.log(newVal + ', ' + index);
-			 * });
-			 *
-			 * list.attr(['Alexis', 'Bill']);
-			 * list.attr(2, 'Eve');
-			 * list.attr(0, 'Adam');          // Adam, 0
-			 * list.attr(['Alice', 'Bob']);   // Alice, 0
-			 *                                // Bob, 1
-			 * list.removeAttr(1);
-			 * @codeend
-			 *
-			 * ### The _add_ event
-			 *
-			 * _add_ events are fired when elements are added or inserted
-			 * into the List.
-			 *
-			 * The parameters of the event handler for the _add_ event are:
-			 *
-			 * - _ev_ The event object.
-			 * - _newElements_ The new elements.
-			 * An array of zero or more elements that were added.
-			 * - _index_ Where the add or insert took place.
-			 *
-			 * Here is a concrete tour through the _add_ event handler's arguments:
-			 *
-			 * @codestart
-			 * var list = new can.List();
-			 * list.bind('add', function(ev, newElements, index) {
-			 *     console.log(newElements + ', ' + index);
-			 * });
-			 *
-			 * list.attr(['Alexis', 'Bill']); // ['Alexis', 'Bill'], 0
-			 * list.attr(2, 'Eve');           // Eve, 2
-			 * list.attr(0, 'Adam');
-			 * list.attr(['Alice', 'Bob']);
-			 *
-			 * list.removeAttr(1);
-			 * @codeend
-			 *
-			 * ### The _remove_ event
-			 *
-			 * _remove_ events are fired when elements are removed from the list.
-			 *
-			 * The parameters of the event handler for the _remove_ event are:
-			 *
-			 * - _ev_ The event object.
-			 * - _removedElements_ The removed elements.
-			 * An array of zero or more elements that were removed.
-			 * - _index_ Where the removal took place.
-			 *
-			 * Here is a concrete tour through the _remove_ event handler's arguments:
-			 *
-			 * @codestart
-			 * var list = new can.List();
-			 * list.bind('remove', function(ev, removedElements, index) {
-			 *     console.log(removedElements + ', ' + index);
-			 * });
-			 *
-			 * list.attr(['Alexis', 'Bill']);
-			 * list.attr(2, 'Eve');
-			 * list.attr(0, 'Adam');
-			 * list.attr(['Alice', 'Bob']);
-			 *
-			 * list.removeAttr(1);            // Bob, 1
-			 * @codeend
-			 *
-			 * ### The _length_ event
-			 *
-			 * _length_ events are fired whenever the list changes.
-			 *
-			 * The parameters of the event handler for the _length_ event are:
-			 *
-			 * - _ev_ The event object.
-			 * - _length_ The current length of the list.
-			 * If events were batched when the _length_ event was triggered, _length_
-			 * will have the length of the list when `stopBatch` was called. Because
-			 * of this, you may receive multiple _length_ events with the same
-			 * _length_ parameter.
-			 *
-			 * Here is a concrete tour through the _length_ event handler's arguments:
-			 *
-			 * @codestart
-			 * var list = new can.List();
-			 * list.bind('length', function(ev, length) {
-			 *     console.log(length);
-			 * });
-			 *
-			 * list.attr(['Alexis', 'Bill']); // 2
-			 * list.attr(2, 'Eve');           // 3
-			 * list.attr(0, 'Adam');
-			 * list.attr(['Alice', 'Bob']);
-			 *
-			 * list.removeAttr(1);            // 2
-			 * @codeend
-			 */</span>
-			_attrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, remove)</span> </span>{
-				<span class="hljs-keyword">if</span> (items === <span class="hljs-literal">undefined</span>) {
-					<span class="hljs-keyword">return</span> Map.helpers.serialize(<span class="hljs-keyword">this</span>, <span class="hljs-string">'attr'</span>, []);
-				}</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>make added items bubble to this list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					bubble.addMany(<span class="hljs-keyword">this</span>, added);
+					<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">""</span> + index, <span class="hljs-string">"add"</span>, added, removed);
+				}
+				can.batch.stop();
+				<span class="hljs-keyword">return</span> removed;
+			},
+			<span class="hljs-attr">_getAttrs</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">return</span> mapHelpers.serialize(<span class="hljs-keyword">this</span>, <span class="hljs-string">'attr'</span>, []);
+			},
+			<span class="hljs-attr">_setAttrs</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items, remove</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Create a copy.</p>
 
@@ -878,36 +633,15 @@ bounds index property.</p>
 				can.batch.stop();
 			},
 
-			_updateAttrs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(items, remove)</span> </span>{
+			<span class="hljs-attr">_updateAttrs</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">items, remove</span>) </span>{
 				<span class="hljs-keyword">var</span> len = <span class="hljs-built_in">Math</span>.min(items.length, <span class="hljs-keyword">this</span>.length);
 
 				<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop = <span class="hljs-number">0</span>; prop &lt; len; prop++) {
 					<span class="hljs-keyword">var</span> curVal = <span class="hljs-keyword">this</span>[prop],
 						newVal = items[prop];
 
-					<span class="hljs-keyword">if</span> (Map.helpers.isObservable(curVal) &amp;&amp; Map.helpers.canMakeObserve(newVal)) {
+					<span class="hljs-keyword">if</span> ( can.isMapLike(curVal) &amp;&amp; mapHelpers.canMakeObserve(newVal)) {
 						curVal.attr(newVal, remove);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>changed from a coercion to an explicit</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (curVal !== newVal) {
-						<span class="hljs-keyword">this</span>._set(prop, newVal);
-					} <span class="hljs-keyword">else</span> {
-
-					}
-				}
-				<span class="hljs-keyword">if</span> (items.length &gt; <span class="hljs-keyword">this</span>.length) {</pre></div></div>
             
         </li>
         
@@ -917,6 +651,27 @@ bounds index property.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>changed from a coercion to an explicit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (curVal !== newVal) {
+						<span class="hljs-keyword">this</span>._set(prop+<span class="hljs-string">""</span>, newVal);
+					} <span class="hljs-keyword">else</span> {
+
+					}
+				}
+				<span class="hljs-keyword">if</span> (items.length &gt; <span class="hljs-keyword">this</span>.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Add in the remaining props.</p>
 
@@ -932,17 +687,17 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Converts to an <code>array</code> of arguments.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(args)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		getArgs = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">args</span>) </span>{
 			<span class="hljs-keyword">return</span> args[<span class="hljs-number">0</span>] &amp;&amp; can.isArray(args[<span class="hljs-number">0</span>]) ?
 				args[<span class="hljs-number">0</span>] :
 				can.makeArray(args);
@@ -951,11 +706,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Create <code>push</code>, <code>pop</code>, <code>shift</code>, and <code>unshift</code></p>
 
@@ -976,23 +731,23 @@ bounds index property.</p>
 			 * @body
 			 * `push` adds elements onto the end of a List here is an example:
 			 *
-			 * @codestart
+			 * ```
 			 * var list = new can.List(['Alice']);
 			 *
 			 * list.push('Bob', 'Eve');
 			 * list.attr(); // ['Alice', 'Bob', 'Eve']
-			 * @codeend
+			 * ```
 			 *
 			 * If you have an array you want to concatenate to the end
 			 * of the List, you can use `apply`:
 			 *
-			 * @codestart
+			 * ```
 			 * var names = ['Bob', 'Eve'],
 			 *     list = new can.List(['Alice']);
 			 *
 			 * list.push.apply(list, names);
 			 * list.attr(); // ['Alice', 'Bob', 'Eve']
-			 * @codeend
+			 * ```
 			 *
 			 * ## Events
 			 *
@@ -1018,23 +773,23 @@ bounds index property.</p>
 			 * @body
 			 * `unshift` adds elements to the front of the list in bulk in the order specified:
 			 *
-			 * @codestart
+			 * ```
 			 * var list = new can.List(['Alice']);
 			 *
 			 * list.unshift('Bob', 'Eve');
 			 * list.attr(); // ['Bob', 'Eve', 'Alice']
-			 * @codeend
+			 * ```
 			 *
 			 * If you have an array you want to concatenate to the beginning
 			 * of the List, you can use `apply`:
 			 *
-			 * @codestart
+			 * ```
 			 * var names = ['Bob', 'Eve'],
 			 *     list = new can.List(['Alice']);
 			 *
-			 * list.push.apply(list, names);
+			 * list.unshift.apply(list, names);
 			 * list.attr(); // ['Bob', 'Eve', 'Alice']
-			 * @codeend
+			 * ```
 			 *
 			 * ## Events
 			 *
@@ -1051,11 +806,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Adds a method
 <code>name</code> - The method name.
@@ -1063,18 +818,19 @@ bounds index property.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(where, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">where, name</span>) </span>{
 			<span class="hljs-keyword">var</span> orig = [][name];
-			list.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+			list.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				can.batch.start();</pre></div></div>
             
         </li>
         
         
-        <li id="section-26">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Get the items being added.</p>
 
@@ -1085,11 +841,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Where we are going to add items.</p>
 
@@ -1102,13 +858,13 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Go through and convert anything to an <code>map</code> that needs to be converted.</p>
+              <p>Go through and convert anything to a <code>map</code> that needs to be converted.</p>
 
             </div>
             
@@ -1120,11 +876,11 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Call the original method.</p>
 
@@ -1136,7 +892,7 @@ bounds index property.</p>
 
 					<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">""</span> + len, <span class="hljs-string">"add"</span>, args, <span class="hljs-literal">undefined</span>);
 				}
-
+				can.batch.stop();
 				<span class="hljs-keyword">return</span> res;
 			};
 		});
@@ -1187,7 +943,7 @@ bounds index property.</p>
 			 * @body
 			 * `shift` is the opposite action from `[can.List::unshift unshift]`:
 			 *
-			 * @codestart
+			 * ```
 			 * var list = new can.List(['Alice']);
 			 *
 			 * list.unshift('Bob', 'Eve');
@@ -1197,7 +953,7 @@ bounds index property.</p>
 			 * list.shift(); // 'Eve'
 			 * list.shift(); // 'Alice'
 			 * list.shift(); // undefined
-			 * @codeend
+			 * ```
 			 *
 			 * ## Events
 			 *
@@ -1215,28 +971,28 @@ bounds index property.</p>
         </li>
         
         
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>Creates a <code>remove</code> type method</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(where, name)</span> </span>{
-			list.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Creates a <code>remove</code> type method</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">where, name</span>) </span>{
+			list.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>For shift and pop, we just return undefined without
 triggering events.</p>
@@ -1254,11 +1010,11 @@ triggering events.</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Create a change where the args are
 <code>len</code> - Where these items were removed.
@@ -1268,12 +1024,13 @@ triggering events.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">""</span> + len, <span class="hljs-string">"remove"</span>, <span class="hljs-literal">undefined</span>, [res]);
+            <div class="content"><div class='highlight'><pre>				can.batch.start();
+				<span class="hljs-keyword">this</span>._triggerChange(<span class="hljs-string">""</span> + len, <span class="hljs-string">"remove"</span>, <span class="hljs-literal">undefined</span>, [res]);
 
 				<span class="hljs-keyword">if</span> (res &amp;&amp; res.unbind) {
 					bubble.remove(<span class="hljs-keyword">this</span>, res);
 				}
-				
+				can.batch.stop();
 				<span class="hljs-keyword">return</span> res;
 			};
 		});
@@ -1291,22 +1048,22 @@ triggering events.</p>
 		 * @return {Number} the position of the item in the List, or -1 if the item is not found.
 		 *
 		 * @body
-		 * @codestart
+		 * ```
 		 * var list = new can.List(['Alice', 'Bob', 'Eve']);
 		 * list.indexOf('Alice');   // 0
 		 * list.indexOf('Charlie'); // -1
-		 * @codeend
+		 * ```
 		 *
 		 * It is trivial to make a `contains`-type function using `indexOf`:
 		 *
-		 * @codestart
+		 * ```
 		 * function(list, item) {
 		 *     return list.indexOf(item) &gt;= 0;
 		 * }
-		 * @codeend
+		 * ```
 		 */</span>
-		indexOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, fromIndex)</span> </span>{
-			<span class="hljs-keyword">this</span>.attr(<span class="hljs-string">'length'</span>);
+		indexOf: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, fromIndex</span>) </span>{
+			can.__observe(<span class="hljs-keyword">this</span>, <span class="hljs-string">"length"</span>);
 			<span class="hljs-keyword">return</span> can.inArray(item, <span class="hljs-keyword">this</span>, fromIndex);
 		},
 
@@ -1323,16 +1080,17 @@ triggering events.</p>
 		 * @return {String} the joined string
 		 *
 		 * @body
-		 * @codestart
+		 * ```
 		 * var list = new can.List(['Alice', 'Bob', 'Eve']);
 		 * list.join(', '); // 'Alice, Bob, Eve'
 		 *
 		 * var beatles = new can.List(['John', 'Paul', 'Ringo', 'George']);
 		 * beatles.join('&amp;'); // 'John&amp;Paul&amp;Ringo&amp;George'
-		 * @codeend
+		 * ```
 		 */</span>
-		join: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-			<span class="hljs-keyword">return</span> [].join.apply(<span class="hljs-keyword">this</span>.attr(), <span class="hljs-built_in">arguments</span>);
+		join: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			can.__observe(<span class="hljs-keyword">this</span>, <span class="hljs-string">"length"</span>);
+			<span class="hljs-keyword">return</span> [].join.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
 
 		<span class="hljs-comment">/**
@@ -1345,17 +1103,17 @@ triggering events.</p>
 		 * @return {can.List} the List, for chaining
 		 *
 		 * @body
-		 * @codestart
+		 * ```
 		 * var list = new can.List(['Alice', 'Bob', 'Eve']);
 		 * var reversedList = list.reverse();
 		 *
 		 * reversedList.attr(); // ['Eve', 'Bob', 'Alice'];
 		 * list === reversedList; // true
-		 * @codeend
+		 * ```
 		 */</span>
-		reverse: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		reverse: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> list = [].reverse.call(can.makeArray(<span class="hljs-keyword">this</span>));
-			<span class="hljs-keyword">this</span>.replace(list);
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.replace(list);
 		},
 
 		<span class="hljs-comment">/**
@@ -1373,23 +1131,38 @@ triggering events.</p>
 		 * @return {can.List} a new `can.List` with the extracted elements
 		 *
 		 * @body
-		 * @codestart
+		 * ```
 		 * var list = new can.List(['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve']);
 		 * var newList = list.slice(1, 4);
 		 * newList.attr(); // ['Bob', 'Charlie', 'Daniel']
-		 * @codeend
+		 * ```
 		 *
 		 * `slice` is the simplest way to copy a List:
 		 *
-		 * @codestart
+		 * ```
 		 * var list = new can.List(['Alice', 'Bob', 'Eve']);
 		 * var copy = list.slice();
 		 *
 		 * copy.attr();   // ['Alice', 'Bob', 'Eve']
 		 * list === copy; // false
-		 * @codeend
+		 * ```
 		 */</span>
-		slice: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		slice: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>tells computes to listen on length for changes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.__observe(<span class="hljs-keyword">this</span>, <span class="hljs-string">"length"</span>);
 			<span class="hljs-keyword">var</span> temp = <span class="hljs-built_in">Array</span>.prototype.slice.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(temp);
 		},
@@ -1405,7 +1178,7 @@ triggering events.</p>
 		 * @body
 		 * `concat` makes a new List with the elements of the List followed by the elements of the parameters.
 		 *
-		 * @codestart
+		 * ```
 		 * var list = new can.List();
 		 * var newList = list.concat(
 		 *     'Alice',
@@ -1414,11 +1187,11 @@ triggering events.</p>
 		 *     {f: 'Francis'}
 		 * );
 		 * newList.attr(); // ['Alice', 'Bob', 'Charlie', 'Daniel', 'Eve', {f: 'Francis'}]
-		 * @codeend
+		 * ```
 		 */</span>
-		concat: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		concat: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> args = [];
-			can.each(can.makeArray(<span class="hljs-built_in">arguments</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg, i)</span> </span>{
+			can.each(can.makeArray(<span class="hljs-built_in">arguments</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">arg, i</span>) </span>{
 				args[i] = arg <span class="hljs-keyword">instanceof</span> can.List ? arg.serialize() : arg;
 			});
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(<span class="hljs-built_in">Array</span>.prototype.concat.apply(<span class="hljs-keyword">this</span>.serialize(), args));
@@ -1436,15 +1209,15 @@ triggering events.</p>
 		 * @body
 		 * `forEach` calls a callback for each element in the List.
 		 *
-		 * @codestart
+		 * ```
 		 * var list = new can.List([1, 2, 3]);
 		 * list.forEach(function(element, index, list) {
 		 *     list.attr(index, element * element);
 		 * });
 		 * list.attr(); // [1, 4, 9]
-		 * @codeend
+		 * ```
 		 */</span>
-		forEach: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb, thisarg)</span> </span>{
+		forEach: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb, thisarg</span>) </span>{
 			<span class="hljs-keyword">return</span> can.each(<span class="hljs-keyword">this</span>, cb, thisarg || <span class="hljs-keyword">this</span>);
 		},
 
@@ -1462,7 +1235,7 @@ triggering events.</p>
 		 * `replace` is especially useful when `can.List`s are live-bound into `[can.Control]`s,
 		 * and you intend to populate them with the results of a `[can.Model]` call:
 		 *
-		 * @codestart
+		 * ```
 		 * can.Control({
 		 *     init: function() {
 		 *         this.list = new Todo.List();
@@ -1472,7 +1245,7 @@ triggering events.</p>
 		 *         this.list.replace(Todo.findAll());
 		 *     }
 		 * });
-		 * @codeend
+		 * ```
 		 *
 		 * Learn more about [can.Model.List making Lists of models].
 		 *
@@ -1483,7 +1256,7 @@ triggering events.</p>
 		 * event if needed. Corresponding _change_ and _length_ events will be fired as well.
 		 *
 		 * The differences in the events fired by `attr` and `replace` are demonstrated concretely by this example:
-		 * @codestart
+		 * ```
 		 * var attrList = new can.List(['Alexis', 'Bill']);
 		 * attrList.bind('change', function(ev, index, how, newVals, oldVals) {
 		 *     console.log(index + ', ' + how + ', ' + newVals + ', ' + oldVals);
@@ -1497,7 +1270,7 @@ triggering events.</p>
 		 * attrList.attr(['Adam', 'Ben'], true);         // 0, set, Adam, Alexis
 		 *                                               // 1, set, Ben, Bill
 		 * replaceList.replace(['Adam', 'Ben']);         // 0, remove, undefined, ['Alexis', 'Bill']
-		 *                                               // 0, add, undefined, ['Adam', 'Ben']
+		 *                                               // 0, add, ['Adam', 'Ben'], ['Alexis', 'Bill']
 		 *
 		 * attrList.attr(['Amber'], true);               // 0, set, Amber, Adam
 		 *                                               // 1, remove, undefined, Ben
@@ -1508,31 +1281,51 @@ triggering events.</p>
 		 *                                               // 1, add, ['Bob', 'Eve'], undefined
 		 * replaceList.replace(['Alice', 'Bob', 'Eve']); // 0, remove, undefined, Amber
 		 *                                               // 0, add, ['Alice', 'Bob', 'Eve'], Amber
-		 * @codeend
+		 * ```
 		 */</span>
-		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newList)</span> </span>{
-			<span class="hljs-keyword">if</span> (can.isDeferred(newList)) {
-				newList.then(can.proxy(<span class="hljs-keyword">this</span>.replace, <span class="hljs-keyword">this</span>));
+		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newList</span>) </span>{
+			<span class="hljs-keyword">if</span> (can.isPromise(newList)) {
+				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>._promise) {
+					<span class="hljs-keyword">this</span>._promise.__isCurrentPromise = <span class="hljs-literal">false</span>;
+				}
+				<span class="hljs-keyword">var</span> promise = <span class="hljs-keyword">this</span>._promise = newList;
+				promise.__isCurrentPromise = <span class="hljs-literal">true</span>;
+				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+				newList.then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newList</span>)</span>{
+					<span class="hljs-keyword">if</span>(promise.__isCurrentPromise) {
+						self.replace(newList);
+					}
+				});
 			} <span class="hljs-keyword">else</span> {
 				<span class="hljs-keyword">this</span>.splice.apply(<span class="hljs-keyword">this</span>, [<span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.length].concat(can.makeArray(newList || [])));
 			}
 
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback, thisArg)</span> </span>{
-			<span class="hljs-keyword">var</span> filteredList = <span class="hljs-keyword">new</span> can.List(),
+		<span class="hljs-attr">filter</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback, thisArg</span>) </span>{
+			<span class="hljs-keyword">var</span> filteredList = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(),
 				self = <span class="hljs-keyword">this</span>,
 				filtered;
-			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, index, list)</span></span>{
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item, index, list</span>)</span>{
 				filtered = callback.call( thisArg | self, item, index, self);
 				<span class="hljs-keyword">if</span>(filtered){
 					filteredList.push(item);
 				}
 			});
 			<span class="hljs-keyword">return</span> filteredList;
+		},
+		<span class="hljs-attr">map</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback, thisArg</span>) </span>{
+			<span class="hljs-keyword">var</span> filteredList = <span class="hljs-keyword">new</span> can.List(),
+				self = <span class="hljs-keyword">this</span>;
+			<span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item, index, list</span>)</span>{
+				<span class="hljs-keyword">var</span> mapped = callback.call( thisArg | self, item, index, self);
+				filteredList.push(mapped);
+
+			});
+			<span class="hljs-keyword">return</span> filteredList;
 		}
 	});
-	can.List = Map.List = list;
+	can.List = <span class="hljs-built_in">Map</span>.List = list;
 	<span class="hljs-keyword">return</span> can.List;
 });</pre></div></div>
             

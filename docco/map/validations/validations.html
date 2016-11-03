@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -47,7 +47,7 @@ span properties, but this way we know which ones to run.
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> validate = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, options, proc)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> validate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, options, proc</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -86,7 +86,7 @@ span properties, but this way we know which ones to run.
 			<span class="hljs-keyword">return</span>;
 		}
 		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
-		can.each(attrNames, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrName)</span> </span>{</pre></div></div>
+		can.each(attrNames, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrName</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -104,7 +104,7 @@ span properties, but this way we know which ones to run.
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!self.validations[attrName]) {
 				self.validations[attrName] = [];
 			}
-			self.validations[attrName].push(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{</pre></div></div>
+			self.validations[attrName].push(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newVal</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -125,10 +125,10 @@ span properties, but this way we know which ones to run.
 		});
 	};
 	<span class="hljs-keyword">var</span> old = can.Map.prototype.__set;
-	can.Map.prototype.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, value, current, success, error)</span> </span>{
+	can.Map.prototype.__set = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, value, current, success, error</span>) </span>{
 		<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
 			validations = self.constructor.validations,
-			errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(errors)</span> </span>{
+			errorCallback = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">errors</span>) </span>{
 				<span class="hljs-keyword">var</span> stub = error &amp;&amp; error.call(self, errors);</pre></div></div>
             
         </li>
@@ -166,7 +166,7 @@ the event twice. :)</p>
 	can.each([
 		can.Map,
 		can.Model
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(clss)</span> </span>{</pre></div></div>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">clss</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -189,33 +189,33 @@ the event twice. :)</p>
 		 * @static
 		 */</span>
 		can.extend(clss, {
-			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(superClass)</span> </span>{
+			<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">superClass</span>) </span>{
 				oldSetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 				<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.validations || superClass.validations === <span class="hljs-keyword">this</span>.validations) {
 					<span class="hljs-keyword">this</span>.validations = {};
 				}
 			},
-			validate: validate,
+			<span class="hljs-attr">validate</span>: validate,
 
-			validationMessages: {
-				format: <span class="hljs-string">'is invalid'</span>,
-				inclusion: <span class="hljs-string">'is not a valid option (perhaps out of range)'</span>,
-				lengthShort: <span class="hljs-string">'is too short'</span>,
-				lengthLong: <span class="hljs-string">'is too long'</span>,
-				presence: <span class="hljs-string">'can\'t be empty'</span>,
-				range: <span class="hljs-string">'is out of range'</span>,
-				numericality: <span class="hljs-string">'must be a number'</span>
+			<span class="hljs-attr">validationMessages</span>: {
+				<span class="hljs-attr">format</span>: <span class="hljs-string">'is invalid'</span>,
+				<span class="hljs-attr">inclusion</span>: <span class="hljs-string">'is not a valid option (perhaps out of range)'</span>,
+				<span class="hljs-attr">lengthShort</span>: <span class="hljs-string">'is too short'</span>,
+				<span class="hljs-attr">lengthLong</span>: <span class="hljs-string">'is too long'</span>,
+				<span class="hljs-attr">presence</span>: <span class="hljs-string">'can\'t be empty'</span>,
+				<span class="hljs-attr">range</span>: <span class="hljs-string">'is out of range'</span>,
+				<span class="hljs-attr">numericality</span>: <span class="hljs-string">'must be a number'</span>
 			},
-			validateFormatOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, regexp, options)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validateFormatOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, regexp, options</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">'undefined'</span> &amp;&amp; value !== <span class="hljs-literal">null</span> &amp;&amp; value !== <span class="hljs-string">''</span> &amp;&amp; <span class="hljs-built_in">String</span>(value)
 						.match(regexp) === <span class="hljs-literal">null</span>) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.format;
 					}
 				});
 			},
-			validateInclusionOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, inArray, options)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validateInclusionOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, inArray, options</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">'undefined'</span>) {
 						<span class="hljs-keyword">return</span>;
 					}
@@ -227,8 +227,8 @@ the event twice. :)</p>
 					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.inclusion;
 				});
 			},
-			validateLengthOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, min, max, options)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validateLengthOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, min, max, options</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">if</span> ((<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">'undefined'</span> || value === <span class="hljs-literal">null</span>) &amp;&amp; min &gt; <span class="hljs-number">0</span> || <span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">'undefined'</span> &amp;&amp; value !== <span class="hljs-literal">null</span> &amp;&amp; value.length &lt; min) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.lengthShort + <span class="hljs-string">' (min='</span> + min + <span class="hljs-string">')'</span>;
 					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">'undefined'</span> &amp;&amp; value !== <span class="hljs-literal">null</span> &amp;&amp; value.length &gt; max) {
@@ -236,22 +236,22 @@ the event twice. :)</p>
 					}
 				});
 			},
-			validatePresenceOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, options)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validatePresenceOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, options</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">'undefined'</span> || value === <span class="hljs-string">''</span> || value === <span class="hljs-literal">null</span>) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.presence;
 					}
 				});
 			},
-			validateRangeOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames, low, hi, options)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validateRangeOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames, low, hi, options</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, options, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">if</span> ((<span class="hljs-keyword">typeof</span> value === <span class="hljs-string">'undefined'</span> || value === <span class="hljs-literal">null</span>) &amp;&amp; low &gt; <span class="hljs-number">0</span> || <span class="hljs-keyword">typeof</span> value !== <span class="hljs-string">'undefined'</span> &amp;&amp; value !== <span class="hljs-literal">null</span> &amp;&amp; (value &lt; low || value &gt; hi)) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.range + <span class="hljs-string">' ['</span> + low + <span class="hljs-string">','</span> + hi + <span class="hljs-string">']'</span>;
 					}
 				});
 			},
-			validatesNumericalityOf: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrNames)</span> </span>{
-				validate.call(<span class="hljs-keyword">this</span>, attrNames, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-attr">validatesNumericalityOf</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrNames</span>) </span>{
+				validate.call(<span class="hljs-keyword">this</span>, attrNames, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 					<span class="hljs-keyword">var</span> res = !<span class="hljs-built_in">isNaN</span>(<span class="hljs-built_in">parseFloat</span>(value)) &amp;&amp; <span class="hljs-built_in">isFinite</span>(value);
 					<span class="hljs-keyword">if</span> (!res) {
 						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.constructor.validationMessages.numericality;
@@ -264,7 +264,7 @@ the event twice. :)</p>
 	 * @prototype
 	 */</span>
 	can.extend(can.Map.prototype, {
-		errors: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs, newVal)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">errors</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs, newVal</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -299,9 +299,9 @@ funcs - the validation functions</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				addErrors = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, funcs)</span> </span>{
-					can.each(funcs, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func)</span> </span>{
-						<span class="hljs-keyword">var</span> res = func.call(self, isTest ? self.__convert ? self.__convert(attr, newVal) : newVal : self.attr(attr));
+            <div class="content"><div class='highlight'><pre>				addErrors = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, funcs</span>) </span>{
+					can.each(funcs, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">func</span>) </span>{
+						<span class="hljs-keyword">var</span> res = func.call(self, isTest ? newVal : self.attr(attr));
 						<span class="hljs-keyword">if</span> (res) {
 							<span class="hljs-keyword">if</span> (!errors[attr]) {
 								errors[attr] = [];
@@ -326,7 +326,7 @@ add any errors</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(attrs || validations, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcs, attr)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.each(attrs || validations, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">funcs, attr</span>) </span>{</pre></div></div>
             
         </li>
         

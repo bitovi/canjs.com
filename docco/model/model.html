@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 	<span class="hljs-comment">/** @add can.Model **/</span></pre></div></div>
             
         </li>
@@ -62,7 +62,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> pipe = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(def, thisArg, func)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> pipe = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">def, thisArg, func</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -78,7 +78,7 @@ through a function before resolving the deferred.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> can.Deferred();
-		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		def.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),
 				success = <span class="hljs-literal">true</span>;
 
@@ -133,7 +133,7 @@ through a function before resolving the deferred.</p>
             
             <div class="content"><div class='highlight'><pre>				d.resolveWith(d, args);
 			}
-		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+		}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -165,7 +165,7 @@ through a function before resolving the deferred.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> def.abort === <span class="hljs-string">'function'</span>) {
-			d.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			d.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">return</span> def.abort();
 			};
 		}</pre></div></div>
@@ -216,7 +216,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(inst)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		getId = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">inst</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -227,11 +227,11 @@ through a function before resolving the deferred.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p><code>can.__reading</code> makes a note that <code>id</code> was just read.</p>
+              <p><code>can.__observe</code> makes a note that <code>id</code> was just read.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.__reading(inst, inst.constructor.id);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.__observe(inst, inst.constructor.id);</pre></div></div>
             
         </li>
         
@@ -242,11 +242,11 @@ through a function before resolving the deferred.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Use <code>__get</code> instead of <code>attr</code> for performance. (But that means we have to remember to call <code>can.__reading</code>.)</p>
+              <p>Use <code>__get</code> instead of <code>attr</code> for performance. (But that means we have to remember to call <code>can.__observe</code>.)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> inst.__get(inst.constructor.id);
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> inst.___get(inst.constructor.id);
 		},</pre></div></div>
             
         </li>
@@ -263,7 +263,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxOb, data, type, dataType, success, error)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		ajax = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ajaxOb, data, type, dataType, success, error</span>) </span>{
 
 			<span class="hljs-keyword">var</span> params = {};</pre></div></div>
             
@@ -350,10 +350,10 @@ through a function before resolving the deferred.</p>
             <div class="content"><div class='highlight'><pre>			params.url = can.sub(params.url, params.data, <span class="hljs-literal">true</span>);
 
 			<span class="hljs-keyword">return</span> can.ajax(can.extend({
-				type: type || <span class="hljs-string">'post'</span>,
-				dataType: dataType || <span class="hljs-string">'json'</span>,
-				success: success,
-				error: error
+				<span class="hljs-attr">type</span>: type || <span class="hljs-string">'post'</span>,
+				<span class="hljs-attr">dataType</span>: dataType || <span class="hljs-string">'json'</span>,
+				<span class="hljs-attr">success</span>: success,
+				<span class="hljs-attr">error</span>: error
 			}, params));
 		},</pre></div></div>
             
@@ -371,7 +371,7 @@ through a function before resolving the deferred.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(modelObj, type, success, error, method)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">modelObj, type, success, error, method</span>) </span>{
 			<span class="hljs-keyword">var</span> args;</pre></div></div>
             
         </li>
@@ -459,7 +459,7 @@ the queued request, and we’re passing already-serialized data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			deferred = pipe(jqXHR, modelObj, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			deferred = pipe(jqXHR, modelObj, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -493,7 +493,7 @@ TODO: Do something smarter/more consistent here?</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (jqXHR.abort) {
-				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				deferred.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					jqXHR.abort();
 				};
 			}
@@ -519,7 +519,7 @@ because we will reference it in models static <code>setup</code>, too.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			models: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(instancesRawData, oldList, xhr)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			models: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">instancesRawData, oldList, xhr</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -641,7 +641,7 @@ because we will reference it in models static <code>setup</code>, too.</p>
 					raw = raw.data;
 				}
 
-				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> raw === <span class="hljs-string">'undefined'</span>) {
+				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> raw === <span class="hljs-string">'undefined'</span> || !can.isArray(raw)) {
 					<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Could not get any raw data while converting using .models'</span>);
 				}</pre></div></div>
             
@@ -706,7 +706,7 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(raw, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(rawPart)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				can.each(raw, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rawPart</span>) </span>{
 					tmp.push(self.model(rawPart, xhr));
 				});
 				modelList.push.apply(modelList, tmp);</pre></div></div>
@@ -725,7 +725,7 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!can.isArray(instancesRawData)) {
-					can.each(instancesRawData, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val, prop)</span> </span>{
+					can.each(instancesRawData, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val, prop</span>) </span>{
 						<span class="hljs-keyword">if</span> (prop !== <span class="hljs-string">'data'</span>) {
 							modelList.attr(prop, val);
 						}
@@ -763,7 +763,7 @@ So, we push them onto <code>tmp</code> first and then push everything at once, c
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			model: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes, oldModel, xhr)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			model: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attributes, oldModel, xhr</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -873,13 +873,13 @@ These functions are meant to be overwritten (if necessary) in an extended model 
             </div>
             
             <div class="content"><div class='highlight'><pre>		makeParser = {
-			parseModel: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> </span>{
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> </span>{
+			<span class="hljs-attr">parseModel</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop</span>) </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attributes</span>) </span>{
 					<span class="hljs-keyword">return</span> prop ? can.getObject(prop, attributes) : attributes;
 				};
 			},
-			parseModels: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop)</span> </span>{
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributes)</span> </span>{
+			<span class="hljs-attr">parseModels</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop</span>) </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attributes</span>) </span>{
 					<span class="hljs-keyword">if</span>(can.isArray(attributes)) {
 						<span class="hljs-keyword">return</span> attributes;
 					}
@@ -916,11 +916,11 @@ Each AJAX method is an object in <code>ajaxMethods</code> and can have the follo
             </div>
             
             <div class="content"><div class='highlight'><pre>		ajaxMethods = {
-			create: {
-				url: <span class="hljs-string">"_shortName"</span>,
-				type: <span class="hljs-string">"post"</span>
+			<span class="hljs-attr">create</span>: {
+				<span class="hljs-attr">url</span>: <span class="hljs-string">"_shortName"</span>,
+				<span class="hljs-attr">type</span>: <span class="hljs-string">"post"</span>
 			},
-			update: {</pre></div></div>
+			<span class="hljs-attr">update</span>: {</pre></div></div>
             
         </li>
         
@@ -935,7 +935,7 @@ Each AJAX method is an object in <code>ajaxMethods</code> and can have the follo
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, attrs</span>) </span>{
 					attrs = attrs || {};</pre></div></div>
             
         </li>
@@ -975,10 +975,10 @@ indicate that in the request and replace the current ID property.</p>
 
 					<span class="hljs-keyword">return</span> attrs;
 				},
-				type: <span class="hljs-string">"put"</span>
+				<span class="hljs-attr">type</span>: <span class="hljs-string">"put"</span>
 			},
-			destroy: {
-				type: <span class="hljs-string">'delete'</span>,</pre></div></div>
+			<span class="hljs-attr">destroy</span>: {
+				<span class="hljs-attr">type</span>: <span class="hljs-string">'delete'</span>,</pre></div></div>
             
         </li>
         
@@ -993,7 +993,7 @@ indicate that in the request and replace the current ID property.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, attrs)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				data: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, attrs</span>) </span>{
 					attrs = attrs || {};</pre></div></div>
             
         </li>
@@ -1013,10 +1013,10 @@ indicate that in the request and replace the current ID property.</p>
 					<span class="hljs-keyword">return</span> attrs;
 				}
 			},
-			findAll: {
-				url: <span class="hljs-string">"_shortName"</span>
+			<span class="hljs-attr">findAll</span>: {
+				<span class="hljs-attr">url</span>: <span class="hljs-string">"_shortName"</span>
 			},
-			findOne: {}
+			<span class="hljs-attr">findOne</span>: {}
 		},</pre></div></div>
             
         </li>
@@ -1038,8 +1038,8 @@ and makes a function that calls that method with the given data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		ajaxMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ajaxMethod, str)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		ajaxMaker = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ajaxMethod, str</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 				data = ajaxMethod.data ?</pre></div></div>
             
         </li>
@@ -1099,20 +1099,20 @@ and makes a function that calls that method with the given data.</p>
                 <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <h2 id="createurlfromresource">createURLFromResource</h2>
-<p>For each of the names (create, update, destroy, findOne, and findAll) use the 
+<p>For each of the names (create, update, destroy, findOne, and findAll) use the
 URL provided by the <code>resource</code> property. For example:</p>
 <pre><code>    ToDo = can.Model.extend({
-        resource: <span class="hljs-string">"/todos"</span>
+        <span class="hljs-attr">resource</span>: <span class="hljs-string">"/todos"</span>
     }, {});
 
 Will create a can.Model that is identical to:
 
     ToDo = can.Model.extend({
-        findAll: <span class="hljs-string">"GET /todos"</span>,
-        findOne: <span class="hljs-string">"GET /todos/{id}"</span>,
-        create:  <span class="hljs-string">"POST /todos"</span>,
-        update:  <span class="hljs-string">"PUT /todos/{id}"</span>,
-        destroy: <span class="hljs-string">"DELETE /todos/{id}"</span>
+        <span class="hljs-attr">findAll</span>: <span class="hljs-string">"GET /todos"</span>,
+        <span class="hljs-attr">findOne</span>: <span class="hljs-string">"GET /todos/{id}"</span>,
+        <span class="hljs-attr">create</span>:  <span class="hljs-string">"POST /todos"</span>,
+        <span class="hljs-attr">update</span>:  <span class="hljs-string">"PUT /todos/{id}"</span>,
+        <span class="hljs-attr">destroy</span>: <span class="hljs-string">"DELETE /todos/{id}"</span>
     },{});
 </code></pre><ul>
 <li><code>model</code>: the can.Model that has the resource property</li>
@@ -1121,7 +1121,7 @@ Will create a can.Model that is identical to:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		createURLFromResource = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(model, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		createURLFromResource = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, name</span>) </span>{
 			<span class="hljs-keyword">if</span> (!model.resource) { <span class="hljs-keyword">return</span>; }
 
 			<span class="hljs-keyword">var</span> resource = model.resource.replace(<span class="hljs-regexp">/\/+$/</span>, <span class="hljs-string">""</span>);
@@ -1163,7 +1163,7 @@ Will create a can.Model that is identical to:
             </div>
             
             <div class="content"><div class='highlight'><pre>			fullName: <span class="hljs-string">"can.Model"</span>,
-			_reqs: <span class="hljs-number">0</span>,</pre></div></div>
+			<span class="hljs-attr">_reqs</span>: <span class="hljs-number">0</span>,</pre></div></div>
             
         </li>
         
@@ -1178,7 +1178,7 @@ Will create a can.Model that is identical to:
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(base, fullName, staticProps, protoProps)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">base, fullName, staticProps, protoProps</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1284,7 +1284,7 @@ This is really unusual for a model though, since there’s so much configuration
 					<span class="hljs-keyword">this</span>.List.Map = <span class="hljs-keyword">this</span>;
 				} <span class="hljs-keyword">else</span> {
 					<span class="hljs-keyword">this</span>.List = base.List.extend({
-						Map: <span class="hljs-keyword">this</span>
+						<span class="hljs-attr">Map</span>: <span class="hljs-keyword">this</span>
 					}, {});
 				}
 
@@ -1304,7 +1304,7 @@ This is really unusual for a model though, since there’s so much configuration
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.each(ajaxMethods, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method, name</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1402,7 +1402,7 @@ For example, you might cache responses and only make a call when you don’t hav
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						can.Construct._overwrite(self, base, name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						can.Construct._overwrite(self, base, name, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1484,7 +1484,7 @@ For example, you might cache responses and only make a call when you don’t hav
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(converters, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(converter, name)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				can.each(converters, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">converter, name</span>) </span>{
 					<span class="hljs-keyword">var</span> parseName = <span class="hljs-string">"parse"</span> + can.capitalize(name),
 						dataProperty = (staticProps &amp;&amp; staticProps[name]) || self[name];</pre></div></div>
             
@@ -1523,7 +1523,7 @@ to the given string and set .model(s) to the original converter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(makeParser, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(maker, parseName)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				can.each(makeParser, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">maker, parseName</span>) </span>{
 					<span class="hljs-keyword">var</span> prop = (staticProps &amp;&amp; staticProps[parseName]) || self[parseName];</pre></div></div>
             
         </li>
@@ -1582,8 +1582,8 @@ to the given string and set .model(s) to the original converter</p>
 				can.Model._reqs = <span class="hljs-number">0</span>;
 				<span class="hljs-keyword">this</span>._url = <span class="hljs-keyword">this</span>._shortName + <span class="hljs-string">"/{"</span> + <span class="hljs-keyword">this</span>.id + <span class="hljs-string">"}"</span>;
 			},
-			_ajax: ajaxMaker,
-			_makeRequest: makeRequest,</pre></div></div>
+			<span class="hljs-attr">_ajax</span>: ajaxMaker,
+			<span class="hljs-attr">_makeRequest</span>: makeRequest,</pre></div></div>
             
         </li>
         
@@ -1599,7 +1599,7 @@ to the given string and set .model(s) to the original converter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_clean: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>			_clean: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				can.Model._reqs--;</pre></div></div>
             
         </li>
@@ -1638,8 +1638,8 @@ to the given string and set .model(s) to the original converter</p>
 				}
 				<span class="hljs-keyword">return</span> <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];
 			},
-			models: converters.models,
-			model: converters.model
+			<span class="hljs-attr">models</span>: converters.models,
+			<span class="hljs-attr">model</span>: converters.model
 		},
 		<span class="hljs-comment">/** @prototype */</span>
 		{</pre></div></div>
@@ -1657,7 +1657,7 @@ to the given string and set .model(s) to the original converter</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			setup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1694,7 +1694,7 @@ This is the earliest possible moment, even before any properties are set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			isNew: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>			isNew: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> id = getId(<span class="hljs-keyword">this</span>);</pre></div></div>
             
         </li>
@@ -1728,7 +1728,7 @@ TODO: Why not <code>return id === null || id === undefined;</code>?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			save: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			save: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">success, error</span>) </span>{
 				<span class="hljs-keyword">return</span> makeRequest(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.isNew() ? <span class="hljs-string">'create'</span> : <span class="hljs-string">'update'</span>, success, error);
 			},</pre></div></div>
             
@@ -1746,7 +1746,7 @@ TODO: Why not <code>return id === null || id === undefined;</code>?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(success, error)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">success, error</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1767,7 +1767,7 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 					<span class="hljs-keyword">var</span> def = can.Deferred();
 					def.then(success, error);
 
-					<span class="hljs-keyword">return</span> def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+					<span class="hljs-keyword">return</span> def.done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 						self.destroyed(data);
 					}).resolve(self);
 				}</pre></div></div>
@@ -1802,14 +1802,14 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">var</span> modelInstance = <span class="hljs-keyword">this</span>.__get(<span class="hljs-keyword">this</span>.constructor.id);
+            <div class="content"><div class='highlight'><pre>			_bindsetup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">var</span> modelInstance = <span class="hljs-keyword">this</span>.___get(<span class="hljs-keyword">this</span>.constructor.id);
 				<span class="hljs-keyword">if</span> (modelInstance != <span class="hljs-literal">null</span>) {
 					<span class="hljs-keyword">this</span>.constructor.store[modelInstance ] = <span class="hljs-keyword">this</span>;
 				}
 				<span class="hljs-keyword">return</span> can.Map.prototype._bindsetup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},
-			_bindteardown: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			<span class="hljs-attr">_bindteardown</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.constructor.store[getId(<span class="hljs-keyword">this</span>)];
 				<span class="hljs-keyword">return</span> can.Map.prototype._bindteardown.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},</pre></div></div>
@@ -1827,7 +1827,7 @@ Instead, we have to construct the Deferred ourselves and return it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			___set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(prop, val)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			___set: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">prop, val</span>) </span>{
 				can.Map.prototype.___set.call(<span class="hljs-keyword">this</span>, prop, val);</pre></div></div>
             
         </li>
@@ -1864,8 +1864,8 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> makeGetterHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, readyState, xhr)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> makeGetterHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name</span>) </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, readyState, xhr</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>[name](data, <span class="hljs-literal">null</span>, xhr);
 		};
 	},</pre></div></div>
@@ -1883,7 +1883,7 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	createUpdateDestroyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	createUpdateDestroyHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.parseModel.useModelConverter) {
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.model(data);
 		}
@@ -1892,11 +1892,11 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 	};
 
 	<span class="hljs-keyword">var</span> responseHandlers = {
-		makeFindAll: makeGetterHandler(<span class="hljs-string">"models"</span>),
-		makeFindOne: makeGetterHandler(<span class="hljs-string">"model"</span>),
-		makeCreate: createUpdateDestroyHandler,
-		makeUpdate: createUpdateDestroyHandler,
-		makeDestroy: createUpdateDestroyHandler
+		<span class="hljs-attr">makeFindAll</span>: makeGetterHandler(<span class="hljs-string">"models"</span>),
+		<span class="hljs-attr">makeFindOne</span>: makeGetterHandler(<span class="hljs-string">"model"</span>),
+		<span class="hljs-attr">makeCreate</span>: createUpdateDestroyHandler,
+		<span class="hljs-attr">makeUpdate</span>: createUpdateDestroyHandler,
+		<span class="hljs-attr">makeDestroy</span>: createUpdateDestroyHandler
 	};</pre></div></div>
             
         </li>
@@ -1912,9 +1912,9 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.each(responseHandlers, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(method, name)</span> </span>{
-		can.Model[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldMethod)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>	can.each(responseHandlers, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method, name</span>) </span>{
+		can.Model[name] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">oldMethod</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>),</pre></div></div>
             
         </li>
@@ -1971,7 +1971,7 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 		<span class="hljs-string">"created"</span>,
 		<span class="hljs-string">"updated"</span>,
 		<span class="hljs-string">"destroyed"</span>
-	], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(funcName)</span> </span>{</pre></div></div>
+	], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">funcName</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1986,9 +1986,9 @@ TODO: shouldn’t this also delete the record from the old ID in the store?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		can.Model.prototype[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attrs)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		can.Model.prototype[funcName] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attrs</span>) </span>{
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
-				constructor = self.constructor;</pre></div></div>
+				<span class="hljs-keyword">constructor</span> = self.<span class="hljs-keyword">constructor</span>;</pre></div></div>
             
         </li>
         
@@ -2023,7 +2023,7 @@ but there should be a better way.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.dispatch.call(<span class="hljs-keyword">this</span>, {type:<span class="hljs-string">"change"</span>, target: <span class="hljs-keyword">this</span>}, [funcName]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.dispatch.call(<span class="hljs-keyword">this</span>, {<span class="hljs-attr">type</span>:funcName, <span class="hljs-attr">target</span>: <span class="hljs-keyword">this</span>}, []);</pre></div></div>
             
         </li>
         
@@ -2038,7 +2038,7 @@ but there should be a better way.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.dev.log(<span class="hljs-string">"Model.js - "</span> + constructor.shortName + <span class="hljs-string">" "</span> + funcName);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			can.dev.log(<span class="hljs-string">"Model.js - "</span> + <span class="hljs-keyword">constructor</span>.shortName + " " + funcName);</pre></div></div>
             
         </li>
         
@@ -2066,7 +2066,7 @@ but there should be a better way.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.dispatch.call(constructor, funcName, [<span class="hljs-keyword">this</span>]);
+            <div class="content"><div class='highlight'><pre>			can.dispatch.call(<span class="hljs-keyword">constructor</span>, funcName, [this]);
 		};
 	});</pre></div></div>
             
@@ -2102,13 +2102,13 @@ On any other type of event, setup “destroyed” bubbling.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(eventName, list)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		_bubbleRule: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">eventName, list</span>) </span>{
 			<span class="hljs-keyword">var</span> bubbleRules = can.List._bubbleRule(eventName, list);
 			bubbleRules.push(<span class="hljs-string">'destroyed'</span>);
 			<span class="hljs-keyword">return</span> bubbleRules;
 		}
 	},{
-		setup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">setup</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2126,7 +2126,7 @@ we use those as parameters for an initial findAll.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (can.isPlainObject(params) &amp;&amp; !can.isArray(params)) {
 				can.List.prototype.setup.apply(<span class="hljs-keyword">this</span>);
-				<span class="hljs-keyword">this</span>.replace(can.isDeferred(params) ? params : <span class="hljs-keyword">this</span>.constructor.Map.findAll(params));
+				<span class="hljs-keyword">this</span>.replace(can.isPromise(params) ? params : <span class="hljs-keyword">this</span>.constructor.Map.findAll(params));
 			} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
@@ -2144,14 +2144,12 @@ we use those as parameters for an initial findAll.</p>
             
             <div class="content"><div class='highlight'><pre>				can.List.prototype.setup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			}
-			<span class="hljs-keyword">this</span>._init = <span class="hljs-number">1</span>;
 			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'destroyed'</span>, can.proxy(<span class="hljs-keyword">this</span>._destroyed, <span class="hljs-keyword">this</span>));
-			<span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._init;
 		},
-		_destroyed: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, attr)</span> </span>{
+		<span class="hljs-attr">_destroyed</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, attr</span>) </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\w+/</span>.test(attr)) {
 				<span class="hljs-keyword">var</span> index;
-				<span class="hljs-keyword">while</span>((index = <span class="hljs-keyword">this</span>.indexOf(ev.target)) &gt; -<span class="hljs-number">1</span>) {
+				<span class="hljs-keyword">while</span>((index = <span class="hljs-keyword">this</span>.indexOf(ev.target)) &gt; <span class="hljs-number">-1</span>) {
 					<span class="hljs-keyword">this</span>.splice(index, <span class="hljs-number">1</span>);
 				}
 			}

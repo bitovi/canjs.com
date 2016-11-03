@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>import.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>import.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view/callbacks"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
+
+	can.view.tag(<span class="hljs-string">"can-import"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, tagData</span>)</span>{
+		<span class="hljs-keyword">var</span> $el = can.$(el);
+		<span class="hljs-keyword">var</span> moduleName = el.getAttribute(<span class="hljs-string">"from"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>If the module is part of the helpers pass that into can.import
+as the parentName</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> templateModule = tagData.options.attr(<span class="hljs-string">"helpers.module"</span>);
+		<span class="hljs-keyword">var</span> parentName = templateModule ? templateModule.id : <span class="hljs-literal">undefined</span>;
+
+		<span class="hljs-keyword">var</span> importPromise;
+		<span class="hljs-keyword">if</span>(moduleName) {
+			importPromise = can[<span class="hljs-string">"import"</span>](moduleName, parentName);
+		} <span class="hljs-keyword">else</span> {
+			importPromise = can.Deferred().reject(<span class="hljs-string">"No moduleName provided"</span>).promise();
+		}
+
+		<span class="hljs-keyword">var</span> root = tagData.scope.attr(<span class="hljs-string">"%root"</span>);
+		<span class="hljs-keyword">if</span>(root &amp;&amp; can.isFunction(root.waitFor)) {
+			root.waitFor(importPromise);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Set the viewModel to the promise</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		can.data($el, <span class="hljs-string">"viewModel"</span>, importPromise);
+		can.data($el, <span class="hljs-string">"scope"</span>, importPromise);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Set the scope</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> scope = tagData.scope.add(importPromise);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>If there is a can-tag present we will hand-off rendering to that tag.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> handOffTag = el.getAttribute(<span class="hljs-string">"can-tag"</span>);
+		<span class="hljs-keyword">if</span>(handOffTag) {
+			<span class="hljs-keyword">var</span> callback = can.view.tag(handOffTag);
+			can.data($el,<span class="hljs-string">"preventDataBindings"</span>, <span class="hljs-literal">true</span>);
+			callback(el, can.extend(tagData, {
+				<span class="hljs-attr">scope</span>: scope
+			}));
+			can.data($el,<span class="hljs-string">"preventDataBindings"</span>, <span class="hljs-literal">false</span>);
+
+			can.data($el, <span class="hljs-string">"viewModel"</span>, importPromise);
+			can.data($el, <span class="hljs-string">"scope"</span>, importPromise);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Render the subtemplate and register nodeLists</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">var</span> frag = tagData.subtemplate ?
+				tagData.subtemplate(scope, tagData.options) :
+				<span class="hljs-built_in">document</span>.createDocumentFragment();
+
+			<span class="hljs-keyword">var</span> nodeList = can.view.nodeLists.register([], <span class="hljs-literal">undefined</span>, <span class="hljs-literal">true</span>);
+			can.one.call(el, <span class="hljs-string">"removed"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				can.view.nodeLists.unregister(nodeList);
+			});
+
+			can.appendChild(el, frag, can.document);
+			can.view.nodeLists.update(nodeList, can.childNodes(el));
+		}
+	});
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

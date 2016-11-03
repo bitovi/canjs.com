@@ -35,7 +35,6 @@
     "grunt-jsbeautifier": "~0.2.6",
     "grunt-plato": "~0.2.1",
     "grunt-shell": "~0.6.4",
-    "q": "~1.0.1",
-    "sqlite3": "~2.2.3"
+    "q": "~1.0.1"
   }
 }

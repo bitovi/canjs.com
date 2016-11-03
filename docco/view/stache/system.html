@@ -19,6 +19,16 @@
           <div id="jump_page">
             
               
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
               <a class="source" href="html_section.html">
                 html_section.js
               </a>
@@ -26,6 +36,11 @@
               
               <a class="source" href="intermediate_and_imports.html">
                 intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
               </a>
             
               
@@ -41,11 +56,6 @@
               
               <a class="source" href="stache.html">
                 stache.js
-              </a>
-            
-              
-              <a class="source" href="stache_benchmark.html">
-                stache_benchmark.js
               </a>
             
               
@@ -87,20 +97,54 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-string">"format steal"</span>;
-steal(<span class="hljs-string">"can/view/stache"</span>, <span class="hljs-string">"can/view/stache/intermediate_and_imports.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stache, getIntermediateAndImports)</span></span>{
+steal(<span class="hljs-string">"can/view/stache"</span>, <span class="hljs-string">"can/view/stache/intermediate_and_imports.js"</span>, <span class="hljs-string">"can/view/stache/add_bundles.js"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stache, getIntermediateAndImports, addBundles</span>)</span>{
 
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">translate</span><span class="hljs-params">(load)</span> </span>{
-		<span class="hljs-keyword">var</span> intermediateAndImports = getIntermediateAndImports(load.source);
-		
-		intermediateAndImports.imports.unshift(<span class="hljs-string">'can/view/stache/stache'</span>);
-		
-		<span class="hljs-keyword">return</span> <span class="hljs-string">"define("</span>+<span class="hljs-built_in">JSON</span>.stringify(intermediateAndImports.imports)+<span class="hljs-string">",function(stache){"</span> +
-			<span class="hljs-string">"return stache("</span> + <span class="hljs-built_in">JSON</span>.stringify(intermediateAndImports.intermediate) + <span class="hljs-string">")"</span> +
-		<span class="hljs-string">"})"</span>;
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">translate</span>(<span class="hljs-params">load</span>) </span>{
+		<span class="hljs-keyword">var</span> intermediateAndImports = getIntermediateAndImports(load.source);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Add bundle configuration for these dynamic imports</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> addBundles(intermediateAndImports.dynamicImports, load.name).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+
+			intermediateAndImports.imports.unshift(<span class="hljs-string">"can/view/stache/mustache_core"</span>);
+			intermediateAndImports.imports.unshift(<span class="hljs-string">"can/view/stache/stache"</span>);
+			intermediateAndImports.imports.unshift(<span class="hljs-string">"module"</span>);
+
+			<span class="hljs-keyword">return</span> template(intermediateAndImports.imports,
+											intermediateAndImports.intermediate);
+
+		});
+	}
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">template</span>(<span class="hljs-params">imports, intermediate</span>)</span>{
+		imports = <span class="hljs-built_in">JSON</span>.stringify(imports);
+		intermediate = <span class="hljs-built_in">JSON</span>.stringify(intermediate);
+
+		<span class="hljs-keyword">return</span> <span class="hljs-string">"define("</span>+imports+<span class="hljs-string">",function(module, stache, mustacheCore){\n"</span> +
+			<span class="hljs-string">"\tvar renderer = stache("</span> + intermediate + <span class="hljs-string">");\n"</span> +
+			<span class="hljs-string">"\treturn function(scope, options, nodeList){\n"</span> +
+			<span class="hljs-string">"\t\tvar moduleOptions = { module: module };\n"</span> +
+			<span class="hljs-string">"\t\tif(!(options instanceof mustacheCore.Options)) {\n"</span> +
+			<span class="hljs-string">"\t\t\toptions = new mustacheCore.Options(options || {});\n"</span> +
+			<span class="hljs-string">"\t\t}\n"</span> +
+			<span class="hljs-string">"\t\treturn renderer(scope, options.add(moduleOptions), nodeList);\n"</span> +
+			<span class="hljs-string">"\t};\n"</span> +
+		<span class="hljs-string">"});"</span>;
 	}
 
 	<span class="hljs-keyword">return</span> {
-		translate: translate
+		<span class="hljs-attr">translate</span>: translate
 	};
 
 });</pre></div></div>

@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/util/string'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -49,15 +49,15 @@
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> digitTest = <span class="hljs-regexp">/^\d+$/</span>,
 		keyBreaker = <span class="hljs-regexp">/([^\[\]]+)|(\[\])/g</span>,
 		paramTest = <span class="hljs-regexp">/([^?#]*)(#.*)?$/</span>,
-		prep = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		prep = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-built_in">decodeURIComponent</span>(str.replace(<span class="hljs-regexp">/\+/g</span>, <span class="hljs-string">' '</span>));
 		};
 	can.extend(can, {
-		deparam: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(params)</span> </span>{
+		<span class="hljs-attr">deparam</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params</span>) </span>{
 			<span class="hljs-keyword">var</span> data = {}, pairs, lastPart;
 			<span class="hljs-keyword">if</span> (params &amp;&amp; paramTest.test(params)) {
 				pairs = params.split(<span class="hljs-string">'&amp;'</span>);
-				can.each(pairs, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(pair)</span> </span>{
+				can.each(pairs, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">pair</span>) </span>{
 					<span class="hljs-keyword">var</span> parts = pair.split(<span class="hljs-string">'='</span>),
 						key = prep(parts.shift()),
 						value = prep(parts.join(<span class="hljs-string">'='</span>)),

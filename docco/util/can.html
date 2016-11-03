@@ -69,11 +69,6 @@
               </a>
             
               
-              <a class="source" href="test.html">
-                test.js
-              </a>
-            
-              
               <a class="source" href="util.html">
                 util.js
               </a>
@@ -102,10 +97,13 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* global global: false */</span>
-steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+steal(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 	<span class="hljs-comment">/* global GLOBALCAN */</span>
-	<span class="hljs-keyword">var</span> glbl = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> : global;
-	
+	<span class="hljs-comment">/* global self */</span>
+	<span class="hljs-comment">/* global WorkerGlobalScope */</span>
+	<span class="hljs-keyword">var</span> glbl = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> :
+		(<span class="hljs-keyword">typeof</span> WorkerGlobalScope !== <span class="hljs-string">'undefined'</span> &amp;&amp; self <span class="hljs-keyword">instanceof</span> WorkerGlobalScope) ? self : global;
+
 	<span class="hljs-keyword">var</span> can = {};
 	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> GLOBALCAN === <span class="hljs-string">'undefined'</span> || GLOBALCAN !== <span class="hljs-literal">false</span>) {
 		glbl.can = can;
@@ -125,9 +123,84 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.k = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{};
+            <div class="content"><div class='highlight'><pre>	can.k = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
 
-	can.isDeferred = can.isPromise = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{</pre></div></div>
+	
+	can.isDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) </span>{
+		<span class="hljs-keyword">if</span> (!!can.dev) { <span class="hljs-comment">// can.dev may not be defined yet</span>
+			can.dev.warn(<span class="hljs-string">'can.isDeferred: this function is deprecated and will be removed in a future release. can.isPromise replaces the functionality of can.isDeferred.'</span>);
+		}
+		<span class="hljs-keyword">return</span> obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj.then === <span class="hljs-string">"function"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> obj.pipe === <span class="hljs-string">"function"</span>;
+	};
+	can.isPromise = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>)</span>{
+		<span class="hljs-keyword">return</span> !!obj &amp;&amp; (
+			(<span class="hljs-built_in">window</span>.Promise &amp;&amp; (obj <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Promise</span>)) ||
+			(can.isFunction(obj.then) &amp;&amp; (can.List === <span class="hljs-literal">undefined</span> || !(obj <span class="hljs-keyword">instanceof</span> can.List)))
+		);
+	};
+	can.isMapLike = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>)</span>{
+		<span class="hljs-keyword">return</span> can.Map &amp;&amp; (obj <span class="hljs-keyword">instanceof</span> can.Map || obj &amp;&amp; obj.___get);
+	};
+
+	<span class="hljs-keyword">var</span> cid = <span class="hljs-number">0</span>;
+	can.cid = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">object, name</span>) </span>{
+		<span class="hljs-keyword">if</span> (!object._cid) {
+			cid++;
+			object._cid = (name || <span class="hljs-string">''</span>) + cid;
+		}
+		<span class="hljs-keyword">return</span> object._cid;
+	};
+	can.VERSION = <span class="hljs-string">'@EDGE'</span>;
+
+	can.simpleExtend = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">d, s</span>) </span>{
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> s) {
+			d[prop] = s[prop];
+		}
+		<span class="hljs-keyword">return</span> d;
+	};
+
+	can.last = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr</span>)</span>{
+		<span class="hljs-keyword">return</span> arr &amp;&amp; arr[arr.length - <span class="hljs-number">1</span>];
+	};
+
+
+	can.isDOM = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>) </span>{
+		<span class="hljs-keyword">return</span> (el.ownerDocument || el) === can.global.document;
+	};
+
+	can.childNodes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
+		<span class="hljs-keyword">var</span> childNodes = node.childNodes;
+		<span class="hljs-keyword">if</span>(<span class="hljs-string">"length"</span> <span class="hljs-keyword">in</span> childNodes) {
+			<span class="hljs-keyword">return</span> childNodes;
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">var</span> cur = node.firstChild;
+			<span class="hljs-keyword">var</span> nodes = [];
+			<span class="hljs-keyword">while</span>(cur) {
+				nodes.push(cur);
+				cur = cur.nextSibling;
+			}
+			<span class="hljs-keyword">return</span> nodes;
+		}
+	};
+
+	<span class="hljs-keyword">var</span> protoBind = <span class="hljs-built_in">Function</span>.prototype.bind;
+	<span class="hljs-keyword">if</span>(protoBind) {
+		can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn, context</span>)</span>{
+			<span class="hljs-keyword">return</span> protoBind.call(fn, context);
+		};
+	} <span class="hljs-keyword">else</span> {
+		can.proxy = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fn, context</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">return</span> fn.apply(context, <span class="hljs-built_in">arguments</span>);
+			};
+		};
+	}
+
+	can.frag = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item, doc</span>)</span>{
+		<span class="hljs-keyword">var</span> <span class="hljs-built_in">document</span> = doc || can.document || can.global.document;
+		<span class="hljs-keyword">var</span> frag;
+		<span class="hljs-keyword">if</span>(!item || <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">"string"</span>){
+			frag = can.buildFragment(item == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">""</span>+item, <span class="hljs-built_in">document</span>);</pre></div></div>
             
         </li>
         
@@ -137,48 +210,6 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>Returns <code>true</code> if something looks like a deferred.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj.then === <span class="hljs-string">"function"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> obj.pipe === <span class="hljs-string">"function"</span>;
-	};
-	can.isMapLike = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
-		<span class="hljs-keyword">return</span> can.Map &amp;&amp; (obj <span class="hljs-keyword">instanceof</span> can.Map || obj &amp;&amp; obj.__get);
-	};
-
-	<span class="hljs-keyword">var</span> cid = <span class="hljs-number">0</span>;
-	can.cid = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(object, name)</span> </span>{
-		<span class="hljs-keyword">if</span> (!object._cid) {
-			cid++;
-			object._cid = (name || <span class="hljs-string">''</span>) + cid;
-		}
-		<span class="hljs-keyword">return</span> object._cid;
-	};
-	can.VERSION = <span class="hljs-string">'@EDGE'</span>;
-
-	can.simpleExtend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d, s)</span> </span>{
-		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> s) {
-			d[prop] = s[prop];
-		}
-		<span class="hljs-keyword">return</span> d;
-	};
-
-
-	can.frag = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
-		<span class="hljs-keyword">var</span> frag;
-		<span class="hljs-keyword">if</span>(!item || <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">"string"</span>){
-			frag = can.buildFragment(item == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">""</span>+item, <span class="hljs-built_in">document</span>.body);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>If we have an empty frag…</p>
 
@@ -196,12 +227,35 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 			<span class="hljs-keyword">return</span> frag;
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> item.length === <span class="hljs-string">"number"</span>) {
 			frag = <span class="hljs-built_in">document</span>.createDocumentFragment();
-			can.each(item, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item)</span></span>{
+			can.each(item, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item</span>)</span>{
 				frag.appendChild( can.frag(item) );
 			});
+			<span class="hljs-keyword">if</span> (!can.childNodes(frag).length) {
+				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
+			}
 			<span class="hljs-keyword">return</span> frag;
 		} <span class="hljs-keyword">else</span> {
-			frag = can.buildFragment( <span class="hljs-string">""</span>+item, <span class="hljs-built_in">document</span>.body);</pre></div></div>
+			frag = can.buildFragment( <span class="hljs-string">""</span>+item, <span class="hljs-built_in">document</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If we have an empty frag…</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!can.childNodes(frag).length) {
+				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
+			}
+			<span class="hljs-keyword">return</span> frag;
+		}
+	};</pre></div></div>
             
         </li>
         
@@ -212,31 +266,11 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>If we have an empty frag…</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!frag.childNodes.length) {
-				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
-			}
-			<span class="hljs-keyword">return</span> frag;
-		}
-	};</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
               <p>Define the <code>can.scope</code> function that can be used to retrieve the <code>scope</code> from the element</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.scope = can.viewModel = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attr, val)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	can.scope = can.viewModel = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, attr, val</span>) </span>{
 		el = can.$(el);
 		<span class="hljs-keyword">var</span> scope = can.data(el, <span class="hljs-string">"scope"</span>) || can.data(el, <span class="hljs-string">"viewModel"</span>);
 		<span class="hljs-keyword">if</span>(!scope) {
@@ -255,25 +289,83 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 				<span class="hljs-keyword">return</span> el;
 		}
 	};
-	
-	can[<span class="hljs-string">"import"</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(moduleName)</span> </span>{
+
+
+	<span class="hljs-keyword">var</span> parseURI = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">url</span>)</span>{
+			<span class="hljs-keyword">var</span> m = <span class="hljs-built_in">String</span>(url).replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>).match(<span class="hljs-regexp">/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>authority = ‘//‘ + user + ‘:’ + pass ‘@’ + hostname + ‘:’ port</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> (m ? {
+				<span class="hljs-attr">href</span>     : m[<span class="hljs-number">0</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">protocol</span> : m[<span class="hljs-number">1</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">authority</span>: m[<span class="hljs-number">2</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">host</span>     : m[<span class="hljs-number">3</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">hostname</span> : m[<span class="hljs-number">4</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">port</span>     : m[<span class="hljs-number">5</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">pathname</span> : m[<span class="hljs-number">6</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">search</span>   : m[<span class="hljs-number">7</span>] || <span class="hljs-string">''</span>,
+				<span class="hljs-attr">hash</span>     : m[<span class="hljs-number">8</span>] || <span class="hljs-string">''</span>
+			} : <span class="hljs-literal">null</span>);
+		};
+
+	can.joinURIs = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">base, href</span>) </span>{
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeDotSegments</span>(<span class="hljs-params">input</span>) </span>{
+			<span class="hljs-keyword">var</span> output = [];
+			input.replace(<span class="hljs-regexp">/^(\.\.?(\/|$))+/</span>, <span class="hljs-string">''</span>)
+				.replace(<span class="hljs-regexp">/\/(\.(\/|$))+/g</span>, <span class="hljs-string">'/'</span>)
+				.replace(<span class="hljs-regexp">/\/\.\.$/</span>, <span class="hljs-string">'/../'</span>)
+				.replace(<span class="hljs-regexp">/\/?[^\/]*/g</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">p</span>) </span>{
+					<span class="hljs-keyword">if</span> (p === <span class="hljs-string">'/..'</span>) {
+						output.pop();
+					} <span class="hljs-keyword">else</span> {
+						output.push(p);
+					}
+				});
+			<span class="hljs-keyword">return</span> output.join(<span class="hljs-string">''</span>).replace(<span class="hljs-regexp">/^\//</span>, input.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">'/'</span> ? <span class="hljs-string">'/'</span> : <span class="hljs-string">''</span>);
+		}
+
+		href = parseURI(href || <span class="hljs-string">''</span>);
+		base = parseURI(base || <span class="hljs-string">''</span>);
+
+		<span class="hljs-keyword">return</span> !href || !base ? <span class="hljs-literal">null</span> : (href.protocol || base.protocol) +
+			(href.protocol || href.authority ? href.authority : base.authority) +
+			removeDotSegments(href.protocol || href.authority || href.pathname.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">'/'</span> ? href.pathname : (href.pathname ? ((base.authority &amp;&amp; !base.pathname ? <span class="hljs-string">'/'</span> : <span class="hljs-string">''</span>) + base.pathname.slice(<span class="hljs-number">0</span>, base.pathname.lastIndexOf(<span class="hljs-string">'/'</span>) + <span class="hljs-number">1</span>) + href.pathname) : base.pathname)) +
+				(href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
+				href.hash;
+	};
+
+	can[<span class="hljs-string">"import"</span>] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">moduleName, parentName</span>) </span>{
 		<span class="hljs-keyword">var</span> deferred = <span class="hljs-keyword">new</span> can.Deferred();
-		
-		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.System === <span class="hljs-string">"object"</span>) {
-			<span class="hljs-built_in">window</span>.System[<span class="hljs-string">"import"</span>](moduleName).then(can.proxy(deferred.resolve, deferred),
+
+		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.System === <span class="hljs-string">"object"</span> &amp;&amp; can.isFunction(<span class="hljs-built_in">window</span>.System[<span class="hljs-string">"import"</span>])) {
+			<span class="hljs-built_in">window</span>.System[<span class="hljs-string">"import"</span>](moduleName, {
+				<span class="hljs-attr">name</span>: parentName
+			}).then(can.proxy(deferred.resolve, deferred),
 				can.proxy(deferred.reject, deferred));
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.define &amp;&amp; <span class="hljs-built_in">window</span>.define.amd){
-			
-			<span class="hljs-built_in">window</span>.require([moduleName], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+
+			<span class="hljs-built_in">window</span>.require([moduleName], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
 				deferred.resolve(value);
 			});
-			
+
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.steal) {
-			
-			steal.steal(moduleName, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+
+			steal.steal(moduleName, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
 				deferred.resolve(value);
 			});
-			
+
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.require){
 			deferred.resolve(<span class="hljs-built_in">window</span>.require(moduleName));
 		} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -293,7 +385,7 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
             
             <div class="content"><div class='highlight'><pre>			deferred.resolve();
 		}
-		
+
 		<span class="hljs-keyword">return</span> deferred.promise();
 	};</pre></div></div>
             
@@ -310,7 +402,15 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	can.__reading = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	can.__observe = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{};
+
+	can.isNode = <span class="hljs-keyword">typeof</span> process === <span class="hljs-string">"object"</span> &amp;&amp;
+		{}.toString.call(process) === <span class="hljs-string">"[object process]"</span>;
+
+	can.isBrowserWindow = <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp;
+		<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-keyword">typeof</span> SimpleDOM === <span class="hljs-string">"undefined"</span>;
+	can.isWebWorker = <span class="hljs-keyword">typeof</span> WorkerGlobalScope !== <span class="hljs-string">"undefined"</span> &amp;&amp;
+		(self <span class="hljs-keyword">instanceof</span> WorkerGlobalScope);</pre></div></div>
             
         </li>
         
@@ -326,16 +426,16 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
             </div>
             
             <div class="content"><div class='highlight'><pre>	can.dev = {
-		warnTimeout: <span class="hljs-number">5000</span>,
-		logLevel: <span class="hljs-number">0</span>,
+		<span class="hljs-attr">warnTimeout</span>: <span class="hljs-number">5000</span>,
+		<span class="hljs-attr">logLevel</span>: <span class="hljs-number">0</span>,
 		<span class="hljs-comment">/**
 		 * Adds a warning message to the console.
-		 * @codestart
+		 * ```
 		 * can.dev.warn("something evil");
-		 * @codeend
+		 * ```
 		 * @param {String} out the message
 		 */</span>
-		warn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(out)</span> </span>{
+		warn: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">out</span>) </span>{
 			<span class="hljs-keyword">var</span> ll = <span class="hljs-keyword">this</span>.logLevel;
 			<span class="hljs-keyword">if</span> (ll &lt; <span class="hljs-number">2</span>) {
 				<span class="hljs-built_in">Array</span>.prototype.unshift.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-string">'WARN:'</span>);
@@ -350,12 +450,12 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 		},
 		<span class="hljs-comment">/**
 		 * Adds a message to the console.
-		 * @codestart
+		 * ```
 		 * can.dev.log("hi");
-		 * @codeend
+		 * ```
 		 * @param {String} out the message
 		 */</span>
-		log: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(out)</span> </span>{
+		log: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">out</span>) </span>{
 			<span class="hljs-keyword">var</span> ll = <span class="hljs-keyword">this</span>.logLevel;
 			<span class="hljs-keyword">if</span> (ll &lt; <span class="hljs-number">1</span>) {
 				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.console &amp;&amp; <span class="hljs-built_in">console</span>.log) {
@@ -366,10 +466,10 @@ steal(<span class="hljs-function"><span class="hljs-keyword">function</span> <sp
 				}
 			}
 		},
-		_logger: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, arr)</span> </span>{
-			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">console</span>.log.apply) {
+		<span class="hljs-attr">_logger</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, arr</span>) </span>{
+			<span class="hljs-keyword">try</span> {
 				<span class="hljs-built_in">console</span>[type].apply(<span class="hljs-built_in">console</span>, arr);
-			} <span class="hljs-keyword">else</span> {
+			} <span class="hljs-keyword">catch</span>(e) {
 				<span class="hljs-built_in">console</span>[type](arr);
 			}
 		}

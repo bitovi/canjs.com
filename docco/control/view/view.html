@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/control'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -61,14 +61,14 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>
-	<span class="hljs-keyword">var</span> URI = steal.URI || steal.File || <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(path)</span> </span>{
+	<span class="hljs-keyword">var</span> URI = steal.URI || steal.File || <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">path</span>) </span>{
 			<span class="hljs-keyword">return</span> [path];
 		};
-	can.Control.getFolder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	can.Control.getFolder = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">return</span> can.underscore(<span class="hljs-keyword">this</span>.fullName.replace(<span class="hljs-regexp">/\./g</span>, <span class="hljs-string">'/'</span>))
 			.replace(<span class="hljs-string">'/Controllers'</span>, <span class="hljs-string">''</span>);
 	};
-	can.Control._calculatePosition = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Class, view)</span> </span>{
+	can.Control._calculatePosition = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">Class, view</span>) </span>{
 		<span class="hljs-keyword">var</span> classParts = Class.fullName.split(<span class="hljs-string">'.'</span>),
 			action_name = <span class="hljs-string">'init'</span>,</pre></div></div>
             
@@ -109,7 +109,7 @@
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> view === <span class="hljs-string">'string'</span>) {
 			<span class="hljs-keyword">if</span> (view.substr(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>) === <span class="hljs-string">'//'</span>) {} <span class="hljs-keyword">else</span> {
 				view = <span class="hljs-string">'//'</span> + URI(path)
-					.join(<span class="hljs-string">'views/'</span> + (view.indexOf(<span class="hljs-string">'/'</span>) !== -<span class="hljs-number">1</span> ? view : (hasControllers ? controller_name + <span class="hljs-string">'/'</span> : <span class="hljs-string">''</span>) + view)) + suffix;
+					.join(<span class="hljs-string">'views/'</span> + (view.indexOf(<span class="hljs-string">'/'</span>) !== <span class="hljs-number">-1</span> ? view : (hasControllers ? controller_name + <span class="hljs-string">'/'</span> : <span class="hljs-string">''</span>) + view)) + suffix;
 			}
 		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!view) {
 			view = <span class="hljs-string">'//'</span> + URI(path)
@@ -118,7 +118,7 @@
 		}
 		<span class="hljs-keyword">return</span> view;
 	};
-	<span class="hljs-keyword">var</span> calculateHelpers = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(myhelpers)</span> </span>{
+	<span class="hljs-keyword">var</span> calculateHelpers = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">myhelpers</span>) </span>{
 		<span class="hljs-keyword">var</span> helpers = {};
 		<span class="hljs-keyword">if</span> (myhelpers) {
 			<span class="hljs-keyword">if</span> (can.isArray(myhelpers)) {
@@ -163,7 +163,7 @@
 		}
 		<span class="hljs-keyword">return</span> helpers;
 	};
-	can.Control.prototype.view = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, myhelpers)</span> </span>{</pre></div></div>
+	can.Control.prototype.view = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">view, data, myhelpers</span>) </span>{</pre></div></div>
             
         </li>
         

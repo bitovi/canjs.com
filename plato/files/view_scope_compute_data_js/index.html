@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/scope/compute_data.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">66.50</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">116</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">44.96</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.88</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&quot;can/util&quot;,&quot;can/compute&quot;,&quot;can/compute/get_value_and_bind.js&quot;,function(can,compute, ObservedInfo){
+	// The goal of this is to create a high-performance compute that represents a key value from can.view.Scope.
+	// If the key value is something like {{name}} and the context is a can.Map, a faster
+	// binding path will be used where new rebindings don&#039;t need to be looked for with every change of 
+	// the observable property.
+	// However, if the property changes to a compute, then the slower `can.compute.read` method of
+	// observing values will be used.
+	
+	
+	var isFastPath = function(computeData){
+		return computeData.reads &amp;&amp;
+					// a single property read
+					computeData.reads.length === 1 &amp;&amp;
+					// on a map
+					computeData.root instanceof can.Map &amp;&amp;
+					// that isn&#039;t calling a function
+					!can.isFunction(computeData.root[computeData.reads[0].key]);
+	};
+	
+	var scopeReader = function(scope, key, options, computeData, newVal){
+		if (arguments.length &gt; 4) {
+			var root = computeData.root || computeData.setRoot;
+			if(root) {
+				if(root.isComputed) {
+					root(newVal);
+				} else if(computeData.reads.length) {
+					var last = computeData.reads.length - 1;
+					var obj = computeData.reads.length ? can.compute.read(root, computeData.reads.slice(0, last)).value
+						: root;
+					can.compute.set(obj, computeData.reads[last].key, newVal, options);
+				}
+			} else {
+				// WARN ... you can&#039;t set nothing
+			}
+			// **Compute getter**
+		} else {
+			// If computeData has found the value for the key in the past in an observable then go directly to
+			// the observable (computeData.root) that the value was found in the last time and return the new value.  This
+			// is a huge performance gain for the fact that we aren&#039;t having to check the entire scope each time.
+			if (computeData.root) {
+				return can.compute.read(computeData.root, computeData.reads, options)
+					.value;
+			}
+			// If the key has not already been located in a observable then we need to search the scope for the
+			// key.  Once we find the key then we need to return it&#039;s value and if it is found in an observable
+			// then we need to store the observable so the next time this compute is called it can grab the value
+			// directly from the observable.
+			var data = scope.read(key, options);
+			computeData.scope = data.scope;
+			computeData.initialValue = data.value;
+			computeData.reads = data.reads;
+			computeData.root = data.rootObserve;
+			computeData.setRoot = data.setRoot;
+			return data.value;
+		}
+	};
+	
+	return function(scope, key, options){
+		options = options || {
+			args: []
+		};
+		// the object we are returning
+		var computeData = {},
+			// a function that can be passed to getValueAndBind, or used as a setter
+			scopeRead = function (newVal) {
+				if(arguments.length) {
+					return scopeReader(scope, key, options, computeData, newVal);
+				} else {
+					return scopeReader(scope, key, options, computeData);
+				}
+			},
+			compute = can.compute(undefined,{
+				on: function() {
+					// setup the observing
+					readInfo.getValueAndBind();
+					
+					if( isFastPath(computeData) ) {
+						// When the one dependency changes, we can simply get its newVal and
+						// save it.  If it&#039;s a function, we need to start binding the old way.
+						readInfo.dependencyChange = function(ev, newVal){
+							if(typeof newVal !== &quot;function&quot;) {
+								this.newVal = newVal;
+							} else {
+								// restore
+								readInfo.dependencyChange = ObservedInfo.prototype.dependencyChange;
+								readInfo.getValueAndBind = ObservedInfo.prototype.getValueAndBind;
+							}
+							return ObservedInfo.prototype.dependencyChange.call(this, ev);
+						};
+						readInfo.getValueAndBind = function(){
+							this.value = this.newVal;
+						};
+					}
+					// TODO deal with this right
+					compute.computeInstance.value = readInfo.value;
+					compute.computeInstance.hasDependencies = !can.isEmptyObject(readInfo.newObserved);
+				},
+				off: function(){
+					readInfo.dependencyChange = ObservedInfo.prototype.dependencyChange;
+					readInfo.getValueAndBind = ObservedInfo.prototype.getValueAndBind;
+					readInfo.teardown();
+				},
+				set: scopeRead,
+				get: scopeRead,
+				// a hack until we clean up can.compute for 3.0
+				__selfUpdater: true
+			}),
+			
+			// the observables read by the last calling of `scopeRead`
+			readInfo = new ObservedInfo(scopeRead, null, compute.computeInstance);
+		
+		computeData.compute = compute;
+		return computeData;
+		
+	};
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

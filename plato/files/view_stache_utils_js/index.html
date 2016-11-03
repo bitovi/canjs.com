@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>view/stache/utils.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">72.33</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">98</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">32.62</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.85</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&quot;can/util&quot;, &quot;can/view/scope&quot;,function(can){
+	
+
+		// ## can.view.Options
+		//
+		// This contains the local helpers, partials, and tags available to a template.
+		/**
+		 * @hide
+		 * The Options scope.
+		 */
+	var Options = can.view.Options;
+	
+	return {
+		// Returns if something looks like an array.  This works for can.List
+		isArrayLike: function (obj) {
+			return obj &amp;&amp; obj.splice &amp;&amp; typeof obj.length === &#039;number&#039;;
+		},
+		// Returns if something is an observe.  This works for can.route
+		isObserveLike: function (obj) {
+			return obj instanceof can.Map || (obj &amp;&amp; !! obj._get);
+		},
+		// A generic empty function
+		emptyHandler: function(){},
+		// Converts a string like &quot;1&quot; into 1. &quot;null&quot; into null, etc.
+		// This doesn&#039;t have to do full JSON, so removing eval would be good.
+		jsonParse: function(str){
+			// if it starts with a quote, assume a string.
+			if(str[0] === &quot;&#039;&quot;) {
+				return str.substr(1, str.length -2);
+			} else if(str === &quot;undefined&quot;) {
+				return undefined;
+			} else if(can.global.JSON) {
+				return JSON.parse(str);
+			} else {
+				return eval(&quot;(&quot;+str+&quot;)&quot;);
+			}
+		},
+		mixins: {
+			last: function(){
+				return this.stack[this.stack.length - 1];
+			},
+			add: function(chars){
+				this.last().add(chars);
+			},
+			subSectionDepth: function(){
+				return this.stack.length - 1;
+			}
+		},
+		// Sets .fn and .inverse on a helperOptions object and makes sure
+		// they can reference the current scope and options.
+		convertToScopes: function(helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer, isStringOnly){
+			// overwrite fn and inverse to always convert to scopes
+			if(truthyRenderer) {
+				helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList, isStringOnly);
+			}
+			if(falseyRenderer) {
+				helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList, isStringOnly);
+			}
+		},
+		// Returns a new renderer function that makes sure any data or helpers passed
+		// to it are converted to a can.view.Scope and a can.view.Options.
+		makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList, observeObservables) {
+			var rendererWithScope = function(ctx, opts, parentNodeList){
+				return renderer(ctx || parentScope, opts, parentNodeList);
+			};
+			var convertedRenderer = function (newScope, newOptions, parentNodeList) {
+				// prevent binding on fn.
+				// If a non-scope value is passed, add that to the parent scope.
+				if (newScope !== undefined &amp;&amp; !(newScope instanceof can.view.Scope)) {
+					newScope = parentScope.add(newScope);
+				}
+				if (newOptions !== undefined &amp;&amp; !(newOptions instanceof Options)) {
+					newOptions = parentOptions.add(newOptions);
+				}
+				var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList|| nodeList );
+				return result;
+			};
+			return observeObservables ? convertedRenderer : can.__notObserve(convertedRenderer);
+		},
+		// A helper for calling the truthy subsection for each item in a list and putting them in a document Fragment.
+		getItemsFragContent: function(items, helperOptions, scope){
+			var isObserveList = this.isObserveLike(items);
+			var result = [],
+				len = isObserveList ? items.attr(&#039;length&#039;) : items.length;
+
+			for (var i = 0; i &lt; len; i++) {
+				var aliases = {
+					&quot;%index&quot;: i,
+					&quot;@index&quot;: i
+				};
+				var item = isObserveList ? items.attr(&#039;&#039; + i) : items[i];
+				result.push(helperOptions.fn(scope.add(aliases, {notContext: true }).add(item)));
+			}
+			return result;
+		},
+		Options: Options
+	};
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

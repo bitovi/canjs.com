@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>expression.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="add_bundles.html">
+                add_bundles.js
+              </a>
+            
+              
+              <a class="source" href="expression.html">
+                expression.js
+              </a>
+            
+              
+              <a class="source" href="html_section.html">
+                html_section.js
+              </a>
+            
+              
+              <a class="source" href="intermediate_and_imports.html">
+                intermediate_and_imports.js
+              </a>
+            
+              
+              <a class="source" href="live_attr.html">
+                live_attr.js
+              </a>
+            
+              
+              <a class="source" href="mustache_core.html">
+                mustache_core.js
+              </a>
+            
+              
+              <a class="source" href="mustache_helpers.html">
+                mustache_helpers.js
+              </a>
+            
+              
+              <a class="source" href="stache.html">
+                stache.js
+              </a>
+            
+              
+              <a class="source" href="system.html">
+                system.js
+              </a>
+            
+              
+              <a class="source" href="text_section.html">
+                text_section.js
+              </a>
+            
+              
+              <a class="source" href="utils.html">
+                utils.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>expression.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>,
+	<span class="hljs-string">"./utils"</span>,
+	<span class="hljs-string">"./mustache_helpers"</span>,
+	<span class="hljs-string">"can/view/scope"</span>,
+	<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can, utils, mustacheHelpers, Scope</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="helpers">Helpers</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Helper for getting a bound compute in the scope.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> getKeyComputeData = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, scope, readOptions</span>) </span>{
+
+			<span class="hljs-keyword">var</span> data = scope.computeData(key, readOptions);
+	
+			can.compute.temporarilyBind(data.compute);
+	
+			<span class="hljs-keyword">return</span> data;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Looks up a value in the scope and returns a compute if the value is
+observable and the value if not.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		lookupValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, scope, helperOptions, readOptions</span>)</span>{
+			<span class="hljs-keyword">var</span> computeData = getKeyComputeData(key, scope, readOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>If there are no dependencies, just return the value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!computeData.compute.computeInstance.hasDependencies) {
+				<span class="hljs-keyword">return</span> {<span class="hljs-attr">value</span>: computeData.initialValue, <span class="hljs-attr">computeData</span>: computeData};
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> {<span class="hljs-attr">value</span>: computeData.compute, <span class="hljs-attr">computeData</span>: computeData};
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Looks up a value in the scope, and if it is <code>undefined</code>, looks up
+the value as a helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		lookupValueOrHelper = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, scope, helperOptions, readOptions</span>)</span>{
+			<span class="hljs-keyword">var</span> res = lookupValue(key, scope, helperOptions, readOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>If it doesn’t look like a helper and there is no value, check helpers
+anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>( res.computeData.initialValue === <span class="hljs-literal">undefined</span> ) {
+				<span class="hljs-keyword">if</span>(key.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"@"</span> &amp;&amp; key !== <span class="hljs-string">"@index"</span>) {
+					key = key.substr(<span class="hljs-number">1</span>);
+				}
+				<span class="hljs-keyword">var</span> helper = mustacheHelpers.getHelper(key, helperOptions);
+				res.helper = helper &amp;&amp; helper.fn;
+			}
+			<span class="hljs-keyword">return</span> res;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>If not a Literal or an Arg, convert to an arg for caching.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		convertToArgExpression = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expr</span>)</span>{
+			<span class="hljs-keyword">if</span>(!(expr <span class="hljs-keyword">instanceof</span> Arg) &amp;&amp; !(expr <span class="hljs-keyword">instanceof</span> Literal) &amp;&amp; !(expr <span class="hljs-keyword">instanceof</span> Hashes)) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Arg(expr);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> expr;
+			}
+			
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h2 id="expression-types">Expression Types</h2>
+<p>These expression types return a value. They are assembled by <code>expression.parse</code>.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="literal">Literal</h3>
+<p>For inline static values like <code>{{&quot;Hello World&quot;}}</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Literal = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
+		<span class="hljs-keyword">this</span>._value = value;
+	};
+	Literal.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._value;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h3 id="lookup">Lookup</h3>
+<p><code>new Lookup(String, [Expression])</code>
+Finds a value in the scope or a helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Lookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, root</span>) </span>{
+		<span class="hljs-keyword">this</span>.key = key;
+		<span class="hljs-keyword">this</span>.rootExpr = root;
+	};
+	Lookup.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">var</span> result = lookupValueOrHelper(<span class="hljs-keyword">this</span>.key, scope, helperOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>TODO: remove this.  This is hacky.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>.isHelper = result.helper &amp;&amp; !result.helper.callAsMethod;
+		<span class="hljs-keyword">return</span> result.helper || result.value;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="scopelookup">ScopeLookup</h3>
+<p>Looks up a value in the scope, returns a compute for the value it finds.
+If passed an expression, that is used to lookup data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> ScopeLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, root</span>) </span>{
+		Lookup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+	};
+	ScopeLookup.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">return</span> lookupValue(<span class="hljs-keyword">this</span>.key, scope, helperOptions).value;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h3 id="arg">Arg</h3>
+<p><code>new Arg(Expression [,modifierOptions] )</code>
+Used to identify an expression that should return a value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Arg = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expression, modifiers</span>)</span>{
+		<span class="hljs-keyword">this</span>.expr = expression;
+		<span class="hljs-keyword">this</span>.modifiers = modifiers || {};
+		<span class="hljs-keyword">this</span>.isCompute = <span class="hljs-literal">false</span>;
+	};
+	Arg.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.expr.value.apply(<span class="hljs-keyword">this</span>.expr, <span class="hljs-built_in">arguments</span>);
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h3 id="hashes">Hashes</h3>
+<p>A placeholder. This isn’t actually used.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Hashes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">hashExpressions</span>)</span>{
+		<span class="hljs-keyword">this</span>.hashExprs = hashExpressions;
+	};
+	Hashes.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">var</span> hash = {};
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.hashExprs) {
+			<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.hashExprs[prop],
+				value = val.value.apply(val, <span class="hljs-built_in">arguments</span>);
+				
+			hash[prop] = {
+				<span class="hljs-attr">call</span>: value &amp;&amp; value.isComputed &amp;&amp; (!val.modifiers || !val.modifiers.compute),
+				<span class="hljs-attr">value</span>: value
+			};
+		}
+		<span class="hljs-keyword">return</span> can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">var</span> finalHash = {};
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> hash) {
+				finalHash[prop] = hash[prop].call ? hash[prop].value() : hash[prop].value;
+			}
+			<span class="hljs-keyword">return</span> finalHash;
+		});
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h3 id="call">Call</h3>
+<p><code>new Call( new Lookup(&quot;method&quot;), [new ScopeExpr(&quot;name&quot;)], {})</code>
+A call expression like <code>method(arg1, arg2)</code> that, by default,
+calls <code>method</code> with non compute values.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> Call = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">methodExpression, argExpressions, hashes</span>)</span>{
+		<span class="hljs-keyword">if</span>(hashes &amp;&amp; !can.isEmptyObject(hashes)) {
+			argExpressions.push(<span class="hljs-keyword">new</span> Hashes(hashes));
+		}
+		<span class="hljs-keyword">this</span>.methodExpr = methodExpression;
+		<span class="hljs-keyword">this</span>.argExprs = can.map(argExpressions, convertToArgExpression);
+	};
+	Call.prototype.args = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">var</span> args = [];
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = <span class="hljs-keyword">this</span>.argExprs.length; i &lt; len; i++) {
+			<span class="hljs-keyword">var</span> arg = <span class="hljs-keyword">this</span>.argExprs[i];
+			<span class="hljs-keyword">var</span> value = arg.value.apply(arg, <span class="hljs-built_in">arguments</span>);
+			args.push({
+				<span class="hljs-attr">call</span>: value &amp;&amp; value.isComputed  &amp;&amp; (!arg.modifiers || !arg.modifiers.compute),
+				<span class="hljs-attr">value</span>: value
+			});
+		}
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">var</span> finalArgs = [];
+			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = args.length; i &lt; len; i++) {
+				finalArgs[i] = args[i].call ? args[i].value() : args[i].value;
+			}
+			<span class="hljs-keyword">return</span> finalArgs;
+		};
+	};
+	
+	
+	Call.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperScope, helperOptions</span>)</span>{
+		
+		<span class="hljs-keyword">var</span> method = <span class="hljs-keyword">this</span>.methodExpr.value(scope, helperScope);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>TODO: remove this hack</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">this</span>.isHelper = <span class="hljs-keyword">this</span>.methodExpr.isHelper;
+		
+		<span class="hljs-keyword">var</span> getArgs = <span class="hljs-keyword">this</span>.args(scope, helperScope);
+		
+		<span class="hljs-keyword">return</span> can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newVal</span>)</span>{
+			<span class="hljs-keyword">var</span> func = method;
+			<span class="hljs-keyword">if</span>(func &amp;&amp; func.isComputed) {
+				func = func();
+			}
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> func === <span class="hljs-string">"function"</span>) {
+				<span class="hljs-keyword">var</span> args = getArgs();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>if fn/inverse is needed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(helperOptions) {
+					args.push(helperOptions);
+				}
+				<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length) {
+					args.unshift(<span class="hljs-keyword">new</span> expression.SetIdentifier(newVal));
+				}
+				
+				<span class="hljs-keyword">return</span> func.apply(<span class="hljs-literal">null</span>, args);
+			}
+			
+		});
+		
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <h3 id="helperlookup">HelperLookup</h3>
+<p>An expression that looks up a value in the helper or scope.
+Any functions found prior to the last one are called with
+the context and scope.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> HelperLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		Lookup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+	};
+	HelperLookup.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">var</span> result = lookupValueOrHelper(<span class="hljs-keyword">this</span>.key, scope, helperOptions, {<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">args</span>: [scope.attr(<span class="hljs-string">'.'</span>), scope]});
+		<span class="hljs-keyword">return</span> result.helper || result.value;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h3 id="helperscopelookup">HelperScopeLookup</h3>
+<p>An expression that looks up a value in the scope.
+Any functions found prior to the last one are called with
+the context and scope.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> HelperScopeLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		Lookup.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+	};
+	HelperScopeLookup.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">return</span> lookupValue(<span class="hljs-keyword">this</span>.key, scope, helperOptions, {<span class="hljs-attr">callMethodsOnObservables</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">args</span>: [scope.attr(<span class="hljs-string">'.'</span>), scope]}).value;
+	};
+	
+	<span class="hljs-keyword">var</span> Helper = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">methodExpression, argExpressions, hashExpressions</span>)</span>{
+		<span class="hljs-keyword">this</span>.methodExpr = methodExpression;
+		<span class="hljs-keyword">this</span>.argExprs = argExpressions;
+		<span class="hljs-keyword">this</span>.hashExprs = hashExpressions;
+		<span class="hljs-keyword">this</span>.mode = <span class="hljs-literal">null</span>;
+	};
+	Helper.prototype.args = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">var</span> args = [];
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = <span class="hljs-keyword">this</span>.argExprs.length; i &lt; len; i++) {
+			<span class="hljs-keyword">var</span> arg = <span class="hljs-keyword">this</span>.argExprs[i];
+			args.push( arg.value.apply(arg, <span class="hljs-built_in">arguments</span>) );
+		}
+		<span class="hljs-keyword">return</span> args;
+	};
+	Helper.prototype.hash = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{
+		<span class="hljs-keyword">var</span> hash = {};
+		<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.hashExprs) {
+			<span class="hljs-keyword">var</span> val = <span class="hljs-keyword">this</span>.hashExprs[prop];
+			hash[prop] = val.value.apply(val, <span class="hljs-built_in">arguments</span>);
+		}
+		<span class="hljs-keyword">return</span> hash;
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>looks up the name key in the scope
+returns a <code>helper</code> property if there is a helper for the key.
+returns a <code>value</code> property if the value is looked up.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	Helper.prototype.helperAndValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>{{foo bar}}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> looksLikeAHelper = <span class="hljs-keyword">this</span>.argExprs.length || !can.isEmptyObject(<span class="hljs-keyword">this</span>.hashExprs),
+			helper,
+			value,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>If a literal, this means it should be treated as a key. But helpers work this way for some reason.
+TODO: fix parsing so numbers will also be assumed to be keys.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			methodKey = <span class="hljs-keyword">this</span>.methodExpr <span class="hljs-keyword">instanceof</span> Literal ?
+				<span class="hljs-string">""</span>+<span class="hljs-keyword">this</span>.methodExpr._value : <span class="hljs-keyword">this</span>.methodExpr.key,
+			initialValue,
+			args;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>If the expression looks like a helper, try to get a helper right away.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (looksLikeAHelper) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Try to find a registered helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			helper = mustacheHelpers.getHelper(methodKey, helperOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>If a function is on top of the context, call that as a helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> context = scope.attr(<span class="hljs-string">"."</span>);
+			<span class="hljs-keyword">if</span>(!helper &amp;&amp; <span class="hljs-keyword">typeof</span> context[methodKey] === <span class="hljs-string">"function"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				can.dev.warn(<span class="hljs-string">'can/view/stache/mustache_core.js: In 3.0, method "'</span> + methodKey + <span class="hljs-string">'" will not be called as a helper, but as a method.'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				helper = {<span class="hljs-attr">fn</span>: context[methodKey]};
+			}
+
+		}
+		<span class="hljs-keyword">if</span>(!helper) {
+			args = <span class="hljs-keyword">this</span>.args(scope, helperOptions);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Get info about the compute that represents this lookup.
+This way, we can get the initial value without “reading” the compute.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> computeData = getKeyComputeData(methodKey, scope, {
+				<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">false</span>,
+				<span class="hljs-attr">args</span>: args &amp;&amp; args.length ? args : [scope.attr(<span class="hljs-string">'.'</span>), scope]
+			}),
+				compute = computeData.compute;
+
+			initialValue = computeData.initialValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Set name to be the compute if the compute reads observables,
+or the value of the value of the compute if no observables are found.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(computeData.compute.computeInstance.hasDependencies) {
+				value = compute;
+			} <span class="hljs-keyword">else</span> {
+				value = initialValue;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>If it doesn’t look like a helper and there is no value, check helpers
+anyway. This is for when foo is a helper in <code>{{foo}}</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>( !looksLikeAHelper &amp;&amp; initialValue === <span class="hljs-literal">undefined</span> ) {
+				helper = mustacheHelpers.getHelper(methodKey, helperOptions);
+			}
+
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>!steal-remove-start</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ( !helper &amp;&amp; initialValue === <span class="hljs-literal">undefined</span>) {
+			<span class="hljs-keyword">if</span>(looksLikeAHelper) {
+				can.dev.warn(<span class="hljs-string">'can/view/stache/mustache_core.js: Unable to find helper "'</span> + methodKey + <span class="hljs-string">'".'</span>);
+			} <span class="hljs-keyword">else</span> {
+				can.dev.warn(<span class="hljs-string">'can/view/stache/mustache_core.js: Unable to find key or helper "'</span> + methodKey + <span class="hljs-string">'".'</span>);
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>!steal-remove-end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		
+		<span class="hljs-keyword">return</span> {
+			<span class="hljs-attr">value</span>: value,
+			<span class="hljs-attr">args</span>: args,
+			<span class="hljs-attr">helper</span>: helper &amp;&amp; helper.fn
+		};
+	};
+	Helper.prototype.evaluator = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">helper, scope, helperOptions, <span class="hljs-regexp">/*REMOVE*/</span>readOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly</span>)</span>{
+
+		<span class="hljs-keyword">var</span> helperOptionArg = {
+			<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{},
+			<span class="hljs-attr">inverse</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{},
+			<span class="hljs-attr">stringOnly</span>: stringOnly
+		},
+			context = scope.attr(<span class="hljs-string">"."</span>),
+			args = <span class="hljs-keyword">this</span>.args(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly),
+			hash = <span class="hljs-keyword">this</span>.hash(scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Add additional data to be used by helper functions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		utils.convertToScopes(helperOptionArg, scope,helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+
+		can.simpleExtend(helperOptionArg, {
+			<span class="hljs-attr">context</span>: context,
+			<span class="hljs-attr">scope</span>: scope,
+			<span class="hljs-attr">contexts</span>: scope,
+			<span class="hljs-attr">hash</span>: hash,
+			<span class="hljs-attr">nodeList</span>: nodeList,
+			<span class="hljs-attr">exprData</span>: <span class="hljs-keyword">this</span>,
+			<span class="hljs-attr">helperOptions</span>: helperOptions,
+			<span class="hljs-attr">helpers</span>: helperOptions
+		});
+
+		args.push(helperOptionArg);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Call the helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">return</span> helper.apply(context, args);
+		};
+	};
+	
+	Helper.prototype.value = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly</span>)</span>{
+		
+		<span class="hljs-keyword">var</span> helperAndValue = <span class="hljs-keyword">this</span>.helperAndValue(scope, helperOptions);
+		
+		<span class="hljs-keyword">var</span> helper = helperAndValue.helper;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>a method could have been called, resulting in a value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(!helper) {
+			<span class="hljs-keyword">return</span> helperAndValue.value;
+		}
+		
+		<span class="hljs-keyword">var</span> fn = <span class="hljs-keyword">this</span>.evaluator(helper, scope, helperOptions, nodeList, truthyRenderer, falseyRenderer, stringOnly);
+		
+		<span class="hljs-keyword">var</span> compute = can.compute(fn);
+		
+		can.compute.temporarilyBind(compute);
+		
+		<span class="hljs-keyword">if</span> (!compute.computeInstance.hasDependencies) {
+			<span class="hljs-keyword">return</span> compute();
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">return</span> compute;
+		}
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>NAME - \w
+KEY - foo, foo.bar, foo@bar, %foo (special), &amp;foo (references), ../foo, ./foo
+ARG - ~KEY, KEY, CALLEXPRESSION, PRIMITIVE
+CALLEXPRESSION = KEY(ARG,ARG, NAME=ARG)
+HELPEREXPRESSION = KEY ARG ARG NAME=ARG
+DOT .NAME
+AT @NAME</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> keyRegExp = <span class="hljs-regexp">/[\w\.\\\-_@\/\&amp;%]+/</span>,
+		tokensRegExp = <span class="hljs-regexp">/('.*?'|".*?"|=|[\w\.\\\-_@\/*%\$:]+|[\(\)]|,|\~)/g</span>,
+		literalRegExp = <span class="hljs-regexp">/^('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)$/</span>;
+	
+	<span class="hljs-keyword">var</span> isTokenKey = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">token</span>)</span>{
+		<span class="hljs-keyword">return</span> keyRegExp.test(token);
+	};
+	
+	<span class="hljs-keyword">var</span> testDot = <span class="hljs-regexp">/^[\.@]\w/</span>;
+	<span class="hljs-keyword">var</span> isAddingToExpression = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">token</span>) </span>{
+		
+		<span class="hljs-keyword">return</span> isTokenKey(token) &amp;&amp; testDot.test(token);
+	};
+	
+	<span class="hljs-keyword">var</span> ensureChildren = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>) </span>{
+		<span class="hljs-keyword">if</span>(!type.children) {
+			type.children = [];
+		}
+		<span class="hljs-keyword">return</span> type;
+	};
+	
+	<span class="hljs-keyword">var</span> Stack = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+		
+		<span class="hljs-keyword">this</span>.root = {<span class="hljs-attr">children</span>: [], <span class="hljs-attr">type</span>: <span class="hljs-string">"Root"</span>};
+		<span class="hljs-keyword">this</span>.current = <span class="hljs-keyword">this</span>.root;
+		<span class="hljs-keyword">this</span>.stack = [<span class="hljs-keyword">this</span>.root];
+	};
+	can.simpleExtend(Stack.prototype,{
+		<span class="hljs-attr">top</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">return</span> can.last(<span class="hljs-keyword">this</span>.stack);
+		},
+		<span class="hljs-attr">isRootTop</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.top() === <span class="hljs-keyword">this</span>.root;
+		},
+		<span class="hljs-attr">popTo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">types</span>)</span>{
+			<span class="hljs-keyword">this</span>.popUntil(types);
+			<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.isRootTop()) {
+				<span class="hljs-keyword">this</span>.stack.pop();
+			}
+		},
+		<span class="hljs-attr">firstParent</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">types</span>)</span>{
+			<span class="hljs-keyword">var</span> curIndex = <span class="hljs-keyword">this</span>.stack.length- <span class="hljs-number">2</span>;
+			<span class="hljs-keyword">while</span>( curIndex &gt; <span class="hljs-number">0</span> &amp;&amp; can.inArray(  <span class="hljs-keyword">this</span>.stack[curIndex].type, types) === <span class="hljs-number">-1</span> ) {
+				curIndex--;
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.stack[curIndex];
+		},
+		<span class="hljs-attr">popUntil</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">types</span>)</span>{
+			<span class="hljs-keyword">while</span>( can.inArray(  <span class="hljs-keyword">this</span>.top().type, types) === <span class="hljs-number">-1</span> &amp;&amp; !<span class="hljs-keyword">this</span>.isRootTop() ) {
+				<span class="hljs-keyword">this</span>.stack.pop();
+			}
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.top();
+		},
+		<span class="hljs-attr">addTo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">types, type</span>)</span>{
+			<span class="hljs-keyword">var</span> cur = <span class="hljs-keyword">this</span>.popUntil(types);
+			ensureChildren(cur).children.push(type);
+		},
+		<span class="hljs-attr">addToAndPush</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">types, type</span>)</span>{
+			<span class="hljs-keyword">this</span>.addTo(types, type);
+			<span class="hljs-keyword">this</span>.stack.push(type);
+		},
+		<span class="hljs-attr">topLastChild</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+			<span class="hljs-keyword">return</span> can.last(<span class="hljs-keyword">this</span>.top().children);
+		},
+		<span class="hljs-attr">replaceTopLastChild</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>)</span>{
+			<span class="hljs-keyword">var</span> children = ensureChildren(<span class="hljs-keyword">this</span>.top()).children;
+			children.pop();
+			children.push(type);
+			<span class="hljs-keyword">return</span> type;
+		},
+		<span class="hljs-attr">replaceTopLastChildAndPush</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>) </span>{
+			<span class="hljs-keyword">this</span>.replaceTopLastChild(type);
+			<span class="hljs-keyword">this</span>.stack.push(type);
+		},
+		<span class="hljs-attr">replaceTopAndPush</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>)</span>{
+			<span class="hljs-keyword">var</span> children;
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.top() === <span class="hljs-keyword">this</span>.root) {
+				children = ensureChildren(<span class="hljs-keyword">this</span>.top()).children;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">this</span>.stack.pop();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>get parent and clean</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				children = ensureChildren(<span class="hljs-keyword">this</span>.top()).children;
+			}
+			
+			children.pop();
+			children.push(type);
+			<span class="hljs-keyword">this</span>.stack.push(type);
+			<span class="hljs-keyword">return</span> type;
+		}
+	});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>converts </p>
+<ul>
+<li>“../foo” -&gt; “../@foo”, </li>
+<li>“foo” -&gt; “@foo”, </li>
+<li>“.foo” -&gt; “@foo”, </li>
+<li>“./foo” -&gt; “./@foo”</li>
+<li>“foo.bar” -&gt; “foo@bar”</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> convertKeyToLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key</span>)</span>{
+		<span class="hljs-keyword">var</span> lastPath = key.lastIndexOf(<span class="hljs-string">"./"</span>);
+		<span class="hljs-keyword">var</span> lastDot = key.lastIndexOf(<span class="hljs-string">"."</span>);
+		<span class="hljs-keyword">if</span>(lastDot &gt; lastPath) {
+			<span class="hljs-keyword">return</span> key.substr(<span class="hljs-number">0</span>, lastDot)+<span class="hljs-string">"@"</span>+key.substr(lastDot+<span class="hljs-number">1</span>);
+		}
+		<span class="hljs-keyword">var</span> firstNonPathCharIndex = lastPath === <span class="hljs-number">-1</span> ? <span class="hljs-number">0</span> : lastPath+<span class="hljs-number">2</span>;
+		<span class="hljs-keyword">var</span> firstNonPathChar = key.charAt(firstNonPathCharIndex);
+		<span class="hljs-keyword">if</span>(firstNonPathChar === <span class="hljs-string">"."</span> || firstNonPathChar === <span class="hljs-string">"@"</span> ) {
+			<span class="hljs-keyword">return</span> key.substr(<span class="hljs-number">0</span>, firstNonPathCharIndex)+<span class="hljs-string">"@"</span>+key.substr(firstNonPathCharIndex+<span class="hljs-number">1</span>);
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">return</span> key.substr(<span class="hljs-number">0</span>, firstNonPathCharIndex)+<span class="hljs-string">"@"</span>+key.substr(firstNonPathCharIndex);
+		}
+	};
+	<span class="hljs-keyword">var</span> convertToAtLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast</span>)</span>{
+		<span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Lookup"</span>) {
+			ast.key = convertKeyToLookup(ast.key);
+		}
+		<span class="hljs-keyword">return</span> ast;
+	};
+	
+	<span class="hljs-keyword">var</span> convertToHelperIfTopIsLookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">stack</span>)</span>{
+		<span class="hljs-keyword">var</span> top = stack.top();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>if two scopes, that means a helper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span>(top &amp;&amp; top.type === <span class="hljs-string">"Lookup"</span>) {
+			
+			<span class="hljs-keyword">var</span> base = stack.stack[stack.stack.length - <span class="hljs-number">2</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>That lookup shouldn’t be part of a Helper already or</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span>(base.type !== <span class="hljs-string">"Helper"</span> &amp;&amp; base) {
+				stack.replaceTopAndPush({
+					<span class="hljs-attr">type</span>: <span class="hljs-string">"Helper"</span>,
+					<span class="hljs-attr">method</span>: top
+				});
+			}
+		}
+	};
+	
+	<span class="hljs-keyword">var</span> expression = {
+		<span class="hljs-attr">convertKeyToLookup</span>: convertKeyToLookup,
+		<span class="hljs-attr">Literal</span>: Literal,
+		<span class="hljs-attr">Lookup</span>: Lookup,
+		<span class="hljs-attr">ScopeLookup</span>: ScopeLookup,
+		
+		<span class="hljs-attr">Arg</span>: Arg,
+		<span class="hljs-attr">Hashes</span>: Hashes,
+		<span class="hljs-attr">Call</span>: Call,
+		<span class="hljs-attr">Helper</span>: Helper,
+		<span class="hljs-attr">HelperLookup</span>: HelperLookup,
+		<span class="hljs-attr">HelperScopeLookup</span>: HelperScopeLookup,
+		
+		
+		<span class="hljs-attr">SetIdentifier</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{ <span class="hljs-keyword">this</span>.value = value; },
+		<span class="hljs-attr">tokenize</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expression</span>)</span>{
+			<span class="hljs-keyword">var</span> tokens = [];
+			(can.trim(expression) + <span class="hljs-string">' '</span>).replace(tokensRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">whole, arg</span>) </span>{
+				tokens.push(arg);
+			});
+			<span class="hljs-keyword">return</span> tokens;
+		},
+		<span class="hljs-attr">lookupRules</span>: {
+			<span class="hljs-string">"default"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast, methodType, isArg</span>)</span>{
+				<span class="hljs-keyword">var</span> name = (methodType === <span class="hljs-string">"Helper"</span> &amp;&amp; !ast.root ? <span class="hljs-string">"Helper"</span> : <span class="hljs-string">""</span>)+(isArg ? <span class="hljs-string">"Scope"</span> : <span class="hljs-string">""</span>)+<span class="hljs-string">"Lookup"</span>;
+				<span class="hljs-keyword">return</span> expression[name];
+			},
+			<span class="hljs-string">"method"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast, methodType, isArg</span>)</span>{
+				<span class="hljs-keyword">return</span> ScopeLookup;
+			}
+		},
+		<span class="hljs-attr">methodRules</span>: {
+			<span class="hljs-string">"default"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast</span>)</span>{
+				
+				<span class="hljs-keyword">return</span> ast.type === <span class="hljs-string">"Call"</span> ? Call : Helper;
+			},
+			<span class="hljs-string">"call"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast</span>)</span>{
+				<span class="hljs-keyword">return</span> Call;
+			}
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <h2 id="expression-parse">expression.parse</h2>
+<ul>
+<li>{String} expressionString - A stache expression like “abc foo()”</li>
+<li>{Object} options<ul>
+<li>baseMethodType - Treat this like a Helper or Call.  Default to “Helper”</li>
+<li>lookupRule - “default” or “method”</li>
+<li>methodRule - “default” or “call”</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		parse: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expressionString, options</span>)</span>{
+			options =  options || {};
+			<span class="hljs-keyword">var</span> ast = <span class="hljs-keyword">this</span>.ast(expressionString);
+			
+			<span class="hljs-keyword">if</span>(!options.lookupRule) {
+				options.lookupRule = <span class="hljs-string">"default"</span>;
+			}
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> options.lookupRule === <span class="hljs-string">"string"</span>) {
+				options.lookupRule = expression.lookupRules[options.lookupRule];
+			}
+			<span class="hljs-keyword">if</span>(!options.methodRule) {
+				options.methodRule = <span class="hljs-string">"default"</span>;
+			}
+			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> options.methodRule === <span class="hljs-string">"string"</span>) {
+				options.methodRule = expression.methodRules[options.methodRule];
+			}
+			
+			<span class="hljs-keyword">var</span> expr = <span class="hljs-keyword">this</span>.hydrateAst(ast, options, options.baseMethodType || <span class="hljs-string">"Helper"</span>);
+			
+			<span class="hljs-keyword">return</span> expr;
+		},
+		<span class="hljs-attr">hydrateAst</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ast, options, methodType, isArg</span>)</span>{
+			<span class="hljs-keyword">var</span> hashes,
+				self = <span class="hljs-keyword">this</span>;
+			<span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Lookup"</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> (options.lookupRule(ast, methodType, isArg))(ast.key, ast.root &amp;&amp; <span class="hljs-keyword">this</span>.hydrateAst(ast.root, options, methodType) );
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Literal"</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Literal(ast.value);
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Arg"</span>) {
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Arg(<span class="hljs-keyword">this</span>.hydrateAst(ast.children[<span class="hljs-number">0</span>], options, methodType, isArg),{<span class="hljs-attr">compute</span>: <span class="hljs-literal">true</span>});
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Hashes"</span>) {
+				hashes = {};
+				can.each(ast.children, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+					hashes[child.prop] = self.hydrateAst( child.children[<span class="hljs-number">0</span>], options, ast.type, <span class="hljs-literal">true</span> );
+				});
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Hashes(hashes);
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Hash"</span>) {
+				<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">""</span>);
+			}
+			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ast.type === <span class="hljs-string">"Call"</span> || ast.type === <span class="hljs-string">"Helper"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>get all arguments and hashes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				
+				<span class="hljs-keyword">var</span> args = [];
+				hashes = {};
+				
+				can.each(ast.children, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">child</span>)</span>{
+					<span class="hljs-keyword">if</span>(child.type === <span class="hljs-string">"Hash"</span>) {
+						hashes[child.prop] = self.hydrateAst( child.children[<span class="hljs-number">0</span>], options, ast.type, <span class="hljs-literal">true</span> );
+					} <span class="hljs-keyword">else</span> {
+						args.push( self.hydrateAst(child, options, ast.type, <span class="hljs-literal">true</span>) );
+					}
+				});
+				
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> (options.methodRule(ast))(<span class="hljs-keyword">this</span>.hydrateAst(ast.method, options, ast.type), args, hashes);
+			}
+		},
+		<span class="hljs-attr">ast</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">expression</span>)</span>{
+			<span class="hljs-keyword">var</span> tokens = <span class="hljs-keyword">this</span>.tokenize(expression);
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.parseAst(tokens, {
+				<span class="hljs-attr">index</span>: <span class="hljs-number">0</span>
+			});
+		},
+		<span class="hljs-attr">parseAst</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tokens, cursor</span>) </span>{
+			<span class="hljs-keyword">var</span> stack = <span class="hljs-keyword">new</span> Stack(),
+				top;
+			
+			<span class="hljs-keyword">while</span>(cursor.index &lt; tokens.length) {
+				<span class="hljs-keyword">var</span> token = tokens[cursor.index],
+					nextToken = tokens[cursor.index+<span class="hljs-number">1</span>];
+				
+				cursor.index++;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>Literal</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(literalRegExp.test( token )) {
+					convertToHelperIfTopIsLookup(stack);
+					stack.addTo([<span class="hljs-string">"Helper"</span>, <span class="hljs-string">"Call"</span>, <span class="hljs-string">"Hash"</span>], {<span class="hljs-attr">type</span>: <span class="hljs-string">"Literal"</span>, <span class="hljs-attr">value</span>: utils.jsonParse( token )});
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Hash </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nextToken === <span class="hljs-string">"="</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>convertToHelperIfTopIsLookup(stack);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					top = stack.top();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>If top is a Lookup, we might need to convert to a helper.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(top &amp;&amp; top.type === <span class="hljs-string">"Lookup"</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>Check if current Lookup is part of a Call, Helper, or Hash
+If it happens to be first within a Call or Root, that means
+this is helper syntax.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> firstParent = stack.firstParent([<span class="hljs-string">"Call"</span>,<span class="hljs-string">"Helper"</span>,<span class="hljs-string">"Hash"</span>]);
+						<span class="hljs-keyword">if</span>(firstParent.type === <span class="hljs-string">"Call"</span> || firstParent.type === <span class="hljs-string">"Root"</span>) {
+							
+							stack.popUntil([<span class="hljs-string">"Call"</span>]);
+							top = stack.top();
+							stack.replaceTopAndPush({
+								<span class="hljs-attr">type</span>: <span class="hljs-string">"Helper"</span>,
+								<span class="hljs-attr">method</span>: top.type === <span class="hljs-string">"Root"</span> ? can.last(top.children) : top
+							});
+							
+						}
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>if top is a call expression
+then we are added this as a hashes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					top = stack.popUntil([<span class="hljs-string">"Helper"</span>, <span class="hljs-string">"Call"</span>,<span class="hljs-string">"Hashes"</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>Call expressions group hash in hashes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(top.type === <span class="hljs-string">"Call"</span>) {
+						stack.addToAndPush([<span class="hljs-string">"Call"</span>], {<span class="hljs-attr">type</span>: <span class="hljs-string">"Hashes"</span>});
+					}
+
+					stack.addToAndPush([<span class="hljs-string">"Helper"</span>, <span class="hljs-string">"Hashes"</span>], {<span class="hljs-attr">type</span>: <span class="hljs-string">"Hash"</span>, <span class="hljs-attr">prop</span>: token});
+					cursor.index++;
+					
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>Lookup</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(keyRegExp.test(token)) {
+					<span class="hljs-keyword">var</span> last = stack.topLastChild();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>if we had <code>foo().bar</code>, we need to change to a Lookup that looks up from last.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(last &amp;&amp; last.type === <span class="hljs-string">"Call"</span> &amp;&amp; isAddingToExpression(token)) {
+						stack.replaceTopLastChildAndPush({
+							<span class="hljs-attr">type</span>: <span class="hljs-string">"Lookup"</span>,
+							<span class="hljs-attr">root</span>: last,
+							<span class="hljs-attr">key</span>: token
+						});
+					} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>if two scopes, that means a helper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						convertToHelperIfTopIsLookup(stack);
+						
+						stack.addToAndPush([<span class="hljs-string">"Helper"</span>, <span class="hljs-string">"Call"</span>,<span class="hljs-string">"Hash"</span>,<span class="hljs-string">"Arg"</span>], {<span class="hljs-attr">type</span>: <span class="hljs-string">"Lookup"</span>, <span class="hljs-attr">key</span>: token});
+					}
+					
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>Arg</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(token === <span class="hljs-string">"~"</span>) {
+					convertToHelperIfTopIsLookup(stack);
+					stack.addToAndPush([<span class="hljs-string">"Helper"</span>, <span class="hljs-string">"Call"</span>,<span class="hljs-string">"Hash"</span>], {<span class="hljs-attr">type</span>: <span class="hljs-string">"Arg"</span>, <span class="hljs-attr">key</span>: token});
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>Call</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(token === <span class="hljs-string">"("</span>) {
+					top = stack.top();
+					<span class="hljs-keyword">if</span>(top.type === <span class="hljs-string">"Lookup"</span>) {
+						stack.replaceTopAndPush({
+							<span class="hljs-attr">type</span>: <span class="hljs-string">"Call"</span>,
+							<span class="hljs-attr">method</span>: convertToAtLookup(top)
+						});
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Unable to understand expression "</span>+tokens.join(<span class="hljs-string">''</span>));
+					}
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>End Call</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(token === <span class="hljs-string">")"</span>) {
+					stack.popTo([<span class="hljs-string">"Call"</span>]);
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>End Call argument</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(token === <span class="hljs-string">","</span>) {
+					stack.popUntil([<span class="hljs-string">"Call"</span>]);
+				}
+			}
+			<span class="hljs-keyword">return</span> stack.root.children[<span class="hljs-number">0</span>];
+		}
+	};
+
+	can.expression = expression;
+	<span class="hljs-keyword">return</span> expression;
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

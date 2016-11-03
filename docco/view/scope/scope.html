@@ -11,6 +11,27 @@
   <div id="container">
     <div id="background"></div>
     
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="compute_data.html">
+                compute_data.js
+              </a>
+            
+              
+              <a class="source" href="scope.html">
+                scope.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
     <ul class="sections">
         
         
@@ -30,11 +51,17 @@ If no parent scope is provided, only the scope’s context will be explored for 
             <div class="content"><div class='highlight'><pre>
 steal(
 	<span class="hljs-string">'can/util'</span>,
+	<span class="hljs-string">'can/view/scope/compute_data.js'</span>,
 	<span class="hljs-string">'can/construct'</span>,
 	<span class="hljs-string">'can/map'</span>,
 	<span class="hljs-string">'can/list'</span>,
 	<span class="hljs-string">'can/view'</span>,
-	<span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+	<span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, makeComputeData</span>) </span>{
+
+		<span class="hljs-comment">/**
+		 * @add can.view.Scope
+		 */</span>
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Scope</span>(<span class="hljs-params">context, parent, meta</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -45,9 +72,11 @@ steal(
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <h2 id="helpers">Helpers</h2>
+              <p>The obj that will be looked on for values.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._context = context;</pre></div></div>
             
         </li>
         
@@ -58,11 +87,11 @@ steal(
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Regex for escaped periods</p>
+              <p>The next Scope object whose context should be looked on for values.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> escapeReg = <span class="hljs-regexp">/(\\)?\./g</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._parent = parent;</pre></div></div>
             
         </li>
         
@@ -73,11 +102,17 @@ steal(
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Regex for double escaped periods</p>
+              <p>If this is a special context, it can be labeled here.
+Options are:</p>
+<ul>
+<li>viewModel - This is a viewModel</li>
+<li>notContext - This can’t be looked within using <code>./</code> and <code>../</code>. It will be skipped.  This is
+for virtual contexts like those used by <code>%index</code>.</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			escapeDotReg = <span class="hljs-regexp">/\\\./g</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>._meta = meta || {};</pre></div></div>
             
         </li>
         
@@ -88,15 +123,19 @@ steal(
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p><strong>getNames</strong>
-Returns array of names by splitting provided string by periods and single escaped periods.
-<code>getNames(&quot;a.b\.c.d\\.e&quot;) //-&gt; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d.e&#39;]</code></p>
+              <p>A cache that can be used to store computes used to look up within this scope.
+For example if someone creates a compute to lookup <code>name</code>, another compute does not
+need to be created.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			getNames = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr)</span> </span>{
-				<span class="hljs-keyword">var</span> names = [],
-					last = <span class="hljs-number">0</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.__cache = {};
+		}
+
+		<span class="hljs-comment">/**
+		 * @static
+		 */</span>
+		can.simpleExtend(Scope, {</pre></div></div>
             
         </li>
         
@@ -107,42 +146,13 @@ Returns array of names by splitting provided string by periods and single escape
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Goes through attr string and places the characters found between the periods and single escaped periods into the
-<code>names</code> array.  Double escaped periods are ignored.</p>
+              <h2 id="scope-read">Scope.read</h2>
+<p>Scope.read was moved to can.compute.read
+can.compute.read reads properties from a parent.  A much more complex version of getObject.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				attr.replace(escapeReg, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first, second, index)</span> </span>{
-					<span class="hljs-comment">/* If period is double escaped then leave in place */</span>
-					<span class="hljs-keyword">if</span> (!second) {
-						names.push(
-							attr
-								.slice(last, index)
-								<span class="hljs-comment">/* replaces double-escaped period with period */</span>
-								.replace(escapeDotReg, <span class="hljs-string">'.'</span>)
-						);
-						last = index + first.length;
-					}
-				});
-				<span class="hljs-comment">/* Adds last portion of attr to names array */</span>
-				names.push(
-					attr
-						.slice(last)
-						<span class="hljs-comment">/* replaces double-escaped period with period */</span>
-						.replace(escapeDotReg, <span class="hljs-string">'.'</span>)
-				);
-				<span class="hljs-keyword">return</span> names;
-			};
-
-		<span class="hljs-comment">/**
-		 * @add can.view.Scope
-		 */</span>
-		<span class="hljs-keyword">var</span> Scope = can.Construct.extend(
-
-			<span class="hljs-comment">/**
-			 * @static
-			 */</span>
-			{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			read: can.compute.read,</pre></div></div>
             
         </li>
         
@@ -153,23 +163,12 @@ Returns array of names by splitting provided string by periods and single escape
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <h2 id="scope-read">Scope.read</h2>
-<p>Scope.read was moved to can.compute.read
-can.compute.read reads properties from a parent.  A much more complex version of getObject.</p>
+              <h2 id="scope-refs">Scope.Refs</h2>
+<p>A special type of <code>can.Map</code> used for the references scope.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				read: can.compute.read
-			},
-			<span class="hljs-comment">/**
-			 * @prototype
-			 */</span>
-			{
-				init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, parent)</span> </span>{
-					<span class="hljs-keyword">this</span>._context = context;
-					<span class="hljs-keyword">this</span>._parent = parent;
-					<span class="hljs-keyword">this</span>.__cache = {};
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			Refs: can.Map.extend({<span class="hljs-attr">shortName</span>: <span class="hljs-string">"ReferenceMap"</span>},{}),</pre></div></div>
             
         </li>
         
@@ -180,12 +179,19 @@ can.compute.read reads properties from a parent.  A much more complex version of
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <h2 id="scope-prototype-attr">Scope.prototype.attr</h2>
-<p>Reads a value from the current context or parent contexts.</p>
+              <h2 id="scope-refsscope">Scope.refsScope</h2>
+<p>A scope with a references scope in it and no parent. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				attr: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, value)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			refsScope: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> can.view.Scope( <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.Refs() );
+			}
+		});
+		<span class="hljs-comment">/**
+		 * @prototype
+		 */</span>
+		can.simpleExtend(Scope.prototype,{</pre></div></div>
             
         </li>
         
@@ -196,18 +202,23 @@ can.compute.read reads properties from a parent.  A much more complex version of
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Reads for whatever called before attr.  It’s possible
-that this.read clears them.  We want to restore them.</p>
-
+              <h2 id="scope-prototype-add">Scope.prototype.add</h2>
+<p>Creates a new scope and sets the current scope to be the parent.</p>
+<pre><code><span class="hljs-keyword">var</span> scope = <span class="hljs-keyword">new</span> can.view.Scope([
+  {<span class="hljs-attr">name</span>:<span class="hljs-string">"Chris"</span>}, 
+  {<span class="hljs-attr">name</span>: <span class="hljs-string">"Justin"</span>}
+]).add({<span class="hljs-attr">name</span>: <span class="hljs-string">"Brian"</span>});
+scope.attr(<span class="hljs-string">"name"</span>) <span class="hljs-comment">//-&gt; "Brian"</span>
+</code></pre>
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> previousReads = can.__clearReading(),
-						options = {
-							isArgument: <span class="hljs-literal">true</span>,
-							returnObserveMethods: <span class="hljs-literal">true</span>,
-							proxyMethods: <span class="hljs-literal">false</span>
-						},
-						res = <span class="hljs-keyword">this</span>.read(key, options);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			add: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context, meta</span>) </span>{
+				<span class="hljs-keyword">if</span> (context !== <span class="hljs-keyword">this</span>._context) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(context, <span class="hljs-keyword">this</span>, meta);
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+				}
+			},</pre></div></div>
             
         </li>
         
@@ -218,12 +229,24 @@ that this.read clears them.  We want to restore them.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Allow setting a value on the context</p>
+              <h2 id="scope-prototype-read">Scope.prototype.read</h2>
+<p>Reads from the scope chain and returns the first non-<code>undefined</code> value.
+<code>read</code> deals mostly with setting up “context based” keys to start reading
+from the right scope.  Once the right scope is located, <code>_read</code> is called.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">2</span>) {
-						<span class="hljs-keyword">var</span> lastIndex = key.lastIndexOf(<span class="hljs-string">'.'</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-comment">/**
+			 * @hide
+			 * @param {can.mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
+			 * @param {can.view.Scope.readOptions} options that configure how this gets read.
+			 * @return {{}}
+			 *   @option {Object} parent the value's immediate parent
+			 *   @option {can.Map|can.compute} rootObserve the first observable to read from.
+			 *   @option {Array&lt;String&gt;} reads An array of properties that can be used to read from the rootObserve to get the value.
+			 *   @option {*} value the found value
+			 */</span>
+			read: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attr, options</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -234,14 +257,13 @@ that this.read clears them.  We want to restore them.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Either get the paren of a key or the current context object with <code>.</code></p>
+              <p>If it’s the root, jump right to it.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							readKey = lastIndex !== -<span class="hljs-number">1</span> ? key.substring(<span class="hljs-number">0</span>, lastIndex) : <span class="hljs-string">'.'</span>,
-							obj = <span class="hljs-keyword">this</span>.read(readKey, options).value;
-
-						<span class="hljs-keyword">if</span>(lastIndex !== -<span class="hljs-number">1</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(attr === <span class="hljs-string">"%root"</span>) {
+					<span class="hljs-keyword">return</span> { <span class="hljs-attr">value</span>: <span class="hljs-keyword">this</span>.getRoot() };
+				}</pre></div></div>
             
         </li>
         
@@ -252,19 +274,19 @@ that this.read clears them.  We want to restore them.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Get the last part of the key which is what we want to set</p>
+              <p>Identify context based keys.  Context based keys try to
+specify a particular context a key should be within.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							key = key.substring(lastIndex + <span class="hljs-number">1</span>, key.length);
-						}
-
-						can.compute.set(obj, key, value, options);
-					}
-
-					can.__setReading(previousReads);
-					<span class="hljs-keyword">return</span> res.value;
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> isInCurrentContext = attr.substr(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>) === <span class="hljs-string">'./'</span>,
+					isInParentContext = attr.substr(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>) === <span class="hljs-string">"../"</span>,
+					isCurrentContext = attr === <span class="hljs-string">"."</span> || attr === <span class="hljs-string">"this"</span>,
+					isParentContext = attr === <span class="hljs-string">".."</span>,
+					isContextBased = isInCurrentContext ||
+						isInParentContext ||
+						isCurrentContext ||
+						isParentContext;</pre></div></div>
             
         </li>
         
@@ -275,20 +297,14 @@ that this.read clears them.  We want to restore them.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <h2 id="scope-prototype-add">Scope.prototype.add</h2>
-<p>Creates a new scope and sets the current scope to be the parent.</p>
-<pre><code><span class="hljs-keyword">var</span> scope = <span class="hljs-keyword">new</span> can.view.Scope([{name:<span class="hljs-string">"Chris"</span>}, {name: <span class="hljs-string">"Justin"</span>}]).add({name: <span class="hljs-string">"Brian"</span>});
-scope.attr(<span class="hljs-string">"name"</span>) <span class="hljs-comment">//-&gt; "Brian"</span>
-</code></pre>
+              <p><code>notContext</code> contexts should be skipped if the key is “context based”.
+For example, the context that holds <code>%index</code>.</p>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre>				add: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> </span>{
-					<span class="hljs-keyword">if</span> (context !== <span class="hljs-keyword">this</span>._context) {
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.constructor(context, <span class="hljs-keyword">this</span>);
-					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-					}
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(isContextBased &amp;&amp; <span class="hljs-keyword">this</span>._meta.notContext) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._parent.read(attr, options);
+				}</pre></div></div>
             
         </li>
         
@@ -299,20 +315,13 @@ scope.attr(<span class="hljs-string">"name"</span>) <span class="hljs-comment">/
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <h2 id="scope-prototype-computedata">Scope.prototype.computeData</h2>
-<p>Finds the first location of the key in the scope and then provides a get-set compute that represents the key’s value
-and other information about where the value was found.</p>
+              <p>If true, lookup stops after the current context. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				computeData: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> </span>{
-					options = options || {
-						args: []
-					};
-					<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>,
-						rootObserve,
-						rootReads,
-						computeData = {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> currentScopeOnly;
+
+				<span class="hljs-keyword">if</span>(isInCurrentContext) {</pre></div></div>
             
         </li>
         
@@ -323,12 +332,15 @@ and other information about where the value was found.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>computeData.compute returns a get-set compute that is tied to the first location of the provided
-key in the context of the scope.</p>
+              <p>Stop lookup from checking parent scopes.
+Set flag to halt lookup from walking up scope.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							compute: can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					currentScopeOnly = <span class="hljs-literal">true</span>;
+					attr = attr.substr(<span class="hljs-number">2</span>);
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isInParentContext) {</pre></div></div>
             
         </li>
         
@@ -339,19 +351,29 @@ key in the context of the scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p><strong>Compute setter</strong></p>
+              <p>walk up until we find a parent that can have context.
+the <code>isContextBased</code> check above won’t catch it when you go from
+<code>../foo</code> to <code>foo</code> because <code>foo</code> isn’t context based.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>								<span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length) {
-									<span class="hljs-keyword">if</span>(rootObserve.isComputed) {
-										rootObserve(newVal);
-									} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(rootReads.length) {
-										<span class="hljs-keyword">var</span> last = rootReads.length - <span class="hljs-number">1</span>;
-										<span class="hljs-keyword">var</span> obj = rootReads.length ? can.compute.read(rootObserve, rootReads.slice(<span class="hljs-number">0</span>, last)).value
-											: rootObserve;
-										can.compute.set(obj, rootReads[last], newVal, options);
-									}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> parent = <span class="hljs-keyword">this</span>._parent;
+					<span class="hljs-keyword">while</span>(parent._meta.notContext) {
+						parent = parent._parent;
+					}
+					
+					<span class="hljs-keyword">return</span> parent.read(attr.substr(<span class="hljs-number">3</span>) || <span class="hljs-string">"."</span>, options);
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( isCurrentContext ) {
+					<span class="hljs-keyword">return</span> {
+						<span class="hljs-attr">value</span>: <span class="hljs-keyword">this</span>._context
+					};
+				}
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( isParentContext ) {
+					<span class="hljs-keyword">return</span> {
+						<span class="hljs-attr">value</span>: <span class="hljs-keyword">this</span>._parent._context
+					};
+				}</pre></div></div>
             
         </li>
         
@@ -362,11 +384,17 @@ key in the context of the scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p><strong>Compute getter</strong></p>
+              <p>if it’s a reference scope, read from there.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>								} <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> keyReads = can.compute.read.reads(attr);
+				<span class="hljs-keyword">if</span>(keyReads[<span class="hljs-number">0</span>].key.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"*"</span>) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getRefs()._read(keyReads, options, <span class="hljs-literal">true</span>);
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._read(keyReads,options, currentScopeOnly);
+				}
+			},</pre></div></div>
             
         </li>
         
@@ -377,16 +405,11 @@ key in the context of the scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>If computeData has found the value for the key in the past in an observable then go directly to
-the observable (rootObserve) that the value was found in the last time and return the new value.  This
-is a huge performance gain for the fact that we aren’t having to check the entire scope each time.</p>
+              <h2 id="scope-prototype-_read">Scope.prototype._read</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>									<span class="hljs-keyword">if</span> (rootObserve) {
-										<span class="hljs-keyword">return</span> can.compute.read(rootObserve, rootReads, options)
-											.value;
-									}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			_read: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">keyReads, options, currentScopeOnly</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -397,26 +420,12 @@ is a huge performance gain for the fact that we aren’t having to check the ent
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>If the key has not already been located in a observable then we need to search the scope for the
-key.  Once we find the key then we need to return it’s value and if it is found in an observable
-then we need to store the observable so the next time this compute is called it can grab the value
-directly from the observable.</p>
+              <p>The current scope and context we are trying to find “keyReads” within.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>									<span class="hljs-keyword">var</span> data = self.read(key, options);
-									rootObserve = data.rootObserve;
-									rootReads = data.reads;
-									computeData.scope = data.scope;
-									computeData.initialValue = data.value;
-									computeData.reads = data.reads;
-									computeData.root = rootObserve;
-									<span class="hljs-keyword">return</span> data.value;
-								}
-							})
-						};
-					<span class="hljs-keyword">return</span> computeData;
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> currentScope = <span class="hljs-keyword">this</span>,
+					currentContext,</pre></div></div>
             
         </li>
         
@@ -427,15 +436,12 @@ directly from the observable.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <h2 id="scope-prototype-compute">Scope.prototype.compute</h2>
-<p>Provides a get-set compute that represents a key’s value.</p>
+              <p>If no value can be found, this is a list of of every observed
+object and property name to observe.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				compute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, options)</span> </span>{
-					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.computeData(key, options)
-						.compute;
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					undefinedObserves = [],</pre></div></div>
             
         </li>
         
@@ -446,23 +452,11 @@ directly from the observable.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <h2 id="scope-prototype-read">Scope.prototype.read</h2>
-<p>Finds the first isntance of a key in the available scopes and returns the keys value along with the the observable the key
-was found in, readsData and the current scope.</p>
+              <p>Tracks the first found observe.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-comment">/**
-				 * @hide
-				 * @param {can.mustache.key} attr A dot seperated path.  Use `"\."` if you have a property name that includes a dot.
-				 * @param {can.view.Scope.readOptions} options that configure how this gets read.
-				 * @return {{}}
-				 * @option {Object} parent the value's immediate parent
-				 * @option {can.Map|can.compute} rootObserve the first observable to read from.
-				 * @option {Array&lt;String&gt;} reads An array of properties that can be used to read from the rootObserve to get the value.
-				 * @option {*} value the found value
-				 */</span>
-				read: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attr, options)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					currentObserve,</pre></div></div>
             
         </li>
         
@@ -473,12 +467,11 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>check if we should only look within current scope</p>
+              <p>Tracks the reads to get the value from <code>currentObserve</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> stopLookup;
-					<span class="hljs-keyword">if</span>(attr.substr(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>) === <span class="hljs-string">'./'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					currentReads,</pre></div></div>
             
         </li>
         
@@ -489,11 +482,28 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>set flag to halt lookup from walking up scope</p>
+              <p>Tracks the most likely observable to use as a setter.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						stopLookup = <span class="hljs-literal">true</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					setObserveDepth = <span class="hljs-number">-1</span>,
+					currentSetReads,
+					currentSetObserve,
+
+					readOptions = can.simpleExtend({
+						<span class="hljs-comment">/* Store found observable, incase we want to set it as the rootObserve. */</span>
+						foundObservable: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">observe, nameIndex</span>) </span>{
+							currentObserve = observe;
+							currentReads = keyReads.slice(nameIndex);
+						},
+						<span class="hljs-attr">earlyExit</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parentValue, nameIndex</span>) </span>{
+							<span class="hljs-keyword">if</span> (nameIndex &gt; setObserveDepth) {
+								currentSetObserve = currentObserve;
+								currentSetReads = currentReads;
+								setObserveDepth = nameIndex;
+							}
+						}
+					}, options);</pre></div></div>
             
         </li>
         
@@ -504,12 +514,21 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>stop lookup from checking parent scopes</p>
+              <p>Goes through each scope context provided until it finds the key (attr).  Once the key is found
+then it’s value is returned along with an observe, the current scope and reads.
+While going through each scope context searching for the key, each observable found is returned and
+saved so that either the observable the key is found in can be returned, or in the case the key is not
+found in an observable the closest observable can be returned.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						attr = attr.substr(<span class="hljs-number">2</span>);
-					}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+				<span class="hljs-keyword">while</span> (currentScope) {
+					currentContext = currentScope._context;
+
+
+
+					<span class="hljs-keyword">if</span> ( currentContext !== <span class="hljs-literal">null</span> &amp;&amp;</pre></div></div>
             
         </li>
         
@@ -520,21 +539,12 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>check if we should be running this on a parent.</p>
+              <p>if its a primitive type, keep looking up the scope, since there won’t be any properties</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (attr.substr(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>) === <span class="hljs-string">"../"</span>) {
-						<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._parent.read(attr.substr(<span class="hljs-number">3</span>), options);
-					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (attr === <span class="hljs-string">".."</span>) {
-						<span class="hljs-keyword">return</span> {
-							value: <span class="hljs-keyword">this</span>._parent._context
-						};
-					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (attr === <span class="hljs-string">"."</span> || attr === <span class="hljs-string">"this"</span>) {
-						<span class="hljs-keyword">return</span> {
-							value: <span class="hljs-keyword">this</span>._context
-						};
-					}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						(<span class="hljs-keyword">typeof</span> currentContext === <span class="hljs-string">"object"</span> || <span class="hljs-keyword">typeof</span> currentContext === <span class="hljs-string">"function"</span>)
+					) {</pre></div></div>
             
         </li>
         
@@ -545,11 +555,13 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Array of names from splitting attr string into names.  <code>&quot;a.b\.c.d\\.e&quot; //-&gt; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d.e&#39;]</code></p>
+              <p>Prevent computes from temporarily observing the reading of observables.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> names = attr.indexOf(<span class="hljs-string">'\\.'</span>) === -<span class="hljs-number">1</span> ?</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> getObserves = can.__trapObserves();
+
+						<span class="hljs-keyword">var</span> data = can.compute.read(currentContext, keyReads, readOptions);</pre></div></div>
             
         </li>
         
@@ -560,11 +572,11 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Reference doesn’t contain escaped periods</p>
+              <p>Retrieve the observes that were read.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							attr.split(<span class="hljs-string">'.'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> observes = getObserves();</pre></div></div>
             
         </li>
         
@@ -575,11 +587,19 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>Reference contains escaped periods <code>(`a.b\.c.foo` == `a[&quot;b.c&quot;].foo)</code></p>
+              <p>If a <strong>value was was found</strong>, return value and location data.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							: getNames(attr),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (data.value !== <span class="hljs-literal">undefined</span>) {
+							can.__observes(observes);
+							<span class="hljs-keyword">return</span> {
+								<span class="hljs-attr">scope</span>: currentScope,
+								<span class="hljs-attr">rootObserve</span>: currentObserve,
+								<span class="hljs-attr">value</span>: data.value,
+								<span class="hljs-attr">reads</span>: currentReads
+							};
+						}</pre></div></div>
             
         </li>
         
@@ -590,11 +610,15 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>The current context (a scope is just data and a parent scope).</p>
+              <p>Otherwise, save all observables that were read.  If no value
+is found, we will observe on all of them.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						context,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">else</span> {
+							undefinedObserves.push.apply(undefinedObserves, observes);
+						}
+					}</pre></div></div>
             
         </li>
         
@@ -605,11 +629,12 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>The current scope.</p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre>						scope = <span class="hljs-keyword">this</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(currentScopeOnly) {
+						currentScope = <span class="hljs-literal">null</span>;
+					} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -620,17 +645,13 @@ was found in, readsData and the current scope.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>While we are looking for a value, we track the most likely place this value will be found.
-This is so if there is no me.name.first, we setup a listener on me.name.
-The most likely candidate is the one with the most “read matches” “lowest” in the
-context chain.
-By “read matches”, we mean the most number of values along the key.
-By “lowest” in the context chain, we mean the closest to the current context.
-We track the starting position of the likely place with <code>defaultObserve</code>.</p>
+              <p>Move up to the next scope.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						defaultObserve,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						currentScope = currentScope._parent;
+					}
+				}</pre></div></div>
             
         </li>
         
@@ -641,11 +662,19 @@ We track the starting position of the likely place with <code>defaultObserve</co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>Tracks how to read from the defaultObserve.</p>
+              <p>The <strong>value was not found</strong>, return <code>undefined</code> for the value.
+Make sure we listen to everything we checked for when the value becomes defined.
+Once it becomes defined, we won’t have to listen to so many things.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						defaultReads = [],</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				can.__observes(undefinedObserves);
+				<span class="hljs-keyword">return</span> {
+					<span class="hljs-attr">setRoot</span>: currentSetObserve,
+					<span class="hljs-attr">reads</span>: currentSetReads,
+					<span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>
+				};
+			},</pre></div></div>
             
         </li>
         
@@ -656,11 +685,20 @@ We track the starting position of the likely place with <code>defaultObserve</co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Tracks the highest found number of “read matches”.</p>
+              <h2 id="scope-prototype-get">Scope.prototype.get</h2>
+<p>Gets a value from the scope without being observable.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						defaultPropertyDepth = -<span class="hljs-number">1</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			get: can.__notObserve(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, options</span>) </span>{
+
+				options = can.simpleExtend({
+					<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>
+				}, options);
+
+				<span class="hljs-keyword">var</span> res = <span class="hljs-keyword">this</span>.read(key, options);
+				<span class="hljs-keyword">return</span> res.value;
+			}),</pre></div></div>
             
         </li>
         
@@ -671,17 +709,20 @@ We track the starting position of the likely place with <code>defaultObserve</co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p><code>scope.read</code> is designed to be called within a compute, but
-for performance reasons only listens to observables within one context.
-This is to say, if you have me.name in the current context, but me.name.first and
-we are looking for me.name.first, we don’t setup bindings on me.name and me.name.first.
-To make this happen, we clear readings if they do not find a value.  But,
-if that path turns out to be the default read, we need to restore them.  This
-variable remembers those reads so they can be restored.</p>
+              <h2 id="scope-prototype-getscope">Scope.prototype.getScope</h2>
+<p>Returns the first scope that passes the <code>tester</code> function.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						defaultComputeReadings,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			getScope: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tester</span>)</span>{
+				<span class="hljs-keyword">var</span> scope = <span class="hljs-keyword">this</span>;
+				<span class="hljs-keyword">while</span> (scope) {
+					<span class="hljs-keyword">if</span>(tester(scope)) {
+						<span class="hljs-keyword">return</span> scope;
+					}
+					scope = scope._parent;
+				}
+			},</pre></div></div>
             
         </li>
         
@@ -692,11 +733,15 @@ variable remembers those reads so they can be restored.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <p>Tracks the default’s scope.</p>
+              <h2 id="scope-prototype-getcontext">Scope.prototype.getContext</h2>
+<p>Returns the first context whose scope passes the <code>tester</code> function.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						defaultScope,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			getContext: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tester</span>)</span>{
+				<span class="hljs-keyword">var</span> res = <span class="hljs-keyword">this</span>.getScope(tester);
+				<span class="hljs-keyword">return</span> res &amp;&amp; res._context;
+			},</pre></div></div>
             
         </li>
         
@@ -707,11 +752,18 @@ variable remembers those reads so they can be restored.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>Tracks the first found observe.</p>
+              <h2 id="scope-prototype-getrefs">Scope.prototype.getRefs</h2>
+<p>Returns the first references scope.
+Used by <code>.read</code> when looking up <code>*key</code> and by the references
+view binding.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						currentObserve,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			getRefs: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.getScope(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scope</span>)</span>{
+					<span class="hljs-keyword">return</span> scope._context  <span class="hljs-keyword">instanceof</span> Scope.Refs;
+				});
+			},</pre></div></div>
             
         </li>
         
@@ -722,11 +774,27 @@ variable remembers those reads so they can be restored.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>Tracks the reads to get the value for a scope.</p>
+              <h2 id="scope-prototype-getroot">Scope.prototype.getRoot</h2>
+<p>Returns the top most context that is not a references scope.
+Used by <code>.read</code> to provide <code>%root</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						currentReads;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			getRoot: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">var</span> cur = <span class="hljs-keyword">this</span>,
+					child = <span class="hljs-keyword">this</span>;
+
+				<span class="hljs-keyword">while</span>(cur._parent) {
+					child = cur;
+					cur = cur._parent;
+				}
+
+				<span class="hljs-keyword">if</span>(cur._context <span class="hljs-keyword">instanceof</span> Scope.Refs) {
+					cur = child;
+				}
+				<span class="hljs-keyword">return</span> cur._context;
+			},
+			<span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">key, value, options</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -737,24 +805,43 @@ variable remembers those reads so they can be restored.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>Goes through each scope context provided until it finds the key (attr).  Once the key is found
-then it’s value is returned along with an observe, the current scope and reads.
-While going through each scope context searching for the key, each observable found is returned and
-saved so that either the observable the key is found in can be returned, or in the case the key is not
-found in an observable the closest observable can be returned.</p>
+              <p>Use <code>.read</code> to read everything upto, but not including the last property name
+to find the object we want to set some property on.
+For example:</p>
+<ul>
+<li><code>foo.bar</code> -&gt; <code>foo</code></li>
+<li><code>../foo.bar</code> -&gt; <code>../foo</code></li>
+<li><code>../foo</code> -&gt; <code>..</code></li>
+<li><code>foo</code> -&gt; <code>.</code></li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-					<span class="hljs-keyword">while</span> (scope) {
-						context = scope._context;
-						<span class="hljs-keyword">if</span> (context !== <span class="hljs-literal">null</span>) {
-							<span class="hljs-keyword">var</span> data = can.compute.read(context, names, can.simpleExtend({
-								<span class="hljs-comment">/* Store found observable, incase we want to set it as the rootObserve. */</span>
-								foundObservable: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(observe, nameIndex)</span> </span>{
-									currentObserve = observe;
-									currentReads = names.slice(nameIndex);
-								},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> dotIndex = key.lastIndexOf(<span class="hljs-string">'.'</span>),
+					slashIndex = key.lastIndexOf(<span class="hljs-string">'/'</span>),
+					contextPath,
+					propName;
+				
+				<span class="hljs-keyword">if</span>(slashIndex &gt; dotIndex) {
+					contextPath = key.substring(<span class="hljs-number">0</span>, slashIndex);
+					propName = key.substring(slashIndex + <span class="hljs-number">1</span>, key.length);
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">if</span>(dotIndex !== <span class="hljs-number">-1</span>) {
+						contextPath = key.substring(<span class="hljs-number">0</span>, dotIndex);
+						propName = key.substring(dotIndex + <span class="hljs-number">1</span>, key.length);
+					} <span class="hljs-keyword">else</span> {
+						contextPath = <span class="hljs-string">"."</span>;
+						propName = key;
+					}
+				}
+
+				<span class="hljs-keyword">if</span>(key.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">"*"</span>) {
+					can.compute.set(<span class="hljs-keyword">this</span>.getRefs()._context, key, value, options);
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">var</span> context = <span class="hljs-keyword">this</span>.read(contextPath, options).value;
+					can.compute.set(context, propName, value, options);
+				}
+			},</pre></div></div>
             
         </li>
         
@@ -765,21 +852,17 @@ found in an observable the closest observable can be returned.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>Called when we were unable to find a value.</p>
+              <h2 id="scope-prototype-attr">Scope.prototype.attr</h2>
+<p>Gets or sets a value in the scope without being observable.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>								earlyExit: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parentValue, nameIndex)</span> </span>{
-									<span class="hljs-comment">/* If this has more matching values */</span>
-									<span class="hljs-keyword">if</span> (nameIndex &gt; defaultPropertyDepth) {
-										defaultObserve = currentObserve;
-										defaultReads = currentReads;
-										defaultPropertyDepth = nameIndex;
-										defaultScope = scope;
-										<span class="hljs-comment">/* Clear and save readings so next attempt does not use these readings */</span>
-										defaultComputeReadings = can.__clearReading();
-									}
-								},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			attr: can.__notObserve(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value, options</span>) </span>{
+
+
+				options = can.simpleExtend({
+					<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>
+				}, options);</pre></div></div>
             
         </li>
         
@@ -790,12 +873,18 @@ found in an observable the closest observable can be returned.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>Execute anonymous functions found along the way</p>
+              <p>Allow setting a value on the context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>								executeAnonymousFunctions: <span class="hljs-literal">true</span>
-							}, options));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span>(<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">2</span>) {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.set(key, value, options);
+					
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.get(key, options);
+				}
+
+			}),</pre></div></div>
             
         </li>
         
@@ -806,19 +895,15 @@ found in an observable the closest observable can be returned.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p><strong>Key was found</strong>, return value and location data</p>
+              <h2 id="scope-prototype-computedata">Scope.prototype.computeData</h2>
+<p>Finds the first location of the key in the scope and then provides a get-set compute that represents the key’s value
+and other information about where the value was found.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">if</span> (data.value !== <span class="hljs-literal">undefined</span>) {
-								<span class="hljs-keyword">return</span> {
-									scope: scope,
-									rootObserve: currentObserve,
-									value: data.value,
-									reads: currentReads
-								};
-							}
-						}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			computeData: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, options</span>) </span>{
+				<span class="hljs-keyword">return</span> makeComputeData(<span class="hljs-keyword">this</span>, key, options);
+			},</pre></div></div>
             
         </li>
         
@@ -829,12 +914,15 @@ found in an observable the closest observable can be returned.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>Prevent prior readings and then move up to the next scope.</p>
+              <h2 id="scope-prototype-compute">Scope.prototype.compute</h2>
+<p>Provides a get-set compute that represents a key’s value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						can.__clearReading();
-						<span class="hljs-keyword">if</span>(!stopLookup) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			compute: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, options</span>) </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.computeData(key, options)
+					.compute;
+			},</pre></div></div>
             
         </li>
         
@@ -845,50 +933,54 @@ found in an observable the closest observable can be returned.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>Move up to the next scope.</p>
+              <h2 id="scope-prototype-clonefromref">Scope.prototype.cloneFromRef</h2>
+<p>This takes a scope and essentially copies its chain from
+right before the last Refs.  And it does not include the ref.
+this is a helper function to provide lexical semantics for refs.
+This will not be needed for leakScope: false.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							scope = scope._parent;
-						} <span class="hljs-keyword">else</span> {
-							scope = <span class="hljs-literal">null</span>;
-						}
-					}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p><strong>Key was not found</strong>, return undefined for the value.  Unless an observable was
-found in the process of searching for the key, then return the most likely observable along with it’s
-scope and reads.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-					<span class="hljs-keyword">if</span> (defaultObserve) {
-						can.__setReading(defaultComputeReadings);
-						<span class="hljs-keyword">return</span> {
-							scope: defaultScope,
-							rootObserve: defaultObserve,
-							reads: defaultReads,
-							value: <span class="hljs-literal">undefined</span>
-						};
-					} <span class="hljs-keyword">else</span> {
-						<span class="hljs-keyword">return</span> {
-							names: names,
-							value: <span class="hljs-literal">undefined</span>
-						};
+            <div class="content"><div class='highlight'><pre>			cloneFromRef: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				<span class="hljs-keyword">var</span> contexts = [];
+				<span class="hljs-keyword">var</span> scope = <span class="hljs-keyword">this</span>,
+					context,
+					parent;
+				<span class="hljs-keyword">while</span> (scope) {
+					context = scope._context;
+					<span class="hljs-keyword">if</span>(context <span class="hljs-keyword">instanceof</span> Scope.Refs) {
+						parent = scope._parent;
+						<span class="hljs-keyword">break</span>;
 					}
+					contexts.unshift(context);
+					scope = scope._parent;
 				}
-			});
+				<span class="hljs-keyword">if</span>(parent) {
+					can.each(contexts, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>)</span>{
+						parent = parent.add(context);
+					});
+					<span class="hljs-keyword">return</span> parent;
+				} <span class="hljs-keyword">else</span> {
+					<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+				}
+			}
+		});
 
 		can.view.Scope = Scope;
+
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Options</span>(<span class="hljs-params">data, parent, meta</span>)</span>{
+			<span class="hljs-keyword">if</span> (!data.helpers &amp;&amp; !data.partials &amp;&amp; !data.tags) {
+				data = {
+					<span class="hljs-attr">helpers</span>: data
+				};
+			}
+			Scope.call(<span class="hljs-keyword">this</span>, data, parent, meta);
+		}
+		Options.prototype = <span class="hljs-keyword">new</span> Scope();
+		Options.prototype.constructor = Options;
+
+		can.view.Options = Options;
+
 		<span class="hljs-keyword">return</span> Scope;
 	});</pre></div></div>
             

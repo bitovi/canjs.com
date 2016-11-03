@@ -36,7 +36,7 @@
 			<div class="logo-menu">
 				<a class="brand" href="../index.html">CanJS</a>
 				<ul class="dropdown-menu">
-		          <li><a href="http://javascriptmvc.com">JavaScriptMVC</a></li>
+				  <li><a href="http://donejs.com">DoneJS</a></li>
 		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
 		          <li><a href="http://jquerypp.com">jQuery++</a></li>
 		          <li><a href="http://stealjs.com">StealJS</a></li>
@@ -44,7 +44,7 @@
 		          <li><a href="http://documentjs.com">DocumentJS</a></li>
 		        </ul>
 			</div>
-			
+
 			<ul class="nav">
 		        <li >
 	              <a href="../index.html">Home</a>
@@ -52,26 +52,23 @@
 		       <li><a href='../guides/index.html'>guides</a></li>
 		       <li class='active'><a href='index.html'>api</a></li>
 		        <li class=" community-menu">
-		          <a href="../community.html#!forums">Community</a>
+		          <a href="javascript://">Community</a>
 		          <ul class="dropdown-menu">
-		            <li><a href="https://forum.javascriptmvc.com/canjs">Forums</a></li>
-		            <li><a href="http://webchat.freenode.net/?channels=canjs">IRC</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/app/">Apps</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/plugin/">Plugins</a></li>
-		            <li><a href="http://bitovi.bithub.com/canjs/article/">Articles</a></li>
-		            <li><a href="http://github.com/bitovi/canjs">Github</a></li>
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
 		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
-		            <li><a href="http://bitovi.github.io/canjsmeetup/">Meetups</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
 		          </ul>
 		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
                 </li>
 		        <li >
 	              <a href="../download.html">Download</a>
                 </li>
 	      	</ul>
-			
+
 			<div class="pull-right">
 				<div class="bitovi-menu">
 					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
@@ -87,7 +84,7 @@
 					</ul>
 				</div>
 			</div>
-			
+
 		</nav>
 	</header>
 
@@ -413,7 +410,7 @@
 <div class="sub-heading">
 	
 	
-	<h2><code>{Object | <a href="can.Map.html" >can.Map</a> | function(attrs, parentviewModel, element)}</code></h2>
+	<h2><code>{Object | <a href="can.Map.html" >can.Map</a> | function(attrs, parentScope, element)}</code></h2>
 	
 	<span class="inherits">&nbsp;</span>
 </div>
@@ -421,7 +418,7 @@
 <ul class="links">
 	
 	
-		<li><a href="https://github.com/bitovi/canjs/tree/master/component/view-model.md">source</a></li>
+		<li><a href="https://github.com/canjs/canjs/tree/2.3-legacy/component/view-model.md">source</a></li>
 	
 	
 	
@@ -442,10 +439,11 @@
 			<p>Provides or describes a <a href="can.Map.html">can.Map</a> constructor function or <code>can.Map</code> instance that will be
 used to retrieve values found in the component's <a href="can.Component.prototype.template.html">template</a>. The map
 instance is initialized with values specified by the component element's attributes.</p>
-<p><strong>Note:</strong> In 2.1, <a href="can.stache.html">can.stache</a> and <a href="can.mustache.html">can.mustache</a> pass values to the
-viewModel differently. To pass data from the viewModel, you must wrap your attribute
-value with <code>{}</code>. In 3.0, <code>can.mustache</code>
-will use <code>can.stache</code>'s syntax.</p>
+<p><strong>Note:</strong> This page documents behavior of components in <a href="can.stache.html">can.stache</a>. <a href="can.mustache.html">can.mustache</a> behaves
+slightly differently. If you want the behavior of components with <a href="can.mustache.html">can.mustache</a>,
+please look at versions of this page prior to 2.3. In 2.3, use <a href="can.view.bindings.html">can.view.bindings</a> <a href="can.view.bindings.toChild.html">{to-child}</a>,
+<a href="can.view.bindings.toParent.html">{^to-parent}</a> and <a href="can.view.bindings.twoWay.html">{(two-way)}</a> to setup viewModel
+bindings.</p>
 
 		</section>
 		
@@ -469,23 +467,7 @@ will use <code>can.stache</code>'s syntax.</p>
       this.attr(&quot;offset&quot;, this.offset + this.limit);
     }
   }
-})
-</code></pre>
-<p>Prototype properties that have values of <code>&quot;@&quot;</code> are not looked up in the current viewModel, instead
-the literal string value of the relevant attribute is used (like pass by value instead of pass by reference).  For example:</p>
-<pre><code>can.Component.extend({
-  tag: &quot;my-tag&quot;,
-  viewModel: {
-    title: &quot;@&quot;
-  },
-  template: &quot;&lt;h1&gt;{{title}}&lt;/h1&gt;&quot;
 });
-</code></pre>
-<p>With source HTML like:</p>
-<pre><code>&lt;my-tag title=&quot;hello&quot;&gt;&lt;/my-tag&gt;
-</code></pre>
-<p>Results in:</p>
-<pre><code>&lt;my-tag&gt;&lt;h1&gt;hello&lt;/h1&gt;&lt;/my-tag&gt;
 </code></pre>
 
 
@@ -528,7 +510,7 @@ can.Component.extend({
   
 
 
-  <h2 id="sig_">function(attrs, parentviewModel, element)
+  <h2 id="sig_">function(attrs, parentScope, element)
 </h2>
 <div class="signature-wrapper">
 <p>Returns the instance or constructor function of the object that will be added
@@ -545,7 +527,7 @@ to the viewModel.</p>
 			<div class="description">
 				<p>An object of values specified by the custom element's attributes. For example,
 a template rendered like:</p>
-<pre><code>can.mustache(&quot;&lt;my-element title=&quot;name&quot;&gt;&lt;/my-element&gt;&quot;)({
+<pre><code>can.mustache(&quot;&lt;my-element title='name'&gt;&lt;/my-element&gt;&quot;)({
   name: &quot;Justin&quot;
 })
 </code></pre>
@@ -567,7 +549,7 @@ a template rendered like:</p>
 		</li>
 		
 		<li class="parameter">
-			<h4>parentviewModel
+			<h4>parentScope
 				<code>{can.view.viewModel}</code></h4>
 			<div class="description">
 				<p>The viewModel the custom tag was found within.  By default, any attribute's values will
@@ -575,8 +557,8 @@ be looked up within the current viewModel, but if you want to add values without
 the user to provide an attribute, you can set this up here.  For example:</p>
 <pre><code>can.Component.extend({
     tag: &quot;my-element&quot;,
-    viewModel: function(attrs, parentviewModel){
-      return new can.Map({title: parentviewModel.attr('name')});
+    viewModel: function(attrs, parentScope){
+      return new can.Map({title: parentScope.attr('name')});
     }
 });
 </code></pre>
@@ -596,7 +578,7 @@ the user to provide an attribute, you can set this up here.  For example:</p>
 to add custom attribute handling, you can do that here.  For example:</p>
 <pre><code>can.Component.extend({
     tag: &quot;my-element&quot;,
-    viewModel: function(attrs, parentviewModel, el){
+    viewModel: function(attrs, parentScope, el){
       return new can.Map({title: el.getAttribute('title')});
     }
 });
@@ -684,11 +666,11 @@ component shows the current page number based off a <code>limit</code> and <code
       return Math.floor(this.attr('offset') / this.attr('limit')) + 1;
     }
   },
-  template: &quot;Page {{page}}.&quot;
+  template: can.stache(&quot;Page {{page}}.&quot;)
 })
 </code></pre>
 <p>If this component HTML was inserted into the page like:</p>
-<pre><code>var template = can.mustache(&quot;&lt;my-paginate&gt;&lt;/my-paginate&gt;&quot;)
+<pre><code>var template = can.stache(&quot;&lt;my-paginate/&gt;&quot;)
 $(&quot;body&quot;).append(template())
 </code></pre>
 <p>It would result in:</p>
@@ -709,30 +691,24 @@ default values.</p>
 (in this case there is none) like:</p>
 <pre><code>componentData = new CustomMap(attrs);
 </code></pre>
-<p>And finally, that data is added to the <code>parentviewModel</code> of the component, used to
+<p>And finally, that data is added to the <a href="can.view.Scope.html">parentScope</a> of the component, used to
 render the component's template, and inserted into the element:</p>
-<pre><code>var newviewModel = parentviewModel.add(componentData),
-    result = can.mustache(&quot;Page {{page}}.&quot;)(newviewModel);
+<pre><code>var newviewModel = parentScope.add(componentData),
+    result = can.stache(&quot;Page {{page}}.&quot;)(newviewModel);
 $(element).html(result);
 </code></pre>
 <h2>Values passed from attributes</h2>
-<p>Values can be &quot;passed&quot; into the viewModel of a component, similar to passing arguments into a function. By default,
-custom tag attributes (other than <code>class</code> and <code>id</code>) are looked up
-in the parent viewModel and set as observable values on the <a href="can.Map.html">can.Map</a> instance.</p>
-<p>Values passed in this way are passed similar to function arguments that are &quot;pass by reference&quot; because they are crossbound to
-the property in the parent viewModel. Changes in the parent viewModel property that is passed in trigger changes in this component's viewModel
-property, and likewise, changes in the component's viewModel property trigger a change in the parent viewModel property.</p>
+<p>Values can be &quot;passed&quot; into the viewModel of a component, similar to passing arguments into a function. Using
+<a href="can.view.bindings.html">can.view.bindings</a>, the following binding types can be setup:</p>
+<ul>
+<li><a href="can.view.bindings.toChild.html">{to-child}</a> - Update the component's viewModel when the parent scope value changes.</li>
+<li><a href="can.view.bindings.toParent.html">{^to-parent}</a> - Update the parent scope when the component's viewModel changes.</li>
+<li><a href="can.view.bindings.twoWay.html">{(two-way)}</a> - Update the parent scope or the component's viewModel when the other changes.</li>
+</ul>
 <p>As mentioned in the deprecation warning above, using <a href="can.stache.html">can.stache</a>, values are passed into components like this:</p>
-<pre><code>&lt;my-paginate offset='{index}' limit='{size}'&gt;&lt;/my-paginate&gt;
+<pre><code>&lt;my-paginate {offset}='index' {limit}='size'&gt;&lt;/my-paginate&gt;
 </code></pre>
-<p>But using <a href="can.mustache.html">can.mustache</a>, values are passed like this:</p>
-<pre><code>&lt;my-paginate offset='index' limit='size'&gt;&lt;/my-paginate&gt;
-</code></pre>
-<p>The rest of the examples in this section show <code>can.mustache</code> syntax (which will change to match can.stache in 3.0).</p>
-<p>Note that using double brackets would instead render the string version of the value, and pass by value rather than by reference:</p>
-<pre><code>&lt;my-paginate offset='{{index}}' limit='{{size}}'&gt;&lt;/my-paginate&gt;
-</code></pre>
-<p>The above would create an offset and limit property on the component that are initialized to whatever index and size are, NOT cross-bind
+<p>The above would create an offset and limit property on the component that are initialized to whatever index and size are, NOT two-way bind (between component and parent viewModels)
 the offset and limit properties to the index and size.</p>
 <p>The following component requires an <code>offset</code> and <code>limit</code>:</p>
 <pre><code>can.Component.extend({
@@ -742,11 +718,11 @@ the offset and limit properties to the index and size.</p>
       return Math.floor(this.attr('offset') / this.attr('limit')) + 1;
     }
   },
-  template: &quot;Page {{page}}.&quot;
+  template: can.stache(&quot;Page {{page}}.&quot;)
 });
 </code></pre>
 <p>If <code>&lt;my-paginate&gt;</code>'s source html is rendered like:</p>
-<pre><code>var template = can.mustache(&quot;&lt;my-paginate offset='index' limit='size'&gt;&lt;/my-paginate&gt;&quot;);
+<pre><code>var template = can.stache(&quot;&lt;my-paginate {offset}='index' {limit}='size'&gt;&lt;/my-paginate&gt;&quot;);
 
 var pageInfo = new can.Map({
   index: 0,
@@ -764,31 +740,12 @@ index like:</p>
 <pre><code>&lt;my-paginate&gt;Page 1&lt;/my-paginate&gt;
 </code></pre>
 <h3>Using attribute values</h3>
-<p>You can also pass a literal string value of the attribute instead of the attribute's value looked up in
-the parent viewModel (similar to pass by value).</p>
-<p>To do this in <a href="can.stache.html">can.stache</a>, simply pass any value not wrapped in single brackets, and the viewModel property will
+<p>You can also pass a literal string value of the attribute. To do this in <a href="can.stache.html">can.stache</a>,
+simply pass any value not wrapped in single brackets, and the viewModel property will
 be initialized to this string value:</p>
 <pre><code>&lt;my-tag title=&quot;hello&quot;&gt;&lt;/my-tag&gt;
 </code></pre>
-<p>The above will create a title property in the component's viewModel, which has a string <code>hello</code>.  If instead hello was wrapped with
-brackets like <code>{hello}</code>, a hello property would be looked up in the parent's viewModel.</p>
-<p>To do this in <a href="can.mustache.html">can.mustache</a>, pass a value like in <code>can.stache</code>, and set the corresponding viewModel property in the component
-to <code>@</code>.  For example:</p>
-<pre><code>can.Component.extend({
-  tag: &quot;my-tag&quot;,
-  viewModel: {
-    title: &quot;@&quot;
-  },
-  template: &quot;&lt;h1&gt;{{title}}&lt;/h1&gt;&quot;
-});
-</code></pre>
-<p>With source HTML like:</p>
-<pre><code>&lt;my-tag title=&quot;hello&quot;&gt;&lt;/my-tag&gt;
-</code></pre>
-<p>Results in:</p>
-<pre><code>&lt;my-tag&gt;&lt;h1&gt;hello&lt;/h1&gt;&lt;/my-tag&gt;
-</code></pre>
-<p>In 3.0, <code>can.mustache</code> syntax (requiring <code>&quot;@&quot;</code>) will change to <code>can.stache</code>'s (not requiring <code>&quot;@&quot;</code>).</p>
+<p>The above will create a title property in the component's viewModel, which has a string <code>hello</code>.</p>
 <p>If the tag's <code>title</code> attribute is changed, it updates the viewModel property
 automatically.  This can be seen in the following example:</p>
 <div class='demo_wrapper' data-demo-src='can/component/examples/accordion.html'></div>
@@ -814,15 +771,38 @@ button that calls the viewModel's <code>next</code> method like:</p>
       return Math.floor(this.attr('offset') / this.attr('limit')) + 1;
     }
   },
-  template: &quot;Page {{page}} &lt;button can-click='next'&gt;Next&lt;/button&gt;&quot;
+  template: can.stache(&quot;Page {{page}} &lt;button ($click)='next()'&gt;Next&lt;/button&gt;&quot;)
 })
 </code></pre>
 <p>viewModel methods get called back with the current context, the element that you are listening to
 and the event that triggered the callback.</p>
 <div class='demo_wrapper' data-demo-src='can/component/examples/paginate_next.html'></div>
+<h2>Publishing events on viewModels</h2>
+<p>Maps can publish events on themselves. For instance, the following <code>&lt;player-edit&gt;</code> component,
+dispatches a <code>&quot;close&quot;</code> event when it's close method is called:</p>
+<pre><code>can.Component.extend({
+  tag: &quot;player-edit&quot;,
+  template: can.view('player-edit-stache'),
+  viewModel: {
+    close: function(){
+      this.dispatch(&quot;close&quot;);
+    }
+  }
+});
+</code></pre>
+<p>These can be listened to with <a href="can.view.bindings.event.html">(event)</a> bindings like:</p>
+<pre><code>&lt;player-edit 
+    (close)=&quot;removeEdit()&quot; 
+    {player}=&quot;editingPlayer&quot;/&gt;
+</code></pre>
+<p>The following demo uses this ability to create a close button that
+hides the player editor:</p>
+<div class='demo_wrapper' data-demo-src='can/component/examples/paginate_next_event.html'></div>
 
 		</section>
 		
+		
+
 		
 
 		
@@ -838,7 +818,7 @@ and the event that triggered the callback.</p>
 
 
 
-	
+
 	
 	<footer>
 		<nav class="container">
@@ -849,11 +829,8 @@ and the event that triggered the callback.</p>
 	            </li>
 		        <li><a href='../guides/index.html'>guides</a></li>
 		        <li class='active'><a href='index.html'>api</a></li>
-		        <li class="">
-		          <a href="../community.html#!forums">Community</a>
-		        </li>
-		        <li >
-	              <a href="../blog/index.html">Blog</a>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
 	            </li>
 		        <li >
 	              <a href="../download.html">Download</a>
@@ -863,7 +840,7 @@ and the event that triggered the callback.</p>
 	</footer>
 	
 
-    
+
     <script type="text/javascript">
 
 	  var _gaq = _gaq || [];
@@ -871,19 +848,19 @@ and the event that triggered the callback.</p>
 	  _gaq.push(['_setDomainName', 'canjs.com']);
 	  _gaq.push(['_setAllowLinker', true]);
 	  _gaq.push(['_trackPageview']);
-	
+
 	  (function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
-	
+
 	</script>
-	
+
 	<script type="text/javascript">
-		var docObject = {"type":"property","name":"can.Component.prototype.viewModel","src":"component/view-model.md","description":"Provides or describes a [can.Map] constructor function or `can.Map` instance that will be\nused to retrieve values found in the component's [can.Component::template template]. The map \ninstance is initialized with values specified by the component element's attributes.\n\n__Note:__ In 2.1, [can.stache] and [can.mustache] pass values to the\nviewModel differently. To pass data from the viewModel, you must wrap your attribute \nvalue with `{}`. In 3.0, `can.mustache`\nwill use `can.stache`'s syntax.","types":[{"type":"Object","description":"A plain JavaScript object that is used to define the prototype methods and properties of\n[can.Construct constructor function] that extends [can.Map]. For example:\n\n    can.Component.extend({\n      tag: \"my-paginate\",\n      viewModel: {\n        offset: 0,\n        limit: 20,\n        next: function(){\n          this.attr(\"offset\", this.offset + this.limit);\n        }\n      }\n    })\n\nPrototype properties that have values of `\"@\"` are not looked up in the current viewModel, instead\nthe literal string value of the relevant attribute is used (like pass by value instead of pass by reference).  For example:\n\n    can.Component.extend({\n      tag: \"my-tag\",\n      viewModel: {\n        title: \"@\"\n      },\n      template: \"<h1>{{title}}</h1>\"\n    });\n   \nWith source HTML like:\n\n    <my-tag title=\"hello\"></my-tag>\n    \nResults in:\n\n    <my-tag><h1>hello</h1></my-tag>","options":[]},{"type":"can.Map","description":"A `can.Map` constructor function will be used to create an instance of the observable\n`can.Map` placed at the head of the template's viewModel.  For example:\n\n    var Paginate = can.Map.extend({\n      offset: 0,\n      limit: 20,\n      next: function(){\n        this.attr(\"offset\", this.offset + this.limit);\n      }\n    })\n    can.Component.extend({\n      tag: \"my-paginate\",\n      viewModel: Paginate\n    })"},{"type":"function","returns":{"types":[{"type":"can.Map","description":"If an instance of `can.Map` is returned, that instance is placed\non top of the viewModel and used to render the component's template."},{"type":"Object","options":[],"description":"If a plain JavaScript object is returned, that is used as a prototype\ndefinition used to extend `can.Map`.  A new instance of the extended Map is created."}],"description":"Specifies one of the following:\n\n - The data used to render the component's template.\n - The prototype of a `can.Map` that will be used to render the component's template."},"params":[{"types":[{"type":"Object","options":[]}],"name":"attrs","description":"An object of values specified by the custom element's attributes. For example,\na template rendered like:\n\n    can.mustache(\"<my-element title=\"name\"></my-element>\")({\n      name: \"Justin\"\n    })\n\nCreates an instance of following control:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs){\n    \t  attrs.title //-> \"Justin\";\n    \t  return new can.Map(attrs);\n    \t}\n    })\n\nAnd calls the viewModel function with `attrs` like `{title: \"Justin\"}`."},{"types":[{"type":"can.view.viewModel"}],"name":"parentviewModel","description":"The viewModel the custom tag was found within.  By default, any attribute's values will\nbe looked up within the current viewModel, but if you want to add values without needing\nthe user to provide an attribute, you can set this up here.  For example:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs, parentviewModel){\n    \t  return new can.Map({title: parentviewModel.attr('name')});\n    \t}\n    });\n\nNotice how the attribute's value is looked up in `my-element`'s parent viewModel."},{"types":[{"type":"HTMLElement"}],"name":"element","description":"The element the [can.Component] is going to be placed on. If you want\nto add custom attribute handling, you can do that here.  For example:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs, parentviewModel, el){\n    \t  return new can.Map({title: el.getAttribute('title')});\n    \t}\n    });"}],"description":"Returns the instance or constructor function of the object that will be added\nto the viewModel."}],"title":"","parent":"can.Component.prototype","comment":" ","ignoreTemplateRender":true,"templates":"/Users/justin/dev/canjs.com/theme/templates","static":"/Users/justin/dev/canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/justin/dev/canjs.com/can"},"dest":"/Users/justin/dev/canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"master","number":"2.1"},{"number":"2.0"},{"number":"1.1"}],"defaultDownloadVersion":"2.2.4","docConfigDest":"../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#master"}};
+		var docObject = {"type":"property","name":"can.Component.prototype.viewModel","src":"component/view-model.md","description":"Provides or describes a [can.Map] constructor function or `can.Map` instance that will be\nused to retrieve values found in the component's [can.Component::template template]. The map \ninstance is initialized with values specified by the component element's attributes.\n\n__Note:__ This page documents behavior of components in [can.stache]. [can.mustache] behaves\nslightly differently. If you want the behavior of components with [can.mustache], \nplease look at versions of this page prior to 2.3. In 2.3, use [can.view.bindings] [can.view.bindings.toChild], \n[can.view.bindings.toParent] and [can.view.bindings.twoWay] to setup viewModel \nbindings.","types":[{"type":"Object","description":"A plain JavaScript object that is used to define the prototype methods and properties of\n[can.Construct constructor function] that extends [can.Map]. For example:\n\n    can.Component.extend({\n      tag: \"my-paginate\",\n      viewModel: {\n        offset: 0,\n        limit: 20,\n        next: function(){\n          this.attr(\"offset\", this.offset + this.limit);\n        }\n      }\n    });","options":[]},{"type":"can.Map","description":"A `can.Map` constructor function will be used to create an instance of the observable\n`can.Map` placed at the head of the template's viewModel.  For example:\n\n    var Paginate = can.Map.extend({\n      offset: 0,\n      limit: 20,\n      next: function(){\n        this.attr(\"offset\", this.offset + this.limit);\n      }\n    })\n    can.Component.extend({\n      tag: \"my-paginate\",\n      viewModel: Paginate\n    })"},{"type":"function","returns":{"types":[{"type":"can.Map","description":"If an instance of `can.Map` is returned, that instance is placed\non top of the viewModel and used to render the component's template."},{"type":"Object","options":[],"description":"If a plain JavaScript object is returned, that is used as a prototype\ndefinition used to extend `can.Map`.  A new instance of the extended Map is created."}],"description":"Specifies one of the following:\n\n - The data used to render the component's template.\n - The prototype of a `can.Map` that will be used to render the component's template."},"params":[{"types":[{"type":"Object","options":[]}],"name":"attrs","description":"An object of values specified by the custom element's attributes. For example,\na template rendered like:\n\n    can.mustache(\"<my-element title='name'></my-element>\")({\n      name: \"Justin\"\n    })\n\nCreates an instance of following control:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs){\n    \t  attrs.title //-> \"Justin\";\n    \t  return new can.Map(attrs);\n    \t}\n    })\n\nAnd calls the viewModel function with `attrs` like `{title: \"Justin\"}`."},{"types":[{"type":"can.view.viewModel"}],"name":"parentScope","description":"The viewModel the custom tag was found within.  By default, any attribute's values will\nbe looked up within the current viewModel, but if you want to add values without needing\nthe user to provide an attribute, you can set this up here.  For example:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs, parentScope){\n    \t  return new can.Map({title: parentScope.attr('name')});\n    \t}\n    });\n\nNotice how the attribute's value is looked up in `my-element`'s parent viewModel."},{"types":[{"type":"HTMLElement"}],"name":"element","description":"The element the [can.Component] is going to be placed on. If you want\nto add custom attribute handling, you can do that here.  For example:\n\n    can.Component.extend({\n    \ttag: \"my-element\",\n    \tviewModel: function(attrs, parentScope, el){\n    \t  return new can.Map({title: el.getAttribute('title')});\n    \t}\n    });"}],"description":"Returns the instance or constructor function of the object that will be added\nto the viewModel."}],"title":"","parent":"can.Component.prototype","comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","guides/**/*.md","guides/*.js","guides/**/*.js","{node_modules,bower_components,dist}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../documentjs.json","project":{"version":"2.3","name":"canjs","source":"git://github.com/canjs/canjs#2.3-legacy"}};
 	</script>
-	
+
 	
 		<script>
 		  steal = {
@@ -892,13 +869,13 @@ and the event that triggered the callback.</p>
 		    }
 		  }
 		</script>
-		<script type='text/javascript' 
+		<script type='text/javascript'
 				data-main="static"
 				data-config="./static/config.js"
 				src="./static/steal.production.js"
 		    		bundles-path="bundles"></script>
 	
-	
+
 </body>
 
 </html>

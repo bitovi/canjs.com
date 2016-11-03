@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>compute/read.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">60.48</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">293</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">92.60</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.51</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">steal(&quot;can/util&quot;, function(can){
+	
+	
+	// there are things that you need to evaluate when you get them back as a property read
+	// for example a compute or a function you might need to call to get the next value to 
+	// actually check
+	// - isArgument - should be renamed to something like &quot;onLastPropertyReadReturnFunctionInsteadOfCallingIt&quot;.
+	//   This is used to make a compute out of that function if necessary.
+	// - readCompute - can be set to `false` to prevent reading an ending compute.  This is used by component to get a
+	//   compute as a delegate.  In 3.0, this should be removed and force people to write &quot;{@prop} change&quot;
+	// - callMethodsOnObservables - this is an overwrite ... so normal methods won&#039;t be called, but observable ones will.
+	// - executeAnonymousFunctions - call a function if it&#039;s found, defaults to true
+	// - proxyMethods - if the last read is a method, return a function so `this` will be correct.
+	// - args - arguments to call functions with.
+	//
+	// Callbacks
+	// - earlyExit - called if a value could not be found
+	// - foundObservable - called when an observable value is found
+	var read = function (parent, reads, options) {
+		
+		options = options || {};
+		var state = {
+			foundObservable: false
+		};
+		
+		// `cur` is the current value.
+		var cur = readValue(parent, 0, reads, options, state),
+			type,
+			// `prev` is the object we are reading from.
+			prev,
+			// `foundObs` did we find an observable.
+			readLength = reads.length,
+			i = 0;
+
+
+		while( i &lt; readLength ) {
+			prev = cur;
+			// try to read the property
+			for(var r=0, readersLength = read.propertyReaders.length; r &lt; readersLength; r++) {
+				var reader = read.propertyReaders[r];
+				if(reader.test(cur)) {
+					cur = reader.read(cur, reads[i], i, options, state);
+					break; // there can be only one reading of a property
+				}
+			}
+			i = i+1;
+			// read the value if it is a compute or function
+			cur = readValue(cur, i, reads, options, state, prev);
+			type = typeof cur;
+			// early exit if need be
+			if (i &lt; reads.length &amp;&amp; (cur === null || type !== &#039;function&#039; &amp;&amp; type !== &#039;object&#039;)) {
+				if (options.earlyExit) {
+					options.earlyExit(prev, i - 1, cur);
+				}
+				// return undefined so we know this isn&#039;t the right value
+				return {
+					value: undefined,
+					parent: prev
+				};
+			}
+			
+		}
+		// if we don&#039;t have a value, exit early.
+		if (cur === undefined) {
+			if (options.earlyExit) {
+				options.earlyExit(prev, i - 1);
+			}
+		}
+		return {
+			value: cur,
+			parent: prev
+		};
+	};
+
+
+	var isAt = function(index, reads) {
+		var prevRead = reads[index-1];
+		return prevRead &amp;&amp; prevRead.at;
+	};
+
+	var readValue = function(value, index, reads, options, state, prev){
+		// if the previous read is AT false ... we shouldn&#039;t be doing this;
+		var usedValueReader;
+		do {
+			
+			usedValueReader = false;
+			for(var i =0, len = read.valueReaders.length; i &lt; len; i++){
+				if( read.valueReaders[i].test(value, index, reads, options) ) {
+					value = read.valueReaders[i].read(value, index, reads, options, state, prev);
+					//usedValueReader = true;
+				}
+			}
+		} while(usedValueReader);
+		
+		return value;
+	};
+	
+	// value readers check the current value
+	// and get a new value from it
+	// ideally they would keep calling until 
+	// none of these passed
+	read.valueReaders = [{
+		name: &quot;compute&quot;,
+		// compute value reader
+		test: function(value, i, reads, options){
+			
+			return value &amp;&amp; value.isComputed &amp;&amp; !isAt(i, reads);
+		},
+		read: function(value, i, reads, options, state){
+			if(options.readCompute === false &amp;&amp; i === reads.length ) {
+				return value;
+			}
+			
+			if (!state.foundObservable &amp;&amp; options.foundObservable) {
+				options.foundObservable(value, i);
+				state.foundObservable = true;
+			}
+			return value instanceof can.Compute ? value.get() : value();
+		}
+	},{
+		name: &quot;function&quot;,
+		// if this is a function before the last read and its not a constructor function
+		test: function(value, i, reads, options){
+			var type = typeof value;
+			// i = reads.length if this is the last iteration of the read for-loop.
+			return type === &#039;function&#039; &amp;&amp; !value.isComputed &amp;&amp;
+				!(can.Construct &amp;&amp; value.prototype instanceof can.Construct) &amp;&amp;
+				!(can.route &amp;&amp; value === can.route);
+		},
+		read: function(value, i, reads, options, state, prev){
+			if( isAt(i, reads) ) {
+				return i === reads.length ? can.proxy(value, prev) : value;
+			}
+			else if(options.callMethodsOnObservables &amp;&amp; can.isMapLike(prev)) {
+				return value.apply(prev, options.args || []);
+			}
+			else if ( options.isArgument &amp;&amp; i === reads.length ) {
+				return options.proxyMethods !== false ? can.proxy(value, prev) : value;
+			}
+			return value.apply(prev, options.args || []);
+		}
+	}];
+	
+	// propertyReaders actually read a property value 
+	read.propertyReaders = [
+		// read a can.Map or can.route
+		{
+			name: &quot;map&quot;,
+			test: can.isMapLike,
+			read: function(value, prop, index, options, state){
+				if (!state.foundObservable &amp;&amp; options.foundObservable) {
+					options.foundObservable(value, index);
+					state.foundObservable = true;
+				}
+				var res = value.attr(prop.key);
+				if(res !== undefined) {
+					return res;
+				} else {
+					return value[prop.key];
+				}
+			}
+		},
+		// read a promise
+		{
+			name: &quot;promise&quot;,
+			test: function(value){
+				return can.isPromise(value);
+			},
+			read: function(value, prop, index, options, state){
+				if (!state.foundObservable &amp;&amp; options.foundObservable) {
+					options.foundObservable(value, index);
+					state.foundObservable = true;
+				}
+				var observeData = value.__observeData;
+				if(!value.__observeData) {
+					observeData = value.__observeData = {
+						isPending: true,
+						state: &quot;pending&quot;,
+						isResolved: false,
+						isRejected: false,
+						value: undefined,
+						reason: undefined
+					};
+					can.cid(observeData);
+					// proto based would be faster
+					can.simpleExtend(observeData, can.event);
+					value.then(function(value){
+						observeData.isPending = false;
+						observeData.isResolved = true;
+						observeData.value = value;
+						observeData.state = &quot;resolved&quot;;
+						observeData.dispatch(&quot;state&quot;,[&quot;resolved&quot;,&quot;pending&quot;]);
+					}, function(reason){
+						observeData.isPending = false;
+						observeData.isRejected = true;
+						observeData.reason = reason;
+						observeData.state = &quot;rejected&quot;;
+						observeData.dispatch(&quot;state&quot;,[&quot;rejected&quot;,&quot;pending&quot;]);
+					});
+				}
+				can.__observe(observeData,&quot;state&quot;);
+				return prop.key in observeData ? observeData[prop.key] : value[prop.key];
+			}
+		},
+		
+		// read a normal object
+		{
+			name: &quot;object&quot;,
+			// this is the default
+			test: function(){return true;},
+			read: function(value, prop){
+				if(value == null) {
+					return undefined;
+				} else {
+					if(prop.key in value) {
+						return value[prop.key];
+					}
+					// TODO: remove in 3.0.  This is for backwards compat with @key and @index.
+					else if( prop.at &amp;&amp; specialRead[prop.key] &amp;&amp; ( (&quot;@&quot;+prop.key) in value)) {
+						//!steal-remove-start
+						can.dev.warn(&quot;Use %&quot;+prop.key+&quot; in place of @&quot;+prop.key+&quot;.&quot;);
+						
+						//!steal-remove-end
+						
+						prop.at = false;
+						return value[&quot;@&quot;+prop.key];
+					}
+					
+				}
+			}
+		}
+	];
+	
+	var specialRead = {index: true, key: true, event: true, element: true, viewModel: true};
+	
+	// This should be able to set a property similar to how read works.
+	read.write = function(parent, key, value, options) {
+		options = options || {};
+		if(can.isMapLike(parent)) {
+			// HACK! ... check if the attr is a comptue, if it is, set it.
+			if(!options.isArgument &amp;&amp; parent._data &amp;&amp; parent._data[key] &amp;&amp; parent._data[key].isComputed) {
+				return parent._data[key](value);
+			} else {
+				return parent.attr(key, value);
+			}
+		}
+
+		if(parent[key] &amp;&amp; parent[key].isComputed) {
+			return parent[key](value);
+		}
+
+		if(typeof parent === &#039;object&#039;) {
+			parent[key] = value;
+		}
+	};
+	
+
+	read.reads = function(key) {
+		var keys = [];
+		var last = 0;
+		var at = false;
+		if( key.charAt(0) === &quot;@&quot; ) {
+			last = 1;
+			at = true;
+		}
+		var keyToAdd = &quot;&quot;;
+		for(var i = last; i &lt; key.length; i++) {
+			var character = key.charAt(i);
+			if(character === &quot;.&quot; || character === &quot;@&quot;) {
+				if( key.charAt(i -1) !== &quot;\\&quot; ) {
+					keys.push({
+						key: keyToAdd,
+						at: at
+					});
+					at = character === &quot;@&quot;;
+					keyToAdd = &quot;&quot;;
+				} else {
+					keyToAdd = keyToAdd.substr(0,keyToAdd.length - 1) + &quot;.&quot;;
+				}
+			} else {
+				keyToAdd += character;
+			}
+		}
+		keys.push({
+			key: keyToAdd,
+			at: at
+		});
+		
+		return keys;
+	};
+	
+	return read;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

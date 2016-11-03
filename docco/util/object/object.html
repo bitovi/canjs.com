@@ -30,7 +30,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 	<span class="hljs-keyword">var</span> isArray = can.isArray;
 	can.Object = {};
 	<span class="hljs-comment">/**
@@ -79,7 +79,7 @@
 	 * }})      //-&gt; true
 	 * ```
 	 */</span>
-	<span class="hljs-keyword">var</span> same = can.Object.same = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b, compares, aParent, bParent, deep)</span> </span>{
+	<span class="hljs-keyword">var</span> same = can.Object.same = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, b, compares, aParent, bParent, deep</span>) </span>{
 		<span class="hljs-keyword">var</span> aType = <span class="hljs-keyword">typeof</span> a,
 			aArray = isArray(a),
 			comparesType = <span class="hljs-keyword">typeof</span> compares,
@@ -98,7 +98,7 @@
 		<span class="hljs-keyword">if</span> (a <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span> || b <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Date</span>) {
 			<span class="hljs-keyword">return</span> a === b;
 		}
-		<span class="hljs-keyword">if</span> (deep === -<span class="hljs-number">1</span>) {
+		<span class="hljs-keyword">if</span> (deep === <span class="hljs-number">-1</span>) {
 			<span class="hljs-keyword">return</span> aType === <span class="hljs-string">'object'</span> || a === b;
 		}
 		<span class="hljs-keyword">if</span> (aType !== <span class="hljs-keyword">typeof</span> b || aArray !== isArray(b)) {
@@ -122,7 +122,7 @@
 			<span class="hljs-keyword">var</span> bCopy = can.extend({}, b);
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> a) {
 				compare = compares[prop] === <span class="hljs-literal">undefined</span> ? compares[<span class="hljs-string">'*'</span>] : compares[prop];
-				<span class="hljs-keyword">if</span> (!same(a[prop], b[prop], compare, a, b, deep === <span class="hljs-literal">false</span> ? -<span class="hljs-number">1</span> : <span class="hljs-literal">undefined</span>)) {
+				<span class="hljs-keyword">if</span> (!same(a[prop], b[prop], compare, a, b, deep === <span class="hljs-literal">false</span> ? <span class="hljs-number">-1</span> : <span class="hljs-literal">undefined</span>)) {
 					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 				}
 				<span class="hljs-keyword">delete</span> bCopy[prop];
@@ -142,7 +142,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (prop <span class="hljs-keyword">in</span> bCopy) {
-				<span class="hljs-keyword">if</span> (compares[prop] === <span class="hljs-literal">undefined</span> || !same(<span class="hljs-literal">undefined</span>, b[prop], compares[prop], a, b, deep === <span class="hljs-literal">false</span> ? -<span class="hljs-number">1</span> : <span class="hljs-literal">undefined</span>)) {
+				<span class="hljs-keyword">if</span> (compares[prop] === <span class="hljs-literal">undefined</span> || !same(<span class="hljs-literal">undefined</span>, b[prop], compares[prop], a, b, deep === <span class="hljs-literal">false</span> ? <span class="hljs-number">-1</span> : <span class="hljs-literal">undefined</span>)) {
 					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 				}
 			}
@@ -168,7 +168,7 @@
 	 * ]); //-&gt; [{userId: 20, limit: 30}]
 	 * ```
 	 */</span>
-	can.Object.subsets = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(checkSet, sets, compares)</span> </span>{
+	can.Object.subsets = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">checkSet, sets, compares</span>) </span>{
 		<span class="hljs-keyword">var</span> len = sets.length,
 			subsets = [];
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {</pre></div></div>
@@ -201,14 +201,14 @@
 	 * @param {Object} subset
 	 * @param {Object} set
 	 * @param {Object} compares
-	 * @returns {Boolean} Whether or not subset is a subset of set
+	 * @return {Boolean} Whether or not subset is a subset of set
 	 * @body
 	 * ## Example
 	 * ```
 	 * can.Object.subset({}, {foo: "bar"} ) //-&gt; true
 	 * ```
 	 */</span>
-	can.Object.subset = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(subset, set, compares)</span> </span>{</pre></div></div>
+	can.Object.subset = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">subset, set, compares</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -236,18 +236,18 @@ in subset (ones that have to have a value)</p>
 		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 	};
 	<span class="hljs-keyword">var</span> compareMethods = {
-		<span class="hljs-string">'null'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-string">'null'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 		},
-		i: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> </span>{
+		<span class="hljs-attr">i</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">a, b</span>) </span>{
 			<span class="hljs-keyword">return</span> (<span class="hljs-string">''</span> + a)
 				.toLowerCase() === (<span class="hljs-string">''</span> + b)
 				.toLowerCase();
 		},
-		eq: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a, b)</span> </span>{
+		<span class="hljs-attr">eq</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a, b</span>) </span>{
 			<span class="hljs-keyword">return</span> a === b;
 		},
-		similar: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a, b)</span> </span>{
+		<span class="hljs-attr">similar</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">a, b</span>) </span>{
 			<span class="hljs-comment">/*jshint eqeqeq:false */</span>
 			<span class="hljs-keyword">return</span> a == b;
 		}

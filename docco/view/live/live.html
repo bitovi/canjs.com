@@ -30,7 +30,12 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/view/elements.js'</span>, <span class="hljs-string">'can/view'</span>, <span class="hljs-string">'can/view/node_lists'</span>, <span class="hljs-string">'can/view/parser'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can, elements, view, nodeLists, parser)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>,
+	<span class="hljs-string">'can/view/elements.js'</span>,
+	<span class="hljs-string">'can/view'</span>,
+	<span class="hljs-string">'can/view/node_lists'</span>,
+	<span class="hljs-string">'can/view/parser'</span>,
+	<span class="hljs-string">'can/util/array/diff.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can, elements, view, nodeLists, parser, diff</span>) </span>{
 
 	elements = elements || can.view.elements;
 	nodeLists = nodeLists || can.view.NodeLists;
@@ -58,7 +63,7 @@ if the element is “destroyed” (removed from the DOM).</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, bind, unbind)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> setup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, bind, unbind</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -75,7 +80,7 @@ unregister the nodeList which calls teardown</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> tornDown = <span class="hljs-literal">false</span>,
-			teardown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			teardown = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">if</span> (!tornDown) {
 					tornDown = <span class="hljs-literal">true</span>;
 					unbind(data);
@@ -83,14 +88,28 @@ unregister the nodeList which calls teardown</p>
 				}
 				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 			}, data = {
-				teardownCheck: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(parent)</span> </span>{
+				<span class="hljs-attr">teardownCheck</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parent</span>) </span>{
 					<span class="hljs-keyword">return</span> parent ? <span class="hljs-literal">false</span> : teardown();
 				}
 			};
 		can.bind.call(el, <span class="hljs-string">'removed'</span>, teardown);
 		bind(data);
 		<span class="hljs-keyword">return</span> data;
-	},</pre></div></div>
+	},
+		getChildNodes = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>)</span>{
+			<span class="hljs-keyword">var</span> childNodes = node.childNodes;
+			<span class="hljs-keyword">if</span>(<span class="hljs-string">"length"</span> <span class="hljs-keyword">in</span> childNodes) {
+				<span class="hljs-keyword">return</span> childNodes;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">var</span> cur = node.firstChild;
+				<span class="hljs-keyword">var</span> nodes = [];
+				<span class="hljs-keyword">while</span>(cur) {
+					nodes.push(cur);
+					cur = cur.nextSibling;
+				}
+				<span class="hljs-keyword">return</span> nodes;
+			}
+		},</pre></div></div>
             
         </li>
         
@@ -107,11 +126,11 @@ operate on a compute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		listen = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, change)</span> </span>{
-			<span class="hljs-keyword">return</span> setup(el, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				compute.bind(<span class="hljs-string">'change'</span>, change);
-			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
-				compute.unbind(<span class="hljs-string">'change'</span>, change);
+            <div class="content"><div class='highlight'><pre>		listen = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, compute, change</span>) </span>{
+			<span class="hljs-keyword">return</span> setup(el, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				compute.computeInstance.bind(<span class="hljs-string">'change'</span>, change);
+			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+				compute.computeInstance.unbind(<span class="hljs-string">'change'</span>, change);
 				<span class="hljs-keyword">if</span> (data.nodeList) {
 					nodeLists.unregister(data.nodeList);
 				}
@@ -132,50 +151,195 @@ operate on a compute</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		getAttributeParts = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		getAttributeParts = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newVal</span>) </span>{
 			<span class="hljs-keyword">var</span> attrs = {},
 				attr;
 			parser.parseAttrs(newVal,{
-				attrStart: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(name)</span></span>{
+				<span class="hljs-attr">attrStart</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>)</span>{
 					attrs[name] = <span class="hljs-string">""</span>;
 					attr = name;
 				},
-				attrValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+				<span class="hljs-attr">attrValue</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value</span>)</span>{
 					attrs[attr] += value;
 				},
-				attrEnd: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{}
+				<span class="hljs-attr">attrEnd</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
 			});
 			<span class="hljs-keyword">return</span> attrs;
 		},
 		splice = [].splice,
-		isNode = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
+		isNode = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>)</span>{
 			<span class="hljs-keyword">return</span> obj &amp;&amp; obj.nodeType;
 		},
-		addTextNodeIfNoChildren = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(frag)</span></span>{
-			<span class="hljs-keyword">if</span>(!frag.childNodes.length) {
-				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">""</span>));
+		addTextNodeIfNoChildren = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">frag</span>)</span>{
+			<span class="hljs-keyword">if</span>(!frag.firstChild) {
+				frag.appendChild(frag.ownerDocument.createTextNode(<span class="hljs-string">""</span>));
 			}
-		};
+		},
+		getLiveFragment = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">itemHTML</span>)</span>{
+			<span class="hljs-keyword">var</span> gotText = <span class="hljs-keyword">typeof</span> itemHTML === <span class="hljs-string">"string"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>and convert it into elements.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				itemFrag = can.frag(itemHTML);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Add those elements to the mappings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> gotText ? can.view.hookup(itemFrag) : itemFrag;
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>a helper function that renders something and adds its nodeLists to newNodeLists
+in the right way for both stache and mustache.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		renderAndAddToNodeLists = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newNodeLists, parentNodeList, render, context, args</span>)</span>{
+			<span class="hljs-keyword">var</span> itemNodeList = [];
+
+			<span class="hljs-keyword">if</span>(parentNodeList) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Pass in true so itemNodeList doesn’t get added to the
+parentNodeList’s replacements array. #2332.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				nodeLists.register(itemNodeList,<span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+				itemNodeList.parentList = parentNodeList;
+				itemNodeList.expression = <span class="hljs-string">"#each SUBEXPRESSION"</span>;
+			}
+
+			<span class="hljs-keyword">var</span> itemHTML = render.apply(context, args.concat([itemNodeList])),
+				itemFrag = getLiveFragment(itemHTML);
+
+			<span class="hljs-keyword">var</span> childNodes = can.makeArray(getChildNodes(itemFrag));
+			<span class="hljs-keyword">if</span>(parentNodeList) {
+				nodeLists.update(itemNodeList, childNodes);
+				newNodeLists.push(itemNodeList);
+			} <span class="hljs-keyword">else</span> {
+				newNodeLists.push(nodeLists.register(childNodes));
+			}
+			<span class="hljs-keyword">return</span> itemFrag;
+		},
+		removeFromNodeList = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">masterNodeList, index, length</span>)</span>{
+			<span class="hljs-keyword">var</span> removedMappings = masterNodeList.splice(index + <span class="hljs-number">1</span>, length),
+				itemsToRemove = [];
+			can.each(removedMappings, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nodeList</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Unregister to free up event bindings.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> nodesToRemove = nodeLists.unregister(nodeList);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>add items that we will remove all at once</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				[].push.apply(itemsToRemove, nodesToRemove);
+			});
+			<span class="hljs-keyword">return</span> itemsToRemove;
+		},
+		addFalseyIfEmpty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">list, falseyRender, masterNodeList, nodeList</span>)</span>{
+			<span class="hljs-keyword">if</span>(falseyRender &amp;&amp; list.length === <span class="hljs-number">0</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>there are no items … we should render the falsey template</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> falseyNodeLists = [];
+				<span class="hljs-keyword">var</span> falseyFrag = renderAndAddToNodeLists(falseyNodeLists, nodeList, falseyRender, list, [list]);
+
+				elements.after([masterNodeList[<span class="hljs-number">0</span>]], falseyFrag);
+				masterNodeList.push(falseyNodeLists[<span class="hljs-number">0</span>]);
+			}
+		},
+		childMutationCallbacks = {};
 	<span class="hljs-comment">/**
 	 * @property {Object} can.view.live
 	 * @parent can.view.static
 	 * @release 2.0.4
 	 *
 	 * Setup live-binding between the DOM and a compute manually.
-	 * 
+	 *
 	 * @option {Object} An object with the live-binding methods:
-	 * [can.view.live.html], [can.view.live.list], [can.view.live.text], 
+	 * [can.view.live.html], [can.view.live.list], [can.view.live.text],
 	 * [can.view.live.attr] and [can.view.live.attrs].
-	 * 
+	 *
 	 * @body
 	 *
 	 * ## Use
 	 *
 	 * `can.view.live` is an object with utlitiy methods for setting up
-	 * live-binding in relation to different parts of the DOM and DOM elements.  For 
+	 * live-binding in relation to different parts of the DOM and DOM elements.  For
 	 * example, to make an `&lt;h2&gt;`'s text stay live with
 	 * a compute:
-	 * 
+	 *
 	 *     var text = can.compute("Hello World");
 	 *     var textNode = $("h2").text(" ")[0].childNodes[0];
 	 *     can.view.live.text(textNode, text);
@@ -183,6 +347,19 @@ operate on a compute</p>
 	 *
 	 */</span>
 	<span class="hljs-keyword">var</span> live = {
+		<span class="hljs-attr">registerChildMutationCallback</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">tag, callback</span>)</span>{
+			<span class="hljs-keyword">if</span>(callback) {
+				childMutationCallbacks[tag] = callback;
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">return</span> childMutationCallbacks[tag];
+			}
+		},
+		<span class="hljs-attr">callChildMutationCallback</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el</span>) </span>{
+			<span class="hljs-keyword">var</span> callback = el &amp;&amp; childMutationCallbacks[el.nodeName.toLowerCase()];
+			<span class="hljs-keyword">if</span>(callback) {
+				callback(el);
+			}
+		},
 		<span class="hljs-comment">/**
 		 * @function can.view.live.list
 		 * @parent can.view.live
@@ -225,29 +402,16 @@ operate on a compute</p>
 		 *       })
 		 *
 		 */</span>
-		list: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, render, context, parentNode, nodeList)</span> </span>{</pre></div></div>
+		list: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, compute, render, context, parentNode, nodeList, falseyRender</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-6">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>var setupBatchNum = can.batch.batchNum;</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>A nodeList of all elements this live-list manages.
 This is here so that if this live list is within another section
@@ -260,11 +424,11 @@ that section is able to remove the items in this list.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>A mapping of items to their indicies’</p>
 
@@ -275,117 +439,17 @@ that section is able to remove the items in this list.</p>
         </li>
         
         
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Capture current batchNum</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				setupBatchNum = can.batch.batchNum,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Called when items are added to the list.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>if the event’s batchNum equals setupBatchNum then we’re in the middle of a batch job.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (ev.batchNum &amp;&amp; ev.batchNum === setupBatchNum) {<span class="hljs-keyword">return</span>;}</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Collect new html and mappings</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> frag = <span class="hljs-built_in">document</span>.createDocumentFragment(),
-						newNodeLists = [],
-						newIndicies = [];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>For each new item,</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, key)</span> </span>{
-						<span class="hljs-keyword">var</span> itemNodeList = [];
-
-						<span class="hljs-keyword">if</span>(nodeList) {
-							nodeLists.register(itemNodeList,<span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>);
-						}
-						
-						<span class="hljs-keyword">var</span> itemIndex = can.compute(key + index),</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>get its string content</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>							itemHTML = render.call(context, item, itemIndex, itemNodeList),
-							gotText = <span class="hljs-keyword">typeof</span> itemHTML === <span class="hljs-string">"string"</span>,</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>and convert it into elements.</p>
+              <p>True once all previous events have been fired</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							itemFrag = can.frag(itemHTML);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				afterPreviousEvents = <span class="hljs-literal">false</span>,</pre></div></div>
             
         </li>
         
@@ -396,20 +460,15 @@ that section is able to remove the items in this list.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>Add those elements to the mappings.</p>
+              <p>Indicates that we should not be responding to changes in the list.
+It’s possible that the compute change causes this list behavior to be torn down.
+However that same “change” dispatch will eventually fire the updateList handler because
+the list of “change” handlers is copied when dispatching starts.
+A ‘perfect’ fix would be to use linked lists for event handlers.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						
-						itemFrag = gotText ? can.view.hookup(itemFrag) : itemFrag;
-						
-						<span class="hljs-keyword">var</span> childNodes = can.makeArray(itemFrag.childNodes);
-						<span class="hljs-keyword">if</span>(nodeList) {
-							nodeLists.update(itemNodeList, childNodes);
-							newNodeLists.push(itemNodeList);
-						} <span class="hljs-keyword">else</span> {
-							newNodeLists.push(nodeLists.register(childNodes));
-						}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				isTornDown = <span class="hljs-literal">false</span>,</pre></div></div>
             
         </li>
         
@@ -419,6 +478,59 @@ that section is able to remove the items in this list.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Called when items are added to the list.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				add = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, items, index</span>) </span>{
+
+					<span class="hljs-keyword">if</span> (!afterPreviousEvents) {
+						<span class="hljs-keyword">return</span>;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Collect new html and mappings</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> frag = text.ownerDocument.createDocumentFragment(),
+						newNodeLists = [],
+						newIndicies = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>For each new item,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					can.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, key</span>) </span>{
+						<span class="hljs-keyword">var</span> itemIndex = can.compute(key + index),
+							itemFrag = renderAndAddToNodeLists(newNodeLists, nodeList, render, context, [item, itemIndex]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Hookup the fragment (which sets up child live-bindings) and
 add it to the collection of all added elements.</p>
@@ -430,11 +542,11 @@ add it to the collection of all added elements.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>track indicies;</p>
 
@@ -446,11 +558,11 @@ add it to the collection of all added elements.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>The position of elements is always after the initial text placeholder node</p>
 
@@ -461,11 +573,43 @@ add it to the collection of all added elements.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>remove falsey if there’s something there</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(!indexMap.length) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>remove all leftover things</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> falseyItemsToRemove = removeFromNodeList(masterNodeList, <span class="hljs-number">0</span>, masterNodeList.length - <span class="hljs-number">1</span>);
+						can.remove(can.$(falseyItemsToRemove));
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Check if we are adding items at the end</p>
 
@@ -478,11 +622,11 @@ add it to the collection of all added elements.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Add elements before the next index’s first element.</p>
 
@@ -499,11 +643,11 @@ add it to the collection of all added elements.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>update indices after insert point</p>
 
@@ -513,35 +657,61 @@ add it to the collection of all added elements.</p>
 						index,
 						<span class="hljs-number">0</span>
 					].concat(newIndicies));
-					
+
 					<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = index + newIndicies.length, len = indexMap.length; i &lt; len; i++) {
 						indexMap[i](i);
 					}
+					<span class="hljs-keyword">if</span>(ev.callChildMutationCallback !== <span class="hljs-literal">false</span>) {
+						live.callChildMutationCallback(text.parentNode);
+					}
+
 				},</pre></div></div>
             
         </li>
         
         
-        <li id="section-23">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Called when an item is set with .attr</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev, newVal, index</span>) </span>{
+					remove({}, { <span class="hljs-attr">length</span>: <span class="hljs-number">1</span> }, index, <span class="hljs-literal">true</span>);
+					add({}, [newVal], index);
+				},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Called when items are removed or when the bindings are torn down.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, items, index, duringTeardown, fullTeardown)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				remove = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, items, index, duringTeardown, fullTeardown</span>) </span>{
+
+					<span class="hljs-keyword">if</span> (!afterPreviousEvents) {
+						<span class="hljs-keyword">return</span>;
+					}</pre></div></div>
             
         </li>
         
         
-        <li id="section-24">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>If this is because an element was removed, we should
 check to make sure the live elements are still in the page.
@@ -555,50 +725,16 @@ If we did this during a teardown, it would cause an infinite loop.</p>
 					<span class="hljs-keyword">if</span>(index &lt; <span class="hljs-number">0</span>) {
 						index = indexMap.length + index;
 					}
-
-					<span class="hljs-keyword">var</span> removedMappings = masterNodeList.splice(index + <span class="hljs-number">1</span>, items.length),
-						itemsToRemove = [];
-					can.each(removedMappings, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodeList)</span> </span>{</pre></div></div>
+					<span class="hljs-keyword">var</span> itemsToRemove = removeFromNodeList(masterNodeList, index, items.length);</pre></div></div>
             
         </li>
         
         
-        <li id="section-25">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>Unregister to free up event bindings.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">var</span> nodesToRemove = nodeLists.unregister(nodeList);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>add items that we will remove all at once</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>						[].push.apply(itemsToRemove, nodesToRemove);
-					});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>update indices after remove point</p>
 
@@ -612,33 +748,53 @@ If we did this during a teardown, it would cause an infinite loop.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>don’t remove elements during teardown.  Something else will probably be doing that.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(!fullTeardown) {
-						can.remove(can.$(itemsToRemove));
-					} <span class="hljs-keyword">else</span> {
-						nodeLists.unregister(masterNodeList);
-					}
-
-				},
-				move = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, item, newIndex, currentIndex)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span>(!fullTeardown) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-29">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>adds the falsey section if the list is empty</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>						addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+						can.remove(can.$(itemsToRemove));
+						<span class="hljs-keyword">if</span>(ev.callChildMutationCallback !== <span class="hljs-literal">false</span>) {
+							live.callChildMutationCallback(text.parentNode);
+						}
+					} <span class="hljs-keyword">else</span> {
+						nodeLists.unregister(masterNodeList);
+					}
+				},
+				move = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, item, newIndex, currentIndex</span>) </span>{
+					<span class="hljs-keyword">if</span> (!afterPreviousEvents) {
+						<span class="hljs-keyword">return</span>;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>The position of elements is always after the initial text
 placeholder node</p>
@@ -655,11 +811,11 @@ placeholder node</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>If we’re moving forward in the list, we want to be placed before
 the item AFTER the target index since removing the item from
@@ -673,83 +829,8 @@ nextSibling, insertBefore acts like appendChild.</p>
 					} <span class="hljs-keyword">else</span> {
 						referenceElement = nodeLists.first(referenceNodeList);
 					}
-					
-					<span class="hljs-keyword">var</span> parentNode = referenceElement.parentNode;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>Move the DOM nodes into the proper location</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					parentNode.insertBefore(movedElements, referenceElement);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>Now, do the same for the masterNodeList. We need to keep it
-in sync with the DOM.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p>Save a reference to the “node” in that we’re manually moving</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> temp = masterNodeList[currentIndex];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>Remove the movedItem from the masterNodeList</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					[].splice.apply(masterNodeList, [currentIndex, <span class="hljs-number">1</span>]);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>Move the movedItem to the correct index in the masterNodeList</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					[].splice.apply(masterNodeList, [newIndex, <span class="hljs-number">0</span>, temp]);
-				},</pre></div></div>
+					<span class="hljs-keyword">var</span> parentNode = masterNodeList[<span class="hljs-number">0</span>].parentNode;</pre></div></div>
             
         </li>
         
@@ -760,11 +841,11 @@ in sync with the DOM.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>A text node placeholder</p>
+              <p>Move the DOM nodes into the proper location</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				text = <span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					parentNode.insertBefore(movedElements, referenceElement);</pre></div></div>
             
         </li>
         
@@ -775,11 +856,10 @@ in sync with the DOM.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>The current list.</p>
+              <p>Now, do the same for the masterNodeList. We need to keep it
+in sync with the DOM.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>				list,</pre></div></div>
             
         </li>
         
@@ -790,11 +870,11 @@ in sync with the DOM.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>Called when the list is replaced with a new list or the binding is torn-down.</p>
+              <p>Save a reference to the “node” that we’re manually moving</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				teardownList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullTeardown)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> temp = masterNodeList[currentIndex];</pre></div></div>
             
         </li>
         
@@ -805,16 +885,11 @@ in sync with the DOM.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>there might be no list right away, and the list might be a plain
-array</p>
+              <p>Remove the movedItem from the masterNodeList</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (list &amp;&amp; list.unbind) {
-						list.unbind(<span class="hljs-string">'add'</span>, add)
-							.unbind(<span class="hljs-string">'remove'</span>, remove)
-							.unbind(<span class="hljs-string">'move'</span>, move);
-					}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					[].splice.apply(masterNodeList, [currentIndex, <span class="hljs-number">1</span>]);</pre></div></div>
             
         </li>
         
@@ -825,14 +900,11 @@ array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>use remove to clean stuff up for us</p>
+              <p>Move the movedItem to the correct index in the masterNodeList</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					remove({}, {
-						length: masterNodeList.length - <span class="hljs-number">1</span>
-					}, <span class="hljs-number">0</span>, <span class="hljs-literal">true</span>, fullTeardown);
-				},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					[].splice.apply(masterNodeList, [newIndex, <span class="hljs-number">0</span>, temp]);</pre></div></div>
             
         </li>
         
@@ -843,12 +915,12 @@ array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>Called when the list is replaced or setup.</p>
+              <p>Convert back to a zero-based array index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				updateList = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newList, oldList)</span> </span>{
-					teardownList();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					newIndex = newIndex - <span class="hljs-number">1</span>;
+					currentIndex = currentIndex - <span class="hljs-number">1</span>;</pre></div></div>
             
         </li>
         
@@ -859,11 +931,11 @@ array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>make an empty list if the compute returns null or undefined</p>
+              <p>Grab the index compute from the <code>indexMap</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					list = newList || [];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">var</span> indexCompute = indexMap[currentIndex];</pre></div></div>
             
         </li>
         
@@ -874,18 +946,11 @@ array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>list might be a plain array</p>
+              <p>Remove the index compute from the <code>indexMap</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (list.bind) {
-						list.bind(<span class="hljs-string">'add'</span>, add)
-							.bind(<span class="hljs-string">'remove'</span>, remove)
-							.bind(<span class="hljs-string">'move'</span>, move);
-					}
-					add({}, list, <span class="hljs-number">0</span>);
-				};
-			parentNode = elements.getParentNode(el, parentNode);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					[].splice.apply(indexMap, [currentIndex, <span class="hljs-number">1</span>]);</pre></div></div>
             
         </li>
         
@@ -896,27 +961,22 @@ array</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>Setup binding and teardown to add and remove events</p>
+              <p>Move the index compute to the correct index in the <code>indexMap</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = setup(parentNode, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
-					compute.bind(<span class="hljs-string">'change'</span>, updateList);
-				}
-			}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
-					compute.unbind(<span class="hljs-string">'change'</span>, updateList);
-				}
-				teardownList(<span class="hljs-literal">true</span>);
-			});
-			<span class="hljs-keyword">if</span>(!nodeList) {
-				live.replace(masterNodeList, text, data.teardownCheck);
-			} <span class="hljs-keyword">else</span> {
-				elements.replace(masterNodeList, text);
-				nodeLists.update(masterNodeList, [text]);
-				nodeList.unregistered = data.teardownCheck;
-			}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					[].splice.apply(indexMap, [newIndex, <span class="hljs-number">0</span>, indexCompute]);
+
+					<span class="hljs-keyword">var</span> i = <span class="hljs-built_in">Math</span>.min(currentIndex, newIndex);
+					<span class="hljs-keyword">var</span> len = indexMap.length;
+
+					<span class="hljs-keyword">for</span> (i, len; i &lt; len; i++) {
+						indexMap[i](i);
+					}
+					<span class="hljs-keyword">if</span>(ev.callChildMutationCallback !== <span class="hljs-literal">false</span>) {
+						live.callChildMutationCallback(text.parentNode);
+					}
+				},</pre></div></div>
             
         </li>
         
@@ -926,6 +986,219 @@ array</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>A text node placeholder</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				text = el.ownerDocument.createTextNode(<span class="hljs-string">''</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>The current list.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				list,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>Called when the list is replaced with a new list or the binding is torn-down.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				teardownList = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fullTeardown</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>there might be no list right away, and the list might be a plain
+array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (list &amp;&amp; list.unbind) {
+						list.unbind(<span class="hljs-string">'add'</span>, add)
+							.unbind(<span class="hljs-string">'set'</span>, set)
+							.unbind(<span class="hljs-string">'remove'</span>, remove)
+							.unbind(<span class="hljs-string">'move'</span>, move);
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>use remove to clean stuff up for us</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					remove({<span class="hljs-attr">callChildMutationCallback</span>: !!fullTeardown}, {
+						<span class="hljs-attr">length</span>: masterNodeList.length - <span class="hljs-number">1</span>
+					}, <span class="hljs-number">0</span>, <span class="hljs-literal">true</span>, fullTeardown);
+				},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>Called when the list is replaced or setup.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				updateList = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newList, oldList</span>) </span>{
+
+					<span class="hljs-keyword">if</span>(isTornDown) {
+						<span class="hljs-keyword">return</span>;
+					}
+
+					afterPreviousEvents = <span class="hljs-literal">true</span>;
+					<span class="hljs-keyword">if</span>(newList &amp;&amp; oldList) {
+						list = newList || [];
+						<span class="hljs-keyword">var</span> patches = diff(oldList, newList);
+
+						<span class="hljs-keyword">if</span> ( oldList.unbind ) {
+							oldList.unbind(<span class="hljs-string">'add'</span>, add)
+								.unbind(<span class="hljs-string">'set'</span>, set)
+								.unbind(<span class="hljs-string">'remove'</span>, remove)
+								.unbind(<span class="hljs-string">'move'</span>, move);
+						}
+						<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, patchLen = patches.length; i &lt; patchLen; i++) {
+							<span class="hljs-keyword">var</span> patch = patches[i];
+							<span class="hljs-keyword">if</span>(patch.deleteCount) {
+								remove({<span class="hljs-attr">callChildMutationCallback</span>: <span class="hljs-literal">false</span>}, {
+									<span class="hljs-attr">length</span>: patch.deleteCount
+								}, patch.index, <span class="hljs-literal">true</span>);
+							}
+							<span class="hljs-keyword">if</span>(patch.insert.length) {
+								add({<span class="hljs-attr">callChildMutationCallback</span>: <span class="hljs-literal">false</span>}, patch.insert, patch.index);
+							}
+						}
+					} <span class="hljs-keyword">else</span> {
+						<span class="hljs-keyword">if</span>(oldList) {
+							teardownList();
+						}
+						list = newList || [];
+						add({<span class="hljs-attr">callChildMutationCallback</span>: <span class="hljs-literal">false</span>}, list, <span class="hljs-number">0</span>);
+						addFalseyIfEmpty(list, falseyRender, masterNodeList, nodeList);
+					}
+					live.callChildMutationCallback(text.parentNode);
+
+					afterPreviousEvents = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>list might be a plain array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (list.bind) {
+						list.bind(<span class="hljs-string">'add'</span>, add)
+							.bind(<span class="hljs-string">'set'</span>, set)
+							.bind(<span class="hljs-string">'remove'</span>, remove)
+							.bind(<span class="hljs-string">'move'</span>, move);
+					}
+
+					can.batch.afterPreviousEvents(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						afterPreviousEvents = <span class="hljs-literal">true</span>;
+					});
+				};
+
+			parentNode = elements.getParentNode(el, parentNode);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>Setup binding and teardown to add and remove events</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = setup(parentNode, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>TODO: for stache, binding on the compute is not necessary.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
+					compute.bind(<span class="hljs-string">'change'</span>, updateList);
+				}
+			}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">if</span> (can.isFunction(compute)) {
+					compute.unbind(<span class="hljs-string">'change'</span>, updateList);
+				}
+				teardownList(<span class="hljs-literal">true</span>);
+			});
+
+			<span class="hljs-keyword">if</span>(!nodeList) {
+				live.replace(masterNodeList, text, data.teardownCheck);
+			} <span class="hljs-keyword">else</span> {
+				elements.replace(masterNodeList, text);
+				nodeLists.update(masterNodeList, [text]);
+				nodeList.unregistered = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					data.teardownCheck();
+					isTornDown = <span class="hljs-literal">true</span>;
+				};
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>run the list setup</p>
 
@@ -963,19 +1236,19 @@ array</p>
 		 *     can.view.live.html( placeholder,  greeting );
 		 *
 		 */</span>
-		html: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode, nodeList)</span> </span>{
+		html: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, compute, parentNode, nodeList</span>) </span>{
 			<span class="hljs-keyword">var</span> data;
 			parentNode = elements.getParentNode(el, parentNode);
-			data = listen(parentNode, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> </span>{</pre></div></div>
+			data = listen(parentNode, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal, oldVal</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-46">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>TODO: remove teardownCheck in 2.1</p>
 
@@ -986,11 +1259,11 @@ array</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>update the nodes in the DOM with the new rendered value</p>
 
@@ -999,11 +1272,13 @@ array</p>
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (attached) {
 					makeAndPut(newVal);
 				}
-				data.teardownCheck(nodeLists.first(nodes).parentNode);
+				<span class="hljs-keyword">var</span> pn = nodeLists.first(nodes).parentNode;
+				data.teardownCheck(pn);
+				live.callChildMutationCallback(pn);
 			});
 
 			<span class="hljs-keyword">var</span> nodes = nodeList || [el],
-				makeAndPut = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
+				makeAndPut = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
 					<span class="hljs-keyword">var</span> isFunction = <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">"function"</span>,
 						aNode = isNode(val),
 						frag = can.frag(isFunction ? <span class="hljs-string">""</span> : val),
@@ -1012,18 +1287,18 @@ array</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
               <p>Add a placeholder textNode if necessary.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>					addTextNodeIfNoChildren(frag);
-					
+
 					<span class="hljs-keyword">if</span>(!aNode &amp;&amp; !isFunction){
 						frag = can.view.hookup(frag, parentNode);
 					}</pre></div></div>
@@ -1031,34 +1306,33 @@ array</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
               <p>We need to mark each node as belonging to the node list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					oldNodes = nodeLists.update(nodes, frag.childNodes);
+            <div class="content"><div class='highlight'><pre>					oldNodes = nodeLists.update(nodes, getChildNodes(frag));
 					<span class="hljs-keyword">if</span>(isFunction) {
-						val(frag.childNodes[<span class="hljs-number">0</span>]);
+						val(frag.firstChild);
 					}
 					elements.replace(oldNodes, frag);
-					
 				};
-				
+
 			data.nodeList = nodes;</pre></div></div>
             
         </li>
         
         
-        <li id="section-50">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>register the span so nodeLists knows the parentNodeList</p>
 
@@ -1085,22 +1359,22 @@ array</p>
 		 *
 		 * @param {function} [teardown] A callback if these elements are torn down.
 		 */</span>
-		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nodes, val, teardown)</span> </span>{
+		replace: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">nodes, val, teardown</span>) </span>{
 			<span class="hljs-keyword">var</span> oldNodes = nodes.slice(<span class="hljs-number">0</span>),
 				frag = can.frag(val);
 			nodeLists.register(nodes, teardown);
-			
-			
+
+
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> val === <span class="hljs-string">'string'</span>) {</pre></div></div>
             
         </li>
         
         
-        <li id="section-51">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <p>if it was a string, check for hookups</p>
 
@@ -1112,17 +1386,17 @@ array</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
               <p>We need to mark each node as belonging to the node list.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			nodeLists.update(nodes, frag.childNodes);
+            <div class="content"><div class='highlight'><pre>			nodeLists.update(nodes, getChildNodes(frag));
 			elements.replace(oldNodes, frag);
 			<span class="hljs-keyword">return</span> nodes;
 		},
@@ -1134,32 +1408,32 @@ array</p>
 		 * Replaces one element with some content while keeping [can.view.live.nodeLists nodeLists] data
 		 * correct.
 		 */</span>
-		text: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, parentNode, nodeList)</span> </span>{
+		text: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, compute, parentNode, nodeList</span>) </span>{
 			<span class="hljs-keyword">var</span> parent = elements.getParentNode(el, parentNode);</pre></div></div>
             
         </li>
         
         
-        <li id="section-53">
+        <li id="section-62">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
+                <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
               <p>setup listening right away so we don’t have to re-calculate value</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = listen(parent, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal, oldVal)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> data = listen(parent, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal, oldVal</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-54">
+        <li id="section-63">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
+                <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
               <p>Sometimes this is ‘unknown’ in IE and will throw an exception if it is</p>
 
@@ -1174,11 +1448,11 @@ array</p>
         </li>
         
         
-        <li id="section-55">
+        <li id="section-64">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
               <p>TODO: remove in 2.1</p>
 
@@ -1190,22 +1464,22 @@ array</p>
         </li>
         
         
-        <li id="section-56">
+        <li id="section-65">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-65">&#182;</a>
               </div>
               <p>The text node that will be updated</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				
-			<span class="hljs-keyword">var</span> node = <span class="hljs-built_in">document</span>.createTextNode(can.view.toStr(compute()));
+            <div class="content"><div class='highlight'><pre>
+			<span class="hljs-keyword">var</span> node = el.ownerDocument.createTextNode(can.view.toStr(compute()));
 			<span class="hljs-keyword">if</span>(nodeList) {
 				nodeList.unregistered = data.teardownCheck;
 				data.nodeList = nodeList;
-				
+
 				nodeLists.update(nodeList, [node]);
 				elements.replace([el], node);
 			} <span class="hljs-keyword">else</span> {</pre></div></div>
@@ -1213,11 +1487,11 @@ array</p>
         </li>
         
         
-        <li id="section-57">
+        <li id="section-66">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
+                <a class="pilcrow" href="#section-66">&#182;</a>
               </div>
               <p>Replace the placeholder with the live node and do the nodeLists thing.
 Add that node to nodeList so we can remove it when the parent element is removed from the page</p>
@@ -1226,9 +1500,9 @@ Add that node to nodeList so we can remove it when the parent element is removed
             
             <div class="content"><div class='highlight'><pre>				data.nodeList = live.replace([el], node, data.teardownCheck);
 			}
-			
+
 		},
-		setAttributes: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, newVal)</span> </span>{
+		<span class="hljs-attr">setAttributes</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, newVal</span>) </span>{
 			<span class="hljs-keyword">var</span> attrs = getAttributeParts(newVal);
 			<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> name <span class="hljs-keyword">in</span> attrs) {
 				can.attr.set(el, name, attrs[name]);
@@ -1237,25 +1511,25 @@ Add that node to nodeList so we can remove it when the parent element is removed
 		<span class="hljs-comment">/**
 		 * @function can.view.live.attrs
 		 * @parent can.view.live
-		 * 
+		 *
 		 * Keep attributes live to a [can.compute].
-		 * 
+		 *
 		 * @param {HTMLElement} el The element whos attributes will be kept live.
 		 * @param {can.compute} compute The compute.
-		 * 
+		 *
 		 * @body
-		 * 
+		 *
 		 * ## Use
-		 * 
+		 *
 		 *     var div = document.createElement('div');
 		 *     var compute = can.compute("foo='bar' zed='ted'");
 		 *     can.view.live.attr(div,compute);
-		 * 
+		 *
 		 */</span>
-		attributes: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, compute, currentValue)</span> </span>{
+		attributes: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, compute, currentValue</span>) </span>{
 			<span class="hljs-keyword">var</span> oldAttrs = {};
-			
-			<span class="hljs-keyword">var</span> setAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newVal)</span> </span>{
+
+			<span class="hljs-keyword">var</span> setAttrs = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">newVal</span>) </span>{
 				<span class="hljs-keyword">var</span> newAttrs = getAttributeParts(newVal),
 					name;
 				<span class="hljs-keyword">for</span>( name <span class="hljs-keyword">in</span> newAttrs ) {
@@ -1271,18 +1545,18 @@ Add that node to nodeList so we can remove it when the parent element is removed
 				}
 				oldAttrs = newAttrs;
 			};
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal</span>) </span>{
 				setAttrs(newVal);
 			});</pre></div></div>
             
         </li>
         
         
-        <li id="section-58">
+        <li id="section-67">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
+                <a class="pilcrow" href="#section-67">&#182;</a>
               </div>
               <p>current value has been set</p>
 
@@ -1294,10 +1568,10 @@ Add that node to nodeList so we can remove it when the parent element is removed
 				setAttrs(compute());
 			}
 		},
-		attributePlaceholder: <span class="hljs-string">'__!!__'</span>,
-		attributeReplace: <span class="hljs-regexp">/__!!__/g</span>,
-		attribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> </span>{
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
+		<span class="hljs-attr">attributePlaceholder</span>: <span class="hljs-string">'__!!__'</span>,
+		<span class="hljs-attr">attributeReplace</span>: <span class="hljs-regexp">/__!!__/g</span>,
+		<span class="hljs-attr">attribute</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, attributeName, compute</span>) </span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal</span>) </span>{
 				elements.setAttr(el, attributeName, hook.render());
 			});
 			<span class="hljs-keyword">var</span> wrapped = can.$(el),
@@ -1306,11 +1580,11 @@ Add that node to nodeList so we can remove it when the parent element is removed
         </li>
         
         
-        <li id="section-59">
+        <li id="section-68">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
+                <a class="pilcrow" href="#section-68">&#182;</a>
               </div>
               <p>Get the list of hookups or create one for this element.
 Hooks is a map of attribute names to hookup <code>data</code>s.
@@ -1329,26 +1603,27 @@ Each hookup data has:
         </li>
         
         
-        <li id="section-60">
+        <li id="section-69">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-69">&#182;</a>
               </div>
-              <p>Get the attribute value.</p>
+              <p>Get the attribute value.
+Cast to String. String expected for rendering. Attr may return other types for some attributes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> attr = elements.getAttr(el, attributeName),</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> attr = <span class="hljs-built_in">String</span>(elements.getAttr(el, attributeName)),</pre></div></div>
             
         </li>
         
         
-        <li id="section-61">
+        <li id="section-70">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-70">&#182;</a>
               </div>
               <p>Split the attribute value by the template.
 Only split out the first <strong>!!</strong> so if we have multiple hookups in the same attribute,
@@ -1364,11 +1639,11 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-62">
+        <li id="section-71">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
+                <a class="pilcrow" href="#section-71">&#182;</a>
               </div>
               <p>If we already had a hookup for this attribute…</p>
 
@@ -1379,11 +1654,11 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-63">
+        <li id="section-72">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
+                <a class="pilcrow" href="#section-72">&#182;</a>
               </div>
               <p>Just add to that attribute’s list of <code>function</code>s.</p>
 
@@ -1395,51 +1670,51 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-64">
+        <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
+                <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
               <p>Create the hookup data.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>				hooks[attributeName] = {
-					render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					<span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 						<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>,</pre></div></div>
             
         </li>
         
         
-        <li id="section-65">
+        <li id="section-74">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
+                <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
               <p>attr doesn’t have a value in IE</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>							newAttr = attr ? attr.replace(live.attributeReplace, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>							newAttr = attr ? attr.replace(live.attributeReplace, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 								<span class="hljs-keyword">return</span> elements.contentText(hook.computes[i++]());
 							}) : elements.contentText(hook.computes[i++]());
 						<span class="hljs-keyword">return</span> newAttr;
 					},
-					computes: [compute],
-					batchNum: <span class="hljs-literal">undefined</span>
+					<span class="hljs-attr">computes</span>: [compute],
+					<span class="hljs-attr">batchNum</span>: <span class="hljs-literal">undefined</span>
 				};
 			}</pre></div></div>
             
         </li>
         
         
-        <li id="section-66">
+        <li id="section-75">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
+                <a class="pilcrow" href="#section-75">&#182;</a>
               </div>
               <p>Save the hook for slightly faster performance.</p>
 
@@ -1450,11 +1725,11 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-67">
+        <li id="section-76">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
+                <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
               <p>Insert the value in parts.</p>
 
@@ -1465,11 +1740,11 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-68">
+        <li id="section-77">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
+                <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
               <p>Set the attribute.</p>
 
@@ -1477,8 +1752,8 @@ they will be put in the right spot on first render</p>
             
             <div class="content"><div class='highlight'><pre>			elements.setAttr(el, attributeName, goodParts.join(<span class="hljs-string">''</span>));
 		},
-		specialAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el, attributeName, compute)</span> </span>{
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
+		<span class="hljs-attr">specialAttribute</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el, attributeName, compute</span>) </span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal</span>) </span>{
 				elements.setAttr(el, attributeName, getValue(newVal));
 			});
 			elements.setAttr(el, attributeName, getValue(compute()));
@@ -1486,23 +1761,23 @@ they will be put in the right spot on first render</p>
 		<span class="hljs-comment">/**
 		 * @function can.view.live.attr
 		 * @parent can.view.live
-		 * 
+		 *
 		 * Keep an attribute live to a [can.compute].
-		 * 
+		 *
 		 * @param {HTMLElement} el The element whos attribute will be kept live.
 		 * @param {String} attributeName The attribute name.
 		 * @param {can.compute} compute The compute.
-		 * 
+		 *
 		 * @body
-		 * 
+		 *
 		 * ## Use
-		 * 
+		 *
 		 *     var div = document.createElement('div');
 		 *     var compute = can.compute("foo bar");
 		 *     can.view.live.attr(div,"class", compute);
 		 */</span>
-		simpleAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, attributeName, compute)</span></span>{
-			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, newVal)</span> </span>{
+		simpleAttribute: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, attributeName, compute</span>)</span>{
+			listen(el, compute, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, newVal</span>) </span>{
 				elements.setAttr(el, attributeName, newVal);
 			});
 			elements.setAttr(el, attributeName, compute());
@@ -1510,8 +1785,9 @@ they will be put in the right spot on first render</p>
 	};
 	live.attr = live.simpleAttribute;
 	live.attrs = live.attributes;
+	live.getAttributeParts = getAttributeParts;
 	<span class="hljs-keyword">var</span> newLine = <span class="hljs-regexp">/(\r|\n)+/g</span>;
-	<span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(val)</span> </span>{
+	<span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>{
 		<span class="hljs-keyword">var</span> regexp = <span class="hljs-regexp">/^["'].*["']$/</span>;
 		val = val.replace(elements.attrReg, <span class="hljs-string">''</span>)
 			.replace(newLine, <span class="hljs-string">''</span>);</pre></div></div>
@@ -1519,11 +1795,11 @@ they will be put in the right spot on first render</p>
         </li>
         
         
-        <li id="section-69">
+        <li id="section-78">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
+                <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
               <p>check if starts and ends with “ or ‘</p>
 

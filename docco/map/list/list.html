@@ -30,9 +30,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-string">'can/map'</span>, <span class="hljs-string">'can/list'</span>, <span class="hljs-string">'can/compute'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 	can.extend(can.List.prototype, {
-		filter: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> </span>{</pre></div></div>
+		<span class="hljs-attr">filter</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -63,7 +63,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> generator = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, index)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> generator = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">element, index</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -78,7 +78,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> binder = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, val)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> binder = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, val</span>) </span>{
 					<span class="hljs-keyword">var</span> index = filtered.indexOf(element);</pre></div></div>
             
         </li>
@@ -94,7 +94,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (!val &amp;&amp; index !== -<span class="hljs-number">1</span>) {
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (!val &amp;&amp; index !== <span class="hljs-number">-1</span>) {
 						filtered.splice(index, <span class="hljs-number">1</span>);
 					}</pre></div></div>
             
@@ -111,7 +111,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (val &amp;&amp; index === -<span class="hljs-number">1</span>) {
+            <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (val &amp;&amp; index === <span class="hljs-number">-1</span>) {
 						filtered.push(element);
 					}
 				};</pre></div></div>
@@ -129,7 +129,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> callback(element, self.indexOf(element), self);
 				});</pre></div></div>
             
@@ -177,8 +177,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'add'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data, index)</span> </span>{
-				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, i)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'add'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, data, index</span>) </span>{
+				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">element, i</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -211,10 +211,10 @@ The index is the start index + the loop index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data, index)</span> </span>{
-				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, i)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, data, index</span>) </span>{
+				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">element, i</span>) </span>{
 					<span class="hljs-keyword">var</span> index = filtered.indexOf(element);
-					<span class="hljs-keyword">if</span> (index !== -<span class="hljs-number">1</span>) {
+					<span class="hljs-keyword">if</span> (index !== <span class="hljs-number">-1</span>) {
 						filtered.splice(index, <span class="hljs-number">1</span>);
 					}
 				});
@@ -236,7 +236,7 @@ The index is the start index + the loop index</p>
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.forEach(generator);
 			<span class="hljs-keyword">return</span> filtered;
 		},
-		map: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> </span>{
+		<span class="hljs-attr">map</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
 			<span class="hljs-keyword">var</span> mapped = <span class="hljs-keyword">new</span> can.List();
 			<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;</pre></div></div>
             
@@ -253,7 +253,7 @@ The index is the start index + the loop index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> generator = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, index)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> generator = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">element, index</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -268,10 +268,10 @@ The index is the start index + the loop index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> compute = can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> callback(element, index, self);
 				});
-				compute.bind(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, val)</span> </span>{</pre></div></div>
+				compute.bind(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, val</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -305,8 +305,8 @@ The index is the start index + the loop index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'add'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data, index)</span> </span>{
-				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(element, i)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'add'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, data, index</span>) </span>{
+				can.each(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">element, i</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -325,7 +325,7 @@ The index is the start index + the loop index</p>
             <div class="content"><div class='highlight'><pre>					generator(element, index + i);
 				});
 			});
-			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(ev, data, index)</span> </span>{</pre></div></div>
+			<span class="hljs-keyword">this</span>.bind(<span class="hljs-string">'remove'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ev, data, index</span>) </span>{</pre></div></div>
             
         </li>
         

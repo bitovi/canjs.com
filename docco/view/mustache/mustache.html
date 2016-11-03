@@ -63,7 +63,7 @@
 	<span class="hljs-string">'can/compute'</span>,
 	<span class="hljs-string">'can/view/render.js'</span>,
 	<span class="hljs-string">'can/view/bindings'</span>,
-	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+	<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -219,7 +219,7 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			makeLookupLiteral = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			makeLookupLiteral = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type</span>) </span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-string">'{get:"'</span> + type.replace(<span class="hljs-regexp">/"/g</span>, <span class="hljs-string">'\\"'</span>) + <span class="hljs-string">'"}'</span>;
 			},</pre></div></div>
             
@@ -236,7 +236,7 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			isLookup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			isLookup = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
 				<span class="hljs-keyword">return</span> obj &amp;&amp; <span class="hljs-keyword">typeof</span> obj.get === <span class="hljs-string">"string"</span>;
 			},
 
@@ -246,7 +246,7 @@ to helpers via <code>options.hash</code>.</p>
 			 * @param  {[can.Map]}  observable
 			 * @return {Boolean} returns if the object is observable like.
 			 */</span>
-			isObserveLike = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
+			isObserveLike = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
 				<span class="hljs-keyword">return</span> obj <span class="hljs-keyword">instanceof</span> can.Map || (obj &amp;&amp; !! obj._get);
 			},
 
@@ -255,7 +255,7 @@ to helpers via <code>options.hash</code>.</p>
 			 * @param  {Array}  obj The object to check.
 			 * @return {Boolean} returns if the object is an array.
 			 */</span>
-			isArrayLike = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj)</span> </span>{
+			isArrayLike = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
 				<span class="hljs-keyword">return</span> obj &amp;&amp; obj.splice &amp;&amp; <span class="hljs-keyword">typeof</span> obj.length === <span class="hljs-string">'number'</span>;
 			},</pre></div></div>
             
@@ -272,11 +272,11 @@ to helpers via <code>options.hash</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			makeConvertToScopes = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(original, scope, options)</span> </span>{
-				<span class="hljs-keyword">var</span> originalWithScope = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(ctx, opts)</span></span>{
+            <div class="content"><div class='highlight'><pre>			makeConvertToScopes = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">original, scope, options</span>) </span>{
+				<span class="hljs-keyword">var</span> originalWithScope = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ctx, opts</span>)</span>{
 					<span class="hljs-keyword">return</span> original(ctx || scope, opts);
 				};
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(updatedScope, updatedOptions)</span> </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">updatedScope, updatedOptions</span>) </span>{
 					<span class="hljs-keyword">if</span> (updatedScope !== <span class="hljs-literal">undefined</span> &amp;&amp; !(updatedScope <span class="hljs-keyword">instanceof</span> can.view.Scope)) {
 						updatedScope = scope.add(updatedScope);
 					}
@@ -305,7 +305,7 @@ to helpers via <code>options.hash</code>.</p>
 		 * The Mustache templating engine.
 		 * @param {Object} options	Configuration options
 		 */</span>
-		<span class="hljs-keyword">var</span> Mustache = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, helpers)</span> </span>{</pre></div></div>
+		<span class="hljs-keyword">var</span> Mustache = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, helpers</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -323,7 +323,7 @@ This returns a function that renders the template.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.constructor !== Mustache) {
 				<span class="hljs-keyword">var</span> mustache = <span class="hljs-keyword">new</span> Mustache(options);
-				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, options)</span> </span>{
+				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, options</span>) </span>{
 					<span class="hljs-keyword">return</span> mustache.render(data, options);
 				};
 			}</pre></div></div>
@@ -344,7 +344,7 @@ a <code>steal</code>-packaged view.</p>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options === <span class="hljs-string">"function"</span>) {
 				<span class="hljs-keyword">this</span>.template = {
-					fn: options
+					<span class="hljs-attr">fn</span>: options
 				};
 				<span class="hljs-keyword">return</span>;
 			}</pre></div></div>
@@ -404,7 +404,7 @@ a <code>steal</code>-packaged view.</p>
 		 *			 message: "foo"
 		 *		 })
 		 */</span>
-		render = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, options)</span> </span>{
+		render = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, options</span>) </span>{
 			<span class="hljs-keyword">if</span> (!(data <span class="hljs-keyword">instanceof</span> can.view.Scope)) {
 				data = <span class="hljs-keyword">new</span> can.view.Scope(data || {});
 			}
@@ -464,8 +464,8 @@ This includes initializing the <code>context</code> stack.</p>
             
             <div class="content"><div class='highlight'><pre>					start: <span class="hljs-string">""</span>, <span class="hljs-comment">//"var "+SCOPE+"= this instanceof can.view.Scope? this : new can.view.Scope(this);\n",</span>
 					scope: SCOPE,
-					options: <span class="hljs-string">",options: options"</span>,
-					argNames: ARG_NAMES
+					<span class="hljs-attr">options</span>: <span class="hljs-string">",options: options"</span>,
+					<span class="hljs-attr">argNames</span>: ARG_NAMES
 				},</pre></div></div>
             
         </li>
@@ -494,7 +494,7 @@ Each token follows the following structure:</p>
     <span class="hljs-comment">// Optional. A function that executes advanced </span>
     <span class="hljs-comment">// manipulation of the matched content. This is </span>
     <span class="hljs-comment">// rarely used.</span>
-    <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(content)</span></span>{   
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">content</span>)</span>{   
         <span class="hljs-keyword">return</span> content;
     }
 ]
@@ -584,7 +584,7 @@ Each token follows the following structure:</p>
 					 *
 					 *     {{#chapters}}
 					 *        &lt;li&gt;{{title}} - {{name}}&lt;/li&gt;
-					 *     {{chapters}}
+					 *     {{/chapters}}
 					 *
 					 * With:
 					 *
@@ -726,10 +726,10 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					[<span class="hljs-string">"escapeFull"</span>, <span class="hljs-string">"{{}}"</span>, <span class="hljs-string">"(^[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}\\n|\\n[\\s\\t]*{{[#/^][^}]+?}}$)"</span>,
-						<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
+						<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content</span>) </span>{
 							<span class="hljs-keyword">return</span> {
-								before: <span class="hljs-regexp">/^\n.+?\n$/</span>.test(content) ? <span class="hljs-string">'\n'</span> : <span class="hljs-string">''</span>,
-								content: content.match(<span class="hljs-regexp">/\{\{(.+?)\}\}/</span>)[<span class="hljs-number">1</span>] || <span class="hljs-string">''</span>
+								<span class="hljs-attr">before</span>: <span class="hljs-regexp">/^\n.+?\n$/</span>.test(content) ? <span class="hljs-string">'\n'</span> : <span class="hljs-string">''</span>,
+								<span class="hljs-attr">content</span>: content.match(<span class="hljs-regexp">/\{\{(.+?)\}\}/</span>)[<span class="hljs-number">1</span>] || <span class="hljs-string">''</span>
 							};
 						}
 					],</pre></div></div>
@@ -804,9 +804,9 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
     <span class="hljs-comment">//                             tagName: "div",</span>
     <span class="hljs-comment">//                             status: 0</span>
     <span class="hljs-comment">//                           }</span>
-    fn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(content, cmd)</span> </span>{
+    fn: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">content, cmd</span>) </span>{
         <span class="hljs-keyword">return</span> <span class="hljs-string">'for text injection'</span> || 
-            { raw: <span class="hljs-string">'to bypass text injection'</span> };
+            { <span class="hljs-attr">raw</span>: <span class="hljs-string">'to bypass text injection'</span> };
     }
 }
 </code></pre>
@@ -829,19 +829,19 @@ This is used for detecting lines with only whitespace and an escaped tag</p>
 so recursive partials are possible. Just avoid infinite loops.</p>
 <p>For example, this template and partial:</p>
 <pre><code>    base.mustache:
-        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span>Names<span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>
+        &lt;h2&gt;Names&lt;/h2&gt;
         {{#names}}
             {{&gt; user}}
         {{/names}}
 
     user.mustache:
-        <span class="hljs-tag">&lt;<span class="hljs-title">strong</span>&gt;</span>{{name}}<span class="hljs-tag">&lt;/<span class="hljs-title">strong</span>&gt;</span></span>
+        &lt;strong&gt;{{name}}&lt;/strong&gt;
 </code></pre>
             </div>
             
             <div class="content"><div class='highlight'><pre>					{
-						name: <span class="hljs-regexp">/^&gt;[\s]*\w*/</span>,
-						fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content, cmd)</span> </span>{</pre></div></div>
+						<span class="hljs-attr">name</span>: <span class="hljs-regexp">/^&gt;[\s]*\w*/</span>,
+						<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content, cmd</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -877,7 +877,7 @@ passing the name and the current context.</p>
 its found on using the first argument as the data attribute
 key.</p>
 <p>For example:</p>
-<pre><code>&lt;li id=<span class="hljs-string">"nameli"</span> {{ data <span class="hljs-string">'name'</span> }}&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span></span>
+<pre><code>&lt;li id=<span class="hljs-string">"nameli"</span> {{ data <span class="hljs-string">'name'</span> }}&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
 </code></pre><p>then later you can access it like:</p>
 <pre><code>can.$(<span class="hljs-string">'#nameli'</span>).data(<span class="hljs-string">'name'</span>);
 </code></pre>
@@ -920,8 +920,8 @@ key.</p>
 					 *
 					 */</span>
 					{
-						name: <span class="hljs-regexp">/^\s*data\s/</span>,
-						fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content, cmd)</span> </span>{
+						<span class="hljs-attr">name</span>: <span class="hljs-regexp">/^\s*data\s/</span>,
+						<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content, cmd</span>) </span>{
 							<span class="hljs-keyword">var</span> attr = content.match(<span class="hljs-regexp">/["|'](.*)["|']/</span>)[<span class="hljs-number">1</span>];</pre></div></div>
             
         </li>
@@ -957,8 +957,8 @@ with the attribute name with the current context.</p>
             <div class="content"><div class='highlight'><pre>							<span class="hljs-string">"can.data(can.$(__),'"</span> + attr + <span class="hljs-string">"', this.attr('.')); }, "</span> + SCOPE + <span class="hljs-string">")"</span>;
 						}
 					}, {
-						name: <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
-						fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content)</span> </span>{
+						<span class="hljs-attr">name</span>: <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
+						<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content</span>) </span>{
 							<span class="hljs-keyword">var</span> quickFunc = <span class="hljs-regexp">/\s*\(([\$\w]+)\)\s*-&gt;([^\n]*)/</span>,
 								parts = content.match(quickFunc);</pre></div></div>
             
@@ -1032,8 +1032,8 @@ that gives a high level overview of what the generated render code does (with a 
 </code></pre><p><em>Include the nested section’s inner logic.
 The stack argument is usually the parent section’s copy of the stack, 
 but it can be an override context that was passed by a custom helper.
-Sections can nest <code>0..n</code> times — <strong>NESTCEPTION</strong>.</em></p>
-<pre><code>            { fn: fn(stack) {
+Sections can nest <code>0..n</code> times – <strong>NESTCEPTION</strong>.</em></p>
+<pre><code>            { <span class="hljs-attr">fn</span>: fn(stack) {
 </code></pre><p><em>Render the nested section (everything between the <code>{{#a}}</code> and <code>{{/a}}</code> tokens).</em></p>
 <pre><code>                view = []
                 view.push( <span class="hljs-string">"string"</span> )
@@ -1059,7 +1059,7 @@ Sections can nest <code>0..n</code> times — <strong>NESTCEPTION</strong>.</em>
 <pre><code>    <span class="hljs-keyword">var</span> ___v1ew = [];
     <span class="hljs-keyword">var</span> ___c0nt3xt = [];
     ___c0nt3xt.__sc0pe = <span class="hljs-literal">true</span>;
-    <span class="hljs-keyword">var</span> __sc0pe = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(context, self)</span> </span>{
+    <span class="hljs-keyword">var</span> __sc0pe = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, self</span>) </span>{
         <span class="hljs-keyword">var</span> s;
         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length == <span class="hljs-number">1</span> &amp;&amp; context) {
             s = !context.__sc0pe ? [context] : context;
@@ -1081,7 +1081,7 @@ context in the resulting render code. The template itself is treated like a root
 same execution logic as any others. Each section can have <code>0..n</code> nested sections within it.</p>
 <p>Here’s an example of a template without any descendent sections.<br>Given the template: <code>&quot;{{a.b.c.d.e.name}}&quot; == &quot;Phil&quot;</code><br>Would output the following render code:</p>
 <pre><code>___v1ew.push(<span class="hljs-string">"\""</span>);
-___v1ew.push(can.view.txt(<span class="hljs-number">1</span>, <span class="hljs-string">''</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+___v1ew.push(can.view.txt(<span class="hljs-number">1</span>, <span class="hljs-string">''</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> can.Mustache.txt(__sc0pe(___c0nt3xt, <span class="hljs-keyword">this</span>), <span class="hljs-literal">null</span>, 
         can.Mustache.get(<span class="hljs-string">"a.b.c.d.e.name"</span>, 
             __sc0pe(___c0nt3xt, <span class="hljs-keyword">this</span>))
@@ -1102,18 +1102,18 @@ context lookup and return the approriate string or object.</p>
 <p>For nested sections, the last argument is an <code>options</code> object that contains the nested section’s logic.</p>
 <p>Here’s an example of a template with a single nested section.<br>Given the template: <code>&quot;{{#a}}{{b.c.d.e.name}}{{/a}}&quot; == &quot;Phil&quot;</code><br>Would output the following render code:</p>
 <pre><code>___v1ew.push(<span class="hljs-string">"\""</span>);
-    ___v1ew.push(can.view.txt(<span class="hljs-number">0</span>, <span class="hljs-string">''</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    ___v1ew.push(can.view.txt(<span class="hljs-number">0</span>, <span class="hljs-string">''</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">return</span> can.Mustache.txt(__sc0pe(___c0nt3xt, <span class="hljs-keyword">this</span>), <span class="hljs-string">"#"</span>, 
         can.Mustache.get(<span class="hljs-string">"a"</span>, __sc0pe(___c0nt3xt, <span class="hljs-keyword">this</span>)), 
             [{
-                _: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                <span class="hljs-attr">_</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
                     <span class="hljs-keyword">return</span> ___v1ew.join(<span class="hljs-string">""</span>);
                 }
             }, {
-                fn: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(___c0nt3xt)</span> </span>{
+                <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">___c0nt3xt</span>) </span>{
                     <span class="hljs-keyword">var</span> ___v1ew = [];
                     ___v1ew.push(can.view.txt(<span class="hljs-number">1</span>, <span class="hljs-string">''</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>, 
-                        <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+                        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
                              <span class="hljs-keyword">return</span> can.Mustache.txt(
                                 __sc0pe(___c0nt3xt, <span class="hljs-keyword">this</span>), 
                                 <span class="hljs-literal">null</span>, 
@@ -1143,14 +1143,14 @@ ensure that live binding in nested sections works properly.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>					{
-						name: <span class="hljs-regexp">/^.*$/</span>,
-						fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(content, cmd)</span> </span>{
+						<span class="hljs-attr">name</span>: <span class="hljs-regexp">/^.*$/</span>,
+						<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">content, cmd</span>) </span>{
 							<span class="hljs-keyword">var</span> mode = <span class="hljs-literal">false</span>,
 								result = {
-									content: <span class="hljs-string">""</span>,
-									startTxt: <span class="hljs-literal">false</span>,
-									startOnlyTxt: <span class="hljs-literal">false</span>,
-									end: <span class="hljs-literal">false</span>
+									<span class="hljs-attr">content</span>: <span class="hljs-string">""</span>,
+									<span class="hljs-attr">startTxt</span>: <span class="hljs-literal">false</span>,
+									<span class="hljs-attr">startOnlyTxt</span>: <span class="hljs-literal">false</span>,
+									<span class="hljs-attr">end</span>: <span class="hljs-literal">false</span>
 								};</pre></div></div>
             
         </li>
@@ -1286,6 +1286,27 @@ ensure that live binding in nested sections works properly.</p>
 									 * would render:
 									 *
 									 *     Hi Jon!
+									 * 
+									 * ## Understanding when to use Sections with lists
+									 * 
+									 * Section iteration will re-render the entire section for any change in the list. It is the prefered method to
+									 * use when a list is replaced or changing significantly. Whereas [can.stache.helpers.each {{#each key}}] iteration
+									 * will do basic diffing and aim to only update the DOM where the change occured. When doing single list item
+									 * changes frequently, [can.stache.helpers.each {{#each key}}] iteration is the faster choice.
+									 * 
+									 * For example, assuming "list" is a can.List instance:
+									 * 
+									 * {{#if list}} will check for the truthy value of list. This is akin to checking for the truthy value of any JS object and will result to true, regardless of list contents or length.
+									 * 
+									 * {{#if list.length}} will check for the truthy value of the length attribute. If you have an empty list, the length will be 0, so the #if will result to false and no contents will be rendered. If there is a length &gt;= 1, this will result to true and the contents of the #if will be rendered.
+									 * 
+									 * {{#each list}} and {{#list}} both iterate through an instance of can.List, however we setup the bindings differently.
+									 * 
+									 * {{#each list}} will setup bindings on every individual item being iterated through, while {{#list}} will not. This makes a difference in two scenarios:
+									 * 
+									 * 1) You have a large list, with minimal updates planned after initial render. In this case, {{#list}} might be more advantageous as there will be a faster initial render. However, if any part of the list changes, the entire {{#list}} area will be re-processed.
+									 * 
+									 * 2) You have a large list, with many updates planned after initial render. A grid with many columns of editable fields, for instance. In this case, you many want to use {{#each list}}, even though it will be slower on initial render(we're setting up more bindings), you'll have faster updates as there are now many sections.
 									 */</span></pre></div></div>
             
         </li>
@@ -1491,7 +1512,7 @@ ensure that live binding in nested sections works properly.</p>
 									 *
 									 * The template:
 									 *
-									 *     &lt;p&gt;{{countTo number}}{{num}}{{/countTo}}&lt;/p&gt;
+									 *     &lt;p&gt;{{#countTo number}}{{num}}{{/countTo}}&lt;/p&gt;
 									 *
 									 * Rendered with:
 									 *
@@ -1499,13 +1520,14 @@ ensure that live binding in nested sections works properly.</p>
 									 *
 									 * Will call the `countTo` helper:
 									 *
-									 *     can.mustache.registerHelper('madLib',
+									 *     can.mustache.registerHelper('countTo',
 									 *       function(number, options){
-									 *         var out = []
+									 *         var out = [];
 									 *         for(var i =0; i &lt; number; i++){
-									 *           out.push( options.fn({num: i+1}) )
+									 *           var docFrag = options.fn({num: i+1});
+									 *           out.push( docFrag.textContent );
 									 *         }
-									 *         return out.join(" ")
+									 *         return out.join(" ");
 									 *     });
 									 *
 									 * Results in:
@@ -1545,7 +1567,7 @@ ensure that live binding in nested sections works properly.</p>
 									 * The template:
 									 *
 									 *     &lt;p&gt;The bed is
-									 *        {{isJustRight firmness}}
+									 *        {{#isJustRight firmness}}
 									 *           pefect!
 									 *        {{else}}
 									 *           uncomfortable.
@@ -1560,11 +1582,10 @@ ensure that live binding in nested sections works properly.</p>
 									 *     can.mustache.registerHelper('isJustRight',
 									 *       function(number, options){
 									 *         if(number &gt; 50){
-									 *           return options.fn(this)
+									 *           return options.fn(this);
 									 *         } else {
-									 *           return options.inverse(this)
+									 *           return options.inverse(this);
 									 *         }
-									 *         return out.join(" ")
 									 *     });
 									 *
 									 * Results in:
@@ -1838,7 +1859,7 @@ strings with spaces can be correctly parsed.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>								(can.trim(content) + <span class="hljs-string">' '</span>)
-									.replace(argumentsRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(whole, arg)</span> </span>{</pre></div></div>
+									.replace(argumentsRegExp, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">whole, arg</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2067,7 +2088,7 @@ We could probably do this differently if we didn’t ‘break’ on every match.
 		 * @param {String} mode		The mode to evaluate the section with: # for truthy, ^ for falsey
 		 * @param {String|Object} name	The string (or sometimes object) to pass to the given helper method.
 		 */</span>
-		Mustache.txt = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(scopeAndOptions, mode, name)</span> </span>{</pre></div></div>
+		Mustache.txt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">scopeAndOptions, mode, name</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2086,8 +2107,8 @@ We could probably do this differently if we didn’t ‘break’ on every match.
 				options = scopeAndOptions.options,
 				args = [],
 				helperOptions = {
-					fn: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{},
-					inverse: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{}
+					<span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{},
+					<span class="hljs-attr">inverse</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{}
 				},
 				hash,
 				context = scope.attr(<span class="hljs-string">"."</span>),
@@ -2224,7 +2245,7 @@ into issues like {{text}} / {text: ‘with’}</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (helper = (getHelper &amp;&amp; (<span class="hljs-keyword">typeof</span> name === <span class="hljs-string">"string"</span> &amp;&amp; Mustache.getHelper(name, options)) || (can.isFunction(name) &amp;&amp; !name.isComputed &amp;&amp; {
-				fn: name
+				<span class="hljs-attr">fn</span>: name
 			}))) {</pre></div></div>
             
         </li>
@@ -2242,10 +2263,10 @@ into issues like {{text}} / {text: ‘with’}</p>
             
             <div class="content"><div class='highlight'><pre>
 				can.extend(helperOptions, {
-					context: context,
-					scope: scope,
-					contexts: scope,
-					hash: hash
+					<span class="hljs-attr">context</span>: context,
+					<span class="hljs-attr">scope</span>: scope,
+					<span class="hljs-attr">contexts</span>: scope,
+					<span class="hljs-attr">hash</span>: hash
 				});
 
 				args.push(helperOptions);</pre></div></div>
@@ -2263,8 +2284,9 @@ into issues like {{text}} / {text: ‘with’}</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-					<span class="hljs-keyword">return</span> helper.fn.apply(context, args) || <span class="hljs-string">''</span>;
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+					<span class="hljs-keyword">var</span> result = helper.fn.apply(context, args);
+					<span class="hljs-keyword">return</span> result == <span class="hljs-literal">null</span> ? <span class="hljs-string">''</span> : result;
 				};
 
 			}
@@ -2274,7 +2296,7 @@ into issues like {{text}} / {text: ‘with’}</p>
 				}
 				return name;
 			}*/</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2502,7 +2524,7 @@ into issues like {{text}} / {text: ‘with’}</p>
 		 * @param {Object} context The context to use for checking for a reference if it doesn't exist in the object.
 		 * @param {Boolean} [isHelper] Whether the reference is seen as a helper.
 		 */</span>
-		Mustache.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, scopeAndOptions, isHelper, isArgument, isLookup)</span> </span>{</pre></div></div>
+		Mustache.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, scopeAndOptions, isHelper, isArgument, isLookup</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2614,8 +2636,8 @@ Check if there is a method directly in the “top” context.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> computeData = scopeAndOptions.scope.computeData(key, {
-				isArgument: isArgument,
-				args: [context, scopeAndOptions.scope]
+				<span class="hljs-attr">isArgument</span>: isArgument,
+				<span class="hljs-attr">args</span>: [context, scopeAndOptions.scope]
 			}),
 				compute = computeData.compute;</pre></div></div>
             
@@ -2725,7 +2747,7 @@ Check if there is a method directly in the “top” context.</p>
 		 * @param {Object} value    The object to resolve.
 		 * @return {Object} The resolved object.
 		 */</span>
-		Mustache.resolve = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+		Mustache.resolve = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 			<span class="hljs-keyword">if</span> (isObserveLike(value) &amp;&amp; isArrayLike(value) &amp;&amp; value.attr(<span class="hljs-string">'length'</span>)) {
 				<span class="hljs-keyword">return</span> value;
 			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (can.isFunction(value)) {
@@ -2737,18 +2759,7 @@ Check if there is a method directly in the “top” context.</p>
 
 		<span class="hljs-comment">/**
 		 * @static
-		 */</span>
-
-		can.view.Options = can.view.Scope.extend({
-			init: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, parent)</span> </span>{
-				<span class="hljs-keyword">if</span> (!data.helpers &amp;&amp; !data.partials &amp;&amp; !data.tags) {
-					data = {
-						helpers: data
-					};
-				}
-				can.view.Scope.prototype.init.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
-			}
-		});</pre></div></div>
+		 */</span></pre></div></div>
             
         </li>
         
@@ -2796,11 +2807,32 @@ passed in object.</p>
 		 * function to which Mustache should invoke.
 		 * These are run at runtime.
 		 */</span>
-		Mustache.registerHelper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, fn)</span> </span>{
+		Mustache.registerHelper = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, fn</span>) </span>{
 			<span class="hljs-keyword">this</span>._helpers[name] = {
-				name: name,
-				fn: fn
+				<span class="hljs-attr">name</span>: name,
+				<span class="hljs-attr">fn</span>: fn
 			};
+		};
+
+		<span class="hljs-comment">/**
+		 * @function can.mustache.registerSimpleHelper
+		 * @parent can.mustache.methods
+		 * @description Register a simple helper.
+		 * @function can.mustache.registerSimpleHelper registerSimpleHelper
+		 * @signature `Mustache.registerSimpleHelper(name, helper)`
+		 * @param {String} name The name of the helper.
+		 * @param {can.mustache.simplehelper} helper The simple helper function.
+		 *
+		 * @body
+		 * Registers a helper with the Mustache system that passes the values
+		 * instead of computes as arguments. This is useful if your helper does not
+		 * modify the argument computes and you only need the actual values.
+		 * Pass the name of the helper followed by the
+		 * function to which Mustache should invoke.
+		 * These are run at runtime.
+		 */</span>
+		Mustache.registerSimpleHelper = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name, fn</span>) </span>{
+			Mustache.registerHelper(name, can.view.simpleHelper(fn));
 		};
 
 		<span class="hljs-comment">/**
@@ -2815,13 +2847,13 @@ passed in object.</p>
 		 * @body
 		 * Returns a helper given the name.
 		 */</span>
-		Mustache.getHelper = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(name, options)</span> </span>{
+		Mustache.getHelper = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, options</span>) </span>{
 			<span class="hljs-keyword">var</span> helper;
 			<span class="hljs-keyword">if</span> (options) {
-				helper = options.attr(<span class="hljs-string">"helpers."</span> + name);
+				helper = options.get(<span class="hljs-string">"helpers."</span> + name,{<span class="hljs-attr">proxyMethods</span>: <span class="hljs-literal">false</span>});
 			}
 			<span class="hljs-keyword">return</span> helper ? {
-				fn: helper
+				<span class="hljs-attr">fn</span>: helper
 			} : <span class="hljs-keyword">this</span>._helpers[name];
 		};
 
@@ -2848,7 +2880,7 @@ passed in object.</p>
 		 *
 		 *     context[partial] === "movember.mustache"
 		 */</span>
-		Mustache.render = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(partial, scope, options)</span> </span>{</pre></div></div>
+		Mustache.render = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">partial, scope, options</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -2894,12 +2926,13 @@ property to look up the partial</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">var</span> reads = can.__clearReading();
-				<span class="hljs-keyword">var</span> scopePartialName = scope.attr(partial);
-				<span class="hljs-keyword">if</span> (scopePartialName) {
-					partial = scopePartialName;
-				}
-				can.__setReading(reads);
+            <div class="content"><div class='highlight'><pre>				can.__notObserve(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">var</span> scopePartialName = scope.attr(partial);
+					<span class="hljs-keyword">if</span> (scopePartialName) {
+						partial = scopePartialName;
+					}
+				})();
+				
 			}</pre></div></div>
             
         </li>
@@ -2934,41 +2967,41 @@ partial and scope.</p>
 		 * usually want to return a `can.mustache.safeString.` In this case,
 		 * you will want to manually escape parameters with `[can.esc].`
 		 *
-		 * @codestart
+		 * ```
 		 * can.mustache.registerHelper('link', function(text, url) {
 		 *   text = can.esc(text);
 		 *   url  = can.esc(url);
 		 *
-		 *   var result = '&amp;lt;a href="' + url + '"&amp;gt;' + text + '&amp;lt;/a&amp;gt;';
+		 *   var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
 		 *   return can.mustache.safeString(result);
 		 * });
-		 * @codeend
+		 * ```
 		 *
 		 * Rendering:
-		 * @codestart
-		 * &amp;lt;div&amp;gt;{{link "Google", "http://google.com"}}&amp;lt;/div&amp;gt;
-		 * @codeend
+		 * ```
+		 * &lt;div&gt;{{link "Google", "http://google.com"}}&lt;/div&gt;
+		 * ```
 		 *
 		 * Results in:
 		 *
-		 * @codestart
-		 * &amp;lt;div&amp;gt;&amp;lt;a href="http://google.com"&amp;gt;Google&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
-		 * @codeend
+		 * ```
+		 * &lt;div&gt;&lt;a href="http://google.com"&gt;Google&lt;/a&gt;&lt;/div&gt;
+		 * ```
 		 *
 		 * As an anchor tag whereas if we would have just returned the result rather than a
 		 * `can.mustache.safeString` our template would have rendered a div with the escaped anchor tag.
 		 *
 		 */</span>
-		Mustache.safeString = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(str)</span> </span>{
+		Mustache.safeString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
 			<span class="hljs-keyword">return</span> {
-				toString: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+				<span class="hljs-attr">toString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					<span class="hljs-keyword">return</span> str;
 				}
 			};
 		};
 
-		Mustache.renderPartial = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(partialName, scope, options)</span> </span>{
-			<span class="hljs-keyword">var</span> partial = options.attr(<span class="hljs-string">"partials."</span> + partialName);
+		Mustache.renderPartial = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">partialName, scope, options</span>) </span>{
+			<span class="hljs-keyword">var</span> partial = options.get(<span class="hljs-string">"partials."</span> + partialName,{<span class="hljs-attr">proxyMethods</span>: <span class="hljs-literal">false</span>});
 			<span class="hljs-keyword">if</span> (partial) {
 				<span class="hljs-keyword">return</span> partial.render ? partial.render(scope, options) :
 					partial(scope, options);
@@ -3063,7 +3096,7 @@ partial and scope.</p>
 			 *
 			 *     Miss
 			 */</span>
-			<span class="hljs-string">'if'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
+			<span class="hljs-string">'if'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
 				<span class="hljs-keyword">var</span> value;</pre></div></div>
             
         </li>
@@ -3119,7 +3152,7 @@ that will only change values from true to false</p>
 			*		// falsey
 			*	{{/is}}
 			*/</span>
-			<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-string">'is'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> lastValue, curValue,
 					options = <span class="hljs-built_in">arguments</span>[<span class="hljs-built_in">arguments</span>.length - <span class="hljs-number">1</span>];
 
@@ -3141,7 +3174,7 @@ that will only change values from true to false</p>
 
 				<span class="hljs-keyword">return</span> options.fn();
 			},
-			<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-string">'eq'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">return</span> Mustache._helpers.is.fn.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 			},</pre></div></div>
             
@@ -3182,8 +3215,11 @@ that will only change values from true to false</p>
 			 *       // unless
 			 *     {{/unless}}
 			 */</span>
-			<span class="hljs-string">'unless'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
-				<span class="hljs-keyword">return</span> Mustache._helpers[<span class="hljs-string">'if'</span>].fn.apply(<span class="hljs-keyword">this</span>, [can.isFunction(expr) ? can.compute(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> !expr(); }) : !expr, options]);
+			<span class="hljs-string">'unless'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
+				<span class="hljs-keyword">return</span> Mustache._helpers[<span class="hljs-string">'if'</span>].fn.apply(<span class="hljs-keyword">this</span>, [expr, can.extend({}, options, {
+					<span class="hljs-attr">fn</span>: options.inverse,
+					<span class="hljs-attr">inverse</span>: options.fn
+				})]);
 			},</pre></div></div>
             
         </li>
@@ -3272,8 +3308,29 @@ that will only change values from true to false</p>
 			 *       &lt;li&gt;Josh&lt;/li&gt;
 			 *       &lt;li&gt;27&lt;/li&gt;
 			 *     &lt;/ul&gt;
+			 * 
+			 * ## Understanding when to use #each with lists
+			 * 
+			 * {{#each key}} iteration will do basic diffing and aim to only update the DOM where the change occured. Whereas
+			 * [can.stache.Sections Sections] iteration will re-render the entire section for any change in the list.
+			 * [can.stache.Sections Sections] iteration is the prefered method to use when a list is replaced or changing significantly.
+			 * When doing single list item changes frequently, {{#each key}} iteration is the faster choice.
+			 * 
+			 * For example, assuming "list" is a can.List instance:
+			 * 
+			 * {{#if list}} will check for the truthy value of list. This is akin to checking for the truthy value of any JS object and will result to true, regardless of list contents or length.
+			 * 
+			 * {{#if list.length}} will check for the truthy value of the length attribute. If you have an empty list, the length will be 0, so the #if will result to false and no contents will be rendered. If there is a length &gt;= 1, this will result to true and the contents of the #if will be rendered.
+			 * 
+			 * {{#each list}} and {{#list}} both iterate through an instance of can.List, however we setup the bindings differently.
+			 * 
+			 * {{#each list}} will setup bindings on every individual item being iterated through, while {{#list}} will not. This makes a difference in two scenarios:
+			 * 
+			 * 1) You have a large list, with minimal updates planned after initial render. In this case, {{#list}} might be more advantageous as there will be a faster initial render. However, if any part of the list changes, the entire {{#list}} area will be re-processed.
+			 * 
+			 * 2) You have a large list, with many updates planned after initial render. A grid with many columns of editable fields, for instance. In this case, you many want to use {{#each list}}, even though it will be slower on initial render(we're setting up more bindings), you'll have faster updates as there are now many sections.
 			 */</span>
-			<span class="hljs-string">'each'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{</pre></div></div>
+			<span class="hljs-string">'each'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -3325,7 +3382,7 @@ Assume it is intended to be a list</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (can.view.lists &amp;&amp; (resolved <span class="hljs-keyword">instanceof</span> can.List || (expr &amp;&amp; expr.isComputed &amp;&amp; resolved === <span class="hljs-literal">undefined</span>))) {
-					<span class="hljs-keyword">return</span> can.view.lists(expr, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item, index)</span> </span>{
+					<span class="hljs-keyword">return</span> can.view.lists(expr, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item, index</span>) </span>{
 						<span class="hljs-keyword">return</span> options.fn(options.scope.add({
 								<span class="hljs-string">"@index"</span>: index
 							})
@@ -3417,7 +3474,7 @@ Assume it is intended to be a list</p>
 			 *       // with
 			 *     {{/with}}
 			 */</span>
-			<span class="hljs-string">'with'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
+			<span class="hljs-string">'with'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
 				<span class="hljs-keyword">var</span> ctx = expr;
 				expr = Mustache.resolve(expr);
 				<span class="hljs-keyword">if</span> ( !! expr) {
@@ -3436,7 +3493,7 @@ Assume it is intended to be a list</p>
 			 * current context.
 			 *
 			 */</span>
-			<span class="hljs-string">'log'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(expr, options)</span> </span>{
+			<span class="hljs-string">'log'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">expr, options</span>) </span>{
 				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">console</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">console</span>.log) {
 					<span class="hljs-keyword">if</span> (!options) {
 						<span class="hljs-built_in">console</span>.log(expr.context);
@@ -3519,12 +3576,12 @@ Assume it is intended to be a list</p>
 			 *     &lt;/ul&gt;
 			 *
 			 */</span>
-			<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(offset, options)</span> </span>{
+			<span class="hljs-string">"@index"</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">offset, options</span>) </span>{
 				<span class="hljs-keyword">if</span> (!options) {
 					options = offset;
 					offset = <span class="hljs-number">0</span>;
 				}
-				<span class="hljs-keyword">var</span> index = options.scope.attr(<span class="hljs-string">"@index"</span>);
+				<span class="hljs-keyword">var</span> index = options.scope.read(<span class="hljs-string">"@index"</span>,{<span class="hljs-attr">isArgument</span>: <span class="hljs-literal">true</span>}).value;
 				<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+((can.isFunction(index) ? index() : index) + offset);
 			}
 			<span class="hljs-comment">/**
@@ -3563,7 +3620,7 @@ Assume it is intended to be a list</p>
 			 *     &lt;/ul&gt;
 			 *
 			 */</span>
-		}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fn, name)</span> </span>{
+		}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fn, name</span>) </span>{
 			Mustache.registerHelper(name, fn);
 		});</pre></div></div>
             
@@ -3582,9 +3639,9 @@ Assume it is intended to be a list</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>		can.view.register({
-			suffix: <span class="hljs-string">"mustache"</span>,
+			<span class="hljs-attr">suffix</span>: <span class="hljs-string">"mustache"</span>,
 
-			contentType: <span class="hljs-string">"x-mustache-template"</span>,</pre></div></div>
+			<span class="hljs-attr">contentType</span>: <span class="hljs-string">"x-mustache-template"</span>,</pre></div></div>
             
         </li>
         
@@ -3599,18 +3656,18 @@ Assume it is intended to be a list</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			script: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, src)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			script: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, src</span>) </span>{
 				<span class="hljs-keyword">return</span> <span class="hljs-string">"can.Mustache(function("</span> + ARG_NAMES + <span class="hljs-string">") { "</span> + <span class="hljs-keyword">new</span> Mustache({
-					text: src,
-					name: id
+					<span class="hljs-attr">text</span>: src,
+					<span class="hljs-attr">name</span>: id
 				})
 					.template.out + <span class="hljs-string">" })"</span>;
 			},
 
-			renderer: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+			<span class="hljs-attr">renderer</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, text</span>) </span>{
 				<span class="hljs-keyword">return</span> Mustache({
-					text: text,
-					name: id
+					<span class="hljs-attr">text</span>: text,
+					<span class="hljs-attr">name</span>: id
 				});
 			}
 		});

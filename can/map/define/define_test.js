@@ -1,7 +1,7 @@
 /* jshint asi: false */
 steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
-	
-	
+
+
 	QUnit.module('can/map/define');
 
 	// remove, type, default
@@ -554,16 +554,32 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 		equal(tm.attr('foo'), 'baz');
 	});
 
-	test("value generator can read other properties", function () {
-		var NumbersMap = can.Map.extend({
+	test("Value generator can read other properties", function () {
+		var Map = can.Map.extend({
+			letters: 'ABC',
 			numbers: [1, 2, 3],
 			define: {
+				definedLetters: {
+					value: 'DEF'
+				},
 				definedNumbers: {
 					value: [4, 5, 6]
+				},
+				generatedLetters: {
+					value: function () {
+						return 'GHI';
+					}
 				},
 				generatedNumbers: {
 					value: function () {
 						return new can.List([7, 8, 9]);
+					}
+				},
+
+				// Get prototype defaults
+				firstLetter: {
+					value: function () {
+						return this.attr('letters').substr(0, 1);
 					}
 				},
 				firstNumber: {
@@ -571,9 +587,23 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 						return this.attr('numbers.0');
 					}
 				},
+
+				// Get defined simple `value` defaults
+				middleLetter: {
+					value: function () {
+						return this.attr('definedLetters').substr(1, 1);
+					}
+				},
 				middleNumber: {
 					value: function () {
 						return this.attr('definedNumbers.1');
+					}
+				},
+
+				// Get defined `value` function defaults
+				lastLetter: {
+					value: function () {
+						return this.attr('generatedLetters').substr(2, 1);
 					}
 				},
 				lastNumber: {
@@ -584,19 +614,27 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 			}
 		});
 
-		var n = NumbersMap();
-		var prefix = 'was able to read dependent value from ';
+		var map = new Map();
+		var prefix = 'Was able to read dependent value from ';
 
-		equal(n.attr('firstNumber'), 1,
+		equal(map.attr('firstLetter'), 'A',
 			prefix + 'traditional can.Map style property definition');
-		equal(n.attr('middleNumber'), 5,
-			prefix + 'Define plugin style default property definition');
-		equal(n.attr('lastNumber'), 9,
-			prefix + 'Define plugin style generated default property definition');
+		equal(map.attr('firstNumber'), 1,
+			prefix + 'traditional can.Map style property definition');
+
+		equal(map.attr('middleLetter'), 'E',
+			prefix + 'define plugin style default property definition');
+		equal(map.attr('middleNumber'), 5,
+			prefix + 'define plugin style default property definition');
+
+		equal(map.attr('lastLetter'), 'I',
+			prefix + 'define plugin style generated default property definition');
+		equal(map.attr('lastNumber'), 9,
+			prefix + 'define plugin style generated default property definition');
 	});
 
 	test('default behaviors with "*" work for attributes', function() {
-		expect(8);
+		expect(9);
 		var DefaultMap = can.Map.extend({
 			define: {
 				someNumber: {
@@ -633,6 +671,29 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 		equal(serializedMap.number, '10', 'number serialized as string');
 		equal(serializedMap.someNumber, '5', 'someNumber serialized as string');
 		equal(serializedMap['*'], undefined, '"*" is not a value in serialized object');
+	});
+
+	test('models properly serialize with default behaviors', function() {
+		var DefaultMap = can.Map.extend({
+			define: {
+				name: {
+					value: 'Alex'
+				},
+				shirt: {
+					value: 'blue',
+					serialize: true
+				},
+				'*': {
+					serialize: false
+				}
+			}
+		});
+		var map = new DefaultMap({age: 10, name: 'John'}),
+			serializedMap = map.serialize();
+
+		equal(serializedMap.age, undefined, 'age doesn\'t exist');
+		equal(serializedMap.name, undefined, 'name doesn\'t exist');
+		equal(serializedMap.shirt, 'blue', 'shirt exists');
 	});
 
 	test("nested define", function() {
@@ -708,17 +769,17 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 				}
 			}
 		});
-		
+
 		var getMap = new GetMap();
-		
+
 		getMap.attr("value", computeValue);
-		
+
 		equal(getMap.attr("value"), 1);
 
 		var bindCallbacks = 0;
-		
+
 		getMap.bind("value", function(ev, newVal, oldVal){
-			//debugger;
+
 			switch(bindCallbacks) {
 				case 0:
 					equal(newVal, 2, "0 - bind called with new val");
@@ -733,32 +794,32 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 					equal(oldVal, 3, "2 - bind called with old val");
 					break;
 			}
-			
-			
+
+
 			bindCallbacks++;
 		});
-		
+
 		// Try updating the compute's value
 		computeValue(2);
-		
+
 		// Try setting the value of the property
 		getMap.attr("value", 3);
-		
+
 		equal(getMap.attr("value"), 3, "read value is 3");
 		equal(computeValue(), 3, "the compute value is 3");
-		
+
 		// Try setting to a new comptue
 		var newComputeValue = can.compute(4);
-		
+
 		getMap.attr("value", newComputeValue);
-		
+
 	});
 
 	test('setting a value of a property with type "compute" triggers change events', function () {
 
 		var handler;
 		var message = 'The change event passed the correct {prop} when set with {method}';
-		
+
 		var createChangeHandler = function (expectedOldVal, expectedNewVal, method) {
 			return function (ev, newVal, oldVal) {
 				var subs = { prop: 'newVal', method: method };
@@ -785,7 +846,7 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 		equal(m1.attr('computed'), 0, 'm1 is 1');
 
 		handler = createChangeHandler(0, 1, ".attr('computed', newVal)");
-		
+
 
 		handler = createChangeHandler(0, 1, ".attr('computed', newVal)");
 		m1.bind('computed', handler);
@@ -825,32 +886,30 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 
 	// The old attributes plugin interferes severly with this test.
 	// TODO remove this condition when taking the plugins out of the main repository
-	if(!can.Map.attributes) {
-		test('value and get (#1521)', function () {
-			var MyMap = can.Map.extend({
-				define: {
-					data: {
-						value: function () {
-							return new can.List(['test']);
-						}
-					},
-					size: {
-						value: 1,
-						get: function (val) {
-							var list = this.attr('data');
-							var length = list.attr('length');
-							return val + length;
-						}
+	test('value and get (#1521)', function () {
+		var MyMap = can.Map.extend({
+			define: {
+				data: {
+					value: function () {
+						return new can.List(['test']);
+					}
+				},
+				size: {
+					value: 1,
+					get: function (val) {
+						var list = this.attr('data');
+						var length = list.attr('length');
+						return val + length;
 					}
 				}
-			});
-
-			var map = new MyMap({});
-			equal(map.attr('size'), 2);
+			}
 		});
-	}
-	
-	
+
+		var map = new MyMap({});
+		equal(map.attr('size'), 2);
+	});
+
+
 	test("One event on getters (#1585)", function(){
 
 		var AppState = can.Map.extend({
@@ -868,21 +927,411 @@ steal("can/map/define", "can/route", "can/test", "steal-qunit", function () {
 				}
 			}
 		});
-		
+
 		var appState = new AppState();
 		var personEvents = 0;
 		appState.bind("person", function(ev, person) {
 			personEvents++;
 		});
-		
+
 		appState.attr("personId", 5);
-		
+
 
 		appState.attr("person", new can.Map({
 			name: "Julia"
 		}));
 
-			
+
 		equal(personEvents,2);
+	});
+
+	test('Can read a defined property with a set/get method (#1648)', function () {
+		// Problem: "get" is not passed the correct "lastSetVal"
+		// Problem: Cannot read the value of "foo"
+
+		var Map = can.Map.extend({
+			define: {
+				foo: {
+					value: '',
+					set: function (setVal) {
+						return setVal;
+					},
+					get: function (lastSetVal) {
+						return lastSetVal;
+					}
+				}
+			}
+		});
+
+		var map = new Map();
+
+		equal(map.attr('foo'), '', 'Calling .attr(\'foo\') returned the correct value');
+
+		map.attr('foo', 'baz');
+
+		equal(map.attr('foo'), 'baz', 'Calling .attr(\'foo\') returned the correct value');
+	});
+
+	test('Can bind to a defined property with a set/get method (#1648)', 3, function () {
+		// Problem: "get" is not called before and after the "set"
+		// Problem: Function bound to "foo" is not called
+		// Problem: Cannot read the value of "foo"
+
+		var Map = can.Map.extend({
+			define: {
+				foo: {
+					value: '',
+					set: function (setVal) {
+						return setVal;
+					},
+					get: function (lastSetVal) {
+						return lastSetVal;
+					}
+				}
+			}
+		});
+
+		var map = new Map();
+
+		map.bind('foo', function () {
+			ok(true, 'Bound function is called');
+		});
+
+		equal(map.attr('foo'), '', 'Calling .attr(\'foo\') returned the correct value');
+
+		map.attr('foo', 'baz');
+
+		equal(map.attr('foo'), 'baz', 'Calling .attr(\'foo\') returned the correct value');
+	});
+
+
+	test("type converters handle null and undefined in expected ways (1693)", function () {
+
+		var Typer = can.Map.extend({
+			define: {
+				date: {  type: 'date' },
+				string: {type: 'string'},
+				number: {  type: 'number' },
+				'boolean': {  type: 'boolean' },
+				htmlbool: {  type: 'htmlbool' },
+				leaveAlone: {  type: '*' }
+			}
+		});
+
+		var t = new Typer().attr({
+			date: undefined,
+			string: undefined,
+			number: undefined,
+			'boolean': undefined,
+			htmlbool: undefined,
+			leaveAlone: undefined
+		});
+
+		equal(t.attr("date"), undefined, "converted to date");
+
+		equal(t.attr("string"), undefined, "converted to string");
+
+		equal(t.attr("number"), undefined, "converted to number");
+
+		equal(t.attr("boolean"), false, "converted to boolean");
+
+		equal(t.attr("htmlbool"), false, "converted to htmlbool");
+
+		equal(t.attr("leaveAlone"), undefined, "left as object");
+
+		t = new Typer().attr({
+			date: null,
+			string: null,
+			number: null,
+			'boolean': null,
+			htmlbool: null,
+			leaveAlone: null
+		});
+
+		equal(t.attr("date"), null, "converted to date");
+
+		equal(t.attr("string"), null, "converted to string");
+
+		equal(t.attr("number"), null, "converted to number");
+
+		equal(t.attr("boolean"), false, "converted to boolean");
+
+		equal(t.attr("htmlbool"), false, "converted to htmlbool");
+
+		equal(t.attr("leaveAlone"), null, "left as object");
+
+	});
+
+	test('Initial value does not call getter', function() {
+		expect(0);
+
+		var Map = can.Map.extend({
+			define: {
+				count: {
+					get: function(lastVal) {
+						ok(false, 'Should not be called');
+						return lastVal;
+					}
+				}
+			}
+		});
+
+		new Map({ count: 100 });
+	});
+
+	test("getters produce change events", function(){
+		var Map = can.Map.extend({
+			define: {
+				count: {
+					get: function(lastVal) {
+						return lastVal;
+					}
+				}
+			}
+		});
+
+		var map = new Map();
+
+		map.bind("change", function(){
+			ok(true, "change called");
+		});
+
+		map.attr("count", 22);
+	});
+
+	test("Asynchronous virtual properties cause extra recomputes (#1915)", function() {
+
+		stop();
+
+		var ran = false;
+		var VM = can.Map.extend({
+			define : {
+				foo : {
+					get : function(lastVal, setVal) {
+						setTimeout(function() {
+							if (setVal) {
+								setVal(5);
+							}
+						}, 10);
+					}
+				},
+				bar : {
+					get : function() {
+						var foo = this.attr('foo');
+						if (foo) {
+							if (ran) {
+								ok(false, 'Getter ran twice');
+							}
+							ran = true;
+							return foo * 2;
+						}
+					}
+				}
+			}
+		});
+
+		var vm = new VM();
+		vm.bind('bar', function() {});
+
+		setTimeout(function() {
+			equal(vm.attr('bar'), 10);
+			start();
+		}, 200);
+
+	});
+
+
+	test("double get in a compute (#2230)", function() {
+		var VM = can.Map.extend({
+			define : {
+				names : {
+					get : function(val, setVal) {
+						ok(setVal, "setVal passed");
+						return 'Hi!';
+					}
+				}
+			}
+		});
+
+		var vm = new VM();
+
+		var c = can.compute(function(){
+			return vm.attr("names");
+		});
+
+		c.bind("change", function(){});
+
+	});
+
+	test("Define plugin supports can.List (#1127)", 2, function(){
+		var MyList = can.List.extend({
+			define: {
+				idMap: {
+					get: function() {
+						var map = {};
+						this.each(function(item) {
+							map[item.attr("id")] = item.attr();
+						});
+						return map;
+					},
+					type: "*"
+				}
+			}
+		});
+
+		var list = new MyList([{
+			id: 1,
+			name: "1"
+		}, {
+			id: 2,
+			name: "2"
+		}, {
+			id: 3,
+			name: "3"
+		}]);
+
+		deepEqual(list.attr("idMap"), {
+			"1": {id: 1,name: "1"},
+			"2": {id: 2,name: "2"},
+			"3": {id: 3,name: "3"}
+		}, "can read");
+
+		list.bind("idMap", function(ev, newVal) {
+			deepEqual(newVal, {
+				"1": {id: 1,name: "1"},
+				"2": {id: 2,name: "2"}
+			}, "got event");
+		});
+
+		list.pop();
+	});
+
+	test("compute props can be set to null or undefined (#2372)", function(assert) {
+		var VM = can.Map.extend({ define: {
+			foo: { type: 'compute' }
+		}});
+
+		var vmNull = new VM({foo: null});
+		assert.equal(vmNull.foo, null, "foo is null, no error thrown");
+		var vmUndef = new VM({foo: undefined});
+		assert.equal(vmUndef.foo, undefined, "foo is undefined, no error thrown");
+	});
+
+	test("can inherit computes from another map (#1322)", 4, function(){
+		var string1 = 'a string';
+		var string2 = 'another string';
+
+		var MapA = can.Map.extend({
+			define: {
+				propA: {
+					get: function() {
+						return string1;
+					}
+				},
+				propB: {
+					get: function() {
+						return string1;
+					},
+					set: function(newVal) {
+						equal(newVal, string1, 'set was called');
+					}
+				}
+			}
+		});
+		var MapB = MapA.extend({
+			define: {
+				propC: {
+					get: function() {
+						return string2;
+					}
+				},
+				propB: {
+					get: function() {
+						return string2;
+					}
+				}
+			}
+		});
+
+		var map = new MapB();
+
+		equal(map.attr('propC'), string2, 'props only in the child have the correct values');
+		equal(map.attr('propB'), string2, 'props in both have the child values');
+		equal(map.attr('propA'), string1, 'props only in the parent have the correct values');
+		map.attr('propB', string1);
+
+	});
+
+	test("can inherit primitive values from another map (#1322)", function(){
+		var string1 = 'a';
+		var string2 = 'b';
+
+		var MapA = can.Map.extend({
+			define: {
+				propA: {
+					value: string1
+				},
+				propB: {
+					value: string1
+				}
+			}
+		});
+		var MapB = MapA.extend({
+			define: {
+				propC: {
+					value: string2
+				},
+				propB: {
+					value: string2
+				}
+			}
+		});
+
+		var map = new MapB();
+
+		equal(map.propC, string2, 'props only in the child have the correct values');
+		equal(map.propB, string2, 'props in both have the child values');
+		equal(map.propA, string1, 'props only in the parent have the correct values');
+
+	});
+
+	test("can inherit object values from another map (#1322)", function(){
+		var object1 = {a: 'a'};
+		var object2 = {b: 'b'};
+
+		var MapA = can.Map.extend({
+			define: {
+				propA: {
+					get: function() {
+						return object1;
+					}
+				},
+				propB: {
+					get: function() {
+						return object1;
+					}
+				}
+			}
+		});
+		var MapB = MapA.extend({
+			define: {
+				propB: {
+					get: function() {
+						return object2;
+					}
+				},
+				propC: {
+					get: function() {
+						return object2;
+					}
+				}
+			}
+		});
+
+		var map = new MapB();
+
+		equal(map.attr('propC'), object2, 'props only in the child have the correct values');
+		equal(map.attr('propB'), object2, 'props in both have the child values');
+		equal(map.attr('propA'), object1, 'props only in the parent have the correct values');
 	});
 });

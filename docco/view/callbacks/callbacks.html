@@ -30,17 +30,17 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(can)</span></span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">"can/util"</span>, <span class="hljs-string">"can/view"</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">can</span>)</span>{
 
 
-	<span class="hljs-keyword">var</span> attr = can.view.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(attributeName, attrHandler)</span> </span>{
+	<span class="hljs-keyword">var</span> attr = can.view.attr = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">attributeName, attrHandler</span>) </span>{
 		<span class="hljs-keyword">if</span>(attrHandler) {
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> attributeName === <span class="hljs-string">"string"</span>) {
 				attributes[attributeName] = attrHandler;
 			} <span class="hljs-keyword">else</span> {
 				regExpAttributes.push({
-					match: attributeName,
-					handler: attrHandler
+					<span class="hljs-attr">match</span>: attributeName,
+					<span class="hljs-attr">handler</span>: attrHandler
 				});
 			}
 		} <span class="hljs-keyword">else</span> {
@@ -63,7 +63,7 @@
 		regExpAttributes = [],
 		automaticCustomElementCharacters = <span class="hljs-regexp">/[-\:]/</span>;
 
-	<span class="hljs-keyword">var</span> tag = can.view.tag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tagName, tagHandler)</span> </span>{
+	<span class="hljs-keyword">var</span> tag = can.view.tag = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">tagName, tagHandler</span>) </span>{
 		<span class="hljs-keyword">if</span>(tagHandler) {</pre></div></div>
             
         </li>
@@ -80,7 +80,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> tags[tagName.toLowerCase()] !== <span class="hljs-string">'undefined'</span>) {
-				can.dev.warn(<span class="hljs-string">"Custom tag: "</span> + tagName.toLowerCase() + <span class="hljs-string">"is already defined"</span>);
+				can.dev.warn(<span class="hljs-string">"Custom tag: "</span> + tagName.toLowerCase() + <span class="hljs-string">" is already defined"</span>);
+			}
+			<span class="hljs-keyword">if</span> (!automaticCustomElementCharacters.test(tagName) &amp;&amp; tagName !== <span class="hljs-string">"content"</span>) {
+				can.dev.warn(<span class="hljs-string">"Custom tag: "</span> + tagName.toLowerCase() + <span class="hljs-string">" is missing a hyphen"</span>);
 			}</pre></div></div>
             
         </li>
@@ -120,7 +123,7 @@ if we have html5shive … re-generate</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				cb = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{};
+            <div class="content"><div class='highlight'><pre>				cb = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{};
 			}
 			<span class="hljs-keyword">return</span> cb;
 		}
@@ -129,11 +132,11 @@ if we have html5shive … re-generate</p>
 	<span class="hljs-keyword">var</span> tags = {};
 	
 	can.view.callbacks = {
-		_tags: tags,
-		_attributes: attributes,
-		_regExpAttributes: regExpAttributes,
-		tag: tag,
-		attr: attr,</pre></div></div>
+		<span class="hljs-attr">_tags</span>: tags,
+		<span class="hljs-attr">_attributes</span>: attributes,
+		<span class="hljs-attr">_regExpAttributes</span>: regExpAttributes,
+		<span class="hljs-attr">tag</span>: tag,
+		<span class="hljs-attr">attr</span>: attr,</pre></div></div>
             
         </li>
         
@@ -148,8 +151,8 @@ if we have html5shive … re-generate</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		tagHandler: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(el, tagName, tagData)</span></span>{
-			<span class="hljs-keyword">var</span> helperTagCallback = tagData.options.attr(<span class="hljs-string">'tags.'</span> + tagName),
+            <div class="content"><div class='highlight'><pre>		tagHandler: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">el, tagName, tagData</span>)</span>{
+			<span class="hljs-keyword">var</span> helperTagCallback = tagData.options.get(<span class="hljs-string">'tags.'</span> + tagName,{<span class="hljs-attr">proxyMethods</span>: <span class="hljs-literal">false</span>}),
 				tagCallback = helperTagCallback || tags[tagName];</pre></div></div>
             
         </li>
@@ -169,9 +172,7 @@ if we have html5shive … re-generate</p>
 				res;
 				
 			<span class="hljs-keyword">if</span>(tagCallback) {
-				<span class="hljs-keyword">var</span> reads = can.__clearReading();
-				res = tagCallback(el, tagData);
-				can.__setReading(reads);
+				res = can.__notObserve(tagCallback)(el, tagData);
 			} <span class="hljs-keyword">else</span> {
 				res = scope;
 			}</pre></div></div>

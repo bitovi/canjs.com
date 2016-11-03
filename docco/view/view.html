@@ -73,7 +73,7 @@ from the template engine’s rendering method</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{
 
 	<span class="hljs-keyword">var</span> isFunction = can.isFunction,
 		makeArray = can.makeArray,</pre></div></div>
@@ -135,13 +135,13 @@ from the template engine’s rendering method</p>
 	 * @hide
 	 * Rendering function factory method
 	 * @param textRenderer
-	 * @returns {renderer}
+	 * @return {renderer}
 	 */</span>
-	<span class="hljs-keyword">var</span> makeRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(textRenderer)</span> </span>{
-		<span class="hljs-keyword">var</span> renderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+	<span class="hljs-keyword">var</span> makeRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">textRenderer</span>) </span>{
+		<span class="hljs-keyword">var</span> renderer = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> $view.frag(textRenderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>));
 		};
-		renderer.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		renderer.render = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
 		};
 		<span class="hljs-keyword">return</span> renderer;
@@ -161,7 +161,7 @@ from the template engine’s rendering method</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> checkText = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text, url)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> checkText = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">text, url</span>) </span>{
 		<span class="hljs-keyword">if</span> (!text.length) {</pre></div></div>
             
         </li>
@@ -206,7 +206,7 @@ from the template engine’s rendering method</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-			<span class="hljs-keyword">throw</span> <span class="hljs-string">"can.view: No template or empty template:"</span> + url;
+			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"can.view: No template or empty template:"</span> + url);
 		}
 	};</pre></div></div>
             
@@ -229,9 +229,9 @@ from the template engine’s rendering method</p>
 	 * @function get
 	 * @param {String | Object} obj url string or object with url property
 	 * @param {Boolean} async If the ajax request should be asynchronous.
-	 * @returns {can.Deferred} a `view` renderer deferred.
+	 * @return {can.Deferred} a `view` renderer deferred.
 	 */</span>
-	<span class="hljs-keyword">var</span>	getRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(obj, async)</span> </span>{</pre></div></div>
+	<span class="hljs-keyword">var</span>	getRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, async</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -505,14 +505,14 @@ You should only be using <code>//</code> if you are using an AMD loader like <co
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> can.Deferred();
 			can.ajax({
-				async: async,
-				url: url,
-				dataType: <span class="hljs-string">'text'</span>,
-				error: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(jqXHR)</span> </span>{
+				<span class="hljs-attr">async</span>: <span class="hljs-keyword">async</span>,
+				<span class="hljs-attr">url</span>: url,
+				<span class="hljs-attr">dataType</span>: <span class="hljs-string">'text'</span>,
+				<span class="hljs-attr">error</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR</span>) </span>{
 					checkText(<span class="hljs-string">''</span>, url);
 					d.reject(jqXHR);
 				},
-				success: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(text)</span> </span>{</pre></div></div>
+				<span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">text</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -553,9 +553,9 @@ This only goes one level deep.</p>
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	 * @hide
 	 * @param {Object|can.Deferred} data
-	 * @returns {Array} deferred objects
+	 * @return {Array} deferred objects
 	 */</span>
-	<span class="hljs-keyword">var</span> getDeferreds = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+	<span class="hljs-keyword">var</span> getDeferreds = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
 		<span class="hljs-keyword">var</span> deferreds = [];</pre></div></div>
             
         </li>
@@ -571,11 +571,11 @@ This only goes one level deep.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (can.isDeferred(data)) {
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (can.isPromise(data)) {
 			<span class="hljs-keyword">return</span> [data];
 		} <span class="hljs-keyword">else</span> {
 			<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> data) {
-				<span class="hljs-keyword">if</span> (can.isDeferred(data[prop])) {
+				<span class="hljs-keyword">if</span> (can.isPromise(data[prop])) {
 					deferreds.push(data[prop]);
 				}
 			}
@@ -604,9 +604,9 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 	 * @hide
 	 * @function usefulPart
 	 * @param {Array|*} resolved
-	 * @returns {*}
+	 * @return {*}
 	 */</span>
-	<span class="hljs-keyword">var</span> usefulPart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{
+	<span class="hljs-keyword">var</span> usefulPart = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolved</span>) </span>{
 		<span class="hljs-keyword">return</span> can.isArray(resolved) &amp;&amp; resolved[<span class="hljs-number">1</span>] === <span class="hljs-string">'success'</span> ? resolved[<span class="hljs-number">0</span>] : resolved;
 	};</pre></div></div>
             
@@ -627,7 +627,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
             <div class="content"><div class='highlight'><pre>	<span class="hljs-comment">/**
 	 * @add can.view
 	 */</span>
-	<span class="hljs-keyword">var</span> $view = can.view = can.template = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{</pre></div></div>
+	<span class="hljs-keyword">var</span> $view = can.view = can.template = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">view, data, helpers, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -708,7 +708,7 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 		 * @function can.view.frag frag
 		 * @parent can.view.static
 		 */</span>
-		frag: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result, parentNode)</span> </span>{
+		frag: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result, parentNode</span>) </span>{
 			<span class="hljs-keyword">return</span> $view.hookup($view.fragment(result), parentNode);
 		},</pre></div></div>
             
@@ -726,11 +726,9 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		fragment: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
-			<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> result !== <span class="hljs-string">"string"</span> &amp;&amp; result.nodeType === <span class="hljs-number">11</span>) {
-				<span class="hljs-keyword">return</span> result;
-			}
-			<span class="hljs-keyword">var</span> frag = can.buildFragment(result, <span class="hljs-built_in">document</span>.body);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		fragment: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result</span>) </span>{
+			<span class="hljs-keyword">return</span> can.frag(result, <span class="hljs-built_in">document</span>);
+		},</pre></div></div>
             
         </li>
         
@@ -741,15 +739,14 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>If we have an empty frag…</p>
+              <h5 id="toid">toId</h5>
+<p>Convert a path like string into something that’s ok for an <code>element</code> ID.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (!frag.childNodes.length) {
-				frag.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">''</span>));
-			}
-			<span class="hljs-keyword">return</span> frag;
-		},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>		toId: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">src</span>) </span>{
+			<span class="hljs-keyword">return</span> can.map(src.toString()
+				.split(<span class="hljs-regexp">/\/|\./g</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">part</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -759,24 +756,6 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <h5 id="toid">toId</h5>
-<p>Convert a path like string into something that’s ok for an <code>element</code> ID.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		toId: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(src)</span> </span>{
-			<span class="hljs-keyword">return</span> can.map(src.toString()
-				.split(<span class="hljs-regexp">/\/|\./g</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(part)</span> </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Dont include empty strings in toId functions</p>
 
@@ -792,29 +771,29 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
         </li>
         
         
-        <li id="section-42">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <h5 id="tostr">toStr</h5>
 <p>convert argument to a string</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		toStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(txt)</span></span>{
+            <div class="content"><div class='highlight'><pre>		toStr: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">txt</span>)</span>{
 			<span class="hljs-keyword">return</span> txt == <span class="hljs-literal">null</span> ? <span class="hljs-string">""</span> : <span class="hljs-string">""</span>+txt;
 		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-43">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <h5 id="hookup">hookup</h5>
 <p>attach the provided <code>fragment</code> to <code>parentNode</code></p>
@@ -826,12 +805,32 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
 		 * hook up a fragment to its parent node
 		 * @param fragment
 		 * @param parentNode
-		 * @returns {*}
+		 * @return {*}
 		 */</span>
-		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fragment, parentNode)</span> </span>{
+		hookup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fragment, parentNode</span>) </span>{
 			<span class="hljs-keyword">var</span> hookupEls = [],
 				id,
 				func;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Get all <code>childNodes</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node</span>) </span>{
+				<span class="hljs-keyword">if</span> (node.nodeType === <span class="hljs-number">1</span>) {
+					hookupEls.push(node);
+					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName(<span class="hljs-string">'*'</span>)));
+				}
+			});</pre></div></div>
             
         </li>
         
@@ -842,31 +841,11 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>Get all <code>childNodes</code>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			can.each(fragment.childNodes ? can.makeArray(fragment.childNodes) : fragment, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> </span>{
-				<span class="hljs-keyword">if</span> (node.nodeType === <span class="hljs-number">1</span>) {
-					hookupEls.push(node);
-					hookupEls.push.apply(hookupEls, can.makeArray(node.getElementsByTagName(<span class="hljs-string">'*'</span>)));
-				}
-			});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
               <p>Filter by <code>data-view-id</code> attribute.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>			can.each(hookupEls, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(el)</span> </span>{
+            <div class="content"><div class='highlight'><pre>			can.each(hookupEls, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">el</span>) </span>{
 				<span class="hljs-keyword">if</span> (el.getAttribute &amp;&amp; (id = el.getAttribute(<span class="hljs-string">'data-view-id'</span>)) &amp;&amp; (func = $view.hookups[id])) {
 					func(el, parentNode, id);
 					<span class="hljs-keyword">delete</span> $view.hookups[id];
@@ -880,11 +859,11 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
         </li>
         
         
-        <li id="section-46">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p><code>hookups</code> keeps list of pending hookups, ie fragments to attach to a parent node</p>
 
@@ -900,11 +879,11 @@ This is for <code>model</code>s and <code>can.ajax</code> that resolve to an <co
         </li>
         
         
-        <li id="section-47">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p><code>hook</code> factory method for hookup function inserted into templates
 hookup functions are called after the html is rendered to the page
@@ -930,7 +909,7 @@ only implemented by EJS templates.</p>
 		 *         html = "&lt;div data-view-id='"+id+"'&gt;"
 		 *     $('.foo').html(html);
 		 */</span>
-		hook: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
+		hook: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>) </span>{
 			$view.hookups[++hookupId] = cb;
 			<span class="hljs-keyword">return</span> <span class="hljs-string">' data-view-id=\''</span> + hookupId + <span class="hljs-string">'\''</span>;
 		},
@@ -942,16 +921,16 @@ only implemented by EJS templates.</p>
 		 * Cached are put in this object
 		 */</span>
 		cached: {},
-		cachedRenderers: {},</pre></div></div>
+		<span class="hljs-attr">cachedRenderers</span>: {},</pre></div></div>
             
         </li>
         
         
-        <li id="section-48">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>cache view templates resolved via XHR on the client</p>
 
@@ -972,11 +951,11 @@ only implemented by EJS templates.</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <h5 id="register">register</h5>
 <p>given an info object, register a template type
@@ -1002,7 +981,7 @@ different templating solutions produce strings or document fragments via their r
 		 *
 		 * ## Example
 		 *
-		 * @codestart
+		 * ```
 		 * can.View.register({
 		 *	suffix : "tmpl",
 		 *  plugin : "jquery/view/tmpl",
@@ -1018,10 +997,23 @@ different templating solutions produce strings or document fragments via their r
 		 *			").call(jQuery, jQuery, data); }";
 		 *	}
 		 * })
-		 * @codeend
+		 * ```
 		 */</span>
-		register: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(info)</span> </span>{
+		register: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">info</span>) </span>{
 			<span class="hljs-keyword">this</span>.types[<span class="hljs-string">'.'</span> + info.suffix] = info;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p><em>removed if not used as a steal module</em></p>
+
+            </div>
             
         </li>
         
@@ -1032,25 +1024,12 @@ different templating solutions produce strings or document fragments via their r
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
-              <p><em>removed if not used as a steal module</em></p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
               <p>!steal-remove-start</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> &amp;&amp; <span class="hljs-built_in">window</span>.steal &amp;&amp; steal.type ) {
-				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
+				steal.type(info.suffix + <span class="hljs-string">" view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, success, error</span>) </span>{
 					<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
 						id = $view.toId(options.id + <span class="hljs-string">''</span>);
 					options.text = type.script(id, options.text);
@@ -1061,20 +1040,37 @@ different templating solutions produce strings or document fragments via their r
         </li>
         
         
-        <li id="section-52">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <p>!steal-remove-end</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-			can[info.suffix] = $view[info.suffix] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text)</span> </span>{
+			can[info.suffix] = $view[info.suffix] = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, text</span>) </span>{
 				<span class="hljs-keyword">var</span> renderer,
 					renderFunc;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>If there is no text, assume id is the template text, so return a nameless renderer.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!text) {
+					renderFunc = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						<span class="hljs-keyword">if</span>(!renderer){</pre></div></div>
             
         </li>
         
@@ -1084,23 +1080,6 @@ different templating solutions produce strings or document fragments via their r
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p>If there is no text, assume id is the template text, so return a nameless renderer.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (!text) {
-					renderFunc = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-						<span class="hljs-keyword">if</span>(!renderer){</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>if the template has a fragRenderer already, just return that.</p>
 
@@ -1114,13 +1093,13 @@ different templating solutions produce strings or document fragments via their r
 						}
 						<span class="hljs-keyword">return</span> renderer.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 					};
-					renderFunc.render = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+					renderFunc.render = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
 						<span class="hljs-keyword">var</span> textRenderer = info.renderer(<span class="hljs-literal">null</span>, id);
 						<span class="hljs-keyword">return</span> textRenderer.apply(textRenderer, <span class="hljs-built_in">arguments</span>);
 					};
 					<span class="hljs-keyword">return</span> renderFunc;
 				}
-				<span class="hljs-keyword">var</span> registeredRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+				<span class="hljs-keyword">var</span> registeredRenderer = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 					<span class="hljs-keyword">if</span>(!renderer){
 						<span class="hljs-keyword">if</span>(info.fragRenderer) {
 							renderer = info.fragRenderer(id, text);
@@ -1143,11 +1122,11 @@ different templating solutions produce strings or document fragments via their r
         </li>
         
         
-        <li id="section-55">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>registered view types</p>
 
@@ -1174,7 +1153,7 @@ different templating solutions produce strings or document fragments via their r
 		 * @param {Object} id
 		 * @param {Object} src
 		 */</span>
-		registerScript: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, id, src)</span> </span>{
+		registerScript: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, id, src</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-string">'can.view.preloadStringRenderer(\''</span> + id + <span class="hljs-string">'\','</span> + $view.types[<span class="hljs-string">'.'</span> + type].script(id, src) + <span class="hljs-string">');'</span>;
 		},
 
@@ -1185,20 +1164,20 @@ different templating solutions produce strings or document fragments via their r
 		 * @param {String} id
 		 * @param {Function} renderer
 		 */</span>
-		preload: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, renderer)</span> </span>{
+		preload: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, renderer</span>) </span>{
 			<span class="hljs-keyword">var</span> def = $view.cached[id] = <span class="hljs-keyword">new</span> can.Deferred()
-				.resolve(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, helpers)</span> </span>{
+				.resolve(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data, helpers</span>) </span>{
 					<span class="hljs-keyword">return</span> renderer.call(data, data, helpers);
 				});</pre></div></div>
             
         </li>
         
         
-        <li id="section-56">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <p>set cache references (otherwise preloaded recursive views won’t recurse properly)</p>
 
@@ -1216,11 +1195,25 @@ different templating solutions produce strings or document fragments via their r
 		 * into the view cache.
 		 * @param id
 		 * @param stringRenderer
-		 * @returns {*}
+		 * @return {*}
 		 */</span>
-		preloadStringRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(id, stringRenderer)</span> </span>{
+		preloadStringRenderer: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id, stringRenderer</span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.preload(id, makeRenderer(stringRenderer) );
 		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <h4 id="renderers">renderers</h4>
+<hr>
+
+            </div>
             
         </li>
         
@@ -1231,8 +1224,9 @@ different templating solutions produce strings or document fragments via their r
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <h4 id="renderers">renderers</h4>
-<hr>
+              <p>can.view’s primary purpose is to load templates (from strings or filesystem) and render them</p>
+<p>can.view supports two different forms of rendering systems</p>
+<p>mustache templates return a string based rendering function</p>
 
             </div>
             
@@ -1244,21 +1238,6 @@ different templating solutions produce strings or document fragments via their r
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p>can.view’s primary purpose is to load templates (from strings or filesystem) and render them</p>
-<p>can.view supports two different forms of rendering systems</p>
-<p>mustache templates return a string based rendering function</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>stache (or other fragment based templating systems) return a document fragment, so ‘hookup’ steps are not required</p>
 <h5 id="render">render</h5>
@@ -1280,6 +1259,7 @@ different templating solutions produce strings or document fragments via their r
 		 * @param {Object} [data] The data to populate the template with.
 		 * @param {Object.&lt;String, function&gt;} [helpers] Helper methods referenced in the template.
 		 * @param {Function} [callback] A function executed after the template has been processed.
+		 * @param {NodeList} nodelist parent nodelist to register partial template contents with
 		 * @return {String|can.Deferred} The template with interpolated data in string form
 		 * or a Deferred that resolves to the template with interpolated data.
 		 *
@@ -1325,29 +1305,29 @@ different templating solutions produce strings or document fragments via their r
         </li>
         
         
-        <li id="section-60">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
               <p>call <code>renderAs</code> with a hardcoded string, as view.render
 always operates against resolved template files or hardcoded strings</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		render: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(view, data, helpers, callback)</span> </span>{
-			<span class="hljs-keyword">return</span> can.view.renderAs(<span class="hljs-string">"string"</span>,view, data, helpers, callback);
+            <div class="content"><div class='highlight'><pre>		render: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">view, data, helpers, callback, nodelist</span>) </span>{
+			<span class="hljs-keyword">return</span> can.view.renderAs(<span class="hljs-string">"string"</span>,view, data, helpers, callback, nodelist);
 		},</pre></div></div>
             
         </li>
         
         
-        <li id="section-61">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
               <h5 id="renderto">renderTo</h5>
 
@@ -1360,10 +1340,11 @@ always operates against resolved template files or hardcoded strings</p>
 		 * @param {Function} renderer
 		 * @param data
 		 * @param {Object} helpers helper methods for this template
-		 * @returns {*}
+		 * @param {NodeList} nodelist parent nodelist to register partial template contents with
+		 * @return {*}
 		 */</span>
-		renderTo: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(format, renderer, data, helpers)</span></span>{
-			<span class="hljs-keyword">return</span> (format === <span class="hljs-string">"string"</span> &amp;&amp; renderer.render ? renderer.render : renderer)(data, helpers);
+		renderTo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">format, renderer, data, helpers, nodelist</span>)</span>{
+			<span class="hljs-keyword">return</span> (format === <span class="hljs-string">"string"</span> &amp;&amp; renderer.render ? renderer.render : renderer)(data, helpers, nodelist);
 		},
 
 		<span class="hljs-comment">/**
@@ -1374,9 +1355,28 @@ always operates against resolved template files or hardcoded strings</p>
 		 * @param data
 		 * @param helpers
 		 * @param callback
-		 * @returns {*}
+		 * @param nodelist
+		 * @return {*}
 		 */</span>
-		renderAs: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(format, view, data, helpers, callback)</span> </span>{</pre></div></div>
+		renderAs: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">format, view, data, helpers, callback, nodelist</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>if callback has expression prop its actually the nodelist</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (callback !== <span class="hljs-literal">undefined</span> &amp;&amp; <span class="hljs-keyword">typeof</span> callback.expression === <span class="hljs-string">'string'</span>) {
+				nodelist = callback;
+				callback = <span class="hljs-literal">undefined</span>;
+			}</pre></div></div>
             
         </li>
         
@@ -1410,7 +1410,7 @@ always operates against resolved template files or hardcoded strings</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> deferreds = getDeferreds(data);
-			<span class="hljs-keyword">var</span> reading, deferred, dataCopy, async, response;
+			<span class="hljs-keyword">var</span> deferred, dataCopy, <span class="hljs-keyword">async</span>, response;
 			<span class="hljs-keyword">if</span> (deferreds.length) {</pre></div></div>
             
         </li>
@@ -1459,7 +1459,7 @@ The deferred that resolves into the rendered content…</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>				can.when.apply(can, deferreds)
-					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(resolved)</span> </span>{</pre></div></div>
+					.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolved</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1519,7 +1519,7 @@ The deferred that resolves into the rendered content…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (can.isDeferred(data)) {
+            <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (can.isPromise(data)) {
 							dataCopy = usefulPart(resolved);
 						} <span class="hljs-keyword">else</span> {</pre></div></div>
             
@@ -1538,7 +1538,7 @@ replace the defferreds with what they resolved to.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>							<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> data) {
-								<span class="hljs-keyword">if</span> (can.isDeferred(data[prop])) {
+								<span class="hljs-keyword">if</span> (can.isPromise(data[prop])) {
 									dataCopy[prop] = usefulPart(objs.shift());
 								}
 							}
@@ -1557,7 +1557,7 @@ replace the defferreds with what they resolved to.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						result = can.view.renderTo(format, renderer, dataCopy, helpers);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>						result = can.view.renderTo(format, renderer, dataCopy, helpers, nodelist);</pre></div></div>
             
         </li>
         
@@ -1590,7 +1590,7 @@ replace the defferreds with what they resolved to.</p>
             <div class="content"><div class='highlight'><pre>						<span class="hljs-keyword">if</span> (callback) {
 							callback(result, dataCopy);
 						}
-					}, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 						deferred.reject.apply(deferred, <span class="hljs-built_in">arguments</span>);
 					});</pre></div></div>
             
@@ -1619,12 +1619,11 @@ replace the defferreds with what they resolved to.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-76">&#182;</a>
               </div>
-              <p>get is called async but in 
-ff will be async so we need to temporarily reset</p>
+              <p>If there’s a <code>callback</code> function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				reading = can.__clearReading();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">async</span> = isFunction(callback);</pre></div></div>
             
         </li>
         
@@ -1635,11 +1634,12 @@ ff will be async so we need to temporarily reset</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-77">&#182;</a>
               </div>
-              <p>If there’s a <code>callback</code> function</p>
+              <p>get is called async but in
+ff will be async so we need to temporarily reset</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				async = isFunction(callback);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				deferred = can.__notObserve(getRenderer)(view, <span class="hljs-keyword">async</span>);</pre></div></div>
             
         </li>
         
@@ -1650,15 +1650,11 @@ ff will be async so we need to temporarily reset</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-78">&#182;</a>
               </div>
-              <p>Get the <code>view</code> type</p>
+              <p>If we are <code>async</code>…</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				deferred = getRenderer(view, async);
-
-				<span class="hljs-keyword">if</span> (reading) {
-					can.__setReading(reading);
-				}</pre></div></div>
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">async</span>) {</pre></div></div>
             
         </li>
         
@@ -1669,11 +1665,11 @@ ff will be async so we need to temporarily reset</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-79">&#182;</a>
               </div>
-              <p>If we are <code>async</code>…</p>
+              <p>Return the deferred</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> (async) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					response = deferred;</pre></div></div>
             
         </li>
         
@@ -1684,11 +1680,14 @@ ff will be async so we need to temporarily reset</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-80">&#182;</a>
               </div>
-              <p>Return the deferred</p>
+              <p>And fire callback with the rendered result.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>					response = deferred;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>					deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">renderer</span>) </span>{
+						callback(data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer);
+					});
+				} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -1698,24 +1697,6 @@ ff will be async so we need to temporarily reset</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-81">&#182;</a>
-              </div>
-              <p>And fire callback with the rendered result.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>					deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
-						callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
-					});
-				} <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-82">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>if the deferred is resolved, call the cached renderer instead
 this is because it’s possible, with recursive deferreds to
@@ -1731,25 +1712,25 @@ In the future, we might simply store either a deferred or the cached result.</p>
             
             <div class="content"><div class='highlight'><pre>					<span class="hljs-keyword">if</span> (deferred.state() === <span class="hljs-string">'resolved'</span> &amp;&amp; deferred.__view_id) {
 						<span class="hljs-keyword">var</span> currentRenderer = $view.cachedRenderers[deferred.__view_id];
-						<span class="hljs-keyword">return</span> data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+						<span class="hljs-keyword">return</span> data ? can.view.renderTo(format, currentRenderer, data, helpers, nodelist) : currentRenderer;
 					} <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
         
-        <li id="section-83">
+        <li id="section-82">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
+                <a class="pilcrow" href="#section-82">&#182;</a>
               </div>
               <p>Otherwise, the deferred is complete, so
 set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>						deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(renderer)</span> </span>{
-							response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+            <div class="content"><div class='highlight'><pre>						deferred.then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">renderer</span>) </span>{
+							response = data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer;
 						});
 					}
 				}
@@ -1757,7 +1738,7 @@ set response to the result of the rendering.</p>
 				<span class="hljs-keyword">return</span> response;
 			}
 		},
-		
+
 		<span class="hljs-comment">/**
 		 * @hide
 		 * Registers a view with `cached` object.  This is used
@@ -1767,16 +1748,16 @@ set response to the result of the rendering.</p>
 		 * @param  {String} type
 		 * @param  {can.Deferred} def
 		 */</span>
-		registerView: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(id, text, type, def)</span> </span>{</pre></div></div>
+		registerView: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">id, text, type, def</span>) </span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-84">
+        <li id="section-83">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
+                <a class="pilcrow" href="#section-83">&#182;</a>
               </div>
               <p>Get the renderer function.</p>
 
@@ -1789,17 +1770,17 @@ set response to the result of the rendering.</p>
 			} <span class="hljs-keyword">else</span> {
 				renderer = makeRenderer( info.renderer(id, text) );
 			}
-			
+
 			def = def || <span class="hljs-keyword">new</span> can.Deferred();</pre></div></div>
             
         </li>
         
         
-        <li id="section-85">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
               <p>Cache if we are caching.</p>
 
@@ -1814,11 +1795,11 @@ set response to the result of the rendering.</p>
         </li>
         
         
-        <li id="section-86">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
               <p>Return the objects for the response’s <code>dataTypes</code>
 (in this case view).</p>
@@ -1826,6 +1807,35 @@ set response to the result of the rendering.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">return</span> def.resolve(renderer);
+		},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <p>Returns a function that automatically converts all computes passed to it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		simpleHelper: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">var</span> realArgs = [];
+				<span class="hljs-keyword">var</span> fnArgs = <span class="hljs-built_in">arguments</span>;
+				can.each(fnArgs, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val, i</span>) </span>{
+					<span class="hljs-keyword">if</span> (i &lt;= fnArgs.length) {
+						<span class="hljs-keyword">while</span> (val &amp;&amp; val.isComputed) {
+							val = val();
+						}
+						realArgs.push(val);
+					}
+				});
+				<span class="hljs-keyword">return</span> fn.apply(<span class="hljs-keyword">this</span>, realArgs);
+			};
 		}
 	});</pre></div></div>
             
@@ -1871,7 +1881,7 @@ set response to the result of the rendering.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>		steal.type(<span class="hljs-string">"view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(options, success, error)</span> </span>{
+            <div class="content"><div class='highlight'><pre>		steal.type(<span class="hljs-string">"view js"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, success, error</span>) </span>{
 			<span class="hljs-keyword">var</span> type = $view.types[<span class="hljs-string">"."</span> + options.type],
 				id = $view.toId(options.id);
 			<span class="hljs-comment">/**

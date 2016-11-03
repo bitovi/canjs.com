@@ -69,11 +69,6 @@
               </a>
             
               
-              <a class="source" href="test.html">
-                test.js
-              </a>
-            
-              
               <a class="source" href="util.html">
                 util.js
               </a>
@@ -104,7 +99,7 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
  * @add can.event.special
  */</span>
-steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($, can)</span> </span>{
+steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/util'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$, can</span>) </span>{
 	<span class="hljs-comment">/**
 	 * @property {Event} destroyed
 	 * @parent specialevents
@@ -119,11 +114,11 @@ steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/
 	 * &lt;/p&gt;
 	 *
 	 * &lt;h2&gt;Quick Example&lt;/h2&gt;
-	 * @codestart
+	 * ```
 	 * can.$(".foo").bind("destroyed", function(){
 	 *    //clean up code
 	 * })
-	 * @codeend
+	 * ```
 	 *
 	 * &lt;h2&gt;Quick Demo&lt;/h2&gt;
 	 * @demo jquery/event/destroyed/destroyed.html
@@ -133,8 +128,8 @@ steal(<span class="hljs-string">'jquery'</span>, <span class="hljs-string">'can/
 
 	<span class="hljs-keyword">var</span> oldClean = $.cleanData;
 
-	can.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elems)</span> </span>{
-		can.each(elems, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(elem)</span> </span>{
+	can.cleanData = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">elems</span>) </span>{
+		can.each(elems, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">elem</span>) </span>{
 			can.$(elem)
 				.triggerHandler(<span class="hljs-string">"removed"</span>);
 		});

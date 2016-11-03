@@ -69,11 +69,6 @@
               </a>
             
               
-              <a class="source" href="test.html">
-                test.js
-              </a>
-            
-              
               <a class="source" href="util.html">
                 util.js
               </a>
@@ -101,7 +96,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(can)</span> </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>steal(<span class="hljs-string">'can/util/can.js'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">can</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -131,13 +126,13 @@ we define a simple extend here as well</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> extend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(target, src)</span> </span>{
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> extend = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">target, src</span>) </span>{
 		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> src) {
 			<span class="hljs-keyword">if</span> (src.hasOwnProperty(key)) {
 				target[key] = src[key];
 			}
 		}
-	}, Deferred = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(func)</span> </span>{
+	}, Deferred = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">func</span>) </span>{
 			<span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> Deferred)) {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Deferred();
 			}
@@ -155,7 +150,7 @@ we define a simple extend here as well</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Check for option <code>function</code> — call it with this as context and as first
+              <p>Check for option <code>function</code> – call it with this as context and as first
 parameter, as specified in jQuery API.</p>
 
             </div>
@@ -165,7 +160,7 @@ parameter, as specified in jQuery API.</p>
 			}
 		};
 	can.Deferred = Deferred;
-	can.when = Deferred.when = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	can.when = Deferred.when = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 		<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
 		<span class="hljs-keyword">if</span> (args.length &lt; <span class="hljs-number">2</span>) {
 			<span class="hljs-keyword">var</span> obj = args[<span class="hljs-number">0</span>];
@@ -188,34 +183,34 @@ parameter, as specified in jQuery API.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Resolve params — params of each resolve, we need to track them down 
+              <p>Resolve params – params of each resolve, we need to track them down 
 to be able to pass them in the correct order if the master 
 needs to be resolved.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>				rp = [];
-			can.each(args, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(arg, j)</span> </span>{
-				arg.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+			can.each(args, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">arg, j</span>) </span>{
+				arg.done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 					rp[j] = <span class="hljs-built_in">arguments</span>.length &lt; <span class="hljs-number">2</span> ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] : <span class="hljs-built_in">arguments</span>;
 					<span class="hljs-keyword">if</span> (++done === args.length) {
 						df.resolve.apply(df, rp);
 					}
 				})
-					.fail(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+					.fail(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 						df.reject(<span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">1</span> ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] : <span class="hljs-built_in">arguments</span>);
 					});
 			});
 			<span class="hljs-keyword">return</span> df;
 		}
 	};
-	<span class="hljs-keyword">var</span> resolveFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(type, _status)</span> </span>{
-		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context)</span> </span>{
+	<span class="hljs-keyword">var</span> resolveFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, _status</span>) </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context</span>) </span>{
 			<span class="hljs-keyword">var</span> args = <span class="hljs-keyword">this</span>._resultArgs = <span class="hljs-built_in">arguments</span>.length &gt; <span class="hljs-number">1</span> ? <span class="hljs-built_in">arguments</span>[<span class="hljs-number">1</span>] : [];
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.exec(context, <span class="hljs-keyword">this</span>[type], args, _status);
 		};
-	}, doneFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doneFunc</span><span class="hljs-params">(type, _status)</span> </span>{
-			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+	}, doneFunc = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doneFunc</span>(<span class="hljs-params">type, _status</span>) </span>{
+			<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 				<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;</pre></div></div>
             
         </li>
@@ -232,7 +227,7 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				can.each(<span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v, i, args)</span> </span>{
+            <div class="content"><div class='highlight'><pre>				can.each(<span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">v, i, args</span>) </span>{
 					<span class="hljs-keyword">if</span> (!v) {
 						<span class="hljs-keyword">return</span>;
 					}
@@ -263,11 +258,11 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 			};
 		};
 	
-	<span class="hljs-keyword">var</span> isDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span></span>{
+	<span class="hljs-keyword">var</span> isDeferred = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>)</span>{
 		<span class="hljs-keyword">return</span> obj &amp;&amp; obj.then &amp;&amp; obj.fail &amp;&amp; obj.done;
 	};
 	
-	<span class="hljs-keyword">var</span> wire = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parentDeferred, result, setter, value)</span></span>{
+	<span class="hljs-keyword">var</span> wire = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parentDeferred, result, setter, value</span>)</span>{
 		<span class="hljs-keyword">if</span>( isDeferred(result) ) {
 			result.done(can.proxy(parentDeferred.resolve, parentDeferred))
 				.fail( can.proxy(parentDeferred.reject, parentDeferred) );
@@ -276,11 +271,11 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 		}
 	};
 	extend(Deferred.prototype, {
-		then: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done, fail)</span> </span>{
+		<span class="hljs-attr">then</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">done, fail</span>) </span>{
 			<span class="hljs-keyword">var</span> d = can.Deferred(),
 				resolve = d.resolve,
 				reject = d.reject;
-			<span class="hljs-keyword">this</span>.done(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-keyword">this</span>.done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 				<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> done === <span class="hljs-string">"function"</span>) {
 					wire(d, done.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>), resolve, value);
 				} <span class="hljs-keyword">else</span> {
@@ -288,7 +283,7 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 				}
 				
 			});
-			<span class="hljs-keyword">this</span>.fail(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> </span>{
+			<span class="hljs-keyword">this</span>.fail(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value</span>) </span>{
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> fail === <span class="hljs-string">"function"</span>) {
 					wire(d, fail.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>), reject, value);
 				} <span class="hljs-keyword">else</span> {
@@ -297,11 +292,11 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 			});
 			<span class="hljs-keyword">return</span> d;
 		},
-		resolveWith: resolveFunc(<span class="hljs-string">'_doneFuncs'</span>, <span class="hljs-string">'rs'</span>),
-		rejectWith: resolveFunc(<span class="hljs-string">'_failFuncs'</span>, <span class="hljs-string">'rj'</span>),
-		done: doneFunc(<span class="hljs-string">'_doneFuncs'</span>, <span class="hljs-string">'rs'</span>),
-		fail: doneFunc(<span class="hljs-string">'_failFuncs'</span>, <span class="hljs-string">'rj'</span>),
-		always: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">resolveWith</span>: resolveFunc(<span class="hljs-string">'_doneFuncs'</span>, <span class="hljs-string">'rs'</span>),
+		<span class="hljs-attr">rejectWith</span>: resolveFunc(<span class="hljs-string">'_failFuncs'</span>, <span class="hljs-string">'rj'</span>),
+		<span class="hljs-attr">done</span>: doneFunc(<span class="hljs-string">'_doneFuncs'</span>, <span class="hljs-string">'rs'</span>),
+		<span class="hljs-attr">fail</span>: doneFunc(<span class="hljs-string">'_failFuncs'</span>, <span class="hljs-string">'rj'</span>),
+		<span class="hljs-attr">always</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">var</span> args = can.makeArray(<span class="hljs-built_in">arguments</span>);
 			<span class="hljs-keyword">if</span> (args.length &amp;&amp; args[<span class="hljs-number">0</span>]) {
 				<span class="hljs-keyword">this</span>.done(args[<span class="hljs-number">0</span>])
@@ -309,7 +304,7 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 			}
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		state: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">state</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">switch</span> (<span class="hljs-keyword">this</span>._status) {
 			<span class="hljs-keyword">case</span> <span class="hljs-string">'rs'</span>:
 				<span class="hljs-keyword">return</span> <span class="hljs-string">'resolved'</span>;
@@ -319,31 +314,31 @@ so we have to convert arguments to an <code>Array</code> that allows <code>can.e
 				<span class="hljs-keyword">return</span> <span class="hljs-string">'pending'</span>;
 			}
 		},
-		isResolved: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">isResolved</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._status === <span class="hljs-string">'rs'</span>;
 		},
-		isRejected: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">isRejected</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._status === <span class="hljs-string">'rj'</span>;
 		},
-		reject: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">reject</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.rejectWith(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		resolve: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+		<span class="hljs-attr">resolve</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.resolveWith(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
 		},
-		exec: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(context, dst, args, st)</span> </span>{
+		<span class="hljs-attr">exec</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">context, dst, args, st</span>) </span>{
 			<span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._status !== <span class="hljs-string">''</span>) {
 				<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 			}
 			<span class="hljs-keyword">this</span>._status = st;
-			can.each(dst, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> </span>{
+			can.each(dst, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">d</span>) </span>{
 				<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> d.apply === <span class="hljs-string">'function'</span>) {
 					d.apply(context, args);
 				}
 			});
 			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
 		},
-		promise: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+		<span class="hljs-attr">promise</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
 			<span class="hljs-keyword">var</span> promise = <span class="hljs-keyword">this</span>.then();
 			promise.reject = promise.resolve = <span class="hljs-literal">undefined</span>;
 			<span class="hljs-keyword">return</span> promise;

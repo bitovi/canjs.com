@@ -4,12 +4,11 @@ steal('can/util/can.js', function (can) {
 	var batchNum = 1,
 		// how many times has start been called without a stop
 		transactions = 0,
-		// an array of events within a transaction
-		batchEvents = [],
-		stopCallbacks = [],
-		// an array of the currently dispatching batch events ... here so we can add things to the end of it (1519).
-		currentBatchEvents = null;
-		
+		dispatchingBatch = null,
+		collectingBatch = null,
+		batches = [],
+		dispatchingBatches = false;
+
 	can.batch = {
 		/**
 		 * @function can.batch.start
@@ -111,9 +110,19 @@ steal('can/util/can.js', function (can) {
 		 */
 		start: function (batchStopHandler) {
 			transactions++;
-			if (batchStopHandler) {
-				stopCallbacks.push(batchStopHandler);
+			if(transactions === 1) {
+				var batch = {
+					events: [],
+					callbacks: [],
+					number: batchNum++
+				};
+				batches.push(batch);
+				if (batchStopHandler) {
+					batch.callbacks.push(batchStopHandler);
+				}
+				collectingBatch = batch;
 			}
+
 		},
 		/**
 		 * @function can.batch.stop
@@ -171,33 +180,43 @@ steal('can/util/can.js', function (can) {
 				transactions--;
 			}
 			if (transactions === 0) {
-				if(currentBatchEvents !== null) {
-					return;
+				collectingBatch = null;
+				var batch;
+				if(dispatchingBatches === false) {
+					dispatchingBatches = true;
+					var callbacks = [],
+						i;
+					while(batch = batches.shift()) {
+						var events = batch.events;
+						callbacks.push.apply(callbacks,  batch.callbacks );
+						dispatchingBatch = batch;
+						can.batch.batchNum = batch.number;
+						
+						var len;
+
+						if (callStart) {
+							can.batch.start();
+						}
+						for(i = 0, len = events.length; i < len; i++) {
+							can.dispatch.apply(events[i][0],events[i][1]);
+						}
+
+						can.batch._onDispatchedEvents(batch.number);
+
+						dispatchingBatch = null;
+						can.batch.batchNum = undefined;
+
+					}
+					for(i = callbacks.length - 1; i >= 0 ; i--) {
+						callbacks[i]();
+					}
+					dispatchingBatches = false;
 				}
 
-				currentBatchEvents = batchEvents.slice(0);
 
-				var	callbacks = stopCallbacks.slice(0),
-					i, len;
-				batchEvents = [];
-				stopCallbacks = [];
-				// Capture current batchNum so it can be check in live bindings
-				can.batch.batchNum = batchNum;
-				batchNum++;
-				if (callStart) {
-					can.batch.start();
-				}
-				for(i = 0; i < currentBatchEvents.length; i++) {
-					can.dispatch.apply(currentBatchEvents[i][0],currentBatchEvents[i][1]);
-				}
-				currentBatchEvents = null;
-
-				for(i = 0, len = callbacks.length; i < callbacks.length; i++) {
-					callbacks[i]();
-				}
-				can.batch.batchNum = undefined;
 			}
 		},
+		_onDispatchedEvents: function(){},
 		/**
 		 * @function can.batch.trigger
 		 * @parent can.batch
@@ -214,39 +233,63 @@ steal('can/util/can.js', function (can) {
 		 */
 		trigger: function (item, event, args) {
 			// Don't send events if initalizing.
-			if (!item._init) {
+			if (!item.__inSetup) {
 				event = typeof event === 'string' ? {
 					type: event
 				} : event;
-
-				if( currentBatchEvents) {
-
-					currentBatchEvents.push([
-						item,
-						[event, args]
-					]);
-
-				} else if (transactions === 0) {
-					return can.dispatch.call( item, event, args );
-				} else {
-					event.batchNum = batchNum;
-					batchEvents.push([
+				// if there's a batch, add it to this batches events
+				if(collectingBatch) {
+					event.batchNum = collectingBatch.number;
+					collectingBatch.events.push([
 						item,
 						[event, args]
 					]);
 				}
+				// if this is trying to belong to another batch, let it fire
+				else if(event.batchNum) {
+					can.dispatch.call( item, event, args );
+				}
+				// if there are batches, but this doesn't belong to a batch
+				// add it to its own batch
+				else if(batches.length) {
+					can.batch.start();
+					event.batchNum = collectingBatch.number;
+					collectingBatch.events.push([
+						item,
+						[event, args]
+					]);
+					can.batch.stop();
+				}
+				// there are no batches, so just fire the event.
+				else {
+					can.dispatch.call( item, event, args );
+				}
+
 			}
 		},
+		// call handler after any events from currently settled stated have fired
+		// but before any future change events fire.
 		afterPreviousEvents: function(handler){
-			if(currentBatchEvents) {
+			var batch = can.last(batches);
+
+			if(batch) {
 				var obj = {};
 				can.bind.call(obj,"ready", handler);
-				currentBatchEvents.push([
+				batch.events.push([
 					obj,
 					[{type: "ready"}, []]
 				]);
 			} else {
-				handler();
+				handler({});
+			}
+		},
+		after: function(handler){
+			var batch = collectingBatch || dispatchingBatch;
+
+			if(batch) {
+				batch.callbacks.push(handler);
+			} else {
+				handler({});
 			}
 		}
 	};

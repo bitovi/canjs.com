@@ -48,10 +48,10 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 
 		// ## getId
 		getId = function (inst) {
-			// `can.__reading` makes a note that `id` was just read.
-			can.__reading(inst, inst.constructor.id);
-			// Use `__get` instead of `attr` for performance. (But that means we have to remember to call `can.__reading`.)
-			return inst.__get(inst.constructor.id);
+			// `can.__observe` makes a note that `id` was just read.
+			can.__observe(inst, inst.constructor.id);
+			// Use `__get` instead of `attr` for performance. (But that means we have to remember to call `can.__observe`.)
+			return inst.___get(inst.constructor.id);
 		},
 
 		// ## ajax
@@ -173,7 +173,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 					raw = raw.data;
 				}
 
-				if (typeof raw === 'undefined') {
+				if (typeof raw === 'undefined' || !can.isArray(raw)) {
 					throw new Error('Could not get any raw data while converting using .models');
 				}
 
@@ -331,15 +331,15 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			};
 		},
 		// ## createURLFromResource
-		// For each of the names (create, update, destroy, findOne, and findAll) use the 
+		// For each of the names (create, update, destroy, findOne, and findAll) use the
 		// URL provided by the `resource` property. For example:
-		// 		
+		//
 		// 		ToDo = can.Model.extend({
 		// 			resource: "/todos"
 		// 		}, {});
-		// 	
+		//
 		// 	Will create a can.Model that is identical to:
-		// 	
+		//
 		// 		ToDo = can.Model.extend({
 		// 			findAll: "GET /todos",
 		// 			findOne: "GET /todos/{id}",
@@ -347,7 +347,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 		// 			update:  "PUT /todos/{id}",
 		// 			destroy: "DELETE /todos/{id}"
 		// 		},{});
-		// 
+		//
 		// - `model`: the can.Model that has the resource property
 		// - `method`: a property from the ajaxMethod object
 		createURLFromResource = function(model, name) {
@@ -550,7 +550,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// ## can.Model#bind and can.Model#unbind
 			// These aren't actually implemented here, but their setup needs to be changed to account for the store.
 			_bindsetup: function () {
-				var modelInstance = this.__get(this.constructor.id);
+				var modelInstance = this.___get(this.constructor.id);
 				if (modelInstance != null) {
 					this.constructor.store[modelInstance ] = this;
 				}
@@ -632,7 +632,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// handler( 'change','1.destroyed' ). This is used
 			// to remove items on destroyed from Model Lists.
 			// but there should be a better way.
-			can.dispatch.call(this, {type:"change", target: this}, [funcName]);
+			can.dispatch.call(this, {type:funcName, target: this}, []);
 
 			//!steal-remove-start
 			can.dev.log("Model.js - " + constructor.shortName + " " + funcName);
@@ -642,7 +642,7 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			can.dispatch.call(constructor, funcName, [this]);
 		};
 	});
-	
+
 
 	// # can.Model.List
 	// Model Lists are just like `Map.List`s except that when their items are
@@ -662,14 +662,12 @@ steal('can/util', 'can/map', 'can/list', function (can) {
 			// we use those as parameters for an initial findAll.
 			if (can.isPlainObject(params) && !can.isArray(params)) {
 				can.List.prototype.setup.apply(this);
-				this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
+				this.replace(can.isPromise(params) ? params : this.constructor.Map.findAll(params));
 			} else {
 				// Otherwise, set up the list like normal.
 				can.List.prototype.setup.apply(this, arguments);
 			}
-			this._init = 1;
 			this.bind('destroyed', can.proxy(this._destroyed, this));
-			delete this._init;
 		},
 		_destroyed: function (ev, attr) {
 			if (/\w+/.test(attr)) {

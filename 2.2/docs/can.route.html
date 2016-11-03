@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie lt-ie9" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>CanJS - can.route </title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" type="text/css" href="./static/bundles/static.css">
+	
+	<!--[if lt IE 9]>
+   <script type="text/javascript" src="static/html5shiv.js"></script>
+    <!--<![endif]-->
+</head>
+
+<body class="docs ">
+	<header>
+		<nav class="container">
+
+			<div class="logo-menu">
+				<a class="brand" href="../../index.html">CanJS</a>
+				<ul class="dropdown-menu">
+				  <li><a href="http://donejs.com">DoneJS</a></li>
+		          <li><a href="http://canjs.com" class="active">CanJS</a></li>
+		          <li><a href="http://jquerypp.com">jQuery++</a></li>
+		          <li><a href="http://stealjs.com">StealJS</a></li>
+		          <li><a href="http://funcunit.com">FuncUnit</a></li>
+		          <li><a href="http://documentjs.com">DocumentJS</a></li>
+		        </ul>
+			</div>
+
+			<ul class="nav">
+		        <li >
+	              <a href="../../index.html">Home</a>
+                </li>
+		       <li><a href='../guides/index.html'>guides</a></li>
+		       <li class='active'><a href='index.html'>api</a></li>
+		        <li class=" community-menu">
+		          <a href="javascript://">Community</a>
+		          <ul class="dropdown-menu">
+		            <li><a href="http://forums.donejs.com/c/canjs">Forums</a></li>
+		            <li><a href="https://www.npmjs.com/search?q=canjs">Plugins</a></li>
+		            <li><a href="http://github.com/canjs/canjs">Github</a></li>
+		            <li><a href="http://twitter.com/canjs">Twitter</a></li>
+		            <li><a href="http://donejs.com/community.html">Meetups</a></li>
+		          </ul>
+		        </li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+                </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+                </li>
+	      	</ul>
+
+			<div class="pull-right">
+				<div class="bitovi-menu">
+					<a href="http://bitovi.com" class="bitovi icon-bits">Bitovi</a>
+					<ul class="dropdown-menu">
+						<li><a href="http://bitovi.com">Bitovi.com</a></li>
+						<li><a href="http://bitovi.com/blog/">Blog</a></li>
+						<li><a href="http://bitovi.com/design/">Design</a></li>
+						<li><a href="http://bitovi.com/development/">Development</a></li>
+						<li><a href="http://bitovi.com/training/">Training</a></li>
+						<li><a href="http://bitovi.com/open-source/">Open Source</a></li>
+						<li><a href="http://bitovi.com/people/">People</a></li>
+						<li><a href="http://bitovi.com/contact/">Contact Us</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+	</header>
+
+	
+<div class="container api">
+
+	
+	<nav class="sidebar">
+		
+		<h2 id="version">
+	<select id='versions'></select>
+</h2>
+<ul class="api">
+	<!-- First Level -->
+	
+	   <li class="search-container">
+	   		<a href="can.elementAndAttributes.html" data-search="Elements and Attributes">
+				Elements and Attributes
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Component.html" data-search="can.Component">
+				can.Component
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Construct.html" data-search="can.Construct">
+				can.Construct
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Control.html" data-search="can.Control">
+				can.Control
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.List.html" data-search="can.List">
+				can.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Map.html" data-search="can.Map">
+				can.Map
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.html" data-search="can.Model">
+				can.Model
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.Model.List.html" data-search="can.Model.List">
+				can.Model.List
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.compute.html" data-search="can.compute">
+				can.compute
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.ejs.html" data-search="can.ejs">
+				can.ejs
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.event.html" data-search="can.event">
+				can.event
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.fixture.html" data-search="can.fixture">
+				can.fixture
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.mustache.html" data-search="can.mustache">
+				can.mustache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container active">
+	   		<a href="can.route.html" data-search="can.route">
+				can.route
+			</a>
+			
+				
+	<ul class="primary-grouping">
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>plugins</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container parent ">
+						<a 	class="property" 
+							href="can.route.pushstate.html" 
+							data-search="can.route.pushstate">
+							pushstate
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+			
+				
+					
+					<li class="heading search-container">
+						<span>static</span>
+						
+	<ul >
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.current.html" 
+							data-search="current">
+							current
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.deparam.html" 
+							data-search="deparam">
+							deparam
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.link.html" 
+							data-search="link">
+							link
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.map.html" 
+							data-search="map">
+							map
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.param.html" 
+							data-search="param">
+							param
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.ready.html" 
+							data-search="ready">
+							ready
+						</a>
+						
+					</li>
+				
+			
+			
+		
+			
+				
+				
+					<li class="search-container  ">
+						<a 	class="function" 
+							href="can.route.url.html" 
+							data-search="url">
+							url
+						</a>
+						
+					</li>
+				
+			
+			
+		
+	</ul>
+
+					</li>
+					
+				
+				
+			
+			
+		
+	</ul>
+
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.stache.html" data-search="can.stache">
+				can.stache
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.util.html" data-search="can.util">
+				can.util
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.html" data-search="can.view">
+				can.view
+			</a>
+			
+	   </li>
+	
+	   <li class="search-container">
+	   		<a href="can.view.bindings.html" data-search="can.view.bindings">
+				can.view.bindings
+			</a>
+			
+	   </li>
+	
+</ul>
+	</nav>
+	
+	
+	
+	<article class="content docs">
+	
+	
+		
+		<section class="title">
+			<div class="heading">
+<h1>can.route</h1>
+	<ul class="tags">
+		<li>function</li>
+	</ul>
+	
+	
+</div>
+
+<div class="sub-heading">
+	
+	
+		<span class="module">can.route</span>
+	
+	
+	
+	<span class="inherits">inherits: <a href="can.Map.html">can.Map</a></span>
+</div>
+
+<ul class="links">
+	
+		<li><a href="../docco/route/route.html">docco</a></li>
+	
+	
+		<li><a href="https://github.com/bitovi/canjs/tree/2.2-legacy/route/route.md">source</a></li>
+	
+	
+		<li><a href="https://bitbuilder.herokuapp.com/can.custom.js?plugins=can/route">download</a></li>
+	
+	
+		<li><a href="../can/route/test.html">tests</a></li>
+	
+</ul>
+<br />
+		</section>
+		
+		
+		
+		<section class="contents">
+		</section>
+		
+		
+		
+
+		
+		<section class="description">
+			<p>Manage browser history and client state by synchronizing the window.location.hash with
+a <a href="can.Map.html">can.Map</a>.</p>
+
+		</section>
+		
+
+		
+			
+				<section class="signature">
+					<h2 id="sig_can_route_template__defaults__">can.route( template [, defaults] )
+</h2>
+<div class="signature-wrapper">
+<p>Create a route matching rule.</p>
+
+
+	<h3>Parameters</h3>
+
+	<ol class="parameters">
+		
+		<li class="parameter">
+			<h4>template
+				<code>{String}</code></h4>
+			<div class="description">
+				<p>the fragment identifier to match.  The fragment identifier
+should start with either a character (a-Z) or colon (:).  Examples:</p>
+<pre><code>can.route(&quot;:foo&quot;)
+can.route(&quot;foo/:bar&quot;)
+</code></pre>
+
+			</div>
+			
+			
+			
+		</li>
+		
+		<li class="parameter">
+			<h4>defaults
+				<code>{Object}</code><span class="pull-right optional">Optional</span></h4>
+			<div class="description">
+				<p>an object of default values</p>
+
+			</div>
+			
+			
+			
+		</li>
+		
+	</ol>
+
+
+	<h3>Returns</h3>
+	<div class="returns">
+		<h4><code>{<a href="can.route.html" >can.route</a>(template, defaults)}</code></h4>
+		<div class="description">
+			
+		</div>
+		
+		
+	</div>
+	
+
+
+
+
+
+</div>
+
+				</section>
+			
+		
+		
+		
+		
+
+		
+		<section class="comment">
+			<h2>Use</h2>
+<p>Watch this video for an overview of can.route's functionality and an example showing how to connect two tab widgets to the browser's history:</p>
+<iframe width="662" height="372" src="https://www.youtube.com/embed/ef0LKDiaPZ0" frameborder="0" allowfullscreen></iframe>
+<p>In the following CanJS community we also talk about web application routing:</p>
+<iframe width="662" height="372" src="https://www.youtube.com/embed/0Hhuv5Qru9k" frameborder="0" allowfullscreen></iframe>
+<h2>Background Information</h2>
+<p>To support the browser's back button and bookmarking
+in an Ajax application, most applications use
+the <code>window.location.hash</code>.  By
+changing the hash (via a link or JavaScript),
+one is able to add to the browser's history
+without changing the page.</p>
+<p>This provides the basics needed to
+create history enabled Ajax websites.  However,
+<code>can.route</code> addresses several other needs such as:</p>
+<ul>
+<li>Pretty urls (actually hashes)</li>
+<li>Keeping routes independent of application code</li>
+<li>Listening to specific parts of the history changing</li>
+<li>Setup / Teardown of widgets.</li>
+</ul>
+<h2>How it works</h2>
+<p><code>can.route</code> is a <a href="can.Map.html">can.Map</a> that represents the
+<code>window.location.hash</code> as an
+object.  For example, if the hash looks like:</p>
+<pre><code>#!type=videos&amp;id=5
+</code></pre>
+<p>the data in <code>can.route</code> looks like:</p>
+<pre><code>{ type: 'videos', id: 5 }
+</code></pre>
+<p><code>can.route</code> keeps the state of the hash in-sync with the <code>data</code> contained within
+<code>can.route</code>.</p>
+<h2>can.Map</h2>
+<p><code>can.route</code> is a <a href="can.Map.html">can.Map</a>. Understanding
+<code>can.Map</code> is essential for using <code>can.route</code> correctly.</p>
+<p>You can listen to changes in an Observe with <code>bind(eventName, handler(ev, args...))</code> and
+change can.route's properties with
+<a href="can.Map.prototype.attr.html">attr</a>.</p>
+<h3>Listening to changes in can.route</h3>
+<p>Listen to changes in history
+by <a href="can.Map.prototype.bind.html">bind</a>ing to
+changes in <code>can.route</code> like:</p>
+<pre><code>can.route.bind('change', function(ev, attr, how, newVal, oldVal) {
+
+})
+</code></pre>
+<ul>
+<li><code>attr</code> - the name of the changed attribute</li>
+<li><code>how</code> - the type of Observe change event (add, set or remove)</li>
+<li><code>newVal</code>/<code>oldVal</code> - the new and old values of the attribute</li>
+</ul>
+<h3>Updating can.route</h3>
+<p>Create changes in the route data with <a href="can.Map.prototype.attr.html">attr</a> like:</p>
+<pre><code>can.route.attr('type','images');
+</code></pre>
+<p>Or change multiple properties at once like:</p>
+<pre><code>can.route.attr({type: 'pages', id: 5}, true)
+</code></pre>
+<p>When you make changes to can.route, they will automatically
+change the <code>hash</code>.</p>
+<h2>Creating a Route</h2>
+<p>Use <code>can.route(url, defaults)</code> to create a
+route. A route is a mapping from a url to
+an object (that is the can.route's state).
+In order to map to a specific properties in the url,
+prepend a colon to the name of the property like:</p>
+<pre><code>can.route( &quot;#!content/:type&quot; )
+</code></pre>
+<p>If no routes are added, or no route is matched,
+can.route's data is updated with the <a href="can.deparam.html">deparamed</a>
+hash.</p>
+<pre><code>location.hash = &quot;#!type=videos&quot;;
+// can.route -&gt; {type : &quot;videos&quot;}
+</code></pre>
+<p>Once routes are added and the hash changes,
+can.route looks for matching routes and uses them
+to update can.route's data.</p>
+<pre><code>can.route( &quot;#!content/:type&quot; );
+location.hash = &quot;#!content/images&quot;;
+// can.route -&gt; {type : &quot;images&quot;}
+can.route.attr( &quot;type&quot;, &quot;songs&quot; )
+// location.hash -&gt; &quot;#!content/songs&quot;
+</code></pre>
+<p>Default values can also be added:</p>
+<pre><code>can.route(&quot;content/:type&quot;,{type: &quot;videos&quot; });
+location.hash = &quot;#!content/&quot;
+// can.route -&gt; {type : &quot;videos&quot;}
+</code></pre>
+<h2>Initializing can.route</h2>
+<p>After your application has created all of its routes, call <a href="can.route.ready.html">ready</a>
+to set can.route's data to match the current hash:</p>
+<pre><code> can.route.ready()
+</code></pre>
+<h2>Changing the route.</h2>
+<p>Typically, you don't set <code>location.hash</code>
+directly.  Instead, you can change properties on <code>can.route</code>
+like:</p>
+<pre><code>can.route.attr('type', 'videos')
+</code></pre>
+<p>This will automatically look up the appropriate
+route and update the hash.</p>
+<p>Often, you want to create links.  <code>can.route</code> provides
+the <a href="can.route.link.html">link</a> and <a href="can.route.url.html">url</a> helpers to make this
+easy:</p>
+<pre><code>can.route.link(&quot;Videos&quot;, {type: 'videos'})
+</code></pre>
+<h2>Demo</h2>
+<p>The following demo shows the relationship between <code>window.location.hash</code>,
+routes given to <code>can.data</code>,
+<code>can.route</code>'s data, and events on <code>can.data</code>.  Most properties
+are editable so experiment!</p>
+<div class='iframe_wrapper' data-iframe-src='can/route/demo.html' data-iframe-height='980'></div>
+## IE Compatibility
+<p>Internet Explorer 6 and 7 does not support <code>window.onhashchange</code>.
+Even Internet Explorer 8 running in IE7 compatibility mode reports <code>true</code>
+for <code>onhashchange</code> in window, even though the event isn't supported.</p>
+<p>If you are using jQuery, you can include Ben Alman's <a href="http://benalman.com/projects/jquery-hashchange-plugin/">HashChange Plugin</a>
+to support the event in the unsupported browser(s).</p>
+<h2>Using routes with <code>can.Control</code></h2>
+<p>Using templated event handlers, it is possible to listen to changes to
+<code>can.route</code> within <code>can.Control</code>. This is convenient as it allows the
+control to listen to and make changes whenever the route is modified,
+even outside of the control itself.</p>
+<pre><code>// create the route
+can.route(&quot;#!content/:type&quot;)
+
+can.Control({
+    // the route has changed
+    &quot;{can.route} change&quot;: function(ev, attr, how, newVal, oldVal) {
+        if (attr === &quot;type&quot;) {
+            // the route has a type
+        }
+    }
+});
+</code></pre>
+<h3>Creating and binding routes with <code>can.Control.route</code></h3>
+<p>Using <a href="can.Control.route.html">can.Control.route</a>, a builtin plugin to CanJS, cuts down on the amount
+of code needed to work with <code>can.route</code> in <code>can.Control</code>. With this plugin, it is possible
+to both create routes and bind to <code>can.route</code> at the same time. Instead of creating
+several routes to handle changes to <strong>type</strong> and <strong>id</strong>, write something like this
+in a control:</p>
+<pre><code>can.Control({
+    // the route is empty
+    &quot;route&quot;: function(data) {
+
+    },
+    // the route has a type
+    &quot;:type route&quot;: function(data) {
+
+    }, 
+    // the route has a type and id
+    &quot;:type/:id route&quot;: function(data) {
+
+    }
+});
+</code></pre>
+<h3>Getting more specific with the <code>can.Map.delegate</code> plugin</h3>
+<p>Sometimes, you might only want to trigger a function when the route changes
+only once, even if the route change gets called multiple times. By using the
+<a href="can.Map.delegate.html">delegate</a> plugin, this is extremely easy. This plugin allows you to
+listen to change, set, add, and remove on <code>can.route</code>.</p>
+<p>If you wanted to, say, show a list of recipes when  <strong>type</strong> was set to recipe
+and show a specific recipe when <strong>id</strong> was set, you could do something like:</p>
+<pre><code>can.Control({
+    &quot;{can.route} type=recipe set&quot;: 
+            function( ev, prop, how, newVal, oldVal ) {
+        // show list of recipes
+    },
+    &quot;recipe/:id&quot;: function(data) {
+        // show a single recipe
+    }
+});
+</code></pre>
+<p>If we didn't only listen to when recipe is set, then every time we chose to
+show a single recipe, we would create and show the list of recipes again which
+would not be very efficient.</p>
+
+		</section>
+		
+		
+
+		
+
+		
+	
+	
+	</article>
+	
+	
+
+</div>
+
+
+
+
+
+
+	
+	<footer>
+		<nav class="container">
+			<a class="brand" href="index.html"></a>
+			<ul class='nav'>
+				<li >
+	              <a href="../../index.html">Home</a>
+	            </li>
+		        <li><a href='../guides/index.html'>guides</a></li>
+		        <li class='active'><a href='index.html'>api</a></li>
+		        <li>
+	              <a href="http://blog.bitovi.com/category/open-source/">Blog</a>
+	            </li>
+		        <li >
+	              <a href="../../download.html">Download</a>
+	            </li>
+            </ul>
+		</nav>
+	</footer>
+	
+
+
+    <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-2302003-11']);
+	  _gaq.push(['_setDomainName', 'canjs.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+	<script type="text/javascript">
+		var docObject = {"type":"function","name":"can.route","src":"route/route.md","description":"Manage browser history and client state by synchronizing the window.location.hash with\na [can.Map].","title":"can.route","inherits":"can.Map","download":"can/route","test":"can/route/test.html","parent":"canjs","links":[{"href":"../docco/route/route.html","title":"docco"}],"signatures":[{"code":"can.route( template [, defaults] )","description":"Create a route matching rule.","params":[{"types":[{"type":"String"}],"name":"template","description":"the fragment identifier to match.  The fragment identifier\nshould start with either a character (a-Z) or colon (:).  Examples:\n\n    can.route(\":foo\")\n    can.route(\"foo/:bar\")"},{"types":[{"type":"Object","options":[]}],"optional":true,"name":"defaults","description":"an object of default values"}],"returns":{"types":[{"type":"can.route"}],"description":""}}],"comment":" ","ignoreTemplateRender":true,"templates":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/templates","static":"/Users/daffl/Jupiter/sites/legacy-canjs.com/theme/static","versionsSelectText":"CanJS v<%= version %>","glob":{"ignore":["guides/*.md","{node_modules,bower_components}/**/*","lib/**/*","test/**/*","util/dojo/dojo.js","**/*_test.js","Gruntfile.js"],"pattern":"**/*.{md,js}","cwd":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/can"},"forceBuild":true,"dest":"/Users/daffl/Jupiter/sites/legacy-canjs.com/2.2/docs","generators":["html"],"urls":{"builderData":"https://bitbuilder.herokuapp.com/canjs","builder":"https://bitbuilder.herokuapp.com/can.custom.js","bithub":"http://bitovi.bithub.com/api/v1/events/","cdn":"//canjs.com/release/","github":"https://github.com/bitovi/canjs.com"},"versions":[{"branch":"major","number":"3.0-pre"},{"branch":"master","number":"2.3"},{"number":"2.2"},{"number":"2.1"},{"number":"1.1"}],"defaultDownloadVersion":"2.3.27","docConfigDest":"../../documentjs.json","project":{"version":"2.2","name":"canjs","source":"git://github.com/bitovi/canjs#2.2-legacy"}};
+	</script>
+
+	
+		<script>
+		  steal = {
+		    instantiated: {
+		      "bundles/static.css!$css" : null
+		    }
+		  }
+		</script>
+		<script type='text/javascript'
+				data-main="static"
+				data-config="./static/config.js"
+				src="./static/steal.production.js"
+		    		bundles-path="bundles"></script>
+	
+
+</body>
+
+</html>

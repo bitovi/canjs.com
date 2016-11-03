@@ -9,7 +9,7 @@
 
 @description Manage browser history and
 client state by synchronizing the window.location.hash with
-an [can.Map].
+a [can.Map].
 
 @signature `can.route( template [, defaults] )`
 
@@ -25,6 +25,16 @@ should start with either a character (a-Z) or colon (:).  Examples:
 @return {can.route}
 
 @body
+
+## Use
+
+Watch this video for an overview of can.route's functionality and an example showing how to connect two tab widgets to the browser's history:
+
+<iframe width="662" height="372" src="https://www.youtube.com/embed/ef0LKDiaPZ0" frameborder="0" allowfullscreen></iframe>
+
+In the following CanJS community we also talk about web application routing:
+
+<iframe width="662" height="372" src="https://www.youtube.com/embed/0Hhuv5Qru9k" frameborder="0" allowfullscreen></iframe>
 
 ## Background Information
 
@@ -124,12 +134,20 @@ to update can.route's data.
     can.route.attr( "type", "songs" )
     // location.hash -> "#!content/songs"
     
-Default values can also be added:
+Default values can be added to a route:
 
     can.route("content/:type",{type: "videos" });
     location.hash = "#!content/"
     // can.route -> {type : "videos"}
-    
+    // location.hash -> "#!content/"
+
+Defaults can also be set on the root page of your app:
+
+    can.route( "", { page: "index" } );
+    location.hash = "#!";
+    // can.route.attr() -> { page: "index" }
+    // location.hash -> "#!"
+
 ## Initializing can.route
 
 After your application has created all of its routes, call [can.route.ready]
