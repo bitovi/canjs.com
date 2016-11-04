@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,15 +64,21 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.4#map/list/list*/
+/*can@2.3.27#map/list/list*/
 define('can/map/list/list', [
     'can/util/util',
     'can/map/map',
@@ -89,8 +100,8 @@ define('can/map/list/list', [
                     }
                 };
                 var compute = can.compute(function () {
-                        return callback(element, self.indexOf(element), self);
-                    });
+                    return callback(element, self.indexOf(element), self);
+                });
                 compute.bind('change', binder);
                 binder(null, compute());
             };
@@ -115,8 +126,8 @@ define('can/map/list/list', [
             var self = this;
             var generator = function (element, index) {
                 var compute = can.compute(function () {
-                        return callback(element, index, self);
-                    });
+                    return callback(element, index, self);
+                });
                 compute.bind('change', function (ev, val) {
                     mapped.splice(index, 1, val);
                 });

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#route/route*/
+/*can@2.3.27#route/route*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -36,10 +36,12 @@ var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = 
         return count;
     }, location = window.location, wrapQuote = function (str) {
         return (str + '').replace(/([.?*+\^$\[\]\\(){}|\-])/g, '\\$1');
-    }, each = can.each, extend = can.extend, stringify = function (obj) {
-        if (obj && typeof obj === 'object') {
+    }, each = can.each, extend = can.extend, definedToString = function (obj) {
+        return obj.toString.toString() !== Object.prototype.toString.toString();
+    }, stringify = function (obj) {
+        if (obj && typeof obj === 'object' && !definedToString(obj)) {
             if (obj instanceof can.Map) {
-                obj = obj.attr();
+                obj = obj;
             } else {
                 obj = can.isFunction(obj.slice) ? obj.slice() : can.extend({}, obj);
             }
@@ -67,7 +69,19 @@ var matcher = /\:([\w\.]+)/g, paramsMatcher = /^(?:&[^=]+=[^&]*)+/, makeProps = 
             lastHash = path;
             changedAttrs = [];
         }, 10);
-    }, eventsObject = can.extend({}, can.event);
+    }, eventsObject = can.extend({}, can.event), stringCoercingMapDecorator = function (map) {
+        var attrSuper = map.attr;
+        map.attr = function (prop, val) {
+            var serializable = this.define === undefined || this.define[prop] === undefined || !!this.define[prop].serialize, args;
+            if (serializable) {
+                args = stringify(Array.apply(null, arguments));
+            } else {
+                args = arguments;
+            }
+            return attrSuper.apply(this, args);
+        };
+        return map;
+    };
 can.route = function (url, defaults) {
     var root = can.route._call('root');
     if (root.lastIndexOf('/') === root.length - 1 && url.indexOf('/') === 0) {
@@ -157,7 +171,7 @@ extend(can.route, {
         }
         return paramsMatcher.test(url) ? can.deparam(url.slice(1)) : {};
     },
-    data: new can.Map({}),
+    data: stringCoercingMapDecorator(new can.Map({})),
     map: function (data) {
         var appState;
         if (data.prototype instanceof can.Map) {
@@ -165,18 +179,21 @@ extend(can.route, {
         } else {
             appState = data;
         }
-        can.route.data = appState;
+        can.route.data = stringCoercingMapDecorator(appState);
     },
     routes: {},
     ready: function (val) {
         if (val !== true) {
             can.route._setup();
-            can.route.setState();
+            if (can.isBrowserWindow || can.isWebWorker) {
+                can.route.setState();
+            }
         }
         return can.route;
     },
     url: function (options, merge) {
         if (merge) {
+            can.__observe(eventsObject, '__url');
             options = can.extend({}, can.route.deparam(can.route._call('matchingPartOfURL')), options);
         }
         return can.route._call('root') + can.route.param(options);
@@ -185,7 +202,7 @@ extend(can.route, {
         return '<a ' + makeProps(extend({ href: can.route.url(options, merge) }, props)) + '>' + name + '</a>';
     },
     current: function (options) {
-        can.__reading(eventsObject, '__url');
+        can.__observe(eventsObject, '__url');
         return this._call('matchingPartOfURL') === can.route.param(options);
     },
     bindings: {
@@ -200,7 +217,8 @@ extend(can.route, {
                 can.unbind.call(window, 'hashchange', setState);
             },
             matchingPartOfURL: function () {
-                return location.href.split(/#!?/)[1] || '';
+                var loc = can.route.location || location;
+                return loc.href.split(/#!?/)[1] || '';
             },
             setURL: function (path) {
                 if (location.hash !== '#' + path) {
@@ -248,7 +266,7 @@ each([
     'removeAttr',
     'compute',
     '_get',
-    '__get',
+    '___get',
     'each'
 ], function (name) {
     can.route[name] = function () {
@@ -258,38 +276,25 @@ each([
         return can.route.data[name].apply(can.route.data, arguments);
     };
 });
-can.route.attr = function (attr, val) {
-    var type = typeof attr, newArguments;
-    if (val === undefined) {
-        newArguments = arguments;
-    } else if (type !== 'string' && type !== 'number') {
-        newArguments = [
-            stringify(attr),
-            val
-        ];
-    } else {
-        newArguments = [
-            attr,
-            stringify(val)
-        ];
-    }
-    return can.route.data.attr.apply(can.route.data, newArguments);
+can.route.attr = function () {
+    return can.route.data.attr.apply(can.route.data, arguments);
 };
+can.route.batch = can.batch;
 var setState = can.route.setState = function () {
-        var hash = can.route._call('matchingPartOfURL');
-        var oldParams = curParams;
-        curParams = can.route.deparam(hash);
-        if (!changingData || hash !== lastHash) {
-            can.batch.start();
-            recursiveClean(oldParams, curParams, can.route.data);
-            can.route.attr(curParams);
-            can.batch.trigger(eventsObject, '__url', [
-                hash,
-                lastHash
-            ]);
-            can.batch.stop();
-        }
-    };
+    var hash = can.route._call('matchingPartOfURL');
+    var oldParams = curParams;
+    curParams = can.route.deparam(hash);
+    if (!changingData || hash !== lastHash) {
+        can.route.batch.start();
+        recursiveClean(oldParams, curParams, can.route.data);
+        can.route.attr(curParams);
+        can.route.batch.trigger(eventsObject, '__url', [
+            hash,
+            lastHash
+        ]);
+        can.route.batch.stop();
+    }
+};
 var recursiveClean = function (old, cur, data) {
     for (var attr in old) {
         if (cur[attr] === undefined) {

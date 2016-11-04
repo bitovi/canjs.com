@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#map/validations/validations*/
+/*can@2.3.27#map/validations/validations*/
 define([
     'can/util/library',
     'can/map'
@@ -138,7 +138,7 @@ define([
             }
             var errors = {}, self = this, addErrors = function (attr, funcs) {
                     can.each(funcs, function (func) {
-                        var res = func.call(self, isTest ? self.__convert ? self.__convert(attr, newVal) : newVal : self.attr(attr));
+                        var res = func.call(self, isTest ? newVal : self.attr(attr));
                         if (res) {
                             if (!errors[attr]) {
                                 errors[attr] = [];

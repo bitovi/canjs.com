@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#construct/construct*/
+/*can@2.3.27#construct/construct*/
 define(['can/util/string'], function (can) {
     var initializing = 0;
     var canGetDescriptor;
@@ -48,7 +48,9 @@ define(['can/util/string'], function (can) {
         newInstance: function () {
             var inst = this.instance(), args;
             if (inst.setup) {
+                inst.__inSetup = true;
                 args = inst.setup.apply(inst, arguments);
+                delete inst.__inSetup;
             }
             if (inst.init) {
                 inst.init.apply(inst, args || arguments);
@@ -89,6 +91,10 @@ define(['can/util/string'], function (can) {
             if (fullName) {
                 parts = fullName.split('.');
                 shortName = parts.pop();
+            } else if (klass && klass.shortName) {
+                shortName = klass.shortName;
+            } else if (this.shortName) {
+                shortName = this.shortName;
             }
             var constructorName = shortName ? shortName.replace(/;/g, '') : 'Constructor';
             eval('Constructor = function ' + constructorName + '() { return init.apply(this, arguments); }');

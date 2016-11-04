@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/view*/
+/*can@2.3.27#view/view*/
 define(['can/util/library'], function (can) {
     var isFunction = can.isFunction, makeArray = can.makeArray, hookupId = 1;
     var makeRenderer = function (textRenderer) {
@@ -21,7 +21,7 @@ define(['can/util/library'], function (can) {
     var checkText = function (text, url) {
         if (!text.length) {
             can.dev.log('can/view/view.js: There is no template or an empty template at ' + url);
-            throw 'can.view: No template or empty template:' + url;
+            throw new Error('can.view: No template or empty template:' + url);
         }
     };
     var getRenderer = function (obj, async) {
@@ -77,11 +77,11 @@ define(['can/util/library'], function (can) {
     };
     var getDeferreds = function (data) {
         var deferreds = [];
-        if (can.isDeferred(data)) {
+        if (can.isPromise(data)) {
             return [data];
         } else {
             for (var prop in data) {
-                if (can.isDeferred(data[prop])) {
+                if (can.isPromise(data[prop])) {
                     deferreds.push(data[prop]);
                 }
             }
@@ -92,25 +92,18 @@ define(['can/util/library'], function (can) {
         return can.isArray(resolved) && resolved[1] === 'success' ? resolved[0] : resolved;
     };
     var $view = can.view = can.template = function (view, data, helpers, callback) {
-            if (isFunction(helpers)) {
-                callback = helpers;
-                helpers = undefined;
-            }
-            return $view.renderAs('fragment', view, data, helpers, callback);
-        };
+        if (isFunction(helpers)) {
+            callback = helpers;
+            helpers = undefined;
+        }
+        return $view.renderAs('fragment', view, data, helpers, callback);
+    };
     can.extend($view, {
         frag: function (result, parentNode) {
             return $view.hookup($view.fragment(result), parentNode);
         },
         fragment: function (result) {
-            if (typeof result !== 'string' && result.nodeType === 11) {
-                return result;
-            }
-            var frag = can.buildFragment(result, document.body);
-            if (!frag.childNodes.length) {
-                frag.appendChild(document.createTextNode(''));
-            }
-            return frag;
+            return can.frag(result, document);
         },
         toId: function (src) {
             return can.map(src.toString().split(/\/|\./g), function (part) {
@@ -199,8 +192,8 @@ define(['can/util/library'], function (can) {
         },
         preload: function (id, renderer) {
             var def = $view.cached[id] = new can.Deferred().resolve(function (data, helpers) {
-                    return renderer.call(data, data, helpers);
-                });
+                return renderer.call(data, data, helpers);
+            });
             def.__view_id = id;
             $view.cachedRenderers[id] = renderer;
             return renderer;
@@ -208,35 +201,39 @@ define(['can/util/library'], function (can) {
         preloadStringRenderer: function (id, stringRenderer) {
             return this.preload(id, makeRenderer(stringRenderer));
         },
-        render: function (view, data, helpers, callback) {
-            return can.view.renderAs('string', view, data, helpers, callback);
+        render: function (view, data, helpers, callback, nodelist) {
+            return can.view.renderAs('string', view, data, helpers, callback, nodelist);
         },
-        renderTo: function (format, renderer, data, helpers) {
-            return (format === 'string' && renderer.render ? renderer.render : renderer)(data, helpers);
+        renderTo: function (format, renderer, data, helpers, nodelist) {
+            return (format === 'string' && renderer.render ? renderer.render : renderer)(data, helpers, nodelist);
         },
-        renderAs: function (format, view, data, helpers, callback) {
+        renderAs: function (format, view, data, helpers, callback, nodelist) {
+            if (callback !== undefined && typeof callback.expression === 'string') {
+                nodelist = callback;
+                callback = undefined;
+            }
             if (isFunction(helpers)) {
                 callback = helpers;
                 helpers = undefined;
             }
             var deferreds = getDeferreds(data);
-            var reading, deferred, dataCopy, async, response;
+            var deferred, dataCopy, async, response;
             if (deferreds.length) {
                 deferred = new can.Deferred();
                 dataCopy = can.extend({}, data);
                 deferreds.push(getRenderer(view, true));
                 can.when.apply(can, deferreds).then(function (resolved) {
                     var objs = makeArray(arguments), renderer = objs.pop(), result;
-                    if (can.isDeferred(data)) {
+                    if (can.isPromise(data)) {
                         dataCopy = usefulPart(resolved);
                     } else {
                         for (var prop in data) {
-                            if (can.isDeferred(data[prop])) {
+                            if (can.isPromise(data[prop])) {
                                 dataCopy[prop] = usefulPart(objs.shift());
                             }
                         }
                     }
-                    result = can.view.renderTo(format, renderer, dataCopy, helpers);
+                    result = can.view.renderTo(format, renderer, dataCopy, helpers, nodelist);
                     deferred.resolve(result, dataCopy);
                     if (callback) {
                         callback(result, dataCopy);
@@ -246,24 +243,20 @@ define(['can/util/library'], function (can) {
                 });
                 return deferred;
             } else {
-                reading = can.__clearReading();
                 async = isFunction(callback);
-                deferred = getRenderer(view, async);
-                if (reading) {
-                    can.__setReading(reading);
-                }
+                deferred = can.__notObserve(getRenderer)(view, async);
                 if (async) {
                     response = deferred;
                     deferred.then(function (renderer) {
-                        callback(data ? can.view.renderTo(format, renderer, data, helpers) : renderer);
+                        callback(data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer);
                     });
                 } else {
                     if (deferred.state() === 'resolved' && deferred.__view_id) {
                         var currentRenderer = $view.cachedRenderers[deferred.__view_id];
-                        return data ? can.view.renderTo(format, currentRenderer, data, helpers) : currentRenderer;
+                        return data ? can.view.renderTo(format, currentRenderer, data, helpers, nodelist) : currentRenderer;
                     } else {
                         deferred.then(function (renderer) {
-                            response = data ? can.view.renderTo(format, renderer, data, helpers) : renderer;
+                            response = data ? can.view.renderTo(format, renderer, data, helpers, nodelist) : renderer;
                         });
                     }
                 }
@@ -284,6 +277,21 @@ define(['can/util/library'], function (can) {
                 $view.cachedRenderers[id] = renderer;
             }
             return def.resolve(renderer);
+        },
+        simpleHelper: function (fn) {
+            return function () {
+                var realArgs = [];
+                var fnArgs = arguments;
+                can.each(fnArgs, function (val, i) {
+                    if (i <= fnArgs.length) {
+                        while (val && val.isComputed) {
+                            val = val();
+                        }
+                        realArgs.push(val);
+                    }
+                });
+                return fn.apply(this, realArgs);
+            };
         }
     });
     if (typeof window !== 'undefined' && window.steal && steal.type) {

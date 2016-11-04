@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/html_section*/
+/*can@2.3.27#view/stache/html_section*/
 define([
     'can/util/library',
     'can/view/target',
@@ -14,15 +14,15 @@ define([
     'can/view/mustache_core'
 ], function (can, target, utils, mustacheCore) {
     var decodeHTML = typeof document !== 'undefined' && function () {
-            var el = document.createElement('div');
-            return function (html) {
-                if (html.indexOf('&') === -1) {
-                    return html.replace(/\r\n/g, '\n');
-                }
-                el.innerHTML = html;
-                return el.childNodes.length === 0 ? '' : el.childNodes[0].nodeValue;
-            };
-        }();
+        var el = document.createElement('div');
+        return function (html) {
+            if (html.indexOf('&') === -1) {
+                return html.replace(/\r\n/g, '\n');
+            }
+            el.innerHTML = html;
+            return el.childNodes.length === 0 ? '' : el.childNodes.item(0).nodeValue;
+        };
+    }();
     var HTMLSectionBuilder = function () {
         this.stack = [new HTMLSection()];
     };
@@ -58,7 +58,7 @@ define([
             var compiled = this.stack.pop().compile();
             return function (scope, options, nodeList) {
                 if (!(scope instanceof can.view.Scope)) {
-                    scope = new can.view.Scope(scope || {});
+                    scope = can.view.Scope.refsScope().add(scope || {});
                 }
                 if (!(options instanceof mustacheCore.Options)) {
                     options = new mustacheCore.Options(options || {});
@@ -99,24 +99,23 @@ define([
                 data = decodeHTML(data);
             }
             if (this.targetStack.length) {
-                this.targetStack[this.targetStack.length - 1].children.push(data);
+                can.last(this.targetStack).children.push(data);
             } else {
                 this[this.data].push(data);
             }
         },
         compile: function () {
-            this.compiled = target(this.targetData);
+            this.compiled = target(this.targetData, can.document || can.global.document);
             if (this.inverseData) {
-                this.inverseCompiled = target(this.inverseData);
+                this.inverseCompiled = target(this.inverseData, can.document || can.global.document);
                 delete this.inverseData;
             }
-            delete this.targetData;
-            delete this.targetStack;
+            this.targetStack = this.targetData = null;
             return this.compiled;
         },
         children: function () {
             if (this.targetStack.length) {
-                return this.targetStack[this.targetStack.length - 1].children;
+                return can.last(this.targetStack).children;
             } else {
                 return this[this.data];
             }
@@ -125,5 +124,6 @@ define([
             return !this.targetData.length;
         }
     });
+    HTMLSectionBuilder.HTMLSection = HTMLSection;
     return HTMLSectionBuilder;
 });

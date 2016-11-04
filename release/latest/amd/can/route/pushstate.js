@@ -1,24 +1,29 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#route/pushstate/pushstate*/
+/*can@2.3.27#route/pushstate/pushstate*/
 define([
     'can/util/library',
     'can/route'
 ], function (can) {
     'use strict';
-    if (window.history && history.pushState) {
+    var hasPushstate = window.history && window.history.pushState;
+    var isFileProtocol = window.location && window.location.protocol === 'file:';
+    if (!isFileProtocol && hasPushstate) {
         can.route.bindings.pushstate = {
             root: '/',
             matchSlashes: false,
             paramsMatcher: /^\?(?:[^=]+=[^&]*&)*[^=]+=[^&]*/,
             querySeparator: '?',
             bind: function () {
+                if (can.isNode) {
+                    return;
+                }
                 can.delegate.call(can.$(document.documentElement), 'a', 'click', anchorClickHandler);
                 can.each(methodsToOverwrite, function (method) {
                     originalMethods[method] = window.history[method];
@@ -71,6 +76,9 @@ define([
                 if (!(e.isDefaultPrevented ? e.isDefaultPrevented() : e.defaultPrevented === true)) {
                     var node = this._node || this;
                     var linksHost = node.host || window.location.host;
+                    if (node.href === 'javascript://') {
+                        return;
+                    }
                     if (window.location.host === linksHost) {
                         var root = cleanRoot();
                         if (node.pathname.indexOf(root) === 0) {

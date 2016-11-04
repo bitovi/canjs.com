@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#event/event*/
+/*can@2.3.27#event/event*/
 define(['can/util/can'], function (can) {
     can.addEvent = function (event, handler) {
         var allEvents = this.__bindEvents || (this.__bindEvents = {}), eventList = allEvents[event] || (allEvents[event] = []);
@@ -97,10 +97,20 @@ define(['can/util/can'], function (can) {
         if (!events) {
             return;
         }
+        var eventName;
         if (typeof event === 'string') {
+            eventName = event;
             event = { type: event };
+        } else {
+            eventName = event.type;
         }
-        var eventName = event.type, handlers = (events[eventName] || []).slice(0), passed = [event];
+        var handlers = events[eventName];
+        if (!handlers) {
+            return;
+        } else {
+            handlers = handlers.slice(0);
+        }
+        var passed = [event];
         if (args) {
             passed.push.apply(passed, args);
         }

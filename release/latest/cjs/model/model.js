@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#model/model*/
+/*can@2.3.27#model/model*/
 var can = require('../util/util.js');
 require('../map/map.js');
 require('../list/list.js');
@@ -33,8 +33,8 @@ var pipe = function (def, thisArg, func) {
         }
         return d;
     }, modelNum = 0, getId = function (inst) {
-        can.__reading(inst, inst.constructor.id);
-        return inst.__get(inst.constructor.id);
+        can.__observe(inst, inst.constructor.id);
+        return inst.___get(inst.constructor.id);
     }, ajax = function (ajaxOb, data, type, dataType, success, error) {
         var params = {};
         if (typeof ajaxOb === 'string') {
@@ -94,7 +94,7 @@ var pipe = function (def, thisArg, func) {
                 instancesRawData = raw;
                 raw = raw.data;
             }
-            if (typeof raw === 'undefined') {
+            if (typeof raw === 'undefined' || !can.isArray(raw)) {
                 throw new Error('Could not get any raw data while converting using .models');
             }
             if (modelList.length) {
@@ -301,7 +301,7 @@ can.Model = can.Map.extend({
         return makeRequest(this, 'destroy', success, error, 'destroyed');
     },
     _bindsetup: function () {
-        var modelInstance = this.__get(this.constructor.id);
+        var modelInstance = this.___get(this.constructor.id);
         if (modelInstance != null) {
             this.constructor.store[modelInstance] = this;
         }
@@ -329,12 +329,12 @@ var makeGetterHandler = function (name) {
         return this.parseModel(data);
     };
 var responseHandlers = {
-        makeFindAll: makeGetterHandler('models'),
-        makeFindOne: makeGetterHandler('model'),
-        makeCreate: createUpdateDestroyHandler,
-        makeUpdate: createUpdateDestroyHandler,
-        makeDestroy: createUpdateDestroyHandler
-    };
+    makeFindAll: makeGetterHandler('models'),
+    makeFindOne: makeGetterHandler('model'),
+    makeCreate: createUpdateDestroyHandler,
+    makeUpdate: createUpdateDestroyHandler,
+    makeDestroy: createUpdateDestroyHandler
+};
 can.each(responseHandlers, function (method, name) {
     can.Model[name] = function (oldMethod) {
         return function () {
@@ -355,37 +355,35 @@ can.each([
             this.attr(can.isFunction(attrs.attr) ? attrs.attr() : attrs);
         }
         can.dispatch.call(this, {
-            type: 'change',
+            type: funcName,
             target: this
-        }, [funcName]);
+        }, []);
         can.dispatch.call(constructor, funcName, [this]);
     };
 });
 var ML = can.Model.List = can.List.extend({
-        _bubbleRule: function (eventName, list) {
-            var bubbleRules = can.List._bubbleRule(eventName, list);
-            bubbleRules.push('destroyed');
-            return bubbleRules;
+    _bubbleRule: function (eventName, list) {
+        var bubbleRules = can.List._bubbleRule(eventName, list);
+        bubbleRules.push('destroyed');
+        return bubbleRules;
+    }
+}, {
+    setup: function (params) {
+        if (can.isPlainObject(params) && !can.isArray(params)) {
+            can.List.prototype.setup.apply(this);
+            this.replace(can.isPromise(params) ? params : this.constructor.Map.findAll(params));
+        } else {
+            can.List.prototype.setup.apply(this, arguments);
         }
-    }, {
-        setup: function (params) {
-            if (can.isPlainObject(params) && !can.isArray(params)) {
-                can.List.prototype.setup.apply(this);
-                this.replace(can.isDeferred(params) ? params : this.constructor.Map.findAll(params));
-            } else {
-                can.List.prototype.setup.apply(this, arguments);
-            }
-            this._init = 1;
-            this.bind('destroyed', can.proxy(this._destroyed, this));
-            delete this._init;
-        },
-        _destroyed: function (ev, attr) {
-            if (/\w+/.test(attr)) {
-                var index;
-                while ((index = this.indexOf(ev.target)) > -1) {
-                    this.splice(index, 1);
-                }
+        this.bind('destroyed', can.proxy(this._destroyed, this));
+    },
+    _destroyed: function (ev, attr) {
+        if (/\w+/.test(attr)) {
+            var index;
+            while ((index = this.indexOf(ev.target)) > -1) {
+                this.splice(index, 1);
             }
         }
-    });
+    }
+});
 module.exports = can.Model;

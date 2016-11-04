@@ -1,20 +1,21 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/jquery/jquery*/
+/*can@2.3.27#util/jquery/jquery*/
 var $ = require('jquery');
 var can = require('../can.js');
 var attr = require('../attr/attr.js');
 var event = require('../../event/event.js');
+require('../fragment.js');
 require('../array/each.js');
 require('../inserted/inserted.js');
 var isBindableElement = function (node) {
-    return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window;
+    return node.nodeName && (node.nodeType === 1 || node.nodeType === 9) || node == window || node.addEventListener;
 };
 $ = $ || window.jQuery;
 $.extend(can, $, {
@@ -44,15 +45,7 @@ $.extend(can, $, {
     event: can.event,
     addEvent: can.addEvent,
     removeEvent: can.removeEvent,
-    buildFragment: function (elems, context) {
-        var ret;
-        elems = [elems];
-        context = context || document;
-        context = !context.nodeType && context[0] || context;
-        context = context.ownerDocument || context;
-        ret = $.buildFragment(elems, context);
-        return ret.cacheable ? $.clone(ret.fragment) : ret.fragment || ret;
-    },
+    buildFragment: can.buildFragment,
     $: $,
     each: can.each,
     bind: function (ev, cb) {
@@ -95,11 +88,7 @@ $.extend(can, $, {
         }
         return this;
     },
-    proxy: function (fn, context) {
-        return function () {
-            return fn.apply(context, arguments);
-        };
-    },
+    proxy: can.proxy,
     attr: attr
 });
 can.on = can.bind;
@@ -137,30 +126,77 @@ $.fn.domManip = function (args, cb1, cb2) {
     return oldDomManip.apply(this, arguments);
 };
 $(document.createElement('div')).append(document.createElement('div'));
-$.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
-    return oldDomManip.call(this, args, table, function (elem) {
-        var elems;
-        if (elem.nodeType === 11) {
-            elems = can.makeArray(elem.childNodes);
+var getChildNodes = function (node) {
+    var childNodes = node.childNodes;
+    if ('length' in childNodes) {
+        return can.makeArray(childNodes);
+    } else {
+        var cur = node.firstChild;
+        var nodes = [];
+        while (cur) {
+            nodes.push(cur);
+            cur = cur.nextSibling;
         }
-        var ret = callback.apply(this, arguments);
-        can.inserted(elems ? elems : [elem]);
-        return ret;
-    });
-} : function (args, callback) {
-    return oldDomManip.call(this, args, function (elem) {
-        var elems;
-        if (elem.nodeType === 11) {
-            elems = can.makeArray(elem.childNodes);
-        }
-        var ret = callback.apply(this, arguments);
-        can.inserted(elems ? elems : [elem]);
-        return ret;
-    });
+        return nodes;
+    }
 };
-if (!can.attr.MutationObserver) {
-    var oldAttr = $.attr;
-    $.attr = function (el, attrName) {
+if (cbIndex === undefined) {
+    $.fn.domManip = oldDomManip;
+    can.each([
+        'after',
+        'prepend',
+        'before',
+        'append',
+        'replaceWith'
+    ], function (name) {
+        var original = $.fn[name];
+        $.fn[name] = function () {
+            var elems = [], args = can.makeArray(arguments);
+            if (args[0] != null) {
+                if (typeof args[0] === 'string') {
+                    args[0] = can.buildFragment(args[0]);
+                }
+                if (args[0].nodeType === 11) {
+                    elems = getChildNodes(args[0]);
+                } else if (can.isArrayLike(args[0])) {
+                    elems = can.makeArray(args[0]);
+                } else {
+                    elems = [args[0]];
+                }
+            }
+            var ret = original.apply(this, args);
+            can.inserted(elems);
+            return ret;
+        };
+    });
+} else {
+    $.fn.domManip = cbIndex === 2 ? function (args, table, callback) {
+        return oldDomManip.call(this, args, table, function (elem) {
+            var elems;
+            if (elem.nodeType === 11) {
+                elems = can.makeArray(can.childNodes(elem));
+            }
+            var ret = callback.apply(this, arguments);
+            can.inserted(elems ? elems : [elem]);
+            return ret;
+        });
+    } : function (args, callback) {
+        return oldDomManip.call(this, args, function (elem) {
+            var elems;
+            if (elem.nodeType === 11) {
+                elems = can.makeArray(can.childNodes(elem));
+            }
+            var ret = callback.apply(this, arguments);
+            can.inserted(elems ? elems : [elem]);
+            return ret;
+        });
+    };
+}
+var oldAttr = $.attr;
+$.attr = function (el, attrName) {
+    if (can.isDOM(el) && can.attr.MutationObserver) {
+        return oldAttr.apply(this, arguments);
+    } else {
         var oldValue, newValue;
         if (arguments.length >= 3) {
             oldValue = oldAttr.call(this, el, attrName);
@@ -173,58 +209,48 @@ if (!can.attr.MutationObserver) {
             can.attr.trigger(el, attrName, oldValue);
         }
         return res;
-    };
-    var oldRemove = $.removeAttr;
-    $.removeAttr = function (el, attrName) {
+    }
+};
+var oldRemove = $.removeAttr;
+$.removeAttr = function (el, attrName) {
+    if (can.isDOM(el) && can.attr.MutationObserver) {
+        return oldRemove.apply(this, arguments);
+    } else {
         var oldValue = oldAttr.call(this, el, attrName), res = oldRemove.apply(this, arguments);
         if (oldValue != null) {
             can.attr.trigger(el, attrName, oldValue);
         }
         return res;
-    };
-    $.event.special.attributes = {
-        setup: function () {
-            can.data(can.$(this), 'canHasAttributesBindings', true);
-        },
-        teardown: function () {
-            $.removeData(this, 'canHasAttributesBindings');
-        }
-    };
-} else {
-    $.event.special.attributes = {
-        setup: function () {
+    }
+};
+$.event.special.attributes = {
+    setup: function () {
+        if (can.isDOM(this) && can.attr.MutationObserver) {
             var self = this;
             var observer = new can.attr.MutationObserver(function (mutations) {
-                    mutations.forEach(function (mutation) {
-                        var copy = can.simpleExtend({}, mutation);
-                        can.trigger(self, copy, []);
-                    });
+                mutations.forEach(function (mutation) {
+                    var copy = can.simpleExtend({}, mutation);
+                    can.trigger(self, copy, []);
                 });
+            });
             observer.observe(this, {
                 attributes: true,
                 attributeOldValue: true
             });
             can.data(can.$(this), 'canAttributesObserver', observer);
-        },
-        teardown: function () {
+        } else {
+            can.data(can.$(this), 'canHasAttributesBindings', true);
+        }
+    },
+    teardown: function () {
+        if (can.isDOM(this) && can.attr.MutationObserver) {
             can.data(can.$(this), 'canAttributesObserver').disconnect();
             $.removeData(this, 'canAttributesObserver');
+        } else {
+            $.removeData(this, 'canHasAttributesBindings');
         }
-    };
-}
-(function () {
-    var text = '<-\n>', frag = can.buildFragment(text, document);
-    if (text !== frag.childNodes[0].nodeValue) {
-        var oldBuildFragment = can.buildFragment;
-        can.buildFragment = function (content, context) {
-            var res = oldBuildFragment(content, context);
-            if (res.childNodes.length === 1 && res.childNodes[0].nodeType === 3) {
-                res.childNodes[0].nodeValue = content;
-            }
-            return res;
-        };
     }
-}());
+};
 $.event.special.inserted = {};
 $.event.special.removed = {};
 module.exports = can;

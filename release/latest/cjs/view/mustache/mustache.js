@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/mustache/mustache*/
+/*can@2.3.27#view/mustache/mustache*/
 var can = require('../../util/util.js');
 require('../scope/scope.js');
 require('../view.js');
@@ -255,7 +255,8 @@ Mustache.txt = function (scopeAndOptions, mode, name) {
         });
         args.push(helperOptions);
         return function () {
-            return helper.fn.apply(context, args) || '';
+            var result = helper.fn.apply(context, args);
+            return result == null ? '' : result;
         };
     }
     return function () {
@@ -338,14 +339,6 @@ Mustache.resolve = function (value) {
         return value;
     }
 };
-can.view.Options = can.view.Scope.extend({
-    init: function (data, parent) {
-        if (!data.helpers && !data.partials && !data.tags) {
-            data = { helpers: data };
-        }
-        can.view.Scope.prototype.init.apply(this, arguments);
-    }
-});
 Mustache._helpers = {};
 Mustache.registerHelper = function (name, fn) {
     this._helpers[name] = {
@@ -353,21 +346,24 @@ Mustache.registerHelper = function (name, fn) {
         fn: fn
     };
 };
+Mustache.registerSimpleHelper = function (name, fn) {
+    Mustache.registerHelper(name, can.view.simpleHelper(fn));
+};
 Mustache.getHelper = function (name, options) {
     var helper;
     if (options) {
-        helper = options.attr('helpers.' + name);
+        helper = options.get('helpers.' + name, { proxyMethods: false });
     }
     return helper ? { fn: helper } : this._helpers[name];
 };
 Mustache.render = function (partial, scope, options) {
     if (!can.view.cached[partial]) {
-        var reads = can.__clearReading();
-        var scopePartialName = scope.attr(partial);
-        if (scopePartialName) {
-            partial = scopePartialName;
-        }
-        can.__setReading(reads);
+        can.__notObserve(function () {
+            var scopePartialName = scope.attr(partial);
+            if (scopePartialName) {
+                partial = scopePartialName;
+            }
+        })();
     }
     return can.view.render(partial, scope, options);
 };
@@ -379,7 +375,7 @@ Mustache.safeString = function (str) {
     };
 };
 Mustache.renderPartial = function (partialName, scope, options) {
-    var partial = options.attr('partials.' + partialName);
+    var partial = options.get('partials.' + partialName, { proxyMethods: false });
     if (partial) {
         return partial.render ? partial.render(scope, options) : partial(scope, options);
     } else {
@@ -422,10 +418,11 @@ can.each({
     },
     'unless': function (expr, options) {
         return Mustache._helpers['if'].fn.apply(this, [
-            can.isFunction(expr) ? can.compute(function () {
-                return !expr();
-            }) : !expr,
-            options
+            expr,
+            can.extend({}, options, {
+                fn: options.inverse,
+                inverse: options.fn
+            })
         ]);
     },
     'each': function (expr, options) {
@@ -476,7 +473,7 @@ can.each({
             options = offset;
             offset = 0;
         }
-        var index = options.scope.attr('@index');
+        var index = options.scope.read('@index', { isArgument: true }).value;
         return '' + ((can.isFunction(index) ? index() : index) + offset);
     }
 }, function (fn, name) {

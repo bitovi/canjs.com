@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,72 +64,78 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.4#util/object/object*/
+/*can@2.3.27#util/object/object*/
 define('can/util/object/object', ['can/util/util'], function (can) {
     var isArray = can.isArray;
     can.Object = {};
     var same = can.Object.same = function (a, b, compares, aParent, bParent, deep) {
-            var aType = typeof a, aArray = isArray(a), comparesType = typeof compares, compare;
-            if (comparesType === 'string' || compares === null) {
-                compares = compareMethods[compares];
-                comparesType = 'function';
-            }
-            if (comparesType === 'function') {
-                return compares(a, b, aParent, bParent);
-            }
-            compares = compares || {};
-            if (a === null || b === null) {
-                return a === b;
-            }
-            if (a instanceof Date || b instanceof Date) {
-                return a === b;
-            }
-            if (deep === -1) {
-                return aType === 'object' || a === b;
-            }
-            if (aType !== typeof b || aArray !== isArray(b)) {
+        var aType = typeof a, aArray = isArray(a), comparesType = typeof compares, compare;
+        if (comparesType === 'string' || compares === null) {
+            compares = compareMethods[compares];
+            comparesType = 'function';
+        }
+        if (comparesType === 'function') {
+            return compares(a, b, aParent, bParent);
+        }
+        compares = compares || {};
+        if (a === null || b === null) {
+            return a === b;
+        }
+        if (a instanceof Date || b instanceof Date) {
+            return a === b;
+        }
+        if (deep === -1) {
+            return aType === 'object' || a === b;
+        }
+        if (aType !== typeof b || aArray !== isArray(b)) {
+            return false;
+        }
+        if (a === b) {
+            return true;
+        }
+        if (aArray) {
+            if (a.length !== b.length) {
                 return false;
             }
-            if (a === b) {
-                return true;
-            }
-            if (aArray) {
-                if (a.length !== b.length) {
+            for (var i = 0; i < a.length; i++) {
+                compare = compares[i] === undefined ? compares['*'] : compares[i];
+                if (!same(a[i], b[i], a, b, compare)) {
                     return false;
                 }
-                for (var i = 0; i < a.length; i++) {
-                    compare = compares[i] === undefined ? compares['*'] : compares[i];
-                    if (!same(a[i], b[i], a, b, compare)) {
-                        return false;
-                    }
-                }
-                return true;
-            } else if (aType === 'object' || aType === 'function') {
-                var bCopy = can.extend({}, b);
-                for (var prop in a) {
-                    compare = compares[prop] === undefined ? compares['*'] : compares[prop];
-                    if (!same(a[prop], b[prop], compare, a, b, deep === false ? -1 : undefined)) {
-                        return false;
-                    }
-                    delete bCopy[prop];
-                }
-                for (prop in bCopy) {
-                    if (compares[prop] === undefined || !same(undefined, b[prop], compares[prop], a, b, deep === false ? -1 : undefined)) {
-                        return false;
-                    }
-                }
-                return true;
             }
-            return false;
-        };
+            return true;
+        } else if (aType === 'object' || aType === 'function') {
+            var bCopy = can.extend({}, b);
+            for (var prop in a) {
+                compare = compares[prop] === undefined ? compares['*'] : compares[prop];
+                if (!same(a[prop], b[prop], compare, a, b, deep === false ? -1 : undefined)) {
+                    return false;
+                }
+                delete bCopy[prop];
+            }
+            for (prop in bCopy) {
+                if (compares[prop] === undefined || !same(undefined, b[prop], compares[prop], a, b, deep === false ? -1 : undefined)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    };
     can.Object.subsets = function (checkSet, sets, compares) {
         var len = sets.length, subsets = [];
         for (var i = 0; i < len; i++) {
@@ -145,23 +156,23 @@ define('can/util/object/object', ['can/util/util'], function (can) {
         return true;
     };
     var compareMethods = {
-            'null': function () {
-                return true;
-            },
-            i: function (a, b) {
-                return ('' + a).toLowerCase() === ('' + b).toLowerCase();
-            },
-            eq: function (a, b) {
-                return a === b;
-            },
-            similar: function (a, b) {
-                return a == b;
-            }
-        };
+        'null': function () {
+            return true;
+        },
+        i: function (a, b) {
+            return ('' + a).toLowerCase() === ('' + b).toLowerCase();
+        },
+        eq: function (a, b) {
+            return a === b;
+        },
+        similar: function (a, b) {
+            return a == b;
+        }
+    };
     compareMethods.eqeq = compareMethods.similar;
     return can.Object;
 });
-/*can@2.2.4#map/backup/backup*/
+/*can@2.3.27#map/backup/backup*/
 define('can/map/backup/backup', [
     'can/util/util',
     'can/compute/compute',

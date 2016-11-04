@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
@@ -43,10 +43,15 @@
 			};
 			args.push(require, module.exports, module);
 		}
-		// Babel uses only the exports objet
+		// Babel uses the exports and module object.
 		else if(!args[0] && deps[0] === "exports") {
 			module = { exports: {} };
 			args[0] = module.exports;
+			if(deps[1] === "module") {
+				args[1] = module;
+			}
+		} else if(!args[0] && deps[0] === "module") {
+			args[0] = { id: moduleName };
 		}
 
 		global.define = origDefine;
@@ -59,17 +64,91 @@
 	global.define.orig = origDefine;
 	global.define.modules = modules;
 	global.define.amd = true;
-	global.System = {
-		define: function(__name, __code){
-			global.define = origDefine;
-			eval("(function() { " + __code + " \n }).call(global);");
-			global.define = ourDefine;
-		}
-	};
+	ourDefine("@loader", [], function(){
+		// shim for @@global-helpers
+		var noop = function(){};
+		return {
+			get: function(){
+				return { prepareGlobal: noop, retrieveGlobal: noop };
+			},
+			global: global,
+			__exec: function(__load){
+				eval("(function() { " + __load.source + " \n }).call(global);");
+			}
+		};
+	});
 })({},window)
-/*can@2.2.4#view/autorender/autorender*/
+/*can@2.3.27#map/app/app*/
+define('can/map/app/app', [
+    'can/util/util',
+    'can/map/map',
+    'can/compute/compute'
+], function (can) {
+    function sortedSetJson(set) {
+        if (set == null) {
+            return set;
+        } else {
+            var sorted = {};
+            var keys = [];
+            for (var k in set) {
+                keys.push(k);
+            }
+            keys.sort();
+            can.each(keys, function (prop) {
+                sorted[prop] = set[prop];
+            });
+            return JSON.stringify(sorted);
+        }
+    }
+    can.AppMap = can.Map.extend({
+        setup: function () {
+            can.Map.prototype.setup.apply(this, arguments);
+            this.__readyPromises = [];
+            this.__pageData = {};
+            if (typeof System !== 'undefined' && System.has('asset-register')) {
+                var register = System.get('asset-register')['default'];
+                var self = this;
+                register('inline-cache', function () {
+                    var script = document.createElement('script');
+                    var text = document.createTextNode('\nINLINE_CACHE = ' + JSON.stringify(self.__pageData) + ';\n');
+                    script.appendChild(text);
+                    return script;
+                });
+            }
+        },
+        waitFor: function (promise) {
+            this.__readyPromises.push(promise);
+            return promise;
+        },
+        pageData: can.__notObserve(function (key, set, inst) {
+            var appState = this;
+            function store(data) {
+                var keyData = appState.__pageData[key];
+                if (!keyData) {
+                    keyData = appState.__pageData[key] = {};
+                }
+                keyData[sortedSetJson(set)] = typeof data.serialize === 'function' ? data.serialize() : data;
+            }
+            if (can.isPromise(inst)) {
+                this.waitFor(inst);
+                inst.then(function (data) {
+                    store(data);
+                });
+            } else {
+                store(inst);
+            }
+            return inst;
+        })
+    });
+    return can.AppMap;
+});
+/*can@2.3.27#view/autorender/autorender*/
 'format steal';
-define('can/view/autorender/autorender', ['can/util/util'], function (can) {
+define('can/view/autorender/autorender', [
+    'can/util/util',
+    'can/map/app/app',
+    'can/util/view_model/view_model'
+], function (can) {
     var deferred = new can.Deferred(), ignoreAttributesRegExp = /^(dataViewId|class|id|type|src)$/i;
     var typeMatch = /\s*text\/(mustache|stache|ejs)\s*/;
     function isIn(element, type) {

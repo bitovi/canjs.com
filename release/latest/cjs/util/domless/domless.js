@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/domless/domless*/
+/*can@2.3.27#util/domless/domless*/
 var can = require('../can.js');
 var attr = require('../attr/attr.js');
 require('../array/each.js');
@@ -20,7 +20,10 @@ function flatten(array) {
     return array.length > 0 ? Array.prototype.concat.apply([], array) : array;
 }
 can.isArray = function (arr) {
-    return arr instanceof Array;
+    if (Array.isArray) {
+        return Array.isArray(arr);
+    }
+    return Object.prototype.toString.call(arr) === '[object Array]';
 };
 can.isFunction = function () {
     if (typeof document !== 'undefined' && typeof document.getElementsByTagName('body') === 'function') {

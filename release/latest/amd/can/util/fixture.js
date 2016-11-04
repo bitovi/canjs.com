@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/fixture/fixture*/
+/*can@2.3.27#util/fixture/fixture*/
 define([
     'can/util/library',
     'can/util/string',
@@ -64,7 +64,7 @@ define([
                 settings.type = 'GET';
                 if (!settings.error) {
                     settings.error = function (xhr, error, message) {
-                        throw 'fixtures.js Error ' + error + ' ' + message;
+                        throw new Error('fixtures.js Error ' + error + ' ' + message);
                     };
                 }
             } else {
@@ -199,33 +199,33 @@ define([
             return id;
         };
     var $fixture = can.fixture = function (settings, fixture) {
-            if (fixture !== undefined) {
-                if (typeof settings === 'string') {
-                    var matches = settings.match(/(GET|POST|PUT|DELETE) (.+)/i);
-                    if (!matches) {
-                        settings = { url: settings };
-                    } else {
-                        settings = {
-                            url: matches[2],
-                            type: matches[1]
-                        };
-                    }
+        if (fixture !== undefined) {
+            if (typeof settings === 'string') {
+                var matches = settings.match(/(GET|POST|PUT|DELETE) (.+)/i);
+                if (!matches) {
+                    settings = { url: settings };
+                } else {
+                    settings = {
+                        url: matches[2],
+                        type: matches[1]
+                    };
                 }
-                var index = find(settings, !!fixture);
-                if (index > -1) {
-                    overwrites.splice(index, 1);
-                }
-                if (fixture == null) {
-                    return;
-                }
-                settings.fixture = fixture;
-                overwrites.push(settings);
-            } else {
-                can.each(settings, function (fixture, url) {
-                    $fixture(url, fixture);
-                });
             }
-        };
+            var index = find(settings, !!fixture);
+            if (index > -1) {
+                overwrites.splice(index, 1);
+            }
+            if (fixture == null) {
+                return;
+            }
+            settings.fixture = fixture;
+            overwrites.push(settings);
+        } else {
+            can.each(settings, function (fixture, url) {
+                $fixture(url, fixture);
+            });
+        }
+    };
     var replacer = can.replacer;
     can.extend(can.fixture, {
         _similar: function (settings, overwrite, exact) {

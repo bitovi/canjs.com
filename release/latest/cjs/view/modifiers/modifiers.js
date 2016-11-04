@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/modifiers/modifiers*/
+/*can@2.3.27#view/modifiers/modifiers*/
 var $ = require('jquery');
 var can = require('../../util/util.js');
 require('../view.js');
@@ -19,7 +19,7 @@ convert = function (func_name) {
     var old = $.fn[func_name];
     $.fn[func_name] = function () {
         var args = can.makeArray(arguments), callbackNum, callback, self = this, result;
-        if (can.isDeferred(args[0])) {
+        if (can.isPromise(args[0])) {
             args[0].done(function (res) {
                 modify.call(self, [res], old);
             });
@@ -35,7 +35,7 @@ convert = function (func_name) {
                 return this;
             }
             result = can.view.apply(can.view, args);
-            if (!can.isDeferred(result)) {
+            if (!can.isPromise(result)) {
                 args = [result];
             } else {
                 result.done(function (res) {

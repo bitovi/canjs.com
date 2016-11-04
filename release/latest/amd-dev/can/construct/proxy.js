@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#construct/proxy/proxy*/
+/*can@2.3.27#construct/proxy/proxy*/
 define([
     'can/util/library',
     'can/construct'
@@ -20,7 +20,7 @@ define([
             self = this;
             for (var i = 0; i < funcs.length; i++) {
                 if (typeof funcs[i] === 'string' && !isFunction(this[funcs[i]])) {
-                    throw 'class.js ' + (this.fullName || this.Class.fullName) + ' does not have a ' + funcs[i] + 'method!';
+                    throw new Error('class.js ' + (this.fullName || this.Class.fullName) + ' does not have a ' + funcs[i] + 'method!');
                 }
             }
             return function class_cb() {

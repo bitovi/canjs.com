@@ -1,20 +1,20 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/text_section*/
+/*can@2.3.27#view/stache/text_section*/
 var can = require('../../util/util.js');
 var live = require('../live/live.js');
 var utils = require('./utils.js');
+var liveStache = require('./live_attr.js');
 live = live || can.view.live;
 var TextSectionBuilder = function () {
-        this.stack = [new TextSection()];
-    }, emptyHandler = function () {
-    };
+    this.stack = [new TextSection()];
+};
 can.extend(TextSectionBuilder.prototype, utils.mixins);
 can.extend(TextSectionBuilder.prototype, {
     startSection: function (process) {
@@ -38,19 +38,23 @@ can.extend(TextSectionBuilder.prototype, {
         var renderer = this.stack[0].compile();
         return function (scope, options) {
             var compute = can.compute(function () {
-                    return renderer(scope, options);
-                }, this, false, true);
-            compute.bind('change', emptyHandler);
+                return renderer(scope, options);
+            }, null, false);
+            compute.computeInstance.bind('change', can.k);
             var value = compute();
             if (compute.computeInstance.hasDependencies) {
-                if (state.attr) {
+                if (state.textContentOnly) {
+                    live.text(this, compute);
+                } else if (state.attr) {
                     live.simpleAttribute(this, state.attr, compute);
                 } else {
-                    live.attributes(this, compute);
+                    liveStache.attributes(this, compute, scope, options);
                 }
-                compute.unbind('change', emptyHandler);
+                compute.computeInstance.unbind('change', can.k);
             } else {
-                if (state.attr) {
+                if (state.textContentOnly) {
+                    this.nodeValue = value;
+                } else if (state.attr) {
                     can.attr.set(this, state.attr, value);
                 } else {
                     live.setAttributes(this, value);

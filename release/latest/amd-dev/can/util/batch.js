@@ -1,19 +1,28 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/batch/batch*/
+/*can@2.3.27#util/batch/batch*/
 define(['can/util/can'], function (can) {
-    var batchNum = 1, transactions = 0, batchEvents = [], stopCallbacks = [], currentBatchEvents = null;
+    var batchNum = 1, transactions = 0, dispatchingBatch = null, collectingBatch = null, batches = [], dispatchingBatches = false;
     can.batch = {
         start: function (batchStopHandler) {
             transactions++;
-            if (batchStopHandler) {
-                stopCallbacks.push(batchStopHandler);
+            if (transactions === 1) {
+                var batch = {
+                    events: [],
+                    callbacks: [],
+                    number: batchNum++
+                };
+                batches.push(batch);
+                if (batchStopHandler) {
+                    batch.callbacks.push(batchStopHandler);
+                }
+                collectingBatch = batch;
             }
         },
         stop: function (force, callStart) {
@@ -23,58 +32,72 @@ define(['can/util/can'], function (can) {
                 transactions--;
             }
             if (transactions === 0) {
-                if (currentBatchEvents !== null) {
-                    return;
+                collectingBatch = null;
+                var batch;
+                if (dispatchingBatches === false) {
+                    dispatchingBatches = true;
+                    var callbacks = [], i;
+                    while (batch = batches.shift()) {
+                        var events = batch.events;
+                        callbacks.push.apply(callbacks, batch.callbacks);
+                        dispatchingBatch = batch;
+                        can.batch.batchNum = batch.number;
+                        var len;
+                        if (callStart) {
+                            can.batch.start();
+                        }
+                        for (i = 0, len = events.length; i < len; i++) {
+                            can.dispatch.apply(events[i][0], events[i][1]);
+                        }
+                        can.batch._onDispatchedEvents(batch.number);
+                        dispatchingBatch = null;
+                        can.batch.batchNum = undefined;
+                    }
+                    for (i = callbacks.length - 1; i >= 0; i--) {
+                        callbacks[i]();
+                    }
+                    dispatchingBatches = false;
                 }
-                currentBatchEvents = batchEvents.slice(0);
-                var callbacks = stopCallbacks.slice(0), i, len;
-                batchEvents = [];
-                stopCallbacks = [];
-                can.batch.batchNum = batchNum;
-                batchNum++;
-                if (callStart) {
-                    can.batch.start();
-                }
-                for (i = 0; i < currentBatchEvents.length; i++) {
-                    can.dispatch.apply(currentBatchEvents[i][0], currentBatchEvents[i][1]);
-                }
-                currentBatchEvents = null;
-                for (i = 0, len = callbacks.length; i < callbacks.length; i++) {
-                    callbacks[i]();
-                }
-                can.batch.batchNum = undefined;
             }
         },
+        _onDispatchedEvents: function () {
+        },
         trigger: function (item, event, args) {
-            if (!item._init) {
+            if (!item.__inSetup) {
                 event = typeof event === 'string' ? { type: event } : event;
-                if (currentBatchEvents) {
-                    currentBatchEvents.push([
+                if (collectingBatch) {
+                    event.batchNum = collectingBatch.number;
+                    collectingBatch.events.push([
                         item,
                         [
                             event,
                             args
                         ]
                     ]);
-                } else if (transactions === 0) {
-                    return can.dispatch.call(item, event, args);
+                } else if (event.batchNum) {
+                    can.dispatch.call(item, event, args);
+                } else if (batches.length) {
+                    can.batch.start();
+                    event.batchNum = collectingBatch.number;
+                    collectingBatch.events.push([
+                        item,
+                        [
+                            event,
+                            args
+                        ]
+                    ]);
+                    can.batch.stop();
                 } else {
-                    event.batchNum = batchNum;
-                    batchEvents.push([
-                        item,
-                        [
-                            event,
-                            args
-                        ]
-                    ]);
+                    can.dispatch.call(item, event, args);
                 }
             }
         },
         afterPreviousEvents: function (handler) {
-            if (currentBatchEvents) {
+            var batch = can.last(batches);
+            if (batch) {
                 var obj = {};
                 can.bind.call(obj, 'ready', handler);
-                currentBatchEvents.push([
+                batch.events.push([
                     obj,
                     [
                         { type: 'ready' },
@@ -82,7 +105,15 @@ define(['can/util/can'], function (can) {
                     ]
                 ]);
             } else {
-                handler();
+                handler({});
+            }
+        },
+        after: function (handler) {
+            var batch = collectingBatch || dispatchingBatch;
+            if (batch) {
+                batch.callbacks.push(handler);
+            } else {
+                handler({});
             }
         }
     };

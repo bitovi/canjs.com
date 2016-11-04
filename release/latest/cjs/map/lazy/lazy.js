@@ -1,14 +1,15 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#map/lazy/lazy*/
+/*can@2.3.27#map/lazy/lazy*/
 var can = require('../../util/util.js');
 var bubble = require('./bubble.js');
+var mapHelpers = require('../map_helpers.js');
 require('../map.js');
 require('../../list/list.js');
 require('./nested_reference.js');
@@ -18,10 +19,8 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         this.constructor.List = can.LazyList;
         this._data = can.extend(can.extend(true, {}, this._setupDefaults() || {}), obj);
         can.cid(this, '.lazyMap');
-        this._init = 1;
-        this._computedBindings = {};
-        this._setupComputes();
-        var teardownMapping = obj && can.Map.helpers.addToMap(obj, this);
+        this._setupComputedProperties();
+        var teardownMapping = obj && mapHelpers.addToMap(obj, this);
         this._nestedReference = new can.NestedReference(this._data);
         if (teardownMapping) {
             teardownMapping();
@@ -30,7 +29,8 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
             this.___set(prop, value);
         }, this));
         this.bind('change', can.proxy(this._changes, this));
-        delete this._init;
+    },
+    _changes: function (ev, attr, how, newVal, oldVal) {
     },
     _addChild: function (path, newChild, setNewChild) {
         var self = this;
@@ -84,7 +84,7 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         }
     },
     __type: function (value, prop) {
-        if (!(value instanceof can.LazyMap) && can.Map.helpers.canMakeObserve(value)) {
+        if (!(value instanceof can.LazyMap) && mapHelpers.canMakeObserve(value)) {
             if (can.isArray(value)) {
                 var List = can.LazyList;
                 return new List(value);
@@ -96,9 +96,9 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         return value;
     },
     _goto: function (attr, keepKey) {
-        var parts = can.Map.helpers.attrParts(attr, keepKey).slice(0), prev, path = [], part;
-        var cur = this instanceof can.List ? this[parts.shift()] : this.__get();
-        while (cur && !can.Map.helpers.isObservable(cur) && parts.length) {
+        var parts = mapHelpers.attrParts(attr, keepKey).slice(0), prev, path = [], part;
+        var cur = this instanceof can.List ? this[parts.shift()] : this.___get();
+        while (cur && !can.isMapLike(cur) && parts.length) {
             if (part !== undefined) {
                 path.push(part);
             }
@@ -114,14 +114,15 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         };
     },
     _get: function (attr) {
+        can.__observe(this, attr);
         var data = this._goto(attr);
-        if (can.Map.helpers.isObservable(data.value)) {
+        if (can.isMapLike(data.value)) {
             if (data.parts.length) {
                 return data.value._get(data.parts);
             } else {
                 return data.value;
             }
-        } else if (data.value && can.Map.helpers.canMakeObserve(data.value)) {
+        } else if (data.value && mapHelpers.canMakeObserve(data.value)) {
             var converted = this.__type(data.value, data.prop);
             this._addChild(attr, converted, function () {
                 data.parent[data.prop] = converted;
@@ -135,19 +136,19 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
     },
     _set: function (attr, value, keepKey) {
         var data = this._goto(attr, keepKey);
-        if (can.Map.helpers.isObservable(data.value) && data.parts.length) {
+        if (can.isMapLike(data.value) && data.parts.length) {
             return data.value._set(data.parts, value);
         } else if (!data.parts.length) {
             this.__set(attr, value, data.value, data);
         } else {
-            throw 'can.LazyMap: object does not exist';
+            throw new Error('can.LazyMap: object does not exist');
         }
     },
     __set: function (prop, value, current, data, convert) {
         convert = convert || true;
         if (value !== current) {
             var changeType = data.parent.hasOwnProperty(data.prop) ? 'set' : 'add';
-            if (convert && can.Map.helpers.canMakeObserve(value)) {
+            if (convert && mapHelpers.canMakeObserve(value)) {
                 value = this.__type(value, prop);
                 var self = this;
                 this._addChild(prop, value, function () {
@@ -163,8 +164,9 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
         }
     },
     ___set: function (prop, val, data) {
-        if (this[prop] && this[prop].isComputed && can.isFunction(this.constructor.prototype[prop])) {
-            this[prop](val);
+        var computedAttr = this._computedAttrs[prop];
+        if (computedAttr) {
+            computedAttr.compute(val);
         } else if (data) {
             data.parent[data.prop] = val;
         } else {
@@ -174,10 +176,10 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
             this[prop] = val;
         }
     },
-    _attrs: function (props, remove) {
-        if (props === undefined) {
-            return can.Map.helpers.serialize(this, 'attr', {});
-        }
+    _getAttrs: function () {
+        return mapHelpers.serialize(this, 'attr', {});
+    },
+    _setAttrs: function (props, remove) {
         props = can.extend({}, props);
         var self = this, prop, data, newVal;
         can.batch.start();
@@ -189,15 +191,12 @@ can.LazyMap = can.Map.extend({ _bubble: bubble }, {
                     self.removeAttr(prop);
                 }
                 return;
-            } else if (!can.Map.helpers.isObservable(curVal) && can.Map.helpers.canMakeObserve(curVal)) {
+            } else if (!can.isMapLike(curVal) && mapHelpers.canMakeObserve(curVal)) {
                 curVal = self.attr(prop);
-            }
-            if (self.__convert) {
-                newVal = self.__convert(prop, newVal);
             }
             if (newVal instanceof can.Map) {
                 self.__set(prop, newVal, curVal, data);
-            } else if (can.Map.helpers.isObservable(curVal) && can.Map.helpers.canMakeObserve(newVal) && curVal.attr) {
+            } else if (can.isMapLike(curVal) && mapHelpers.canMakeObserve(newVal) && curVal.attr) {
                 curVal.attr(newVal, remove);
             } else if (curVal !== newVal) {
                 self.__set(prop, newVal, curVal, data);

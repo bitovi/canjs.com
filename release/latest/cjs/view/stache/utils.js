@@ -1,13 +1,15 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#view/stache/utils*/
-require('../../util/util.js');
+/*can@2.3.27#view/stache/utils*/
+var can = require('../../util/util.js');
+require('../scope/scope.js');
+var Options = can.view.Options;
 module.exports = {
     isArrayLike: function (obj) {
         return obj && obj.splice && typeof obj.length === 'number';
@@ -38,5 +40,30 @@ module.exports = {
         subSectionDepth: function () {
             return this.stack.length - 1;
         }
-    }
+    },
+    convertToScopes: function (helperOptions, scope, options, nodeList, truthyRenderer, falseyRenderer, isStringOnly) {
+        if (truthyRenderer) {
+            helperOptions.fn = this.makeRendererConvertScopes(truthyRenderer, scope, options, nodeList, isStringOnly);
+        }
+        if (falseyRenderer) {
+            helperOptions.inverse = this.makeRendererConvertScopes(falseyRenderer, scope, options, nodeList, isStringOnly);
+        }
+    },
+    makeRendererConvertScopes: function (renderer, parentScope, parentOptions, nodeList, observeObservables) {
+        var rendererWithScope = function (ctx, opts, parentNodeList) {
+            return renderer(ctx || parentScope, opts, parentNodeList);
+        };
+        var convertedRenderer = function (newScope, newOptions, parentNodeList) {
+            if (newScope !== undefined && !(newScope instanceof can.view.Scope)) {
+                newScope = parentScope.add(newScope);
+            }
+            if (newOptions !== undefined && !(newOptions instanceof Options)) {
+                newOptions = parentOptions.add(newOptions);
+            }
+            var result = rendererWithScope(newScope, newOptions || parentOptions, parentNodeList || nodeList);
+            return result;
+        };
+        return observeObservables ? convertedRenderer : can.__notObserve(convertedRenderer);
+    },
+    Options: Options
 };

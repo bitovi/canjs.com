@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#map/list/list*/
+/*can@2.3.27#map/list/list*/
 define([
     'can/util/library',
     'can/map',
@@ -28,8 +28,8 @@ define([
                     }
                 };
                 var compute = can.compute(function () {
-                        return callback(element, self.indexOf(element), self);
-                    });
+                    return callback(element, self.indexOf(element), self);
+                });
                 compute.bind('change', binder);
                 binder(null, compute());
             };
@@ -54,8 +54,8 @@ define([
             var self = this;
             var generator = function (element, index) {
                 var compute = can.compute(function () {
-                        return callback(element, index, self);
-                    });
+                    return callback(element, index, self);
+                });
                 compute.bind('change', function (ev, val) {
                     mapped.splice(index, 1, val);
                 });

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/yui/yui*/
+/*can@2.3.27#util/yui/yui*/
 define([
     'can/util/can',
     'can/util/attr',
@@ -24,7 +24,7 @@ define([
         var addHTML = Y.DOM.addHTML;
         Y.DOM.addHTML = function (node, content, where) {
             if (typeof content === 'string' || typeof content === 'number') {
-                content = can.buildFragment(content);
+                content = can.buildFragment(content, node.ownerDocument || node.getDOMNode().ownerDocument);
             }
             var elems;
             if (content.nodeType === 11) {
@@ -120,7 +120,7 @@ define([
     can.append = function (wrapped, html) {
         wrapped.each(function (node) {
             if (typeof html === 'string') {
-                html = can.buildFragment(html, node);
+                html = can.buildFragment(html, node.getDOMNode().ownerDocument);
             }
             node.append(html);
         });
@@ -162,10 +162,10 @@ define([
     };
     Y.NodeList.addMethod('remove', Y.Node.prototype.remove);
     var optionsMap = {
-            type: 'method',
-            success: undefined,
-            error: undefined
-        };
+        type: 'method',
+        success: undefined,
+        error: undefined
+    };
     var updateDeferred = function (request, d) {
         if (request && request.io) {
             var xhr = request.io;
@@ -375,18 +375,18 @@ define([
         }, fakeTrigger = function (n, e, a) {
             var stop = false;
             var evdata = can.extend({
-                    type: e,
-                    target: n,
-                    faux: true,
-                    _stopper: function () {
-                        stop = this.cancelBubble;
-                    },
-                    stopPropagation: function () {
-                        stop = this.cancelBubble;
-                    },
-                    preventDefault: function () {
-                    }
-                }, a);
+                type: e,
+                target: n,
+                faux: true,
+                _stopper: function () {
+                    stop = this.cancelBubble;
+                },
+                stopPropagation: function () {
+                    stop = this.cancelBubble;
+                },
+                preventDefault: function () {
+                }
+            }, a);
             realTriggerHandler(n, e, evdata);
             if (e === 'inserted' || e === 'removed') {
                 return;

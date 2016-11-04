@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.2.4
+ * CanJS - 2.3.27
  * http://canjs.com/
- * Copyright (c) 2015 Bitovi
- * Fri, 03 Apr 2015 23:27:46 GMT
+ * Copyright (c) 2016 Bitovi
+ * Thu, 15 Sep 2016 21:14:18 GMT
  * Licensed MIT
  */
 
-/*can@2.2.4#util/zepto/zepto*/
+/*can@2.3.27#util/zepto/zepto*/
 define([
     'can/util/can',
     'can/util/attr',
@@ -55,6 +55,28 @@ define([
     can.each = oldEach;
     can.attr = attr;
     can.event = event;
+    function likeArray(obj) {
+        return typeof obj.length === 'number';
+    }
+    can.map = function (elements, callback) {
+        var value, values = [], i, key;
+        if (likeArray(elements)) {
+            for (i = 0; i < elements.length; i++) {
+                value = callback(elements[i], i);
+                if (value != null) {
+                    values.push(value);
+                }
+            }
+        } else {
+            for (key in elements) {
+                value = callback(elements[key], key);
+                if (value != null) {
+                    values.push(value);
+                }
+            }
+        }
+        return values;
+    };
     var arrHas = function (obj, name) {
         return obj[0] && obj[0][name] || obj[name];
     };
@@ -144,11 +166,6 @@ define([
             ret[i] = a;
         });
         return ret;
-    };
-    can.proxy = function (f, ctx) {
-        return function () {
-            return f.apply(ctx, arguments);
-        };
     };
     var XHR = $.ajaxSettings.xhr;
     $.ajaxSettings.xhr = function () {
