@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.27#view/target/target*/
+/*can@2.3.28#view/target/target*/
 define('can/view/target/target', [
     'can/util/util',
     'can/view/elements'
@@ -255,7 +255,7 @@ define('can/view/target/target', [
     can.view.target = makeTarget;
     return makeTarget;
 });
-/*can@2.3.27#view/stache/mustache_core*/
+/*can@2.3.28#view/stache/mustache_core*/
 define('can/view/stache/mustache_core', [
     'can/util/util',
     'can/view/stache/utils',
@@ -270,17 +270,7 @@ define('can/view/stache/mustache_core', [
     elements = elements || can.view.elements;
     Scope = Scope || can.view.Scope;
     nodeLists = nodeLists || can.view.nodeLists;
-    var mustacheLineBreakRegExp = /(?:(?:^|(\r?)\n)(\s*)(\{\{([^\}]*)\}\}\}?)([^\S\n\r]*)($|\r?\n))|(\{\{([^\}]*)\}\}\}?)/g, getItemsFragContent = function (items, isObserveList, helperOptions, options) {
-            var frag = (can.document || can.global.document).createDocumentFragment();
-            for (var i = 0, len = items.length; i < len; i++) {
-                append(frag, helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options));
-            }
-            return frag;
-        }, append = function (frag, content) {
-            if (content) {
-                frag.appendChild(typeof content === 'string' ? frag.ownerDocument.createTextNode(content) : content);
-            }
-        }, getItemsStringContent = function (items, isObserveList, helperOptions, options) {
+    var mustacheLineBreakRegExp = /(?:(?:^|(\r?)\n)(\s*)(\{\{([^\}]*)\}\}\}?)([^\S\n\r]*)($|\r?\n))|(\{\{([^\}]*)\}\}\}?)/g, getItemsStringContent = function (items, isObserveList, helperOptions, options) {
             var txt = '';
             for (var i = 0, len = items.length; i < len; i++) {
                 txt += helperOptions.fn(isObserveList ? items.attr('' + i) : items[i], options);
@@ -358,7 +348,11 @@ define('can/view/stache/mustache_core', [
                     } else if (utils.isArrayLike(finalValue)) {
                         var isObserveList = utils.isObserveLike(finalValue);
                         if (isObserveList ? finalValue.attr('length') : finalValue.length) {
-                            return (stringOnly ? getItemsStringContent : getItemsFragContent)(finalValue, isObserveList, helperOptionArg, helperOptions);
+                            if (stringOnly) {
+                                return getItemsStringContent(finalValue, isObserveList, helperOptionArg, helperOptions);
+                            } else {
+                                return can.frag(utils.getItemsFragContent(finalValue, helperOptionArg, scope));
+                            }
                         } else {
                             return helperOptionArg.inverse(scope, helperOptions);
                         }
@@ -500,7 +494,7 @@ define('can/view/stache/mustache_core', [
     can.view.mustacheCore = core;
     return core;
 });
-/*can@2.3.27#view/stache/html_section*/
+/*can@2.3.28#view/stache/html_section*/
 define('can/view/stache/html_section', [
     'can/util/util',
     'can/view/target/target',
@@ -621,7 +615,7 @@ define('can/view/stache/html_section', [
     HTMLSectionBuilder.HTMLSection = HTMLSection;
     return HTMLSectionBuilder;
 });
-/*can@2.3.27#view/stache/live_attr*/
+/*can@2.3.28#view/stache/live_attr*/
 define('can/view/stache/live_attr', [
     'can/util/util',
     'can/view/live/live',
@@ -667,7 +661,7 @@ define('can/view/stache/live_attr', [
         }
     };
 });
-/*can@2.3.27#view/stache/text_section*/
+/*can@2.3.28#view/stache/text_section*/
 define('can/view/stache/text_section', [
     'can/util/util',
     'can/view/live/live',
@@ -761,7 +755,7 @@ define('can/view/stache/text_section', [
     });
     return TextSectionBuilder;
 });
-/*can@2.3.27#view/import/import*/
+/*can@2.3.28#view/import/import*/
 define('can/view/import/import', [
     'can/util/util',
     'can/view/callbacks/callbacks'
@@ -803,7 +797,7 @@ define('can/view/import/import', [
         }
     });
 });
-/*can@2.3.27#view/stache/intermediate_and_imports*/
+/*can@2.3.28#view/stache/intermediate_and_imports*/
 define('can/view/stache/intermediate_and_imports', [
     'can/view/stache/mustache_core',
     'can/view/parser/parser',
@@ -869,7 +863,7 @@ define('can/view/stache/intermediate_and_imports', [
         };
     };
 });
-/*can@2.3.27#view/stache/stache*/
+/*can@2.3.28#view/stache/stache*/
 define('can/view/stache/stache', [
     'can/util/util',
     'can/view/parser/parser',
@@ -1156,7 +1150,7 @@ define('can/view/stache/stache', [
     };
     return stache;
 });
-/*can@2.3.27#view/stache/add_bundles*/
+/*can@2.3.28#view/stache/add_bundles*/
 define('can/view/stache/add_bundles', [
     '@loader',
     'can/util/can'
@@ -1182,7 +1176,7 @@ define('can/view/stache/add_bundles', [
         return Promise.all(bundleNormalizes);
     };
 });
-/*can@2.3.27#view/stache/system*/
+/*can@2.3.28#view/stache/system*/
 'format steal';
 define('can/view/stache/system', [
     'can/view/stache/stache',

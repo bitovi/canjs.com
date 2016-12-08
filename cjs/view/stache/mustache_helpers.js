@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#view/stache/mustache_helpers*/
+/*can@2.3.28#view/stache/mustache_helpers*/
 var can = require('../../util/util.js');
 var utils = require('./utils.js');
 var live = require('../live/live.js');
@@ -57,14 +57,8 @@ var helpers = {
         }
         var expr = resolved;
         if (!!expr && utils.isArrayLike(expr)) {
-            var isCanList = expr instanceof can.List;
-            for (i = 0; i < (isCanList ? expr.attr('length') : expr.length); i++) {
-                var item = isCanList ? expr.attr(i) : expr[i];
-                result.push(options.fn(options.scope.add({
-                    '%index': i,
-                    '@index': i
-                }, { notContext: true }).add(item)));
-            }
+            var fragItems = utils.getItemsFragContent(expr, options, options.scope);
+            Array.prototype.push.apply(result, fragItems);
         } else if (utils.isObserveLike(expr)) {
             keys = can.Map.keys(expr);
             for (i = 0; i < keys.length; i++) {

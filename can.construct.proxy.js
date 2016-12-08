@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.27#construct/proxy/proxy*/
+/*can@2.3.28#construct/proxy/proxy*/
 define('can/construct/proxy/proxy', [
     'can/util/util',
     'can/construct/construct'

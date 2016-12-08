@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.27#util/array/makeArray*/
+/*can@2.3.28#util/array/makeArray*/
 define('can/util/array/makeArray', ['can/util/array/each'], function (can) {
     can.makeArray = function (arr) {
         var ret = [];
@@ -89,7 +89,7 @@ define('can/util/array/makeArray', ['can/util/array/each'], function (can) {
     };
     return can;
 });
-/*can@2.3.27#util/domless/domless*/
+/*can@2.3.28#util/domless/domless*/
 define('can/util/domless/domless', [
     'can/util/can',
     'can/util/attr/attr',

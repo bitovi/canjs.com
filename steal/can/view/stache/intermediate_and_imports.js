@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#view/stache/intermediate_and_imports*/
+/*can@2.3.28#view/stache/intermediate_and_imports*/
 steal('can/view/stache/mustache_core.js', 'can/view/parser', 'can/view/import', function (mustacheCore, parser) {
     return function (source) {
         var template = mustacheCore.cleanLineEndings(source);

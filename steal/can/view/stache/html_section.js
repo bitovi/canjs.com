@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#view/stache/html_section*/
+/*can@2.3.28#view/stache/html_section*/
 steal('can/util', 'can/view/target', './utils.js', './mustache_core.js', function (can, target, utils, mustacheCore) {
     var decodeHTML = typeof document !== 'undefined' && function () {
         var el = document.createElement('div');

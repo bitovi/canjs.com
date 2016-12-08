@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#map/define/define*/
+/*can@2.3.28#map/define/define*/
 steal('can/util', 'can/map/map_helpers.js', 'can/map', 'can/compute', function (can, mapHelpers) {
     if (!can.define) {
         var define = can.define = {};
@@ -22,8 +22,13 @@ steal('can/util', 'can/map/map_helpers.js', 'can/map', 'can/compute', function (
                 }
             }
         };
-        mapHelpers.define = function (Map) {
+        mapHelpers.define = function (Map, baseDefine) {
             var definitions = Map.prototype.define;
+            if (baseDefine) {
+                var defines = can.simpleExtend({}, baseDefine);
+                mapHelpers.twoLevelDeepExtend(defines, definitions);
+                can.simpleExtend(definitions, defines);
+            }
             if (Map.define) {
                 can.dev.warn('The define property should be on the map\'s prototype properties, ' + 'not the static properties.');
             }
@@ -158,7 +163,7 @@ steal('can/util', 'can/map/map_helpers.js', 'can/map', 'can/compute', function (
             },
             'compute': {
                 set: function (newValue, setVal, setErr, oldValue) {
-                    if (newValue.isComputed) {
+                    if (newValue && newValue.isComputed) {
                         return newValue;
                     }
                     if (oldValue && oldValue.isComputed) {

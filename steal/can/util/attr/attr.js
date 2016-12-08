@@ -1,13 +1,14 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#util/attr/attr*/
+/*can@2.3.28#util/attr/attr*/
 steal('can/util/can.js', function (can) {
+    var namespaces = { 'xlink': 'http://www.w3.org/1999/xlink' };
     var setImmediate = can.global.setImmediate || function (cb) {
             return setTimeout(cb, 0);
         }, formElements = {
@@ -127,7 +128,7 @@ steal('can/util/can.js', function (can) {
                     } catch (e) {
                         var invalidNodes = {}, attributeDummy = document.createElement('div');
                         return function (el, attrName, val) {
-                            var first = attrName.charAt(0), cachedNode, node;
+                            var first = attrName.charAt(0), cachedNode, node, attr;
                             if ((first === '{' || first === '(' || first === '*') && el.setAttributeNode) {
                                 cachedNode = invalidNodes[attrName];
                                 if (!cachedNode) {
@@ -138,7 +139,12 @@ steal('can/util/can.js', function (can) {
                                 node.value = val;
                                 el.setAttributeNode(node);
                             } else {
-                                el.setAttribute(attrName, val);
+                                attr = attrName.split(':');
+                                if (attr.length !== 1) {
+                                    el.setAttributeNS(namespaces[attr[0]], attrName, val);
+                                } else {
+                                    el.setAttribute(attrName, val);
+                                }
                             }
                         };
                     }

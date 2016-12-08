@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#view/stache/utils*/
+/*can@2.3.28#view/stache/utils*/
 define([
     'can/util/library',
     'can/view/scope'
@@ -66,6 +66,19 @@ define([
                 return result;
             };
             return observeObservables ? convertedRenderer : can.__notObserve(convertedRenderer);
+        },
+        getItemsFragContent: function (items, helperOptions, scope) {
+            var isObserveList = this.isObserveLike(items);
+            var result = [], len = isObserveList ? items.attr('length') : items.length;
+            for (var i = 0; i < len; i++) {
+                var aliases = {
+                    '%index': i,
+                    '@index': i
+                };
+                var item = isObserveList ? items.attr('' + i) : items[i];
+                result.push(helperOptions.fn(scope.add(aliases, { notContext: true }).add(item)));
+            }
+            return result;
         },
         Options: Options
     };

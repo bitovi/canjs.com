@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#util/util*/
+/*can@2.3.28#util/util*/
 steal('can/util/can.js', 'can/util/attr', 'yui', 'can/event', 'can/util/fragment.js', 'can/util/array/each.js', 'can/util/object/isplain', 'can/util/deferred.js', 'can/util/hashchange.js', 'can/util/inserted', function (can, attr, YUI) {
     YUI = YUI || window.YUI;
     YUI.add('can-modifications', function (Y, NAME) {

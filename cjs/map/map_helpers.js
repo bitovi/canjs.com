@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#map/map_helpers*/
+/*can@2.3.28#map/map_helpers*/
 var can = require('../util/util.js');
 require('../util/object/isplain/isplain.js');
 var mapHelpers = {
@@ -88,6 +88,12 @@ var mapHelpers = {
     },
     getMapFromObject: function (obj) {
         return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+    },
+    twoLevelDeepExtend: function (destination, source) {
+        for (var prop in source) {
+            destination[prop] = destination[prop] || {};
+            can.simpleExtend(destination[prop], source[prop]);
+        }
     }
 };
 var madeMap = null;

@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#list/list*/
+/*can@2.3.28#list/list*/
 steal('can/util', 'can/map', 'can/map/bubble.js', 'can/map/map_helpers.js', function (can, Map, bubble, mapHelpers) {
     var splice = [].splice, spliceRemovesProps = function () {
             var obj = {

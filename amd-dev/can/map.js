@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.28
  * http://canjs.com/
  * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Thu, 08 Dec 2016 20:53:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#map/map*/
+/*can@2.3.28#map/map*/
 define([
     'can/util/library',
     'can/util/bind',
@@ -18,7 +18,7 @@ define([
 ], function (can, bind, bubble, mapHelpers) {
     var unobservable = { 'constructor': true };
     var Map = can.Map = can.Construct.extend({
-        setup: function () {
+        setup: function (baseMap) {
             can.Construct.setup.apply(this, arguments);
             this._computedPropertyNames = [];
             if (can.Map) {
@@ -39,7 +39,7 @@ define([
                     }
                 }
                 if (mapHelpers.define) {
-                    mapHelpers.define(this);
+                    mapHelpers.define(this, baseMap.prototype.define);
                 }
             }
             if (can.List && !(this.prototype instanceof can.List)) {
