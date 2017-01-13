@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>Animate Test Suite</title>
+  <link rel="stylesheet" type="text/css" href="../../../steal-qunit/qunit.css"/>
+  <script type='text/javascript' src='../../../steal/steal.js?jquerypp/dom/animate/animate_test.js'></script>
+</head>
+<body id="body">
+<h1 id="qunit-header"><a href="/jquerypp/test/index.html">jQuery Test Suite</a></h1>
+<h2 id="qunit-banner"></h2>
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+
+<!-- Test HTML -->
+<div id="nothiddendiv" style="height:1px;background:white;" class="nothiddendiv">
+  <div id="nothiddendivchild"></div>
+</div>
+<!-- this iframe is outside the #qunit-fixture so it won't reload constantly wasting time, but it means the tests must be "safe" and clean up after themselves -->
+<iframe id="loadediframe" name="loadediframe" style="display:none;" src="data/iframe.html"></iframe>
+<dl id="dl" style="position:absolute;top:-32767px;left:-32767px;width:1px">
+<div id="qunit-fixture">
+ 
+</div>
+<map name="imgmap" id="imgmap">
+  <area shape="rect" coords="0,0,200,50">
+</map>
+
+</body>
+</html>

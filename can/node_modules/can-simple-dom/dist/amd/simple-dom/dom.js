@@ -1,0 +1,28 @@
+/*can-simple-dom@0.2.23#simple-dom/dom*/
+define([
+    'exports',
+    './document/node',
+    './document/element',
+    './document',
+    './html-parser',
+    './html-serializer',
+    './void-map'
+], function (exports, _documentNode, _documentElement, _document, _htmlParser, _htmlSerializer, _voidMap) {
+    'use strict';
+    Object.defineProperty(exports, '__esModule', { value: true });
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : { 'default': obj };
+    }
+    var _Node = _interopRequireDefault(_documentNode);
+    var _Element = _interopRequireDefault(_documentElement);
+    var _Document = _interopRequireDefault(_document);
+    var _HTMLParser = _interopRequireDefault(_htmlParser);
+    var _HTMLSerializer = _interopRequireDefault(_htmlSerializer);
+    var _voidMap2 = _interopRequireDefault(_voidMap);
+    exports.Node = _Node['default'];
+    exports.Element = _Element['default'];
+    exports.Document = _Document['default'];
+    exports.HTMLParser = _HTMLParser['default'];
+    exports.HTMLSerializer = _HTMLSerializer['default'];
+    exports.voidMap = _voidMap2['default'];
+});
