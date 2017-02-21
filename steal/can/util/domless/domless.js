@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.28#util/domless/domless*/
+/*can@2.3.29#util/domless/domless*/
 steal('can/util/can.js', 'can/util/attr', 'can/util/array/each.js', 'can/util/array/makeArray.js', function (can, attr) {
     var core_trim = String.prototype.trim;
     var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;

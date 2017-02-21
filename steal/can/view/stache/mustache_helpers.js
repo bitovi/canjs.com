@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.28#view/stache/mustache_helpers*/
+/*can@2.3.29#view/stache/mustache_helpers*/
 steal('can/util', './utils.js', 'can/view/live', function (can, utils, live) {
     live = live || can.view.live;
     var resolve = function (value) {

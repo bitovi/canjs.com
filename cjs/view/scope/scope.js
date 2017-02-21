@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.28#view/scope/scope*/
+/*can@2.3.29#view/scope/scope*/
 var can = require('../../util/util.js');
 var makeComputeData = require('./compute_data.js');
 require('../../construct/construct.js');
@@ -47,16 +47,17 @@ can.simpleExtend(Scope.prototype, {
         if (isInCurrentContext) {
             currentScopeOnly = true;
             attr = attr.substr(2);
-        } else if (isInParentContext) {
+        } else if (isInParentContext || isParentContext) {
             var parent = this._parent;
             while (parent._meta.notContext) {
                 parent = parent._parent;
             }
+            if (isParentContext) {
+                return { value: parent._context };
+            }
             return parent.read(attr.substr(3) || '.', options);
         } else if (isCurrentContext) {
             return { value: this._context };
-        } else if (isParentContext) {
-            return { value: this._parent._context };
         }
         var keyReads = can.compute.read.reads(attr);
         if (keyReads[0].key.charAt(0) === '*') {

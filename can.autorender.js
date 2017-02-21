@@ -1,8 +1,8 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
@@ -78,7 +78,7 @@
 		};
 	});
 })({},window)
-/*can@2.3.28#map/app/app*/
+/*can@2.3.29#map/app/app*/
 define('can/map/app/app', [
     'can/util/util',
     'can/map/map',
@@ -142,7 +142,7 @@ define('can/map/app/app', [
     });
     return can.AppMap;
 });
-/*can@2.3.28#view/autorender/autorender*/
+/*can@2.3.29#view/autorender/autorender*/
 'format steal';
 define('can/view/autorender/autorender', [
     'can/util/util',

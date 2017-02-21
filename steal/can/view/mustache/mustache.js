@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.28#view/mustache/mustache*/
+/*can@2.3.29#view/mustache/mustache*/
 steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/compute', 'can/view/render.js', 'can/view/bindings', function (can) {
     can.view.ext = '.mustache';
     var SCOPE = 'scope', HASH = '___h4sh', CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options}', SPECIAL_CONTEXT_OBJ = '{scope:' + SCOPE + ',options:options, special: true}', ARG_NAMES = SCOPE + ',options', argumentsRegExp = /((([^'"\s]+?=)?('.*?'|".*?"))|.*?)\s/g, literalNumberStringBooleanRegExp = /^(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false|null|undefined)|((.+?)=(('.*?'|".*?"|[0-9]+\.?[0-9]*|true|false)|(.+))))$/, makeLookupLiteral = function (type) {
@@ -136,7 +136,7 @@ steal('can/util', 'can/view/scope', 'can/view', 'can/view/scanner.js', 'can/comp
                                 end: false
                             };
                         content = can.trim(content);
-                        if (content.length && (mode = content.match(/^([#^\/]|else$)/))) {
+                        if (content.length && (mode = content.match(/^([#^/]|else$)/))) {
                             mode = mode[0];
                             switch (mode) {
                             case '#':

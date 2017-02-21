@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.28
+ * CanJS - 2.3.29
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 08 Dec 2016 20:53:50 GMT
+ * Copyright (c) 2017 Bitovi
+ * Tue, 21 Feb 2017 00:42:50 GMT
  * Licensed MIT
  */
 
-/*can@2.3.28#util/fixture/fixture*/
+/*can@2.3.29#util/fixture/fixture*/
 steal('can/util', 'can/util/string', 'can/util/object', function (can) {
     if (!can.Object) {
         throw new Error('can.fixture depends on can.Object. Please include it before can.fixture.');
