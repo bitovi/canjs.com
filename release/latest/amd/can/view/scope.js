@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.30
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Copyright (c) 2017 Bitovi
+ * Wed, 03 May 2017 15:32:43 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#view/scope/scope*/
+/*can@2.3.30#view/scope/scope*/
 define([
     'can/util/library',
     'can/view/compute_data',
@@ -49,16 +49,17 @@ define([
             if (isInCurrentContext) {
                 currentScopeOnly = true;
                 attr = attr.substr(2);
-            } else if (isInParentContext) {
+            } else if (isInParentContext || isParentContext) {
                 var parent = this._parent;
                 while (parent._meta.notContext) {
                     parent = parent._parent;
                 }
+                if (isParentContext) {
+                    return { value: parent._context };
+                }
                 return parent.read(attr.substr(3) || '.', options);
             } else if (isCurrentContext) {
                 return { value: this._context };
-            } else if (isParentContext) {
-                return { value: this._parent._context };
             }
             var keyReads = can.compute.read.reads(attr);
             if (keyReads[0].key.charAt(0) === '*') {

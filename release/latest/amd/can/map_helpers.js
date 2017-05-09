@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.30
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Copyright (c) 2017 Bitovi
+ * Wed, 03 May 2017 15:32:43 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#map/map_helpers*/
+/*can@2.3.30#map/map_helpers*/
 define([
     'can/util/library',
     'can/util/object/isplain'
@@ -90,6 +90,12 @@ define([
         },
         getMapFromObject: function (obj) {
             return madeMap && madeMap[obj._cid] && madeMap[obj._cid].instance;
+        },
+        twoLevelDeepExtend: function (destination, source) {
+            for (var prop in source) {
+                destination[prop] = destination[prop] || {};
+                can.simpleExtend(destination[prop], source[prop]);
+            }
         }
     };
     var madeMap = null;

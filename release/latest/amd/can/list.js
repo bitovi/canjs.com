@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.30
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Copyright (c) 2017 Bitovi
+ * Wed, 03 May 2017 15:32:43 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#list/list*/
+/*can@2.3.30#list/list*/
 define([
     'can/util/library',
     'can/map',
@@ -263,7 +263,7 @@ define([
         filter: function (callback, thisArg) {
             var filteredList = new this.constructor(), self = this, filtered;
             this.each(function (item, index, list) {
-                filtered = callback.call(thisArg | self, item, index, self);
+                filtered = callback.call(thisArg || self, item, index, self);
                 if (filtered) {
                     filteredList.push(item);
                 }
@@ -273,7 +273,7 @@ define([
         map: function (callback, thisArg) {
             var filteredList = new can.List(), self = this;
             this.each(function (item, index, list) {
-                var mapped = callback.call(thisArg | self, item, index, self);
+                var mapped = callback.call(thisArg || self, item, index, self);
                 filteredList.push(mapped);
             });
             return filteredList;

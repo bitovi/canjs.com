@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.27
+ * CanJS - 2.3.30
  * http://canjs.com/
- * Copyright (c) 2016 Bitovi
- * Thu, 15 Sep 2016 21:14:18 GMT
+ * Copyright (c) 2017 Bitovi
+ * Wed, 03 May 2017 15:32:43 GMT
  * Licensed MIT
  */
 
-/*can@2.3.27#map/list/list*/
+/*can@2.3.30#map/list/list*/
 define([
     'can/util/library',
     'can/map',
@@ -14,7 +14,7 @@ define([
     'can/compute'
 ], function (can) {
     can.extend(can.List.prototype, {
-        filter: function (callback) {
+        filter: function (callback, thisArg) {
             var filtered = new this.constructor();
             var self = this;
             var generator = function (element, index) {
@@ -28,7 +28,7 @@ define([
                     }
                 };
                 var compute = can.compute(function () {
-                    return callback(element, self.indexOf(element), self);
+                    return callback.call(thisArg || self, element, self.indexOf(element), self);
                 });
                 compute.bind('change', binder);
                 binder(null, compute());
@@ -49,12 +49,12 @@ define([
             this.forEach(generator);
             return filtered;
         },
-        map: function (callback) {
+        map: function (callback, thisArg) {
             var mapped = new can.List();
             var self = this;
             var generator = function (element, index) {
                 var compute = can.compute(function () {
-                    return callback(element, index, self);
+                    return callback.call(thisArg || self, element, index, self);
                 });
                 compute.bind('change', function (ev, val) {
                     mapped.splice(index, 1, val);
