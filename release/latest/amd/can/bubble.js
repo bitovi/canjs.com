@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.30
+ * CanJS - 2.3.31
  * http://canjs.com/
  * Copyright (c) 2017 Bitovi
- * Wed, 03 May 2017 15:32:43 GMT
+ * Wed, 19 Jul 2017 18:58:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.30#map/bubble*/
+/*can@2.3.31#map/bubble*/
 define(['can/util/library'], function (can) {
     var bubble = can.bubble = {
         bind: function (parent, eventName) {

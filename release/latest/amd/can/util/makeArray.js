@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.30
+ * CanJS - 2.3.31
  * http://canjs.com/
  * Copyright (c) 2017 Bitovi
- * Wed, 03 May 2017 15:32:43 GMT
+ * Wed, 19 Jul 2017 18:58:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.30#util/array/makeArray*/
+/*can@2.3.31#util/array/makeArray*/
 define(['can/util/each'], function (can) {
     can.makeArray = function (arr) {
         var ret = [];

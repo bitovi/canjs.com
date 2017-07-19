@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.30
+ * CanJS - 2.3.31
  * http://canjs.com/
  * Copyright (c) 2017 Bitovi
- * Wed, 03 May 2017 15:32:43 GMT
+ * Wed, 19 Jul 2017 18:58:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.30#view/parser/parser*/
+/*can@2.3.31#view/parser/parser*/
 define([], function () {
     function each(items, callback) {
         for (var i = 0; i < items.length; i++) {

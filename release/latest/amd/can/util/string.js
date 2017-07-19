@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.30
+ * CanJS - 2.3.31
  * http://canjs.com/
  * Copyright (c) 2017 Bitovi
- * Wed, 03 May 2017 15:32:43 GMT
+ * Wed, 19 Jul 2017 18:58:09 GMT
  * Licensed MIT
  */
 
-/*can@2.3.30#util/string/string*/
+/*can@2.3.31#util/string/string*/
 define(['can/util/library'], function (can) {
     var strUndHash = /_|-/, strColons = /\=\=/, strWords = /([A-Z]+)([A-Z][a-z])/g, strLowUp = /([a-z\d])([A-Z])/g, strDash = /([a-z\d])([A-Z])/g, strReplacer = /\{([^\}]+)\}/g, strQuote = /"/g, strSingleQuote = /'/g, strHyphenMatch = /-+(.)?/g, strCamelMatch = /[a-z][A-Z]/g, getNext = function (obj, prop, add) {
             var result = obj[prop];
