@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.31
+ * CanJS - 2.3.34
  * http://canjs.com/
- * Copyright (c) 2017 Bitovi
- * Wed, 19 Jul 2017 18:58:09 GMT
+ * Copyright (c) 2018 Bitovi
+ * Fri, 20 Apr 2018 19:04:13 GMT
  * Licensed MIT
  */
 
-/*can@2.3.31#util/vdom/build_fragment/build_fragment*/
+/*can@2.3.34#util/vdom/build_fragment/build_fragment*/
 define([
     'can/util/vdom/make_parser',
     'can/util/library'

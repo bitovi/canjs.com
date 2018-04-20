@@ -1,12 +1,12 @@
 /*!
- * CanJS - 2.3.31
+ * CanJS - 2.3.34
  * http://canjs.com/
- * Copyright (c) 2017 Bitovi
- * Wed, 19 Jul 2017 18:58:09 GMT
+ * Copyright (c) 2018 Bitovi
+ * Fri, 20 Apr 2018 19:04:13 GMT
  * Licensed MIT
  */
 
-/*can@2.3.31#util/jquery/jquery*/
+/*can@2.3.34#util/jquery/jquery*/
 define([
     'jquery',
     'can/util/can',
@@ -51,6 +51,9 @@ define([
         $: $,
         each: can.each,
         bind: function (ev, cb) {
+            if (this.nodeType === 11) {
+                return;
+            }
             if (this.bind && this.bind !== can.bind) {
                 this.bind(ev, cb);
             } else if (isBindableElement(this)) {
@@ -61,6 +64,9 @@ define([
             return this;
         },
         unbind: function (ev, cb) {
+            if (this.nodeType === 11) {
+                return;
+            }
             if (this.unbind && this.unbind !== can.unbind) {
                 this.unbind(ev, cb);
             } else if (isBindableElement(this)) {
